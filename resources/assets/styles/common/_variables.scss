@@ -1,0 +1,12 @@
+/** Import Bootstrap functions */
+@import '~bootstrap/scss/functions';
+
+$theme-colors: (
+    primary: #002878,
+);
+
+$font-family-base: franklin-gothic-compressed, sans-serif;
+
+/** Bootstrap navbar fix (https://git.io/fADqW) */
+$navbar-dark-toggler-icon-bg: none;
+// $navbar-light-toggler-icon-bg: none;
