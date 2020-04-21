@@ -57883,7 +57883,7 @@ var InTheNews = /*#__PURE__*/function (_React$Component) {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return __WEBPACK_IMPORTED_MODULE_2__colbycommunications_colby_axios___default.a.get('https://admitted-students-local.colby.edu/wp-json/news/v1/in-the-news');
+              return __WEBPACK_IMPORTED_MODULE_2__colbycommunications_colby_axios___default.a.get('https://www.colby.edu/news/wp-json/news/v1/in-the-news');
 
             case 2:
               response = _context.sent;
@@ -57981,7 +57981,7 @@ var InTheNews = /*#__PURE__*/function (_React$Component) {
           className: "card-text"
         }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
           dangerouslySetInnerHTML: {
-            __html: this.state.data.spotlight_stories[0].post_content
+            __html: this.state.data.spotlight_stories[0].post_excerpt
           }
         })), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
           className: "card-text"
@@ -58026,7 +58026,7 @@ var InTheNews = /*#__PURE__*/function (_React$Component) {
           className: "card-text"
         }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
           dangerouslySetInnerHTML: {
-            __html: this.state.data.spotlight_stories[1].post_content
+            __html: this.state.data.spotlight_stories[1].post_excerpt
           }
         })), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
           className: "card-text"

@@ -22,9 +22,7 @@ export default class InTheNews extends React.Component {
     };
 
     getData = async () => {
-        const response = await Axios.get(
-            'https://admitted-students-local.colby.edu/wp-json/news/v1/in-the-news'
-        );
+        const response = await Axios.get('https://www.colby.edu/news/wp-json/news/v1/in-the-news');
 
         this.setState({
             data: response.data.data,
@@ -104,7 +102,7 @@ export default class InTheNews extends React.Component {
                                         <div
                                             dangerouslySetInnerHTML={{
                                                 __html: this.state.data.spotlight_stories[0]
-                                                    .post_content,
+                                                    .post_excerpt,
                                             }}
                                         />
                                     </p>
@@ -159,7 +157,7 @@ export default class InTheNews extends React.Component {
                                         <div
                                             dangerouslySetInnerHTML={{
                                                 __html: this.state.data.spotlight_stories[1]
-                                                    .post_content,
+                                                    .post_excerpt,
                                             }}
                                         />
                                     </p>
