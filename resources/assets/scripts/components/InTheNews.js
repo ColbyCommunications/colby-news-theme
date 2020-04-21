@@ -57,7 +57,11 @@ export default class InTheNews extends React.Component {
                 onClick={() => (window.location = featured_story.guid)}
             >
                 <div className={style.postHeader}>
-                    <h2>{this.state.data.featured_story.post_title}</h2>
+                    <h2
+                        dangerouslySetInnerHTML={{
+                            __html: this.state.data.featured_story.post_title,
+                        }}
+                    />
                     <div className={style.postDate}>
                         <span className="post_info_date">New York Times</span>
                     </div>

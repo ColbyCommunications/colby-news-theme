@@ -57928,7 +57928,11 @@ var InTheNews = /*#__PURE__*/function (_React$Component) {
         }
       }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         className: __WEBPACK_IMPORTED_MODULE_4__style_css___default.a.postHeader
-      }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h2", null, _this.state.data.featured_story.post_title), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+      }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h2", {
+        dangerouslySetInnerHTML: {
+          __html: _this.state.data.featured_story.post_title
+        }
+      }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         className: __WEBPACK_IMPORTED_MODULE_4__style_css___default.a.postDate
       }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
         className: "post_info_date"
