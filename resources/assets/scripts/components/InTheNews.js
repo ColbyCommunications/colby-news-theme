@@ -23,7 +23,7 @@ export default class InTheNews extends React.Component {
 
     getData = async () => {
         const response = await Axios.get(
-            'https://admitted-students-local.colby.edu/wp-json/v1/in-the-news'
+            'http://developer.colby.edu/news/wp-json/news/v1/in-the-news'
         );
 
         this.setState({
