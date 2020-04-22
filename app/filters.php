@@ -90,68 +90,68 @@ add_filter('comments_template', function ($comments_template) {
     return $comments_template;
 }, 100);
 
-// function processPosts($posts) {
-//     $new_posts = [];
-//     foreach($posts as $post){
-//         array_push($new_posts, (object) array_merge( (array) $post, (array) ['meta' => get_post_meta($post->ID), 'image' => wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), "full")]));
-//     }
-//     return $new_posts;
-// }
+function processPosts($posts) {
+    $new_posts = [];
+    foreach($posts as $post){
+        array_push($new_posts, (object) array_merge( (array) $post, (array) ['meta' => get_post_meta($post->ID), 'image' => wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), "full")]));
+    }
+    return $new_posts;
+}
 
-// add_action( 'rest_api_init', function() {
+add_action( 'rest_api_init', function() {
         
-//     register_rest_route('news/v1', '/in-the-news', array(
-//             'methods'  => 'GET',
-//             'callback' => function() {
-//                 $args_featured_story = [
-//                     'post_type' => 'post',
-//                     'posts_per_page'=> 1,
-//                     'order' => 'DESC',
-//                     'orderby' => 'ID',
-//                     'category_name' => 'in-the-news',
-//                     'meta_key'     => 'featured_story',
-//                     'meta_value'   => 1,
-//                     'meta_compare' => '=',
-//                     ];
+    register_rest_route('news/v1', '/in-the-news', array(
+            'methods'  => 'GET',
+            'callback' => function() {
+                $args_featured_story = [
+                    'post_type' => 'post',
+                    'posts_per_page'=> 1,
+                    'order' => 'DESC',
+                    'orderby' => 'ID',
+                    'category' => 4,
+                    'meta_key'     => 'featured_story',
+                    'meta_value'   => 1,
+                    'meta_compare' => '=',
+                    ];
         
-//                 $query_featured_story = new \WP_Query($args_featured_story);
-//                 $args_spotlight_stories = [
-//                     'post_type' => 'post',
-//                     'posts_per_page'=> 2,
-//                     'order' => 'DESC',
-//                     'orderby' => 'ID',
-//                     'category_name' => 'in-the-news',
-//                     'meta_query' => array(
-//                         'meta_key'     => 'spotlight_story',
-//                         'meta_value'   => 1,
-//                         'meta_compare' => '=',
-//                     )
-//                     ];
+                $query_featured_story = new \WP_Query($args_featured_story);
+                $args_spotlight_stories = [
+                    'post_type' => 'post',
+                    'posts_per_page'=> 2,
+                    'order' => 'DESC',
+                    'orderby' => 'ID',
+                    'category' => 4,
+                    'meta_query' => array(
+                        'meta_key'     => 'spotlight_story',
+                        'meta_value'   => 1,
+                        'meta_compare' => '=',
+                    )
+                    ];
 
         
-//                 $query_spotlight_stories = new \WP_Query($args_spotlight_stories);
+                $query_spotlight_stories = new \WP_Query($args_spotlight_stories);
 
-//                 $args_masonry_stories = [
-//                     'post_type' => 'post',
-//                     'posts_per_page'=> -1,
-//                     'order' => 'DESC',
-//                     'orderby' => 'ID',
-//                     'category_name' => 'in-the-news',
-//                     'post__not_in' => [$query_featured_story->posts[0]->ID, $query_spotlight_stories->posts[0]->ID, $query_spotlight_stories->posts[1]->ID],
-//                     ];
+                $args_masonry_stories = [
+                    'post_type' => 'post',
+                    'posts_per_page'=> -1,
+                    'order' => 'DESC',
+                    'orderby' => 'ID',
+                    'category' => 4,
+                    'post__not_in' => [$query_featured_story->posts[0]->ID, $query_spotlight_stories->posts[0]->ID, $query_spotlight_stories->posts[1]->ID],
+                    ];
 
-//                 $query_masonry_stories = new \WP_Query($args_masonry_stories);
+                $query_masonry_stories = new \WP_Query($args_masonry_stories);
 
-//                 $featured_story_meta = get_post_meta($query_featured_story->posts[0]->ID);
+                $featured_story_meta = get_post_meta($query_featured_story->posts[0]->ID);
                 
-//                 $results = ['data' => [
-//                     'featured_story' => (object) array_merge( (array) $query_featured_story->posts[0], (array) ['meta' => $featured_story_meta, 'image' => wp_get_attachment_image_src(get_post_thumbnail_id($query_featured_story->posts[0]->ID), "full")]),
-//                     'spotlight_stories' => processPosts($query_spotlight_stories->posts),
-//                     'masonry_stories' => processPosts($query_masonry_stories->posts),
+                $results = ['data' => [
+                    'featured_story' => (object) array_merge( (array) $query_featured_story->posts[0], (array) ['meta' => $featured_story_meta, 'image' => wp_get_attachment_image_src(get_post_thumbnail_id($query_featured_story->posts[0]->ID), "full")]),
+                    'spotlight_stories' => processPosts($query_spotlight_stories->posts),
+                    'masonry_stories' => processPosts($query_masonry_stories->posts),
                     
-//                 ]];
+                ]];
 
-//                 return $results;
-//             },
-//     ));
-// } );
+                return $results;
+            },
+    ));
+} );

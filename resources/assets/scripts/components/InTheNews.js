@@ -106,7 +106,7 @@ export default class InTheNews extends React.Component {
                                             dangerouslySetInnerHTML={{
                                                 __html: `${this.state.data.spotlight_stories[0].post_content.substring(
                                                     0,
-                                                    100
+                                                    200
                                                 )}...`,
                                             }}
                                         />
@@ -165,7 +165,7 @@ export default class InTheNews extends React.Component {
                                             dangerouslySetInnerHTML={{
                                                 __html: `${this.state.data.spotlight_stories[1].post_content.substring(
                                                     0,
-                                                    100
+                                                    200
                                                 )}...`,
                                             }}
                                         />
