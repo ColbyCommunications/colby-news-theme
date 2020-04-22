@@ -113,7 +113,9 @@ export default class InTheNews extends React.Component {
                                         />
                                     </p>
                                     <p className="card-text">
-                                        <small className="text-muted">New York Times</small>
+                                        <small className="text-muted">
+                                            {this.state.data.spotlight_stories[0].meta.source_name}
+                                        </small>
                                     </p>
                                     <p className="card-text text-right">
                                         <a href="https://www.colby.edu/news/2020/04/20/provost-mcfadden-interviewed-on-maine-calling-episode-on-covid-19/">
@@ -168,7 +170,9 @@ export default class InTheNews extends React.Component {
                                         />
                                     </p>
                                     <p className="card-text">
-                                        <small className="text-muted">New York Times</small>
+                                        <small className="text-muted">
+                                            {this.state.data.spotlight_stories[1].meta.source_name}
+                                        </small>
                                     </p>
                                     <p className="card-text text-right">
                                         <a href="https://www.colby.edu/news/2020/04/20/provost-mcfadden-interviewed-on-maine-calling-episode-on-covid-19/">

@@ -57883,7 +57883,7 @@ var InTheNews = /*#__PURE__*/function (_React$Component) {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return __WEBPACK_IMPORTED_MODULE_2__colbycommunications_colby_axios___default.a.get('http://developer.colby.edu/news/wp-json/news/v1/in-the-news');
+              return __WEBPACK_IMPORTED_MODULE_2__colbycommunications_colby_axios___default.a.get('https://admitted-students-local.colby.edu/wp-json/news/v1/in-the-news');
 
             case 2:
               response = _context.sent;
@@ -57991,7 +57991,7 @@ var InTheNews = /*#__PURE__*/function (_React$Component) {
           className: "card-text"
         }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("small", {
           className: "text-muted"
-        }, "New York Times")), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
+        }, this.state.data.spotlight_stories[0].meta.source_name)), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
           className: "card-text text-right"
         }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
           href: "https://www.colby.edu/news/2020/04/20/provost-mcfadden-interviewed-on-maine-calling-episode-on-covid-19/"
@@ -58036,7 +58036,7 @@ var InTheNews = /*#__PURE__*/function (_React$Component) {
           className: "card-text"
         }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("small", {
           className: "text-muted"
-        }, "New York Times")), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
+        }, this.state.data.spotlight_stories[1].meta.source_name)), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
           className: "card-text text-right"
         }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
           href: "https://www.colby.edu/news/2020/04/20/provost-mcfadden-interviewed-on-maine-calling-episode-on-covid-19/"
