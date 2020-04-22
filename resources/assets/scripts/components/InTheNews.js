@@ -23,7 +23,7 @@ export default class InTheNews extends React.Component {
 
     getData = async () => {
         const response = await Axios.get(
-            'http://developer.colby.edu/news/wp-json/news/v1/in-the-news'
+            'https://admitted-students-local.colby.edu/wp-json/v1/in-the-news'
         );
 
         this.setState({
@@ -110,9 +110,9 @@ export default class InTheNews extends React.Component {
                                         />
                                     </p>
                                     <p className="card-text">
-                                        <small className="text-muted">
+                                        <medium className="text-muted">
                                             {this.state.data.spotlight_stories[0].meta.source_name}
-                                        </small>
+                                        </medium>
                                     </p>
                                     <p className="card-text text-right">
                                         <a href="https://www.colby.edu/news/2020/04/20/provost-mcfadden-interviewed-on-maine-calling-episode-on-covid-19/">
@@ -167,9 +167,9 @@ export default class InTheNews extends React.Component {
                                         />
                                     </p>
                                     <p className="card-text">
-                                        <small className="text-muted">
+                                        <medium className="text-muted">
                                             {this.state.data.spotlight_stories[1].meta.source_name}
-                                        </small>
+                                        </medium>
                                     </p>
                                     <p className="card-text text-right">
                                         <a href="https://www.colby.edu/news/2020/04/20/provost-mcfadden-interviewed-on-maine-calling-episode-on-covid-19/">
