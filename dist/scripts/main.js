@@ -57883,7 +57883,7 @@ var InTheNews = /*#__PURE__*/function (_React$Component) {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return __WEBPACK_IMPORTED_MODULE_2__colbycommunications_colby_axios___default.a.get('https://admitted-students-local.colby.edu/wp-json/news/v1/in-the-news');
+              return __WEBPACK_IMPORTED_MODULE_2__colbycommunications_colby_axios___default.a.get('http://developer.colby.edu/news/wp-json/news/v1/in-the-news');
 
             case 2:
               response = _context.sent;
@@ -57915,10 +57915,7 @@ var InTheNews = /*#__PURE__*/function (_React$Component) {
           height: '500px',
           cursor: 'pointer'
         };
-      } // const jstyles = {
-      //     backgroundImage: `url("${featured_story.image[0]}")`,
-      // };
-
+      }
 
       return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         className: __WEBPACK_IMPORTED_MODULE_4__style_css___default.a.featuredStory,
@@ -57936,7 +57933,7 @@ var InTheNews = /*#__PURE__*/function (_React$Component) {
         className: __WEBPACK_IMPORTED_MODULE_4__style_css___default.a.postDate
       }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
         className: "post_info_date"
-      }, "New York Times"))));
+      }, _this.state.data.featured_story.meta.source_name))));
     });
 
     _this.state = {
@@ -57949,8 +57946,6 @@ var InTheNews = /*#__PURE__*/function (_React$Component) {
   _createClass(InTheNews, [{
     key: "render",
     value: function render() {
-      // eslint-disable-next-line no-console
-      console.log(this.state);
       var content = '';
 
       if (this.state.loading) {
