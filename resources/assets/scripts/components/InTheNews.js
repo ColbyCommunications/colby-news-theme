@@ -104,8 +104,8 @@ export default class InTheNews extends React.Component {
                                     <p className="card-text">
                                         <div
                                             dangerouslySetInnerHTML={{
-                                                __html: this.state.data.spotlight_stories[0]
-                                                    .post_excerpt,
+                                                __html: `this.state.data.spotlight_stories[0]
+                                                .post_content.substring(0, 100)...`,
                                             }}
                                         />
                                     </p>
@@ -161,8 +161,8 @@ export default class InTheNews extends React.Component {
                                     <p className="card-text">
                                         <div
                                             dangerouslySetInnerHTML={{
-                                                __html: this.state.data.spotlight_stories[1]
-                                                    .post_excerpt,
+                                                __html: `this.state.data.spotlight_stories[1]
+                                                    .post_content.substring(0, 100)...`,
                                             }}
                                         />
                                     </p>
