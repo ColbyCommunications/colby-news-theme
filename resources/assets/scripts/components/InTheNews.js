@@ -47,9 +47,7 @@ export default class InTheNews extends React.Component {
                 cursor: 'pointer',
             };
         }
-        // const jstyles = {
-        //     backgroundImage: `url("${featured_story.image[0]}")`,
-        // };
+
         return (
             <div
                 className={style.featuredStory}
@@ -63,7 +61,9 @@ export default class InTheNews extends React.Component {
                         }}
                     />
                     <div className={style.postDate}>
-                        <span className="post_info_date">New York Times</span>
+                        <span className="post_info_date">
+                            {this.state.data.featured_story.meta.source_name}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -71,9 +71,6 @@ export default class InTheNews extends React.Component {
     };
 
     render() {
-        // eslint-disable-next-line no-console
-        console.log(this.state);
-
         let content = '';
 
         if (this.state.loading) {
