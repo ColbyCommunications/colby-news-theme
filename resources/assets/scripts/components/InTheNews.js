@@ -23,7 +23,7 @@ export default class InTheNews extends React.Component {
 
     getData = async () => {
         const response = await Axios.get(
-            'http://developer.colby.edu/news/wp-json/news/v1/in-the-news'
+            'https://developer.colby.edu/news/wp-json/news/v1/in-the-news'
         );
 
         this.setState({
@@ -92,9 +92,17 @@ export default class InTheNews extends React.Component {
                                     />
                                 )}
 
+                                {!this.state.data.spotlight_stories[0].image && (
+                                    <img
+                                        className="card-img-top"
+                                        src={window.ColbyNews.defaultImagePath}
+                                        alt="Colby In the News"
+                                    />
+                                )}
+
                                 <div className="card-body">
                                     <h5 className="card-title">
-                                        <div
+                                        <span
                                             dangerouslySetInnerHTML={{
                                                 __html: this.state.data.spotlight_stories[0]
                                                     .post_title,
@@ -102,7 +110,7 @@ export default class InTheNews extends React.Component {
                                         />
                                     </h5>
                                     <p className="card-text">
-                                        <div
+                                        <span
                                             dangerouslySetInnerHTML={{
                                                 __html: `${this.state.data.spotlight_stories[0].post_content.substring(
                                                     0,
@@ -151,9 +159,17 @@ export default class InTheNews extends React.Component {
                                     />
                                 )}
 
+                                {!this.state.data.spotlight_stories[1].image && (
+                                    <img
+                                        className="card-img-top"
+                                        src={window.ColbyNews.defaultImagePath}
+                                        alt="Colby In the News"
+                                    />
+                                )}
+
                                 <div className="card-body">
                                     <h5 className="card-title">
-                                        <div
+                                        <span
                                             dangerouslySetInnerHTML={{
                                                 __html: this.state.data.spotlight_stories[1]
                                                     .post_title,
@@ -161,7 +177,7 @@ export default class InTheNews extends React.Component {
                                         />
                                     </h5>
                                     <p className="card-text">
-                                        <div
+                                        <span
                                             dangerouslySetInnerHTML={{
                                                 __html: `${this.state.data.spotlight_stories[1].post_content.substring(
                                                     0,
