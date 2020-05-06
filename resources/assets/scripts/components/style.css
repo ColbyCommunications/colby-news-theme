@@ -1,6 +1,7 @@
 .featuredStory {
     border-radius: 3px;
     margin-bottom: 2rem;
+    height: 500px;
     .postHeader {
         float: none;
         margin: 0;
@@ -56,5 +57,16 @@
             rgba(0, 0, 0, 0.6) 93%,
             rgba(0, 0, 0, 0.59) 100%
         );
+    }
+}
+
+@media (max-width: 576px) {
+    .featuredStory {
+        height: 400px;
+        .postHeader {
+            h2 {
+                font-size: 2rem;
+            }
+        }
     }
 }

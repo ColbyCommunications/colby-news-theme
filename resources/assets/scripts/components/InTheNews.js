@@ -44,7 +44,6 @@ export default class InTheNews extends React.Component {
                 backgroundSize: 'cover',
                 position: 'relative',
                 backgroundPosition: 'center center',
-                height: '500px',
                 cursor: 'pointer',
             };
         }
