@@ -226,7 +226,7 @@ export default class InTheNews extends React.Component {
                                         name: 'one',
                                         title: 'The College',
                                         endpoint:
-                                            'https://www.colby.edu/news/wp-json/wp/v2/posts/?per_page=100&categories=223',
+                                            'https://www.colby.edu/news/wp-json/wp/v2/posts/?per_page=100&categories=271',
                                         fields: {
                                             id: 'id',
                                             title: 'title.rendered',
@@ -241,7 +241,7 @@ export default class InTheNews extends React.Component {
                                         name: 'two',
                                         title: 'Our Alumni',
                                         endpoint:
-                                            'https://www.colby.edu/wp-json/wp/v2/posts/?per_page=100',
+                                            'https://www.colby.edu/news/wp-json/wp/v2/posts/?per_page=100&categories=272',
                                         fields: {
                                             id: 'id',
                                             title: 'title.rendered',
