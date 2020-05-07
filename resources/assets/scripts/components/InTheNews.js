@@ -229,7 +229,7 @@ export default class InTheNews extends React.Component {
                                             id: 'id',
                                             title: 'title.rendered',
                                             excerpt: 'excerpt.rendered',
-                                            image: 'featured_media',
+                                            image: 'thumbnail[0]',
                                             source: 'meta.source_name[0]',
                                             link: 'link',
                                         },
