@@ -44,6 +44,14 @@ export default class InTheNews extends React.Component {
                 backgroundPosition: 'center center',
                 cursor: 'pointer',
             };
+        } else {
+            jumbotronStyles = {
+                backgroundImage: `url("${window.ColbyNews.defaultImagePath}")`,
+                backgroundSize: 'cover',
+                position: 'relative',
+                backgroundPosition: 'center center',
+                cursor: 'pointer',
+            };
         }
 
         return (
