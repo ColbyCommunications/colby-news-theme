@@ -58,7 +58,7 @@ export default class InTheNews extends React.Component {
             <div
                 className={style.featuredStory}
                 style={jumbotronStyles}
-                onClick={() => (window.location = featured_story.guid)}
+                onClick={() => (window.location = featured_story.meta.in_the_news_external_link)}
             >
                 <div className={style.postHeader}>
                     <h2
@@ -131,7 +131,12 @@ export default class InTheNews extends React.Component {
                                         </medium>
                                     </p>
                                     <p className="card-text text-right">
-                                        <a href="https://www.colby.edu/news/2020/04/20/provost-mcfadden-interviewed-on-maine-calling-episode-on-covid-19/">
+                                        <a
+                                            href={
+                                                this.state.data.spotlight_stories[0].meta
+                                                    .in_the_news_external_link
+                                            }
+                                        >
                                             Read More{' '}
                                             <span>
                                                 <svg
@@ -198,7 +203,12 @@ export default class InTheNews extends React.Component {
                                         </medium>
                                     </p>
                                     <p className="card-text text-right">
-                                        <a href="https://www.colby.edu/news/2020/04/20/provost-mcfadden-interviewed-on-maine-calling-episode-on-covid-19/">
+                                        <a
+                                            href={
+                                                this.state.data.spotlight_stories[1].meta
+                                                    .in_the_news_external_link
+                                            }
+                                        >
                                             Read More{' '}
                                             <span>
                                                 <svg
@@ -239,7 +249,7 @@ export default class InTheNews extends React.Component {
                                             excerpt: 'excerpt.rendered',
                                             image: 'thumbnail[0]',
                                             source: 'meta.source_name[0]',
-                                            link: 'link',
+                                            link: 'meta.in_the_news_external_link',
                                         },
                                         type: 'card',
                                     },
@@ -254,7 +264,7 @@ export default class InTheNews extends React.Component {
                                             excerpt: 'excerpt.rendered',
                                             image: 'thumbnail[0]',
                                             source: 'meta.source_name[0]',
-                                            link: 'link',
+                                            link: 'meta.in_the_news_external_link',
                                         },
                                         type: 'card',
                                     },
