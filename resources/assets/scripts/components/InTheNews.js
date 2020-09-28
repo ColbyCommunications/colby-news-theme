@@ -41,7 +41,7 @@ export default class InTheNews extends React.Component {
                 backgroundImage: `url("${this.state.data.featured_story.image[0]}")`,
                 backgroundSize: 'cover',
                 position: 'relative',
-                backgroundPosition: 'center center',
+                backgroundPosition: 'top center',
                 cursor: 'pointer',
             };
         } else {
