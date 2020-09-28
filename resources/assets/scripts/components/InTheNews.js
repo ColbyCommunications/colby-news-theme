@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-danger */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -94,7 +95,11 @@ export default class InTheNews extends React.Component {
                                     <img
                                         className="card-img-top"
                                         src={this.state.data.spotlight_stories[0].image[0]}
-                                        alt="test"
+                                        alt={this.state.data.spotlight_stories[0].post_title}
+                                        onClick={() =>
+                                            (window.location = this.state.data.spotlight_stories[0].meta.in_the_news_external_link)
+                                        }
+                                        style={{ cursor: 'pointer' }}
                                     />
                                 )}
 
@@ -103,6 +108,10 @@ export default class InTheNews extends React.Component {
                                         className="card-img-top"
                                         src={window.ColbyNews.defaultImagePath}
                                         alt="Colby In the News"
+                                        onClick={() =>
+                                            (window.location = this.state.data.spotlight_stories[0].meta.in_the_news_external_link)
+                                        }
+                                        style={{ cursor: 'pointer' }}
                                     />
                                 )}
 
@@ -166,7 +175,11 @@ export default class InTheNews extends React.Component {
                                     <img
                                         className="card-img-top"
                                         src={this.state.data.spotlight_stories[1].image[0]}
-                                        alt="test"
+                                        alt={this.state.data.spotlight_stories[1].post_title}
+                                        onClick={() =>
+                                            (window.location = this.state.data.spotlight_stories[1].meta.in_the_news_external_link)
+                                        }
+                                        style={{ cursor: 'pointer' }}
                                     />
                                 )}
 
@@ -175,6 +188,10 @@ export default class InTheNews extends React.Component {
                                         className="card-img-top"
                                         src={window.ColbyNews.defaultImagePath}
                                         alt="Colby In the News"
+                                        onClick={() =>
+                                            (window.location = this.state.data.spotlight_stories[1].meta.in_the_news_external_link)
+                                        }
+                                        style={{ cursor: 'pointer' }}
                                     />
                                 )}
 
