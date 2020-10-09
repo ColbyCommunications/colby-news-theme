@@ -18,7 +18,7 @@ export default class Section extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { loading: true, data: [] };
+        this.state = { loading: true, data: [], limit: 10, hasLoaded: false };
     }
 
     componentDidMount = () => {
@@ -32,6 +32,11 @@ export default class Section extends React.Component {
             data: response.data.data,
             loading: false,
         });
+    };
+
+    onLoadMore = () => {
+        // eslint-disable-next-line arrow-body-style
+        this.setState(prevState => ({ limit: prevState.limit + 10 }));
     };
 
     render() {
@@ -137,6 +142,17 @@ export default class Section extends React.Component {
                 </>
             );
         }
-        return <div>{content}</div>;
+        return (
+            <>
+                <div>{content}</div>
+                {this.state.hasLoaded && (
+                    <div className="text-center">
+                        <button type="button" className="btn btn-primary" onClick={this.onLoadMore}>
+                            Load More
+                        </button>
+                    </div>
+                )}
+            </>
+        );
     }
 }
