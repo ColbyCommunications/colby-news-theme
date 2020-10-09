@@ -44,11 +44,49 @@ export default class Section extends React.Component {
                         <div key={index} className="row">
                             {story.image && (
                                 <>
-                                    <div className="col-md-4">image</div>
-                                    <div className="col-md-8">text</div>
+                                    <div className="col-md-4">
+                                        <img
+                                            className="card-img-top"
+                                            src={story.image[0]}
+                                            alt={story.post_title}
+                                            onClick={() =>
+                                                (window.location =
+                                                    story.meta.in_the_news_external_link)
+                                            }
+                                            style={{ cursor: 'pointer' }}
+                                        />
+                                    </div>
+                                    <div className="col-md-8">
+                                        <h3>
+                                            <a href={story.in_the_news_external_link}>
+                                                {story.post_title}
+                                            </a>
+                                        </h3>
+                                        <p
+                                            dangerouslySetInnerHTML={{
+                                                __html: `${story.post_content.substring(
+                                                    0,
+                                                    240
+                                                )}...`,
+                                            }}
+                                        />
+                                    </div>
                                 </>
                             )}
-                            {!story.image && <div className="col">text</div>}
+                            {!story.image && (
+                                <div className="col">
+                                    <h3>
+                                        <a href={story.in_the_news_external_link}>
+                                            {story.post_title}
+                                        </a>
+                                    </h3>
+                                    <p
+                                        dangerouslySetInnerHTML={{
+                                            __html: `${story.post_content.substring(0, 240)}...`,
+                                        }}
+                                    />
+                                </div>
+                            )}
                         </div>
                     ))}
                 </>
