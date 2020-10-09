@@ -53,7 +53,7 @@ export default class Section extends React.Component {
                         .map((story, index) => {
                             let formattedSource = '';
                             if (story.meta.source_name) {
-                                formattedSource = story.meta.source_name
+                                formattedSource = story.meta.source_name[0]
                                     .toLowerCase()
                                     .replace(' ', '_');
                             }
