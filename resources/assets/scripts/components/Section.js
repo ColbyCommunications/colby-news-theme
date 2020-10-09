@@ -63,7 +63,7 @@ export default class Section extends React.Component {
                                 <div key={index} className="row mb-4">
                                     {story.image && (
                                         <>
-                                            <div className="col-md-4">
+                                            <div className="col-md-3">
                                                 <img
                                                     className={`img-fluid ${Style.sectionImg}`}
                                                     src={story.image[0]}
@@ -75,7 +75,7 @@ export default class Section extends React.Component {
                                                     style={{ cursor: 'pointer' }}
                                                 />
                                             </div>
-                                            <div className="col-md-8">
+                                            <div className="col-md-9">
                                                 <h3
                                                     className={Style.sectionHeadline}
                                                     dangerouslySetInnerHTML={{
@@ -108,7 +108,7 @@ export default class Section extends React.Component {
                                     )}
                                     {!story.image && (
                                         <>
-                                            <div className="col-md-4">
+                                            <div className="col-md-3">
                                                 {formattedSource &&
                                                     formattedSource in
                                                         window.ColbyNews.availableLogos && (
@@ -143,7 +143,7 @@ export default class Section extends React.Component {
                                                     />
                                                 )}
                                             </div>
-                                            <div className="col-md-8">
+                                            <div className="col-md-9">
                                                 <h3
                                                     className={Style.sectionHeadline}
                                                     dangerouslySetInnerHTML={{
