@@ -40,9 +40,15 @@ export default class Section extends React.Component {
         } else {
             content = (
                 <>
-                    {this.state.data.sections[this.section].map((section, index) => (
+                    {this.state.data.sections[this.section].map((story, index) => (
                         <div key={index} className="row">
-                            <div className="col">foo</div>
+                            {story.image && (
+                                <>
+                                    <div className="col-md-4">image</div>
+                                    <div className="col-md-8">text</div>
+                                </>
+                            )}
+                            {!story.image && <div className="col">text</div>}
                         </div>
                     ))}
                 </>
