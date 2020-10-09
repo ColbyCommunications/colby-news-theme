@@ -61,6 +61,12 @@
     }
 }
 
+.sectionHeadline {
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 @media (max-width: 576px) {
     .featuredStory {
         height: 400px;

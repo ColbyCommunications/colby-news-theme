@@ -10,6 +10,8 @@ import React from 'react';
 import Axios from '@colbycommunications/colby-axios';
 import Loader from '@colbycommunications/colby-loader';
 
+import Style from './style.css';
+
 export default class Section extends React.Component {
     section = document.getElementById('in-the-news-section').getAttribute('data-section');
 
@@ -57,14 +59,16 @@ export default class Section extends React.Component {
                                         />
                                     </div>
                                     <div className="col-md-8">
-                                        <h3>
-                                            <a
-                                                href={story.in_the_news_external_link}
-                                                dangerouslySetInnerHTML={{
-                                                    __html: story.post_title,
-                                                }}
-                                            />
-                                        </h3>
+                                        <h3
+                                            className={Style.sectionHeadline}
+                                            dangerouslySetInnerHTML={{
+                                                __html: story.post_title,
+                                            }}
+                                            onClick={() =>
+                                                (window.location =
+                                                    story.meta.in_the_news_external_link)
+                                            }
+                                        />
                                         <p
                                             style={{
                                                 fontFamily: 'franklin-gothic-urw, sans-serif',
@@ -99,14 +103,16 @@ export default class Section extends React.Component {
                                         />
                                     </div>
                                     <div className="col-md-8">
-                                        <h3>
-                                            <a
-                                                href={story.in_the_news_external_link}
-                                                dangerouslySetInnerHTML={{
-                                                    __html: story.post_title,
-                                                }}
-                                            />
-                                        </h3>
+                                        <h3
+                                            className={Style.sectionHeadline}
+                                            dangerouslySetInnerHTML={{
+                                                __html: story.post_title,
+                                            }}
+                                            onClick={() =>
+                                                (window.location =
+                                                    story.meta.in_the_news_external_link)
+                                            }
+                                        />
                                         <p
                                             style={{
                                                 fontFamily: 'franklin-gothic-urw, sans-serif',
