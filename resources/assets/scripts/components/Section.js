@@ -112,7 +112,11 @@ export default class Section extends React.Component {
                                                     formattedSource in
                                                         window.ColbyNews.availableLogos && (
                                                         <img
-                                                            src={`${window.ColbyNews.logosPath}/${window.ColbyNews.availableLogos[formattedSource]}.jpg`}
+                                                            src={
+                                                                window.ColbyNews.availableLogos[
+                                                                    formattedSource
+                                                                ]
+                                                            }
                                                             alt={story.post_title}
                                                             onClick={() =>
                                                                 (window.location =
