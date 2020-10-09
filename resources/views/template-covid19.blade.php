@@ -5,7 +5,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>COVID-19 News</h2>
+    
+    <div class="row"><div class="col" style="margin: 2rem 0px;"><h2>COVID-19 News</h2></div></div>
     @while(have_posts()) @php the_post() @endphp
         @include('partials.content-page')
     @endwhile
