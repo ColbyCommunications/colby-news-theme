@@ -1,0 +1,62 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable react/no-danger */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable no-return-assign */
+/* eslint-disable quotes */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React from 'react';
+import Axios from '@colbycommunications/colby-axios';
+import Loader from '@colbycommunications/colby-loader';
+
+export default class Section extends React.Component {
+    section = document.getElementById('#in-the-news-section').getAttribute('data-section');
+
+    constructor(props) {
+        super(props);
+
+        this.state = { loading: true, data: [] };
+    }
+
+    componentDidMount = () => {
+        this.getData();
+    };
+
+    getData = async () => {
+        const response = await Axios.get('https://www.colby.edu/news/wp-json/news/v1/in-the-news');
+
+        this.setState({
+            data: response.data.data,
+            loading: false,
+        });
+    };
+
+    render() {
+        let content = '';
+
+        if (this.state.loading) {
+            content = <Loader loading type="inline" />;
+        } else {
+            content = (
+                <>
+                    {this.state.data.section[this.section].map((section, index) => (
+                        <div key={index} className="row">
+                            <div className="col">foo</div>
+                        </div>
+                    ))}
+                </>
+            );
+        }
+        return (
+            <div>
+                <div className="row">
+                    <div className="col" style={{ margin: '2rem 0' }}>
+                        <h1 className="display-4">In the News</h1>
+                    </div>
+                </div>
+                {content}
+            </div>
+        );
+    }
+}
