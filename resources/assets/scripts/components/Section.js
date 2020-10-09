@@ -31,6 +31,7 @@ export default class Section extends React.Component {
         this.setState({
             data: response.data.data,
             loading: false,
+            hasLoaded: true,
         });
     };
 
