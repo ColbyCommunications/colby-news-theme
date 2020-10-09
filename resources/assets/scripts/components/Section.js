@@ -41,7 +41,7 @@ export default class Section extends React.Component {
             content = (
                 <>
                     {this.state.data.sections[this.section].map((story, index) => (
-                        <div key={index} className="row">
+                        <div key={index} className="row mb-4">
                             {story.image && (
                                 <>
                                     <div className="col-md-4">
@@ -58,9 +58,12 @@ export default class Section extends React.Component {
                                     </div>
                                     <div className="col-md-8">
                                         <h3>
-                                            <a href={story.in_the_news_external_link}>
-                                                {story.post_title}
-                                            </a>
+                                            <a
+                                                href={story.in_the_news_external_link}
+                                                dangerouslySetInnerHTML={{
+                                                    __html: story.post_title,
+                                                }}
+                                            />
                                         </h3>
                                         <p
                                             dangerouslySetInnerHTML={{
@@ -76,9 +79,12 @@ export default class Section extends React.Component {
                             {!story.image && (
                                 <div className="col">
                                     <h3>
-                                        <a href={story.in_the_news_external_link}>
-                                            {story.post_title}
-                                        </a>
+                                        <a
+                                            href={story.in_the_news_external_link}
+                                            dangerouslySetInnerHTML={{
+                                                __html: story.post_title,
+                                            }}
+                                        />
                                     </h3>
                                     <p
                                         dangerouslySetInnerHTML={{
