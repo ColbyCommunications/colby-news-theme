@@ -116,14 +116,14 @@ export default class InTheNews extends React.Component {
                                 )}
 
                                 <div className="card-body">
-                                    <h5 className="card-title">
+                                    <h3 className="card-title">
                                         <span
                                             dangerouslySetInnerHTML={{
                                                 __html: this.state.data.spotlight_stories[0]
                                                     .post_title,
                                             }}
                                         />
-                                    </h5>
+                                    </h3>
                                     <p className="card-text">
                                         <span
                                             style={{
@@ -199,14 +199,14 @@ export default class InTheNews extends React.Component {
                                 )}
 
                                 <div className="card-body">
-                                    <h5 className="card-title">
+                                    <h3 className="card-title">
                                         <span
                                             dangerouslySetInnerHTML={{
                                                 __html: this.state.data.spotlight_stories[1]
                                                     .post_title,
                                             }}
                                         />
-                                    </h5>
+                                    </h3>
                                     <p className="card-text">
                                         <span
                                             style={{
