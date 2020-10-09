@@ -46,7 +46,7 @@ export default class Section extends React.Component {
                                 <>
                                     <div className="col-md-4">
                                         <img
-                                            className="card-img-top"
+                                            className="img-fluid"
                                             src={story.image[0]}
                                             alt={story.post_title}
                                             onClick={() =>
@@ -95,6 +95,7 @@ export default class Section extends React.Component {
                                                     story.meta.in_the_news_external_link)
                                             }
                                             style={{ cursor: 'pointer' }}
+                                            className="img-fluid"
                                         />
                                     </div>
                                     <div className="col-md-8">
