@@ -62,6 +62,7 @@
 }
 
 .sectionHeadline {
+    cursor: pointer;
     &:hover {
         text-decoration: underline;
     }
