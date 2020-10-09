@@ -9,9 +9,15 @@ console.log(document.getElementById('in-the-news-section'));
 export default {
     init() {
         // JavaScript to be fired on all pages
-        ReactDOM.render(<InTheNews />, document.getElementById('in-the-news'));
         ReactDOM.render(<HeaderSearch />, document.getElementById('search-container'));
-        ReactDOM.render(<Section />, document.getElementById('in-the-news-section'));
+
+        if (document.querySelector('#in-the-news')) {
+            ReactDOM.render(<InTheNews />, document.getElementById('in-the-news'));
+        }
+
+        if (document.querySelector('#in-the-news-section')) {
+            ReactDOM.render(<Section />, document.getElementById('in-the-news-section'));
+        }
     },
     finalize() {
         // JavaScript to be fired on all pages, after page specific JS is fired
