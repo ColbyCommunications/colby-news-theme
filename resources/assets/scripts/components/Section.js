@@ -85,29 +85,45 @@ export default class Section extends React.Component {
                                 </>
                             )}
                             {!story.image && (
-                                <div className="col">
-                                    <h3>
-                                        <a
-                                            href={story.in_the_news_external_link}
+                                <>
+                                    <div className="col-md-4">
+                                        <img
+                                            src={window.ColbyNews.defaultImagePath}
+                                            alt={story.post_title}
+                                            onClick={() =>
+                                                (window.location =
+                                                    story.meta.in_the_news_external_link)
+                                            }
+                                            style={{ cursor: 'pointer' }}
+                                        />
+                                    </div>
+                                    <div className="col-md-8">
+                                        <h3>
+                                            <a
+                                                href={story.in_the_news_external_link}
+                                                dangerouslySetInnerHTML={{
+                                                    __html: story.post_title,
+                                                }}
+                                            />
+                                        </h3>
+                                        <p
+                                            style={{
+                                                fontFamily: 'franklin-gothic-urw, sans-serif',
+                                            }}
                                             dangerouslySetInnerHTML={{
-                                                __html: story.post_title,
+                                                __html: `${story.post_content.substring(
+                                                    0,
+                                                    500
+                                                )}...`,
                                             }}
                                         />
-                                    </h3>
-                                    <p
-                                        style={{
-                                            fontFamily: 'franklin-gothic-urw, sans-serif',
-                                        }}
-                                        dangerouslySetInnerHTML={{
-                                            __html: `${story.post_content.substring(0, 500)}...`,
-                                        }}
-                                    />
-                                    <p>
-                                        <medium className="text-muted">
-                                            {story.meta.source_name}
-                                        </medium>
-                                    </p>
-                                </div>
+                                        <p>
+                                            <medium className="text-muted">
+                                                {story.meta.source_name}
+                                            </medium>
+                                        </p>
+                                    </div>
+                                </>
                             )}
                         </div>
                     ))}
