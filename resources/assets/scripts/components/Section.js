@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-danger */
@@ -11,10 +12,12 @@ import Axios from '@colbycommunications/colby-axios';
 import Loader from '@colbycommunications/colby-loader';
 
 export default class Section extends React.Component {
-    section = document.getElementById('in-the-news-section').getAttribute('data-section');
-
     constructor(props) {
         super(props);
+
+        console.log(document);
+        console.log(document.getElementById('in-the-news-section'));
+        this.section = document.getElementById('in-the-news-section').getAttribute('data-section');
 
         this.state = { loading: true, data: [] };
     }
