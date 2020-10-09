@@ -56,10 +56,8 @@ export default class Section extends React.Component {
                             if (story.meta.source_name) {
                                 formattedSource = story.meta.source_name[0]
                                     .toLowerCase()
-                                    .replace(' ', '_');
+                                    .replaceAll(' ', '_');
                             }
-
-                            console.log(formattedSource);
 
                             return (
                                 <div key={index} className="row mb-4">
