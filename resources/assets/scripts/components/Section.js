@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-danger */
@@ -57,6 +58,8 @@ export default class Section extends React.Component {
                                     .toLowerCase()
                                     .replace(' ', '_');
                             }
+
+                            console.log(formattedSource);
 
                             return (
                                 <div key={index} className="row mb-4">
