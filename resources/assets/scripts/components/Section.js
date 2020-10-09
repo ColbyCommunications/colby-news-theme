@@ -11,7 +11,7 @@ import Axios from '@colbycommunications/colby-axios';
 import Loader from '@colbycommunications/colby-loader';
 
 export default class Section extends React.Component {
-    section = document.getElementById('#in-the-news-section').getAttribute('data-section');
+    section = document.getElementById('in-the-news-section').getAttribute('data-section');
 
     constructor(props) {
         super(props);
