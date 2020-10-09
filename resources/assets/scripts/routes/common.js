@@ -1,9 +1,11 @@
+/* eslint-disable no-console */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import InTheNews from '../components/InTheNews';
 import HeaderSearch from '../components/HeaderSearch';
 import Section from '../components/Section';
 
+console.log(document.getElementById('in-the-news-section'));
 export default {
     init() {
         // JavaScript to be fired on all pages
