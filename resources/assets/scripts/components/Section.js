@@ -109,11 +109,10 @@ export default class Section extends React.Component {
                                         <>
                                             <div className="col-md-4">
                                                 {formattedSource &&
-                                                    window.ColbyNews.availableLogos.includes(
-                                                        formattedSource
-                                                    ) && (
+                                                    formattedSource in
+                                                        window.ColbyNews.availableLogos && (
                                                         <img
-                                                            src={`${window.ColbyNews.logosPath}/${formattedSource}.jpg`}
+                                                            src={`${window.ColbyNews.logosPath}/${window.ColbyNews.availableLogos[formattedSource]}.jpg`}
                                                             alt={story.post_title}
                                                             onClick={() =>
                                                                 (window.location =
@@ -123,8 +122,9 @@ export default class Section extends React.Component {
                                                             className="img-fluid"
                                                         />
                                                     )}
-                                                {!window.ColbyNews.availableLogos.includes(
-                                                    formattedSource
+                                                {!(
+                                                    formattedSource in
+                                                    window.ColbyNews.availableLogos
                                                 ) && (
                                                     <img
                                                         src={window.ColbyNews.defaultImagePath}

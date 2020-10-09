@@ -10,7 +10,10 @@
     window.ColbyNews = {
       defaultImagePath: "@asset('images/in-the-news_default.png')",
       logosPath: "@asset('images/logos')",
-      availableLogos: ['new_york_times', 'usa_today', 'christian_science_monitor']
+      availableLogos: {
+        'new_york_times': "@asset('images/logos/new_york_times.jpg')", 
+        'usa_today': "@asset('images/logos/usa_today.jpg')", 
+        'christian_science_monitor': "@asset('images/logos/christian_science_monitor.jpg')"}
     }
   </script>
 </head>
