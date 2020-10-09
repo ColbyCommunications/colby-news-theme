@@ -126,6 +126,9 @@ export default class InTheNews extends React.Component {
                                     </h5>
                                     <p className="card-text">
                                         <span
+                                            style={{
+                                                fontFamily: 'franklin-gothic-urw, sans-serif',
+                                            }}
                                             dangerouslySetInnerHTML={{
                                                 __html: `${this.state.data.spotlight_stories[0].post_content.substring(
                                                     0,
@@ -206,6 +209,9 @@ export default class InTheNews extends React.Component {
                                     </h5>
                                     <p className="card-text">
                                         <span
+                                            style={{
+                                                fontFamily: 'franklin-gothic-urw, sans-serif',
+                                            }}
                                             dangerouslySetInnerHTML={{
                                                 __html: `${this.state.data.spotlight_stories[1].post_content.substring(
                                                     0,
