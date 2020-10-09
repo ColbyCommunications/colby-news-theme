@@ -40,7 +40,7 @@ export default class Section extends React.Component {
         } else {
             content = (
                 <>
-                    {this.state.data.section[this.section].map((section, index) => (
+                    {this.state.data.sections[this.section].map((section, index) => (
                         <div key={index} className="row">
                             <div className="col">foo</div>
                         </div>
