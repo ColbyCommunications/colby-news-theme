@@ -1,7 +1,10 @@
 {
   "images/COLBY_logotype_white.png": "images/COLBY_logotype_white_ae55cfc9.png",
   "images/in-the-news_default.png": "images/in-the-news_default_188023fb.png",
-  "scripts/customizer.js": "scripts/customizer_e741d9f0.js",
-  "styles/main.css": "styles/main_e741d9f0.css",
-  "scripts/main.js": "scripts/main_e741d9f0.js"
+  "images/logos/christian_science_monitor.jpg": "images/logos/christian_science_monitor_ba56af73.jpg",
+  "images/logos/new_york_times.jpg": "images/logos/new_york_times_074812d5.jpg",
+  "images/logos/usa_today.jpg": "images/logos/usa_today_23335b8d.jpg",
+  "scripts/customizer.js": "scripts/customizer_c1500e01.js",
+  "styles/main.css": "styles/main_c1500e01.css",
+  "scripts/main.js": "scripts/main_c1500e01.js"
 }
