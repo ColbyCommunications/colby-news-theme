@@ -69,6 +69,10 @@
 }
 
 @media (max-width: 576px) {
+    .sectionImg {
+        margin-bottom: 1rem;
+    }
+
     .featuredStory {
         height: 400px;
         .postHeader {
