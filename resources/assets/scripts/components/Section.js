@@ -51,9 +51,12 @@ export default class Section extends React.Component {
                     {this.state.data.sections[this.section]
                         .slice(0, this.state.limit)
                         .map((story, index) => {
-                            const formattedSource = story.meta.source_name
-                                .toLowerCase()
-                                .replace(' ', '_');
+                            let formattedSource = '';
+                            if (story.meta.source_name) {
+                                formattedSource = story.meta.source_name
+                                    .toLowerCase()
+                                    .replace(' ', '_');
+                            }
 
                             return (
                                 <div key={index} className="row mb-4">
@@ -105,20 +108,21 @@ export default class Section extends React.Component {
                                     {!story.image && (
                                         <>
                                             <div className="col-md-4">
-                                                {window.ColbyNews.availableLogos.includes(
-                                                    formattedSource
-                                                ) && (
-                                                    <img
-                                                        src={`${window.ColbyNews.logosPath}/${formattedSource}.jpg`}
-                                                        alt={story.post_title}
-                                                        onClick={() =>
-                                                            (window.location =
-                                                                story.meta.in_the_news_external_link)
-                                                        }
-                                                        style={{ cursor: 'pointer' }}
-                                                        className="img-fluid"
-                                                    />
-                                                )}
+                                                {formattedSource &&
+                                                    window.ColbyNews.availableLogos.includes(
+                                                        formattedSource
+                                                    ) && (
+                                                        <img
+                                                            src={`${window.ColbyNews.logosPath}/${formattedSource}.jpg`}
+                                                            alt={story.post_title}
+                                                            onClick={() =>
+                                                                (window.location =
+                                                                    story.meta.in_the_news_external_link)
+                                                            }
+                                                            style={{ cursor: 'pointer' }}
+                                                            className="img-fluid"
+                                                        />
+                                                    )}
                                                 {!window.ColbyNews.availableLogos.includes(
                                                     formattedSource
                                                 ) && (
