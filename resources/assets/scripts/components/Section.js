@@ -66,13 +66,21 @@ export default class Section extends React.Component {
                                             />
                                         </h3>
                                         <p
+                                            style={{
+                                                fontFamily: 'franklin-gothic-urw, sans-serif',
+                                            }}
                                             dangerouslySetInnerHTML={{
                                                 __html: `${story.post_content.substring(
                                                     0,
-                                                    240
+                                                    500
                                                 )}...`,
                                             }}
                                         />
+                                        <p>
+                                            <medium className="text-muted">
+                                                {story.meta.source_name}
+                                            </medium>
+                                        </p>
                                     </div>
                                 </>
                             )}
@@ -87,10 +95,18 @@ export default class Section extends React.Component {
                                         />
                                     </h3>
                                     <p
+                                        style={{
+                                            fontFamily: 'franklin-gothic-urw, sans-serif',
+                                        }}
                                         dangerouslySetInnerHTML={{
-                                            __html: `${story.post_content.substring(0, 240)}...`,
+                                            __html: `${story.post_content.substring(0, 500)}...`,
                                         }}
                                     />
+                                    <p>
+                                        <medium className="text-muted">
+                                            {story.meta.source_name}
+                                        </medium>
+                                    </p>
                                 </div>
                             )}
                         </div>
