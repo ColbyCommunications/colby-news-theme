@@ -61,7 +61,18 @@
     }
 }
 
+.sectionHeadline {
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 @media (max-width: 576px) {
+    .sectionImg {
+        margin-bottom: 1rem;
+    }
+
     .featuredStory {
         height: 400px;
         .postHeader {
