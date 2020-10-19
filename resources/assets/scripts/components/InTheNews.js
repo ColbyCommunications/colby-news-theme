@@ -107,7 +107,7 @@ export default class InTheNews extends React.Component {
                 </div>
                 <Loader loading={this.state.loading} type="skeleton" skeletonTemplate={Placeholder}>
                     <div className="row">
-                        <div className="col">{this.renderTopStory()}</div>
+                        <div className="col">{this.renderTopStory}</div>
                     </div>
                     <div className="row">
                         <div className="col-md-6">
