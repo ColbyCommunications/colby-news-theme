@@ -10,7 +10,7 @@ import React from 'react';
 import MasonryTabs from '@colbycommunications/colby-masonry-tabs';
 import Axios from '@colbycommunications/colby-axios';
 import Loader from '@colbycommunications/colby-loader';
-
+import PropTypes from 'prop-types';
 import { RectShape } from 'react-placeholder/lib/placeholders';
 
 import style from './style.css';
