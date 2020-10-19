@@ -67,146 +67,146 @@ export default class Section extends React.Component {
     };
 
     render() {
-        let content = '';
+        // let content = '';
 
         
-        content = (
-            <>
-                {this.state.data.sections[this.section]
-                    .slice(0, this.state.limit)
-                    .map((story, index) => {
-                        let formattedSource = '';
-                        if (story.meta.source_name) {
-                            formattedSource = story.meta.source_name[0]
-                                .toLowerCase()
-                                .replaceAll(' ', '_');
-                        }
+        // content = (
+            
+        // );
 
-                        return (
-                            <div key={index} className="row mb-4">
-                                {story.image && (
-                                    <>
-                                        <div className="col-md-3">
-                                            <img
-                                                className={`img-fluid ${Style.sectionImg}`}
-                                                src={story.image[0]}
-                                                alt={story.post_title}
-                                                onClick={() =>
-                                                    (window.location =
-                                                        story.meta.in_the_news_external_link)
-                                                }
-                                                style={{ cursor: 'pointer' }}
-                                            />
-                                        </div>
-                                        <div className="col-md-9">
-                                            <h3
-                                                className={Style.sectionHeadline}
-                                                dangerouslySetInnerHTML={{
-                                                    __html: story.post_title,
-                                                }}
-                                                onClick={() =>
-                                                    (window.location =
-                                                        story.meta.in_the_news_external_link)
-                                                }
-                                            />
-                                            <p
-                                                style={{
-                                                    fontFamily:
-                                                        'franklin-gothic-urw, sans-serif',
-                                                }}
-                                                dangerouslySetInnerHTML={{
-                                                    __html: `${story.post_content.substring(
-                                                        0,
-                                                        500
-                                                    )}...`,
-                                                }}
-                                            />
-                                            <p>
-                                                <medium className="text-muted">
-                                                    {story.meta.source_name}
-                                                </medium>
-                                            </p>
-                                        </div>
-                                    </>
-                                )}
-                                {!story.image && (
-                                    <>
-                                        <div className="col-md-3">
-                                            {formattedSource &&
-                                                formattedSource in
-                                                    window.ColbyNews.availableLogos && (
+        return (
+            <>
+                <Loader loading={this.state.loading} type="skeleton" skeletonTemplate={Placeholder}>
+                    <>
+                        {this.state.data.sections[this.section]
+                            .slice(0, this.state.limit)
+                            .map((story, index) => {
+                                let formattedSource = '';
+                                if (story.meta.source_name) {
+                                    formattedSource = story.meta.source_name[0]
+                                        .toLowerCase()
+                                        .replaceAll(' ', '_');
+                                }
+
+                                return (
+                                    <div key={index} className="row mb-4">
+                                        {story.image && (
+                                            <>
+                                                <div className="col-md-3">
                                                     <img
-                                                        src={
-                                                            window.ColbyNews.availableLogos[
-                                                                formattedSource
-                                                            ]
-                                                        }
+                                                        className={`img-fluid ${Style.sectionImg}`}
+                                                        src={story.image[0]}
                                                         alt={story.post_title}
                                                         onClick={() =>
                                                             (window.location =
                                                                 story.meta.in_the_news_external_link)
                                                         }
                                                         style={{ cursor: 'pointer' }}
-                                                        className={`img-fluid ${Style.sectionImg}`}
                                                     />
-                                                )}
-                                            {!(
-                                                formattedSource in
-                                                window.ColbyNews.availableLogos
-                                            ) && (
-                                                <img
-                                                    src={window.ColbyNews.defaultImagePath}
-                                                    alt={story.post_title}
-                                                    onClick={() =>
-                                                        (window.location =
-                                                            story.meta.in_the_news_external_link)
-                                                    }
-                                                    style={{ cursor: 'pointer' }}
-                                                    className={`img-fluid ${Style.sectionImg}`}
-                                                />
-                                            )}
-                                        </div>
-                                        <div className="col-md-9">
-                                            <h3
-                                                className={Style.sectionHeadline}
-                                                dangerouslySetInnerHTML={{
-                                                    __html: story.post_title,
-                                                }}
-                                                onClick={() =>
-                                                    (window.location =
-                                                        story.meta.in_the_news_external_link)
-                                                }
-                                            />
-                                            <p
-                                                style={{
-                                                    fontFamily:
-                                                        'franklin-gothic-urw, sans-serif',
-                                                }}
-                                                dangerouslySetInnerHTML={{
-                                                    __html: `${story.post_content.substring(
-                                                        0,
-                                                        500
-                                                    )}...`,
-                                                }}
-                                            />
-                                            <p>
-                                                <medium className="text-muted">
-                                                    {story.meta.source_name}
-                                                </medium>
-                                            </p>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
-                        );
-                    })}
-            </>
-        );
-
-        return (
-            <>
-                <Loader loading={this.state.loading} type="skeleton" skeletonTemplate={Placeholder}>
-                    {content}
+                                                </div>
+                                                <div className="col-md-9">
+                                                    <h3
+                                                        className={Style.sectionHeadline}
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: story.post_title,
+                                                        }}
+                                                        onClick={() =>
+                                                            (window.location =
+                                                                story.meta.in_the_news_external_link)
+                                                        }
+                                                    />
+                                                    <p
+                                                        style={{
+                                                            fontFamily:
+                                                                'franklin-gothic-urw, sans-serif',
+                                                        }}
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: `${story.post_content.substring(
+                                                                0,
+                                                                500
+                                                            )}...`,
+                                                        }}
+                                                    />
+                                                    <p>
+                                                        <medium className="text-muted">
+                                                            {story.meta.source_name}
+                                                        </medium>
+                                                    </p>
+                                                </div>
+                                            </>
+                                        )}
+                                        {!story.image && (
+                                            <>
+                                                <div className="col-md-3">
+                                                    {formattedSource &&
+                                                        formattedSource in
+                                                            window.ColbyNews.availableLogos && (
+                                                            <img
+                                                                src={
+                                                                    window.ColbyNews.availableLogos[
+                                                                        formattedSource
+                                                                    ]
+                                                                }
+                                                                alt={story.post_title}
+                                                                onClick={() =>
+                                                                    (window.location =
+                                                                        story.meta.in_the_news_external_link)
+                                                                }
+                                                                style={{ cursor: 'pointer' }}
+                                                                className={`img-fluid ${Style.sectionImg}`}
+                                                            />
+                                                        )}
+                                                    {!(
+                                                        formattedSource in
+                                                        window.ColbyNews.availableLogos
+                                                    ) && (
+                                                        <img
+                                                            src={window.ColbyNews.defaultImagePath}
+                                                            alt={story.post_title}
+                                                            onClick={() =>
+                                                                (window.location =
+                                                                    story.meta.in_the_news_external_link)
+                                                            }
+                                                            style={{ cursor: 'pointer' }}
+                                                            className={`img-fluid ${Style.sectionImg}`}
+                                                        />
+                                                    )}
+                                                </div>
+                                                <div className="col-md-9">
+                                                    <h3
+                                                        className={Style.sectionHeadline}
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: story.post_title,
+                                                        }}
+                                                        onClick={() =>
+                                                            (window.location =
+                                                                story.meta.in_the_news_external_link)
+                                                        }
+                                                    />
+                                                    <p
+                                                        style={{
+                                                            fontFamily:
+                                                                'franklin-gothic-urw, sans-serif',
+                                                        }}
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: `${story.post_content.substring(
+                                                                0,
+                                                                500
+                                                            )}...`,
+                                                        }}
+                                                    />
+                                                    <p>
+                                                        <medium className="text-muted">
+                                                            {story.meta.source_name}
+                                                        </medium>
+                                                    </p>
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                    </>
                 </Loader>
                 {this.state.hasLoaded && (
                     <div className="text-center">
