@@ -10,7 +10,27 @@ import MasonryTabs from '@colbycommunications/colby-masonry-tabs';
 import Axios from '@colbycommunications/colby-axios';
 import Loader from '@colbycommunications/colby-loader';
 
+import { RectShape } from 'react-placeholder/lib/placeholders';
+
 import style from './style.css';
+
+const Placeholder = (
+    <>
+        <div className="row mb-4">
+            <div className="col">
+                <div className={style.featuredStoryLoader}><RectShape style={{ width: '100%', height: '100%   ' }} /></div>
+            </div>
+        </div>
+        <div className="row mb-4">
+            <div className="col-md-6">
+                <RectShape style={{ width: '100%', height: '400px' }} />
+            </div>
+            <div className="col-md-6">
+                <RectShape style={{ width: '100%', height: '400px' }} />
+            </div>
+        </div>
+    </>
+);
 
 export default class InTheNews extends React.Component {
     constructor(props) {
@@ -256,45 +276,7 @@ export default class InTheNews extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className="row">
-                        <div className="col">
-                            <h2>More From In the News</h2>
-                            <MasonryTabs
-                                tabList={[
-                                    {
-                                        name: 'one',
-                                        title: 'The College',
-                                        endpoint:
-                                            'https://www.colby.edu/news/wp-json/wp/v2/posts/?per_page=100&categories=271',
-                                        fields: {
-                                            id: 'id',
-                                            title: 'title.rendered',
-                                            excerpt: 'excerpt.rendered',
-                                            image: 'thumbnail[0]',
-                                            source: 'meta.source_name[0]',
-                                            link: 'meta.in_the_news_external_link',
-                                        },
-                                        type: 'card',
-                                    },
-                                    {
-                                        name: 'two',
-                                        title: 'Our Alumni',
-                                        endpoint:
-                                            'https://www.colby.edu/news/wp-json/wp/v2/posts/?per_page=100&categories=272',
-                                        fields: {
-                                            id: 'id',
-                                            title: 'title.rendered',
-                                            excerpt: 'excerpt.rendered',
-                                            image: 'thumbnail[0]',
-                                            source: 'meta.source_name[0]',
-                                            link: 'meta.in_the_news_external_link',
-                                        },
-                                        type: 'card',
-                                    },
-                                ]}
-                            />
-                        </div>
-                    </div>
+                    
                 </>
             );
         }
@@ -305,7 +287,48 @@ export default class InTheNews extends React.Component {
                         <h1 className="display-4">In the News</h1>
                     </div>
                 </div>
-                {content}
+                <Loader loading={this.state.loading} type="skeleton" skeletonTemplate={Placeholder}>
+                    {content}
+                </Loader>
+                <div className="row">
+                    <div className="col">
+                        <h2>More From In the News</h2>
+                        <MasonryTabs
+                            tabList={[
+                                {
+                                    name: 'one',
+                                    title: 'The College',
+                                    endpoint:
+                                        'https://www.colby.edu/news/wp-json/wp/v2/posts/?per_page=100&categories=271',
+                                    fields: {
+                                        id: 'id',
+                                        title: 'title.rendered',
+                                        excerpt: 'excerpt.rendered',
+                                        image: 'thumbnail[0]',
+                                        source: 'meta.source_name[0]',
+                                        link: 'meta.in_the_news_external_link',
+                                    },
+                                    type: 'card',
+                                },
+                                {
+                                    name: 'two',
+                                    title: 'Our Alumni',
+                                    endpoint:
+                                        'https://www.colby.edu/news/wp-json/wp/v2/posts/?per_page=100&categories=272',
+                                    fields: {
+                                        id: 'id',
+                                        title: 'title.rendered',
+                                        excerpt: 'excerpt.rendered',
+                                        image: 'thumbnail[0]',
+                                        source: 'meta.source_name[0]',
+                                        link: 'meta.in_the_news_external_link',
+                                    },
+                                    type: 'card',
+                                },
+                            ]}
+                        />
+                    </div>
+                </div>
             </div>
         );
     }
