@@ -98,13 +98,14 @@ export default class InTheNews extends React.Component {
     };
 
     render() {
-        let content = '';
-
-        if (this.state.loading) {
-            content = <Loader loading type="inline" />;
-        } else {
-            content = (
-                <>
+        return (
+            <div>
+                <div className="row">
+                    <div className="col" style={{ margin: '2rem 0' }}>
+                        <h1 className="display-4">In the News</h1>
+                    </div>
+                </div>
+                <Loader loading={this.state.loading} type="skeleton" skeletonTemplate={Placeholder}>
                     <div className="row">
                         <div className="col">{this.renderTopStory()}</div>
                     </div>
@@ -276,19 +277,6 @@ export default class InTheNews extends React.Component {
                             </div>
                         </div>
                     </div>
-                    
-                </>
-            );
-        }
-        return (
-            <div>
-                <div className="row">
-                    <div className="col" style={{ margin: '2rem 0' }}>
-                        <h1 className="display-4">In the News</h1>
-                    </div>
-                </div>
-                <Loader loading={this.state.loading} type="skeleton" skeletonTemplate={Placeholder}>
-                    {content}
                 </Loader>
                 <div className="row">
                     <div className="col">

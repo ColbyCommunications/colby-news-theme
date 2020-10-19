@@ -67,13 +67,9 @@ export default class Section extends React.Component {
     };
 
     render() {
-        let content = '';
-
-        if (this.state.loading) {
-            content = <Loader loading type="inline" />;
-        } else {
-            content = (
-                <>
+        return (
+            <>
+                <Loader loading={this.state.loading} type="skeleton" skeletonTemplate={Placeholder}>
                     {this.state.data.sections[this.section]
                         .slice(0, this.state.limit)
                         .map((story, index) => {
@@ -202,14 +198,6 @@ export default class Section extends React.Component {
                                 </div>
                             );
                         })}
-                </>
-            );
-                }
-
-        return (
-            <>
-                <Loader loading={this.state.loading} type="skeleton" skeletonTemplate={Placeholder}>
-                    {content}
                 </Loader>
                 {this.state.hasLoaded && (
                     <div className="text-center">
