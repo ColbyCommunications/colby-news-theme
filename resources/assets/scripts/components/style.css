@@ -68,6 +68,16 @@
     }
 }
 
+.featuredStoryLoader {
+    border-radius: 3px;
+    margin-bottom: 2rem;
+    height: 500px;
+}
+
+.sectionPlaceholderTitle {
+    margin-top: 0px !important;
+}
+
 @media (max-width: 576px) {
     .sectionImg {
         margin-bottom: 1rem;
@@ -80,5 +90,9 @@
                 font-size: 2rem;
             }
         }
+    }
+
+    .featuredStoryLoader {
+        height: 400px;
     }
 }
