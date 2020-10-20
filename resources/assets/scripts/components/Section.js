@@ -18,8 +18,8 @@ import Style from './style.css';
 
 const Placeholder = (
     <>
-        <div className="row mb-4">
-            <div className="col-md-3">
+        <div className="row mb-5">
+            <div className="col-md-3 mb-4 mb-md-0">
                 <RectShape style={{ width: '100%', height: '200px' }} />
             </div>
             <div className="col-md-9">
@@ -27,8 +27,8 @@ const Placeholder = (
                 <TextBlock rows={5}  />
             </div>
         </div>
-        <div className="row mb-4">
-            <div className="col-md-3">
+        <div className="row mb-5">
+            <div className="col-md-3 mb-4 mb-md-0">
                 <RectShape style={{ width: '100%', height: '200px' }} />
             </div>
             <div className="col-md-9">
@@ -36,8 +36,8 @@ const Placeholder = (
                 <TextBlock rows={5}  />
             </div>
         </div>
-        <div className="row mb-4">
-            <div className="col-md-3">
+        <div className="row mb-5">
+            <div className="col-md-3 mb-4 mb-md-0">
                 <RectShape style={{ width: '100%', height: '200px' }} />
             </div>
             <div className="col-md-9">
@@ -45,8 +45,8 @@ const Placeholder = (
                 <TextBlock rows={5}  />
             </div>
         </div>
-        <div className="row mb-4">
-            <div className="col-md-3">
+        <div className="row mb-5">
+            <div className="col-md-3 mb-4 mb-md-0">
                 <RectShape style={{ width: '100%', height: '200px' }} />
             </div>
             <div className="col-md-9">
@@ -54,8 +54,8 @@ const Placeholder = (
                 <TextBlock rows={5}  />
             </div>
         </div>
-        <div className="row mb-4">
-            <div className="col-md-3">
+        <div className="row mb-5">
+            <div className="col-md-3 mb-4 mb-md-0">
                 <RectShape style={{ width: '100%', height: '200px' }} />
             </div>
             <div className="col-md-9">
@@ -63,8 +63,8 @@ const Placeholder = (
                 <TextBlock rows={5}  />
             </div>
         </div>
-        <div className="row mb-4">
-            <div className="col-md-3">
+        <div className="row mb-5">
+            <div className="col-md-3 mb-4 mb-md-0">
                 <RectShape style={{ width: '100%', height: '200px' }} />
             </div>
             <div className="col-md-9">
@@ -72,8 +72,8 @@ const Placeholder = (
                 <TextBlock rows={5}  />
             </div>
         </div>
-        <div className="row mb-4">
-            <div className="col-md-3">
+        <div className="row mb-5">
+            <div className="col-md-3 mb-4 mb-md-0">
                 <RectShape style={{ width: '100%', height: '200px' }} />
             </div>
             <div className="col-md-9">
@@ -81,8 +81,8 @@ const Placeholder = (
                 <TextBlock rows={5}  />
             </div>
         </div>
-        <div className="row mb-4">
-            <div className="col-md-3">
+        <div className="row mb-5">
+            <div className="col-md-3 mb-4 mb-md-0">
                 <RectShape style={{ width: '100%', height: '200px' }} />
             </div>
             <div className="col-md-9">
@@ -90,8 +90,8 @@ const Placeholder = (
                 <TextBlock rows={5}  />
             </div>
         </div>
-        <div className="row mb-4">
-            <div className="col-md-3">
+        <div className="row mb-5">
+            <div className="col-md-3 mb-4 mb-md-0">
                 <RectShape style={{ width: '100%', height: '200px' }} />
             </div>
             <div className="col-md-9">
@@ -99,8 +99,8 @@ const Placeholder = (
                 <TextBlock rows={5}  />
             </div>
         </div>
-        <div className="row mb-4">
-            <div className="col-md-3">
+        <div className="row mb-5">
+            <div className="col-md-3 mb-4 mb-md-0">
                 <RectShape style={{ width: '100%', height: '200px' }} />
             </div>
             <div className="col-md-9">
