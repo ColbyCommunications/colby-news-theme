@@ -74,6 +74,10 @@
     height: 500px;
 }
 
+.sectionPlaceholderTitle {
+    margin-top: 0px !important;
+}
+
 @media (max-width: 576px) {
     .sectionImg {
         margin-bottom: 1rem;
