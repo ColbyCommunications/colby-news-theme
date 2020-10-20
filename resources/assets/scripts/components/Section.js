@@ -12,32 +12,104 @@ import Axios from '@colbycommunications/colby-axios';
 import Loader from '@colbycommunications/colby-loader';
 import PropTypes from 'prop-types';
 
-import { TextBlock, RectShape } from 'react-placeholder/lib/placeholders';
+import { TextBlock, TextRow, RectShape } from 'react-placeholder/lib/placeholders';
 
 import Style from './style.css';
 
-const Placeholder = () => {
-    const items = [];
-
-    for (let i = 0; i < 10; i++) {
-        items.push(
-            <>
-                <div className="col-md-3">
-                    <RectShape style={{ width: '100%', height: '200px' }} />
-                </div>
-                <div className="col-md-9">
-                    <TextBlock rows={5} />
-                </div>
-            </>
-        );
-    }
-    return (
-        <>
-            {items}
-        </>
-    )
-
-};
+const Placeholder = (
+    <>
+        <div className="row mb-4">
+            <div className="col-md-3">
+                <RectShape style={{ width: '100%', height: '200px' }} />
+            </div>
+            <div className="col-md-9">
+                <h1><TextRow className={Style.sectionPlaceholderTitle} /></h1>
+                <TextBlock rows={5}  />
+            </div>
+        </div>
+        <div className="row mb-4">
+            <div className="col-md-3">
+                <RectShape style={{ width: '100%', height: '200px' }} />
+            </div>
+            <div className="col-md-9">
+                <h1><TextRow className={Style.sectionPlaceholderTitle} /></h1>
+                <TextBlock rows={5}  />
+            </div>
+        </div>
+        <div className="row mb-4">
+            <div className="col-md-3">
+                <RectShape style={{ width: '100%', height: '200px' }} />
+            </div>
+            <div className="col-md-9">
+                <h1><TextRow className={Style.sectionPlaceholderTitle} /></h1>
+                <TextBlock rows={5}  />
+            </div>
+        </div>
+        <div className="row mb-4">
+            <div className="col-md-3">
+                <RectShape style={{ width: '100%', height: '200px' }} />
+            </div>
+            <div className="col-md-9">
+                <h1><TextRow className={Style.sectionPlaceholderTitle} /></h1>
+                <TextBlock rows={5}  />
+            </div>
+        </div>
+        <div className="row mb-4">
+            <div className="col-md-3">
+                <RectShape style={{ width: '100%', height: '200px' }} />
+            </div>
+            <div className="col-md-9">
+                <h1><TextRow className={Style.sectionPlaceholderTitle} /></h1>
+                <TextBlock rows={5}  />
+            </div>
+        </div>
+        <div className="row mb-4">
+            <div className="col-md-3">
+                <RectShape style={{ width: '100%', height: '200px' }} />
+            </div>
+            <div className="col-md-9">
+                <h1><TextRow className={Style.sectionPlaceholderTitle} /></h1>
+                <TextBlock rows={5}  />
+            </div>
+        </div>
+        <div className="row mb-4">
+            <div className="col-md-3">
+                <RectShape style={{ width: '100%', height: '200px' }} />
+            </div>
+            <div className="col-md-9">
+                <h1><TextRow className={Style.sectionPlaceholderTitle} /></h1>
+                <TextBlock rows={5}  />
+            </div>
+        </div>
+        <div className="row mb-4">
+            <div className="col-md-3">
+                <RectShape style={{ width: '100%', height: '200px' }} />
+            </div>
+            <div className="col-md-9">
+                <h1><TextRow className={Style.sectionPlaceholderTitle} /></h1>
+                <TextBlock rows={5}  />
+            </div>
+        </div>
+        <div className="row mb-4">
+            <div className="col-md-3">
+                <RectShape style={{ width: '100%', height: '200px' }} />
+            </div>
+            <div className="col-md-9">
+                <h1><TextRow className={Style.sectionPlaceholderTitle} /></h1>
+                <TextBlock rows={5}  />
+            </div>
+        </div>
+        <div className="row mb-4">
+            <div className="col-md-3">
+                <RectShape style={{ width: '100%', height: '200px' }} />
+            </div>
+            <div className="col-md-9">
+                <h1><TextRow className={Style.sectionPlaceholderTitle} /></h1>
+                <TextBlock rows={5}  />
+            </div>
+        </div>
+    </>
+);
 
 const SectionContent = props => (
     <>
@@ -173,7 +245,7 @@ const SectionContent = props => (
 );
 
 SectionContent.propTypes = {
-    data: PropTypes.object.isRequired,
+    data: PropTypes.array.isRequired,
     section: PropTypes.string.isRequired,
     limit: PropTypes.number.isRequired,
 }
