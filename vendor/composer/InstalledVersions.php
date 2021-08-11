@@ -27,12 +27,12 @@ class InstalledVersions
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => 'dev-868ee52fa76d4914c78e23c51c2341e45fb114d0',
-    'version' => 'dev-868ee52fa76d4914c78e23c51c2341e45fb114d0',
+    'pretty_version' => 'dev-9c630fae983cdc369d5b63e60ec316ff22b11c72',
+    'version' => 'dev-9c630fae983cdc369d5b63e60ec316ff22b11c72',
     'aliases' => 
     array (
     ),
-    'reference' => '868ee52fa76d4914c78e23c51c2341e45fb114d0',
+    'reference' => '9c630fae983cdc369d5b63e60ec316ff22b11c72',
     'name' => 'colbycommunications/colby-news-theme',
   ),
   'versions' => 
@@ -57,12 +57,12 @@ private static $installed = array (
     ),
     'colbycommunications/colby-news-theme' => 
     array (
-      'pretty_version' => 'dev-868ee52fa76d4914c78e23c51c2341e45fb114d0',
-      'version' => 'dev-868ee52fa76d4914c78e23c51c2341e45fb114d0',
+      'pretty_version' => 'dev-9c630fae983cdc369d5b63e60ec316ff22b11c72',
+      'version' => 'dev-9c630fae983cdc369d5b63e60ec316ff22b11c72',
       'aliases' => 
       array (
       ),
-      'reference' => '868ee52fa76d4914c78e23c51c2341e45fb114d0',
+      'reference' => '9c630fae983cdc369d5b63e60ec316ff22b11c72',
     ),
     'composer/installers' => 
     array (
