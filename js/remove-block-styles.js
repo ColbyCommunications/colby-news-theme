@@ -19,7 +19,21 @@ wp.domReady(() => {
   wp.blocks.unregisterBlockStyle('core/table', 'regular');
   wp.blocks.unregisterBlockStyle('core/table', 'stripes');
   // social-links
-  wp.blocks.unregisterBlockStyle('core/social-links', 'default');
-  wp.blocks.unregisterBlockStyle('core/social-links', 'logos-only');
+  // wp.blocks.unregisterBlockStyle('core/social-links', 'default');
   wp.blocks.unregisterBlockStyle('core/social-links', 'pill-shape');
+  wp.blocks.unregisterBlockStyle('core/social-links', 'logos-only');
+  wp.blocks.registerBlockStyle('core/social-links', {
+    name: 'logos-only',
+    label: 'Logos Only',
+    isDefault: true,
+  });
+
+  // wp.blocks.getBlockTypes().forEach((block) => {
+  //   if (Array.isArray(block['styles']) && block['styles'].length > 0) {
+  //     console.log(
+  //       block.name,
+  //       block['styles'].map((style) => style.name)
+  //     );
+  //   }
+  // });
 });

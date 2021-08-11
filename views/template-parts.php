@@ -171,6 +171,7 @@ class TemplatePart
     protected function storyHeader($args = [])
     {
         $post = $this->context['post'];
+
         $defaultArgs = [
             'orientation' => 'portrait',
             'shareButtonsLast' => false,
@@ -199,9 +200,17 @@ class TemplatePart
 
         $defaultArgs['title'] = $this->context['post']->title;
 
-        $featuredImage = get_the_post_thumbnail($post->ID, $imageSize);
-        $featuredImageCaption = get_the_post_thumbnail_caption($post->ID);
-        $featuredImageCaption = get_the_post_thumbnail_caption($post->ID);
+        $orientation = get_field('horizontal_header', $post->ID) ? 'landscape' : 'portrait';
+
+        if ($orientation === 'landscape') {
+            $imageSize = 'landscape_full_lg';
+            $horizontalFeaturedImage = get_field('horizontal_image', $post->ID);
+            $featuredImage = nc_blocks_image($horizontalFeaturedImage, $imageSize);
+            $featuredImageCaption = wp_get_attachment_caption($horizontalFeaturedImage);
+        } else {
+            $featuredImage = get_the_post_thumbnail($post->ID, $imageSize);
+            $featuredImageCaption = get_the_post_thumbnail_caption($post->ID);
+        }
 
         $figure = '<figure>';
         $figure .= $featuredImage;
@@ -213,6 +222,7 @@ class TemplatePart
         $figure .= '</figure>';
 
         $defaultArgs['figure'] = $figure;
+        $defaultArgs['orientation'] = $orientation;
 
         $headerArgs = wp_parse_args($args, $defaultArgs);
 

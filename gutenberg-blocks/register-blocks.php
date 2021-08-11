@@ -8,13 +8,25 @@ namespace NC_Blocks;
 
 use Masterminds\HTML5;
 use DOMXPath;
+use Timber\Timber;
 
 require_once(get_template_directory() . '/gutenberg-blocks/blocks-utilities.php');
 require_once(get_template_directory() . '/gutenberg-blocks/components/block-components.php');
+require_once(\get_template_directory() . '/gutenberg-blocks/blocks-utilities.php');
 
-add_action('wp_print_styles', function () {
+add_action('wp_enqueue_scripts', 'NC_Blocks\nc_replace_block_library', 100);
+add_action('admin_enqueue_scripts', 'NC_Blocks\nc_replace_block_library', 100);
+
+function nc_replace_block_library()
+{
     wp_dequeue_style('wp-block-library');
-}, 100);
+    wp_enqueue_style(
+        'nc-block-library',
+        get_template_directory_uri() . '/css/blocks.css',
+        [],
+        filemtime(get_template_directory() . '/css/blocks.css')
+    );
+}
 
 /**
  * Display a notice if ACF Pro is not activated
@@ -292,10 +304,14 @@ function innerBlocks($args = [])
 
     if (is_array($args['allowed_blocks'])) {
         $innerBlocksTag .= ' allowedBlocks="' . esc_attr(wp_json_encode($args['allowed_blocks'])) . '" ';
+    } elseif (is_string($args['allowed_blocks'])) {
+        $innerBlocksTag .= ' allowedBlocks="' . esc_attr($args['allowed_blocks']) . '" ';
     }
 
     if (is_array($args['template'])) {
         $innerBlocksTag .= ' template="' . esc_attr(wp_json_encode($args['template'])) . '" ';
+    } elseif (is_string($args['template'])) {
+        $innerBlocksTag .= ' template="' . esc_attr($args['template']) . '" ';
     }
 
     if (isset($args['templateLock'])) {
@@ -371,6 +387,31 @@ function accordion_wrapper($block, $content = '', $is_preview = false, $post_id 
                  . '</div>';
 }
 
+function post_list_slider($block, $content = '', $is_preview = false, $post_id = 0)
+{
+    $allowed_blocks = [
+        'core/query',
+        'core/post-featured-image',
+        'core/post-title',
+        'core/post-date',
+        'core/post-excerpt'
+    ];
+
+    $template = [
+        [
+            'core/query', [],
+        ],
+    ];
+
+    $innerBlocks = innerBlocks([
+        'allowed_blocks' => $allowed_blocks,
+        'template' => $template,
+        'templateLock' => false,
+    ]);
+
+    echo '<div class="py-4 nc-post-list-slider bg-tertiary">' . $innerBlocks . '</div>';
+}
+
 function alert_block($block, $content = '', $is_preview = false, $post_id = 0)
 {
     $component = new Component();
@@ -430,6 +471,73 @@ function background_wrapper($block, $content = '', $is_preview = false, $post_id
     return $wrapper;
 }
 
+function query_from_fields(array $user_fields = array())
+{
+    $default_args = [
+        'post_type' => ['post'],
+        'posts_per_page' => 10,
+        'order' => 'DESC',
+        'orderby' => 'date',
+        'post_status' => ['publish'],
+        'perm' => 'readable',
+        'ignore_sticky_posts' => 1
+    ];
+
+    $new_args = [];
+    $customizable_fields = ['post_type', 'posts_per_page', 'order', 'orderby', 'post_status', 'ignore_sticky_posts'];
+
+    foreach ($customizable_fields as $field_name) {
+        $field_value = get_key($user_fields, $field_name);
+        if ($field_value !== null && $field_value !== '') {
+            $new_args[$field_name] = $field_value;
+        }
+    }
+
+    // Convert raw taxonomy terms into a valid `tax_query` value
+    $taxonomy_terms = get_key($user_fields, 'taxonomy_terms');
+    if (is_array($taxonomy_terms)) {
+        $tax_query = [];
+        $taxonomies = [];
+
+        foreach ($taxonomy_terms as $term_object) {
+            if (is_object($term_object)) {
+                if (! array_key_exists($term_object->taxonomy, $taxonomies)) {
+                    $taxonomies[$term_object->taxonomy] = [];
+                }
+
+                $taxonomies[$term_object->taxonomy][] = $term_object->term_id;
+            }
+        }
+
+        foreach ($taxonomies as $taxonomy => $taxonomy_terms) {
+            $tax_query[] = [
+                'taxonomy' => $taxonomy,
+                'field' => 'term_id',
+                'terms' => $taxonomy_terms,
+            ];
+        }
+
+        $new_args['tax_query'] = $tax_query;
+    }
+
+    $posts_in = get_key($user_fields, 'post__in');
+
+    if ($posts_in && is_string($posts_in)) {
+        $posts_in = explode(',', $posts_in);
+
+        if (count($posts_in)) {
+            $posts_in = array_map(function ($post_id) {
+                return trim($post_id);
+            }, $posts_in);
+
+            $new_args['post__in'] = $posts_in;
+            $new_args['ignore_sticky_posts'] = 1;
+        }
+    }
+
+    return wp_parse_args($new_args, $default_args);
+}
+
 function table_wrapper($block, $content = '', $is_preview = false, $post_id = 0)
 {
     $allowed_blocks = [
@@ -450,7 +558,7 @@ function table_wrapper($block, $content = '', $is_preview = false, $post_id = 0)
             . innerBlocks([
                 'allowed_blocks' => $allowed_blocks,
                 'template' => $template,
-                'templateLock' => 'all'
+                'templateLock' => false,
                 ])
                  . '</div>';
 }
@@ -458,96 +566,77 @@ function table_wrapper($block, $content = '', $is_preview = false, $post_id = 0)
 add_action('acf/init', function () {
     if (function_exists('acf_register_block')) {
         acf_register_block([
-            'name' => 'nc-alert',
-            'title' => __('Alert', 'colby-news-theme'),
+            'name' => 'nc-post-list-slider',
+            'title' => __('Post List Slider', 'colby-news-theme'),
             'description' => __(
-                'Block with an alert displayed within page content.',
+                'List of posts displayed as a horizontal slider.',
                 'colby-news-theme'
             ),
             'category' => 'colby-news',
             'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
-            'render_callback' => 'NC_Blocks\alert_block',
-            'supports' => ['align' => false, 'multiple' => true],
-        ]);
+            'render_callback' => function ($block, $content = '', $is_preview = false, $post_id = 0) {
+                if (function_exists('get_fields')) {
+                    $query_args = query_from_fields(get_fields());
 
+                    $results = new \WP_Query($query_args);
+
+                    $teasers = [];
+
+                    if (count($results->posts) < 1) {
+                        if ($is_preview) {
+                            echo '<div class="p-6 border">No posts match the current query. Try adjusting the query settings.</div>';
+                        } else {
+                            return;
+                        }
+                    }
+
+                    foreach ($results->posts as $result) {
+                        $primary_category = get_primary_category($result->ID);
+                        if ($primary_category && is_object($primary_category)) {
+                            $primary_category = $primary_category->name;
+                        } else {
+                            $primary_category = '';
+                        }
+
+                        $teasers[] = [
+                            'image' => nc_blocks_image(get_post_thumbnail_id($result->ID), 'teaser'),
+                            'url' => get_permalink($result->ID),
+                            'superhead' => $primary_category,
+                            'title' => $result->post_title,
+                        ];
+
+                    }
+                    $teasers = array_map(function ($teaser_args) {
+                        return Timber::compile(get_blocks_twig_directory('/teaser.twig'), $teaser_args);
+                    }, $teasers);
+
+                    Timber::render(get_blocks_twig_directory('/sliding-teasers.twig'), ['teasers' => $teasers]);
+                }
+            },
+            'supports' => ['align' => false, 'multiple' => true, 'jsx' => true],
+            'enqueue_assets' => function () {
+                wp_enqueue_script(
+                    'sliding-teasers',
+                    get_template_directory_uri() . '/js/sliding-teasers.js',
+                    [],
+                    '',
+                    true
+                );
+            },
+        ]);
         acf_register_block([
-            'name' => 'nc-background-block',
-            'title' => __('Background Color Section', 'colby-news-theme'),
+            'name' => 'nc-info-getter',
+            'title' => __('Info Getter', 'colby-news-theme'),
             'description' => __(
-                'Parent container that places a solid background color behind its child blocks.',
+                'Blank block for debugging.',
                 'colby-news-theme'
             ),
             'category' => 'colby-news',
-            'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M20 24H4c-2.2 0-4-1.8-4-4V4c0-2.2 1.8-4 4-4h16c2.2 0 4 1.8 4 4v16c0 2.2-1.8 4-4 4ZM4 2c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2H4Z"/><path d="M23 8H1c-.6 0-1-.4-1-1s.4-1 1-1h22c.6 0 1 .4 1 1s-.4 1-1 1Z"/><path d="M5.533 4.06l.5.5 -.93.92 -.51-.5 -.57.569 -.94-.94 .56-.57 -.5-.51 .923-.93 .5.5 .52-.53 .93.935 -.53.52Z"/></g></svg>',
-            'render_callback' => 'NC_Blocks\background_wrapper',
+            'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
+            'render_callback' => function ($block, $content = '', $is_preview = false, $post_id = 0) {
+                echo '<pre>' . print_r($content, true) . '</pre>';
+            },
             'supports' => ['align' => false, 'multiple' => true, 'jsx' => true],
-        ]);
-
-        acf_register_block([
-            'name' => 'nc-heading-separator',
-            'title' => __('Heading Separator', 'colby-admissions-theme'),
-            'description' => __(
-                'Place this horizontal line beneath Heading Level 2 (H2) elements to create a visual separation from the rest of the text content.',
-                'colby-admissions-theme'
-            ),
-            'category' => 'colby',
-            'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0Z"/><path d="M8 19h3v4h2v-4h3l-4-4 -4 4Zm8-14h-3V1h-2v4H8l4 4 4-4ZM4 11v2h16v-2H4Z"/></svg>',
-            'render_template' => __DIR__ . '/blocks/hr.php',
-            'supports' => ['align' => false, 'multiple' => true, 'jsx' => false],
-        ]);
-
-        // acf_register_block([
-        //     'name' => 'nc-hr',
-        //     'title' => __('Horizontal Rule / Separator', 'colby-admissions-theme'),
-        //     'description' => __(
-        //         'A wide line used to separate sections of content from one another.',
-        //         'colby-admissions-theme'
-        //     ),
-        //     'category' => 'colby',
-        //     'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0Z"/><path d="M8 19h3v4h2v-4h3l-4-4 -4 4Zm8-14h-3V1h-2v4H8l4 4 4-4ZM4 11v2h16v-2H4Z"/></svg>',
-        //     'render_template' => __DIR__ . '/blocks/hr.php',
-        //     'supports' => ['align' => false, 'multiple' => true, 'jsx' => false],
-        // ]);
-
-        acf_register_block([
-            'name' => 'nc-inset-aside',
-            'title' => __('Aside Block', 'colby-news-theme'),
-            'description' => __('Block that can contain text, an image, and a link list. Meant to be inserted alongside text content.', 'colby-news-theme'),
-            'category' => 'colby-news',
-            'parent' => ['nc/rich-text'],
-            'icon' => 'feedback',
-            'render_template' => __DIR__ . '/blocks/inset-aside.php',
-            'supports' => ['align' => true, 'multiple' => true, ],
-        ]);
-
-        acf_register_block([
-            'name' => 'nc-link-list-horizontal',
-            'title' => __('Horizontal Link List', 'colby-news-theme'),
-            'description' => __('Short list of links arranged in a row', 'colby-news-theme'),
-            'category' => 'colby-news',
-            'icon' => "<svg height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><g><path d='M 2.5 10 C 2.775 10 3 9.775 3 9.5 C 3 9.225 2.775 9 2.5 9 C 2.225 9 2 9.225 2 9.5 C 2 9.775 2.225 10 2.5 10 Z M 2.5 12 C 2.775 12 3 11.775 3 11.5 C 3 11.225 2.775 11 2.5 11 C 2.225 11 2 11.225 2 11.5 C 2 11.775 2.225 12 2.5 12 Z M 2.5 8 C 2.775 8 3 7.775 3 7.5 C 3 7.225 2.775 7 2.5 7 C 2.225 7 2 7.225 2 7.5 C 2 7.775 2.225 8 2.5 8 Z M 4.5 10 L 10.5 10 C 10.775 10 11 9.775 11 9.5 C 11 9.225 10.775 9 10.5 9 L 4.5 9 C 4.225 9 4 9.225 4 9.5 C 4 9.775 4.225 10 4.5 10 Z M 4.5 12 L 10.5 12 C 10.775 12 11 11.775 11 11.5 C 11 11.225 10.775 11 10.5 11 L 4.5 11 C 4.225 11 4 11.225 4 11.5 C 4 11.775 4.225 12 4.5 12 Z M 4 7.5 C 4 7.775 4.225 8 4.5 8 L 10.5 8 C 10.775 8 11 7.775 11 7.5 C 11 7.225 10.775 7 10.5 7 L 4.5 7 C 4.225 7 4 7.225 4 7.5 Z M 2.5 10 C 2.775 10 3 9.775 3 9.5 C 3 9.225 2.775 9 2.5 9 C 2.225 9 2 9.225 2 9.5 C 2 9.775 2.225 10 2.5 10 Z M 2.5 12 C 2.775 12 3 11.775 3 11.5 C 3 11.225 2.775 11 2.5 11 C 2.225 11 2 11.225 2 11.5 C 2 11.775 2.225 12 2.5 12 Z M 2.5 8 C 2.775 8 3 7.775 3 7.5 C 3 7.225 2.775 7 2.5 7 C 2.225 7 2 7.225 2 7.5 C 2 7.775 2.225 8 2.5 8 Z M 4.5 10 L 10.5 10 C 10.775 10 11 9.775 11 9.5 C 11 9.225 10.775 9 10.5 9 L 4.5 9 C 4.225 9 4 9.225 4 9.5 C 4 9.775 4.225 10 4.5 10 Z M 4.5 12 L 10.5 12 C 10.775 12 11 11.775 11 11.5 C 11 11.225 10.775 11 10.5 11 L 4.5 11 C 4.225 11 4 11.225 4 11.5 C 4 11.775 4.225 12 4.5 12 Z M 4 7.5 C 4 7.775 4.225 8 4.5 8 L 10.5 8 C 10.775 8 11 7.775 11 7.5 C 11 7.225 10.775 7 10.5 7 L 4.5 7 C 4.225 7 4 7.225 4 7.5 Z'></path><path d='M 2.5 15.836 C 2.775 15.836 3 15.611 3 15.336 C 3 15.061 2.775 14.836 2.5 14.836 C 2.225 14.836 2 15.061 2 15.336 C 2 15.611 2.225 15.836 2.5 15.836 Z M 2.5 17.836 C 2.775 17.836 3 17.611 3 17.336 C 3 17.061 2.775 16.836 2.5 16.836 C 2.225 16.836 2 17.061 2 17.336 C 2 17.611 2.225 17.836 2.5 17.836 Z M 2.5 13.836 C 2.775 13.836 3 13.611 3 13.336 C 3 13.061 2.775 12.836 2.5 12.836 C 2.225 12.836 2 13.061 2 13.336 C 2 13.611 2.225 13.836 2.5 13.836 Z M 4.5 15.836 L 10.5 15.836 C 10.775 15.836 11 15.611 11 15.336 C 11 15.061 10.775 14.836 10.5 14.836 L 4.5 14.836 C 4.225 14.836 4 15.061 4 15.336 C 4 15.611 4.225 15.836 4.5 15.836 Z M 4.5 17.836 L 10.5 17.836 C 10.775 17.836 11 17.611 11 17.336 C 11 17.061 10.775 16.836 10.5 16.836 L 4.5 16.836 C 4.225 16.836 4 17.061 4 17.336 C 4 17.611 4.225 17.836 4.5 17.836 Z M 4 13.336 C 4 13.611 4.225 13.836 4.5 13.836 L 10.5 13.836 C 10.775 13.836 11 13.611 11 13.336 C 11 13.061 10.775 12.836 10.5 12.836 L 4.5 12.836 C 4.225 12.836 4 13.061 4 13.336 Z M 2.5 15.836 C 2.775 15.836 3 15.611 3 15.336 C 3 15.061 2.775 14.836 2.5 14.836 C 2.225 14.836 2 15.061 2 15.336 C 2 15.611 2.225 15.836 2.5 15.836 Z M 2.5 17.836 C 2.775 17.836 3 17.611 3 17.336 C 3 17.061 2.775 16.836 2.5 16.836 C 2.225 16.836 2 17.061 2 17.336 C 2 17.611 2.225 17.836 2.5 17.836 Z M 2.5 13.836 C 2.775 13.836 3 13.611 3 13.336 C 3 13.061 2.775 12.836 2.5 12.836 C 2.225 12.836 2 13.061 2 13.336 C 2 13.611 2.225 13.836 2.5 13.836 Z M 4.5 15.836 L 10.5 15.836 C 10.775 15.836 11 15.611 11 15.336 C 11 15.061 10.775 14.836 10.5 14.836 L 4.5 14.836 C 4.225 14.836 4 15.061 4 15.336 C 4 15.611 4.225 15.836 4.5 15.836 Z M 4.5 17.836 L 10.5 17.836 C 10.775 17.836 11 17.611 11 17.336 C 11 17.061 10.775 16.836 10.5 16.836 L 4.5 16.836 C 4.225 16.836 4 17.061 4 17.336 C 4 17.611 4.225 17.836 4.5 17.836 Z M 4 13.336 C 4 13.611 4.225 13.836 4.5 13.836 L 10.5 13.836 C 10.775 13.836 11 13.611 11 13.336 C 11 13.061 10.775 12.836 10.5 12.836 L 4.5 12.836 C 4.225 12.836 4 13.061 4 13.336 Z'></path><path d='M 12.721 10 C 12.996 10 13.221 9.775 13.221 9.5 C 13.221 9.225 12.996 9 12.721 9 C 12.446 9 12.221 9.225 12.221 9.5 C 12.221 9.775 12.446 10 12.721 10 Z M 12.721 12 C 12.996 12 13.221 11.775 13.221 11.5 C 13.221 11.225 12.996 11 12.721 11 C 12.446 11 12.221 11.225 12.221 11.5 C 12.221 11.775 12.446 12 12.721 12 Z M 12.721 8 C 12.996 8 13.221 7.775 13.221 7.5 C 13.221 7.225 12.996 7 12.721 7 C 12.446 7 12.221 7.225 12.221 7.5 C 12.221 7.775 12.446 8 12.721 8 Z M 14.721 10 L 20.721 10 C 20.996 10 21.221 9.775 21.221 9.5 C 21.221 9.225 20.996 9 20.721 9 L 14.721 9 C 14.446 9 14.221 9.225 14.221 9.5 C 14.221 9.775 14.446 10 14.721 10 Z M 14.721 12 L 20.721 12 C 20.996 12 21.221 11.775 21.221 11.5 C 21.221 11.225 20.996 11 20.721 11 L 14.721 11 C 14.446 11 14.221 11.225 14.221 11.5 C 14.221 11.775 14.446 12 14.721 12 Z M 14.221 7.5 C 14.221 7.775 14.446 8 14.721 8 L 20.721 8 C 20.996 8 21.221 7.775 21.221 7.5 C 21.221 7.225 20.996 7 20.721 7 L 14.721 7 C 14.446 7 14.221 7.225 14.221 7.5 Z M 12.721 10 C 12.996 10 13.221 9.775 13.221 9.5 C 13.221 9.225 12.996 9 12.721 9 C 12.446 9 12.221 9.225 12.221 9.5 C 12.221 9.775 12.446 10 12.721 10 Z M 12.721 12 C 12.996 12 13.221 11.775 13.221 11.5 C 13.221 11.225 12.996 11 12.721 11 C 12.446 11 12.221 11.225 12.221 11.5 C 12.221 11.775 12.446 12 12.721 12 Z M 12.721 8 C 12.996 8 13.221 7.775 13.221 7.5 C 13.221 7.225 12.996 7 12.721 7 C 12.446 7 12.221 7.225 12.221 7.5 C 12.221 7.775 12.446 8 12.721 8 Z M 14.721 10 L 20.721 10 C 20.996 10 21.221 9.775 21.221 9.5 C 21.221 9.225 20.996 9 20.721 9 L 14.721 9 C 14.446 9 14.221 9.225 14.221 9.5 C 14.221 9.775 14.446 10 14.721 10 Z M 14.721 12 L 20.721 12 C 20.996 12 21.221 11.775 21.221 11.5 C 21.221 11.225 20.996 11 20.721 11 L 14.721 11 C 14.446 11 14.221 11.225 14.221 11.5 C 14.221 11.775 14.446 12 14.721 12 Z M 14.221 7.5 C 14.221 7.775 14.446 8 14.721 8 L 20.721 8 C 20.996 8 21.221 7.775 21.221 7.5 C 21.221 7.225 20.996 7 20.721 7 L 14.721 7 C 14.446 7 14.221 7.225 14.221 7.5 Z'></path><path d='M 12.721 15.836 C 12.996 15.836 13.221 15.611 13.221 15.336 C 13.221 15.061 12.996 14.836 12.721 14.836 C 12.446 14.836 12.221 15.061 12.221 15.336 C 12.221 15.611 12.446 15.836 12.721 15.836 Z M 12.721 17.836 C 12.996 17.836 13.221 17.611 13.221 17.336 C 13.221 17.061 12.996 16.836 12.721 16.836 C 12.446 16.836 12.221 17.061 12.221 17.336 C 12.221 17.611 12.446 17.836 12.721 17.836 Z M 12.721 13.836 C 12.996 13.836 13.221 13.611 13.221 13.336 C 13.221 13.061 12.996 12.836 12.721 12.836 C 12.446 12.836 12.221 13.061 12.221 13.336 C 12.221 13.611 12.446 13.836 12.721 13.836 Z M 14.721 15.836 L 20.721 15.836 C 20.996 15.836 21.221 15.611 21.221 15.336 C 21.221 15.061 20.996 14.836 20.721 14.836 L 14.721 14.836 C 14.446 14.836 14.221 15.061 14.221 15.336 C 14.221 15.611 14.446 15.836 14.721 15.836 Z M 14.721 17.836 L 20.721 17.836 C 20.996 17.836 21.221 17.611 21.221 17.336 C 21.221 17.061 20.996 16.836 20.721 16.836 L 14.721 16.836 C 14.446 16.836 14.221 17.061 14.221 17.336 C 14.221 17.611 14.446 17.836 14.721 17.836 Z M 14.221 13.336 C 14.221 13.611 14.446 13.836 14.721 13.836 L 20.721 13.836 C 20.996 13.836 21.221 13.611 21.221 13.336 C 21.221 13.061 20.996 12.836 20.721 12.836 L 14.721 12.836 C 14.446 12.836 14.221 13.061 14.221 13.336 Z M 12.721 15.836 C 12.996 15.836 13.221 15.611 13.221 15.336 C 13.221 15.061 12.996 14.836 12.721 14.836 C 12.446 14.836 12.221 15.061 12.221 15.336 C 12.221 15.611 12.446 15.836 12.721 15.836 Z M 12.721 17.836 C 12.996 17.836 13.221 17.611 13.221 17.336 C 13.221 17.061 12.996 16.836 12.721 16.836 C 12.446 16.836 12.221 17.061 12.221 17.336 C 12.221 17.611 12.446 17.836 12.721 17.836 Z M 12.721 13.836 C 12.996 13.836 13.221 13.611 13.221 13.336 C 13.221 13.061 12.996 12.836 12.721 12.836 C 12.446 12.836 12.221 13.061 12.221 13.336 C 12.221 13.611 12.446 13.836 12.721 13.836 Z M 14.721 15.836 L 20.721 15.836 C 20.996 15.836 21.221 15.611 21.221 15.336 C 21.221 15.061 20.996 14.836 20.721 14.836 L 14.721 14.836 C 14.446 14.836 14.221 15.061 14.221 15.336 C 14.221 15.611 14.446 15.836 14.721 15.836 Z M 14.721 17.836 L 20.721 17.836 C 20.996 17.836 21.221 17.611 21.221 17.336 C 21.221 17.061 20.996 16.836 20.721 16.836 L 14.721 16.836 C 14.446 16.836 14.221 17.061 14.221 17.336 C 14.221 17.611 14.446 17.836 14.721 17.836 Z M 14.221 13.336 C 14.221 13.611 14.446 13.836 14.721 13.836 L 20.721 13.836 C 20.996 13.836 21.221 13.611 21.221 13.336 C 21.221 13.061 20.996 12.836 20.721 12.836 L 14.721 12.836 C 14.446 12.836 14.221 13.061 14.221 13.336 Z'></path></g></svg>",
-            'render_template' => __DIR__ . '/blocks/link-list-horizontal-block.php',
-            'supports' => ['align' => false, 'multiple' => true, ],
-        ]);
-
-        acf_register_block([
-            'name' => 'nc-page-header',
-            'title' => __('Page Header', 'colby-news-theme'),
-            'description' => __('Page Header for Colby News pages', 'colby-news-theme'),
-            'category' => 'colby-news',
-            'icon' => 'cover-image',
-            'render_template' => __DIR__ . '/blocks/page-header.php',
-            'supports' => ['align' => false, 'multiple' => false, ],
-        ]);
-
-        acf_register_block([
-            'name' => 'nc-rich-text',
-            'title' => __('Rich Text Content', 'colby-news-theme'),
-            'description' => __('Text formatted for optimal reading.', 'colby-news-theme'),
-            'category' => 'colby-news',
-            'icon' => 'text-page',
-            'render_template' => __DIR__ . '/blocks/rich-text.php',
-            'supports' => ['align' => false, 'multiple' => true, 'jsx' => true ],
         ]);
     }
 });
@@ -568,3 +657,9 @@ function nc_enqueue_admin_scripts()
 //         wp_enqueue_script('nc-acf-controls', get_stylesheet_directory_uri() . '/gutenberg-blocks/js/acf-controls.js');
 //     }
 // }
+
+function remove_block_styles()
+{
+    unregister_block_style('core/image', 'rounded');
+}
+add_action('init', 'NC_Blocks\remove_block_styles');

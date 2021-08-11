@@ -370,7 +370,7 @@ if (! function_exists('newcity_register_widget_areas')) :
             array(
                 'name'          => 'Main Menu Widgets',
                 'id'            => 'main_menu_widgets',
-                'before_widget' => '<div class="prose">',
+                'before_widget' => '<div>',
                 'after_widget'  => '</div>',
             )
         );
@@ -411,6 +411,8 @@ if (! function_exists('newcity_colby_news_setup')) :
         // Add default posts and comments RSS feed links to head.
         add_theme_support('automatic-feed-links');
 
+        add_theme_support('core-block-patterns');
+
         /*
          * Let WordPress manage the document title.
          * By adding theme support, we declare that this theme does not use a
@@ -439,6 +441,10 @@ if (! function_exists('newcity_colby_news_setup')) :
                 'menu-footer-social' => esc_html__('Social Media Links for Footer', 'colby-news-theme'),
             )
         );
+
+        // Add locations for Twig files
+        Timber\Timber::$dirname = [Timber\Timber::$dirname, 'gutenberg-blocks/blocks-twig'];
+        $timber_dir = Timber\Timber::$dirname;
 
         // Add the registered menu to Timber for Twig access
         add_filter('timber/context', 'add_menus_to_context');
@@ -585,10 +591,10 @@ if (! function_exists('newcity_colby_news_setup')) :
         add_image_size('header_vertical_lg', 800, 1066);
         add_image_size('header_vertical_md', 640, 850);
         add_image_size('header_vertical_sm', 320, 425);
-        add_image_size('header_horizontal_xl', 2400, 1500);
-        add_image_size('header_horizontal_lg', 1600, 1000);
-        add_image_size('header_horizontal_md', 800, 500);
-        add_image_size('header_horizontal_sm', 400, 250);
+        add_image_size('landscape_full_xl', 2400, 1500);
+        add_image_size('landscape_full_lg', 1090, 610);
+        add_image_size('landscape_full_md', 800, 500);
+        add_image_size('landscape_full_sm', 400, 250);
     }
 endif;
 add_action('after_setup_theme', 'newcity_colby_news_setup');

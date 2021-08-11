@@ -190,6 +190,40 @@ function nc_blocks_image_from_url($url = '', $attr = '')
     return $html;
 }
 
+function get_primary_category($post_id)
+{
+    $primary_category_id = false;
+
+    if (function_exists('yoast_get_primary_term')) {
+        $primary_category_id = yoast_get_primary_term_id('category', $post_id);
+    }
+
+    if ($primary_category_id) {
+        $primary_category = get_term($primary_category_id);
+
+        if (! is_wp_error($primary_category) && ! empty($primary_category && $primary_category->name !== 'Uncategorized')) {
+            return $primary_category;
+        }
+    }
+
+    $all_categories = wp_get_post_categories($post_id, ['fields' => 'all']);
+    if (is_wp_error($all_categories) || !is_array($all_categories)) {
+        return false;
+    }
+
+    if ($all_categories[0]->name !== 'Uncategorized') {
+        return $all_categories[0];
+    }
+
+    if (count($all_categories) > 1) {
+        if (isset($all_categories[1])) {
+            return $all_categories[1];
+        }
+    }
+
+    return false;
+}
+
 function previewLinks($links, $args = [])
 {
     $default_args = [

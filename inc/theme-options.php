@@ -22,13 +22,13 @@
 function remove_block_style()
 {
     // Register the block editor script.
-    wp_register_script('remove-block-style', get_stylesheet_directory_uri() . '/js/remove-block-styles.js', [ 'wp-blocks' ]);
+    wp_register_script('remove-block-style', get_stylesheet_directory_uri() . '/js/remove-block-styles.js', [ 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ]);
     // register block editor script.
     register_block_type('remove/block-style', [
         'editor_script' => 'remove-block-style',
     ]);
 }
-add_action('init', 'remove_block_style');
+add_action('enqueue_block_editor_assets', 'remove_block_style');
 
 /**
  * Add custom header controls to customizer
