@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "settings": {
+        "color": {
+            "custom": false,
+            "customGradient": false,
+            "palette": [
+                {
+                    "slug": "black",
+                    "color": "#000",
+                    "name": "Black"
+                },
+                {
+                    "slug": "secondary",
+                    "color": "#707070",
+                    "name": "Secondary"
+                },
+                {
+                    "slug": "tertiary",
+                    "color": "#aaa",
+                    "name": "Tertiary"
+                },
+                {
+                    "slug": "white",
+                    "color": "#fff",
+                    "name": "White"
+                }
+            ]
+        },
+        "typography": {
+            "customLineheight": false,
+            "dropCap": false,
+            "fontSizes": [
+                {
+                    "slug": "small",
+                    "size": "0.8125rem (13px)",
+                    "name": "Small"
+                },
+                {
+                    "slug": "medium",
+                    "size": "0.8125rem",
+                    "name": "Medium (16px)"
+                },
+                {
+                    "slug": "large",
+                    "size": "1.75rem",
+                    "name": "Large (28px)"
+                }
+            ]
+        },
+        "layout": {
+            "contentSize": "67.875rem",
+            "wideSize": "calc(67.875rem + 3.5rem)"
+        }
+    },
+    "styles": {
+        "typography": {
+            "fontSize": "1.125rem",
+            "lineHeight": "1.55"
+        }
+    },
+    "customTemplates": {},
+    "templateParts": {}
+}

@@ -1,0 +1,10 @@
+div.components-notice-list div.editor-template-validation-notice.components-notice.is-warning > div.components-notice__content::before {
+	content: "Note: This is a modified template. This message may be removed in a future update.";
+	display: block;
+	margin-bottom: 1rem;
+	margin-left: 0.5rem;
+}
+
+.editor-template-validation-notice {
+	display: none;
+}

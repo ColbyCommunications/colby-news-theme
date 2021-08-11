@@ -1,0 +1,9 @@
+<div class="{{ wrapperClasses }}">
+    <div class="{{ containerClasses }}">
+        <div class="grid w-full {{ gridCols|default('grid-cols-box-md') }} gap-9">
+        {% for item in gridItems %}
+            <div class="">{{ item }}</div>
+        {% endfor %}
+        </div>
+    </div>
+</div>

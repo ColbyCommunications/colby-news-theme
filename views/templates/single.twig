@@ -1,0 +1,10 @@
+{% extends 'template-parts/base.twig' %}
+
+{% block content %}
+    <div class="my-4 lg:my-10">{{ breadcrumbs }}</div>
+
+    {% include 'content/post.twig' with {
+        post: post,
+        postHeader: postHeader
+    } %}
+{% endblock %}

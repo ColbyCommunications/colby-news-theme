@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="grid gap-10 md:grid-cols-2">
+        <ol class="space-y-1 text-lg sm:text-xl">
+            {% for link in featuredTopicLinks %}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %}
+        </ol>
+        <div class="contents md:flex md:flex-col md:space-y-10 md:justify-between">
+            <ol class="space-y-1 text-sm sm:text-lg">
+                {% for link in additionalLinks %}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {% endfor %}
+            </ol>
+            <div class="site-header-widgets text-md">
+                {{ emailSignupForm }}
+            </div>
+        </div>
+    </div>
+</div>

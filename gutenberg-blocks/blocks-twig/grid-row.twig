@@ -1,0 +1,25 @@
+<ul class="{{ className }} flex flex-col flex-wrap items-stretch xs:flex-row list-row
+    {% if itemSize != 'small' %}
+        {% if items|length > 3 %}
+            max-4
+        {% else %}
+            max-3
+        {% endif %}
+    {% else %}
+        {% if items|length > 4 %}
+            max-5
+        {% else %}
+            max-4
+        {% endif %}
+    {% endif %}
+    
+    {% if dividers is same as(true) %}
+        dividers
+    {% endif %}
+">
+{% for item in items %}
+    <li class="mb-2">
+        {{ item }}
+    </li>    
+{% endfor %}
+</ul>

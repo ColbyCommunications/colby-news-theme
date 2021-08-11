@@ -1,0 +1,31 @@
+{% block html_head_container %}
+
+{% include 'template-parts/html-header.twig' %}
+	{% block head %}
+	{% endblock %}
+	</head>
+{% endblock %}
+
+<body {{ function('body_class') }}>
+    <div id="scroll-body" class="site scroll-body">
+                <a class="fixed z-50 p-4 text-white transition-transform transform focus:outline-white focus:top-12 skip-link screen-reader-text bg-primary text-underline" href="#primary">
+            {{ __('Skip to content', 'colby-news-theme') }}
+        </a>
+
+        {% block site_header %}
+            {{ site_header }}
+        {% endblock %}
+        
+        <main id="primary" class="relative z-0 w-full overflow-hidden site-main print:static">
+                {% block content %}
+                
+                {% endblock %}
+        </main>
+
+        {% block site_footer %}
+            {{ site_footer }}
+        {% endblock %}
+    </div>
+    {{ function('wp_footer') }}
+</body>
+</html>

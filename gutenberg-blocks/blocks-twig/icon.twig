@@ -1,0 +1,10 @@
+<svg class="w-{{ width|default(20) }} h-{{ height|default(20) }}
+            transform
+            group-hover:scale-110
+            transition-transform
+            fill-current">
+    <use xlink:href="#{{ icon }}"></use>
+</svg>
+{% if hiddenText is not empty %}
+    <span class="sr-only">{{ hiddenText }}</span>
+{% endif %} {# hidden_text #}

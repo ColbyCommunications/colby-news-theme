@@ -1,0 +1,90 @@
+{# TODO: if `orientation` is `'portrait'`, image should stretch all the way up so that it's 'behind' the site-header  #}
+
+
+{% set _shareButtons %}
+  {% if shareButtons %}
+    <div class="flex flex-wrap my-5 sm:my-6 md:my-8 lg:my-10">
+      <div class="mr-3 uppercase">Share</div>
+      <div>{{ shareButtons }}</div>
+    </div>
+  {% endif %}
+{% endset %}
+
+{% set contentGroup1 %}
+  <h1 class="text-4xl font-bold md:text-5xl">{{ title }}</h1>
+
+  {% if primaryCategory or lengthOfRead %}
+    <div class="flex flex-col mt-4 uppercase sm:block">{% apply spaceless %}
+      {% if primaryCategory %}
+        <span class="{{ lengthOfRead ? 'mr-2 sm:after:content-pipe sm:after:ml-2' }}">{{ primaryCategory }}</span>
+      {% endif %}
+      {% if lengthOfRead %}<span>{{ lengthOfRead }}</span>{% endif %}
+    {% endapply %}
+    </div>
+  {% endif %}
+
+  {% if summary %}
+    <p class="text-xl lg:text-2xl xl:text-3xl mt-4 sm:mt-8 {{ orientation == 'landscape' ? 'max-w-2xl mx-auto' }}">{{ summary }}</p>
+  {% endif %}
+{% endset %}
+
+{% set contentGroup2 %}
+  {% if shareButtons and not shareButtonsLast %}
+    {{ _shareButtons }}
+  {% endif %}
+
+  <div class="mt-4 sm:mt-8">
+    {% if author or photoCredit or videoCredit %}
+      <div class="flex flex-col sm:block">{% apply spaceless %}
+        {% if author %}
+          <span class="{{ photoCredit ? 'sm:mr-2 sm:after:content-pipe sm:after:ml-2' }}">By {{ author }}</span>
+        {% endif %}
+        {% if photoCredit %}
+          <span class="{{ videoCredit ? 'sm:mr-2 sm:after:content-pipe sm:after:ml-2' }}">{{ photoCredit }}</span>
+        {% endif %}
+        {% if videoCredit %}
+          <span>Videography by {{ videoCredit }}</span>
+        {% endif %}
+      {% endapply %}</div>
+    {% endif %}
+
+    {% if contact and contact.name %}
+      <address class="flex flex-col mt-4 not-italic">
+        <span>Contact: {{ contact.name }}{% if contact.email %}
+          (<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>){# assuming link for email? #}
+        {% endif %}</span>
+        {% if contact.phone %}
+          <span>{{ contact.phone }}</span>{# link or just text for phone? #}
+        {% endif %}
+      </address>
+    {% endif %}
+  </div>
+
+  {% if postedDate or updatedDate %}
+    <div class="mt-2 text-sm">{% apply spaceless %}
+      {% if postedDate %}
+        <span class="{{ updatedDate ? 'mr-3' }}">{{ postedDate }}</span>
+      {% endif %}
+      {% if updatedDate %}<span><span class="mr-1 text-xs uppercase">Updated </span>{{ updatedDate }}</span>{% endif %}
+    {% endapply %}
+    </div>
+  {% endif %}
+  
+  
+  {% if shareButtons and shareButtonsLast %}
+    {{ _shareButtons }}
+  {% endif %}
+{% endset %}
+
+{% if orientation == 'portrait' %}
+<header class="mb-8 space-y-8 xl:mb-10 page-header-grid full-width md:space-y-0 md:space-x-8 xl:space-x-16">
+    <div class="page-header-figure-wrapper">{{ figure }}</div>
+    <div class="self-center page-header-text">{{ contentGroup1 }}{{ contentGroup2 }}</div>
+  </header>
+{% else %}
+  <header class="mt-10 mb-8 xl:mb-10">
+    <div class="text-center">{{ contentGroup1 }}</div>
+    <div class="mt-8">{{ figure }}</div>
+    <div>{{ contentGroup2 }}</div>
+  </header>
+{% endif %}

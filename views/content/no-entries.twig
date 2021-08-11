@@ -1,0 +1,52 @@
+<section class="no-results not-found container-wrapper">
+    <div class="container-grid">
+        <header class="mt-8 mb-4 px-container page-header lg:mt-12">
+            <div class="pb-4 border-b lg:pb-8 border-hr">
+                <h1 class="font-serif text-3xl font-semibold leading-none md:text-4xl xl:text-5xl page-title md:leading-none xl:leading-none">{{ archive.title }}</h1>
+                {# <h1 class="page-title">{{ post.title|default(archive.title) }}</h1> #}
+                {% if archive.description %}
+                    <div class="px-container archive-description">{{ archive.description }}</div>
+                {% endif %} {# archive.description #}
+            </div>
+        </header><!-- .page-header -->
+    </div>
+
+    <div class="container-grid page-content">
+        {% if function('is_home') and function('current_user_can', 'publish_posts') %}
+                <p>
+                {{ __( 'Ready to publish your first post? <a href="'
+                        ~ function('admin_url', 'post-new.php')|e('esc_url')
+                        ~ '">Get started here</a>.',
+                                'colby-news-theme') }}
+        {# end is home page and current user can publish #}
+        {% elseif function('is_search') %}
+            <div class="container">
+                <p class="mb-6">{{ __('You searched for “<span class="font-mono italic font-bold">' ~ search_query ~ '</span>”.',
+                            'colby-news-theme') }}</p>
+
+                {% if relevanssi and did_you_mean %}
+                    <p class="mb-6">{{ did_you_mean }}</p>
+                {% else %}
+                    <p class="mb-6">{{ __('Would you like to try a different search?') }}</p>
+                {% endif %}
+                <div class="mb-6 text-xl sm:bg-gray-200 sm:border sm:p-6 search-bar border-primary">
+                    <label for="search-field-404" class="block mb-2 font-bold text-primary-dark">Search the Site</label>
+                                        <form action="/" class="flex w-full border border-gray-300">
+                        <input name="s" id="search-field-404" type="search" placeholder="Enter Keyword" class="flex-grow text-sm leading-none border-0 rounded-none" />
+                        <button class="flex-none px-2 bg-white text-primary hocus:bg-blue-400">{{ searchButton.content }}</button>
+                    </form>
+                </div>
+            </div>
+        {# end is search #}
+        {% else %}
+            <p>{{ __(
+                        'It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help.',
+                        'colby-news-theme'
+                    ) }}
+            </p>
+
+            {{ function('get_search_form') }}
+        {% endif %} 
+
+    </div><!-- .page-content -->
+</section><!-- .no-results -->

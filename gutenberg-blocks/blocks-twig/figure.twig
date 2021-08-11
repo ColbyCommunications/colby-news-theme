@@ -1,0 +1,9 @@
+<figure class="{{ display|default('grid') }} {{ caption is not empty ? 'grid-caption' }} gap-4 {{ classes|join( ' ' ) }}">
+        {{ media }}
+
+    {% if caption is not empty %}
+        <figcaption class="{{ captionClasses|join(' ') }}">
+            {{ caption }}
+        </figcaption>
+    {% endif %} {# caption is not empty #}
+</figure>
