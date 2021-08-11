@@ -1,12 +1,12 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => 'dev-b9bfdd0375c0b7cbcaef125a342618fcc9484e72',
-    'version' => 'dev-b9bfdd0375c0b7cbcaef125a342618fcc9484e72',
+    'pretty_version' => 'dev-main',
+    'version' => 'dev-main',
     'aliases' => 
     array (
     ),
-    'reference' => 'b9bfdd0375c0b7cbcaef125a342618fcc9484e72',
+    'reference' => '86e07893cce18d1330dccc16242f7c60d6674846',
     'name' => 'colbycommunications/colby-news-theme',
   ),
   'versions' => 
@@ -31,12 +31,12 @@
     ),
     'colbycommunications/colby-news-theme' => 
     array (
-      'pretty_version' => 'dev-b9bfdd0375c0b7cbcaef125a342618fcc9484e72',
-      'version' => 'dev-b9bfdd0375c0b7cbcaef125a342618fcc9484e72',
+      'pretty_version' => 'dev-main',
+      'version' => 'dev-main',
       'aliases' => 
       array (
       ),
-      'reference' => 'b9bfdd0375c0b7cbcaef125a342618fcc9484e72',
+      'reference' => '86e07893cce18d1330dccc16242f7c60d6674846',
     ),
     'composer/installers' => 
     array (
