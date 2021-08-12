@@ -657,9 +657,3 @@ function nc_enqueue_admin_scripts()
 //         wp_enqueue_script('nc-acf-controls', get_stylesheet_directory_uri() . '/gutenberg-blocks/js/acf-controls.js');
 //     }
 // }
-
-function remove_block_styles()
-{
-    unregister_block_style('core/image', 'rounded');
-}
-add_action('init', 'NC_Blocks\remove_block_styles');

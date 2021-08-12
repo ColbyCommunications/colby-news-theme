@@ -47,8 +47,8 @@ add_filter('allowed_block_types_all', 'NC_Blocks\nc_blog_post_block_types', 10, 
 function nc_register_templates()
 {
     $post_type_object = get_post_type_object('page');
-    $post_type_object->template = array(
-        array( 'acf/nc-page-header', 'core/paragraph' ),
-    );
+    // $post_type_object->template = array(
+    //     array( 'acf/nc-page-header', 'core/paragraph' ),
+    // );
 }
 add_action('init', 'NC_Blocks\nc_register_templates');
