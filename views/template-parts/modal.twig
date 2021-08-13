@@ -9,10 +9,10 @@
         {% endblock %}
         <div class="focus-target-ancestor">
             {# Wrapper around button is needed for Micromodal (b/c it checks for `offsetParent !== null`, and fixed-position makes it null). #}
-            <div class="container relative">
-                <div class="fixed mt-px right-8 md:mt-10" style="top: var(--header-height);">
+            <div class="fixed z-10 w-full mt-px pointer-events-none md:mt-10" style="top: var(--header-height);">
+                <div class="container text-right">
                     <button
-                        class="p-2 transition-colors bg-white rounded-lg bg-opacity-90 hover:bg-opacity-100 group disabled:pointer-events-none"
+                        class="p-2 transition-colors bg-white rounded-lg pointer-events-auto bg-opacity-90 hover:bg-opacity-100 group disabled:pointer-events-none"
                         id="{{ closeButtonId }}"
                         aria-label="Close modal"
                         disabled
@@ -20,17 +20,17 @@
                         <svg class="w-8 h-8 transition-transform transform group-hover:scale-125" aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
                     </button>
                 </div>
-                <div class="flex flex-col justify-between" style="min-height: calc(100vh - var(--header-height));">
-                    <div class="pt-2 md:pt-12">
-                        {% block modalContent %}
-                            {{ modalContent }}
-                        {% endblock %}
-                    </div>
-                    <div>
-                        {% block modalSiteFooter %}
-                            {{ modalSiteFooter }}
-                        {% endblock %}
-                    </div>
+            </div>
+            <div class="flex flex-col justify-between" style="min-height: calc(100vh - var(--header-height));">
+                <div class="pt-2 md:pt-12">
+                    {% block modalContent %}
+                        {{ modalContent }}
+                    {% endblock %}
+                </div>
+                <div>
+                    {% block modalSiteFooter %}
+                        {{ modalSiteFooter }}
+                    {% endblock %}
                 </div>
             </div>
         </div>

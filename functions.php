@@ -413,6 +413,13 @@ if (! function_exists('newcity_colby_news_setup')) :
 
         add_theme_support('core-block-patterns');
 
+        add_theme_support(
+            'post-formats',
+            array(
+                'video',
+            )
+        );
+
         /*
          * Let WordPress manage the document title.
          * By adding theme support, we declare that this theme does not use a

@@ -13,18 +13,24 @@
         </div>
     {% endset %}
 
-    {% include 'linkify.twig' with {
+    {% include './linkify.twig' with {
         component: clickableImage,
         url: url
     } only %}
 
     {# need a `lg` option to make superhead 16px, title 22px, and description 18px #}
     {% if superhead %}
-        <div class="pt-1 text-sm uppercase">{{ superhead }}</div>
+        <div class="pt-1 text-sm uppercase">
+            {% if superhead.url %}
+                <a href="{{ superhead.url }}" class="{# hover:text-gray-800 #}">{{ superhead.title }}</a>
+            {% else %}
+                {{ superhead.title }}
+            {% endif %}            
+        </div>
     {% endif %}
 
     {% set hTag = 'h' ~ hLevel|default(3) %}
-    <{{ hTag }} class="font-bold"><a class="no-underline" href="{{ url }}">{{ title }}</a></{{ hTag }}>
+    <{{ hTag }} class="font-bold"><a href="{{ url }}">{{ title }}</a></{{ hTag }}>
 
     {% if description %}
         <p>{{ description }}</p>

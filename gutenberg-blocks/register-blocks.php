@@ -493,8 +493,47 @@ function query_from_fields(array $user_fields = array())
         }
     }
 
+    $post_format = get_key($user_fields, 'post_format');
+
+    if ($post_format && $post_format !== 'all') {
+        $post_format_query = [
+            'taxonomy' => 'post_format',
+            'field' => 'slug',
+        ];
+
+        if ($post_format === 'standard') {
+            $post_format_query['terms'] = array(
+                'post-format-aside',
+                'post-format-audio',
+                'post-format-chat',
+                'post-format-gallery',
+                'post-format-image',
+                'post-format-link',
+                'post-format-quote',
+                'post-format-status',
+                'post-format-video'
+            );
+
+            $post_format_query['operator'] = 'NOT IN';
+        } else {
+            $post_format_query['terms'] = [ "post-format-$post_format" ];
+            $post_format_query['operator'] = 'IN';
+        }
+        $tax_query_master = [$post_format_query];
+    } else {
+        $post_format_query = false;
+        $tax_query_master = null;
+    }
+
+
     // Convert raw taxonomy terms into a valid `tax_query` value
-    $taxonomy_terms = get_key($user_fields, 'taxonomy_terms');
+    $categories = get_key($user_fields, 'categories');
+    $categories = $categories ? $categories : [];
+    $tags = get_key($user_fields, 'tags');
+    $tags = $tags ? $tags : [];
+    $taxonomy_terms = array_merge($categories, $tags);
+
+
     if (is_array($taxonomy_terms)) {
         $tax_query = [];
         $taxonomies = [];
@@ -517,8 +556,17 @@ function query_from_fields(array $user_fields = array())
             ];
         }
 
-        $new_args['tax_query'] = $tax_query;
+        $tax_query['relation'] = 'AND';
+
+        if ($tax_query_master) {
+            $tax_query_master['relation'] = 'AND';
+            $tax_query_master[] = $tax_query;
+        } else {
+            $tax_query_master = $tax_query;
+        }
     }
+
+    $new_args['tax_query'] = $tax_query_master;
 
     $posts_in = get_key($user_fields, 'post__in');
 
@@ -576,7 +624,9 @@ add_action('acf/init', function () {
             'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
             'render_callback' => function ($block, $content = '', $is_preview = false, $post_id = 0) {
                 if (function_exists('get_fields')) {
-                    $query_args = query_from_fields(get_fields());
+                    $fields_from_block = get_fields();
+                    $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
+                    $query_args = query_from_fields($fields_from_block);
 
                     $results = new \WP_Query($query_args);
 
@@ -598,14 +648,22 @@ add_action('acf/init', function () {
                             $primary_category = '';
                         }
 
+                        $post_formats = wp_get_post_terms($result->ID, 'post_format', ['fields' => 'names']);
+
+                        $is_video = in_array('Video', $post_formats);
+
                         $teasers[] = [
                             'image' => nc_blocks_image(get_post_thumbnail_id($result->ID), 'teaser'),
                             'url' => get_permalink($result->ID),
                             'superhead' => $primary_category,
                             'title' => $result->post_title,
+                            'withVideoLogo' => $is_video,
                         ];
 
                     }
+
+                    $teasers = $teasers;
+
                     $teasers = array_map(function ($teaser_args) {
                         return Timber::compile(get_blocks_twig_directory('/teaser.twig'), $teaser_args);
                     }, $teasers);

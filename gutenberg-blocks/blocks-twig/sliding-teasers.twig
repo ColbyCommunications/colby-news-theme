@@ -4,10 +4,10 @@
     {% endif %}
 
     <div class="relative sliding-teasers-container">
-        <div style="margin-left: calc(-1 * var(--container-gutter)); margin-right: calc(-1 * var(--container-gutter));">
+        <div class="-mx-container-gutter">
             <div
-                class="flex space-x-8 overflow-x-auto sliding-teasers"
-                style="padding-left: var(--container-gutter); scroll-snap-type: x mandatory; scroll-behavior: smooth;"
+                class="flex space-x-8 overflow-x-auto sliding-teasers pl-container-gutter"
+                style="scroll-snap-type: x mandatory; scroll-behavior: smooth;"
             >
                 {% for teaser in teasers %}
                     {# large variant should have image w/ 12:5 aspect-ratio; smaller should have 5:3 #}
