@@ -1,0 +1,28 @@
+<div class="space-y-2">
+    {#
+        the negative left-margin at 2xl is fine b/c the parent component
+        (`media-coverage-and-events.twig`) has a corresponding max-width
+    #}
+    <div class="flex space-x-4 2xl:-ml-20">
+        <div class="min-w-[4rem] max-w-[4rem]">
+            {% if image %}
+                {{ image }}
+            {% endif %}
+        </div>
+
+        <div class="space-y-1">
+            {% if source %}
+                <div class="uppercase text-xs">{{ source }}</div>
+            {% endif %}
+
+            {% set hTag = 'h' ~ hLevel|default(3) %}
+            <{{ hTag }} class="leading-tight">
+                <a href="{{ link.url }}" class="font-bold">{{ link.title }}</a>
+            </{{ hTag }}>
+        </div>
+    </div>
+
+    {% if blurb %}
+        <div class="text-base-minus-2 sm:text-base">{{ blurb }}</div>
+    {% endif %}
+</div>

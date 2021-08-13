@@ -34,7 +34,7 @@ function nc_replace_block_library()
 add_action('admin_notices', 'NC_Blocks\acf_activation_notice');
 function acf_activation_notice()
 {
-    if (!function_exists('acf_register_block')) {
+    if (!function_exists('acf_register_block_type')) {
         ?>
         <div class="notice notice-error">
             <p>
@@ -47,30 +47,8 @@ function acf_activation_notice()
     }
 }
 
-add_action('after_setup_theme', 'NC_Blocks\remove_editor_panels');
-function remove_editor_panels()
-{
-    // add_theme_support('disable-custom-colors');
-    // add_theme_support('editor-color-palette');
-    // add_theme_support('editor-gradient-presets', []);
-    // add_theme_support('disable-custom-gradients');
-    // add_theme_support('editor-font-sizes');
-}
-
-// add_filter(
-//     'block_editor_settings_all',
-//     function ($editor_settings) {
-//         $editor_settings['__experimentalUseEditorFeature']['typography']['dropCap'] = false;
-//         $editor_settings['disableCustomFontSizes'] = 1;
-//         return $editor_settings;
-//     }
-// );
-
 /**
  * Applies wrapper div around aligned blocks.
- *
- * Copy this function into your WordPress theme's `functions.php` file
- * and change the `themeprefix` accordingly.
  *
  * @see   https://developer.wordpress.org/reference/hooks/render_block/
  * @link  https://codepen.io/webmandesign/post/gutenberg-full-width-alignment-in-wordpress-themes
@@ -110,10 +88,8 @@ function wrap_alignment($block_content, $block)
     }
     return $block_content;
 }
-
 add_filter('render_block', 'NC_Blocks\wrap_alignment', 10, 2);
 
-add_filter('mce_css', 'NC_Blocks\nc_mce_styles');
 function nc_mce_styles($url)
 {
     if (!empty($url)) {
@@ -126,8 +102,8 @@ function nc_mce_styles($url)
 
     return $url;
 }
+add_filter('mce_css', 'NC_Blocks\nc_mce_styles');
 
-add_action('admin_notices', 'NC_Blocks\acfe_activation_notice');
 function acfe_activation_notice()
 {
     if (!class_exists('acfe')) {
@@ -141,8 +117,8 @@ function acfe_activation_notice()
         <?php
     }
 }
+add_action('admin_notices', 'NC_Blocks\acfe_activation_notice');
 
-add_filter('acfe/fields/advanced_link/sub_fields', 'NC_Blocks\nc_advanced_link_no_target', 10, 10);
 function nc_advanced_link_no_target($sub_fields, $field, $value)
 {
     /**
@@ -159,8 +135,8 @@ function nc_advanced_link_no_target($sub_fields, $field, $value)
 
     return $sub_fields;
 }
+add_filter('acfe/fields/advanced_link/sub_fields', 'NC_Blocks\nc_advanced_link_no_target', 10, 10);
 
-add_filter('acfe/fields/advanced_link/sub_fields', 'NC_Blocks\nc_advanced_link_no_terms', 10, 3);
 function nc_advanced_link_no_terms($sub_fields, $field, $value)
 {
     /**
@@ -200,8 +176,8 @@ function nc_advanced_link_no_terms($sub_fields, $field, $value)
 
     return $sub_fields;
 }
+add_filter('acfe/fields/advanced_link/sub_fields', 'NC_Blocks\nc_advanced_link_no_terms', 10, 3);
 
-add_filter('acfe/fields/advanced_link/sub_fields', 'NC_Blocks\nc_advanced_link_posts_only', 10, 3);
 function nc_advanced_link_posts_only($sub_fields, $field, $value)
 {
     /**
@@ -227,8 +203,8 @@ function nc_advanced_link_posts_only($sub_fields, $field, $value)
 
     return $sub_fields;
 }
+add_filter('acfe/fields/advanced_link/sub_fields', 'NC_Blocks\nc_advanced_link_posts_only', 10, 3);
 
-add_filter('acfe/fields/advanced_link/sub_fields/name=link_with_description', 'NC_Blocks\nc_advanced_link_with_description', 10, 3);
 function nc_advanced_link_with_description($sub_fields, $field, $value)
 {
     /**
@@ -246,8 +222,8 @@ function nc_advanced_link_with_description($sub_fields, $field, $value)
 
     return $sub_fields;
 }
+add_filter('acfe/fields/advanced_link/sub_fields/name=link_with_description', 'NC_Blocks\nc_advanced_link_with_description', 10, 3);
 
-add_filter('acfe/fields/advanced_link/sub_fields/name=link_url', 'NC_Blocks\nc_advanced_link_url_only', 10, 3);
 function nc_advanced_link_url_only($sub_fields, $field, $value)
 {
     /**
@@ -263,6 +239,7 @@ function nc_advanced_link_url_only($sub_fields, $field, $value)
 
     return $sub_fields;
 }
+add_filter('acfe/fields/advanced_link/sub_fields/name=link_url', 'NC_Blocks\nc_advanced_link_url_only', 10, 3);
 
 /**
  * Add a block category for theme-specific blocks
@@ -334,141 +311,6 @@ function innerBlocks($args = [])
     }
 
     return $innerBlocksTag . ' />';
-}
-
-function allowed_blocks_callback($block, $content = '', $is_preview = false, $post_id = 0)
-{
-    $allowed_blocks = [
-        'acf/nc-rich-text',
-        'core/table',
-        'core/embed',
-        'core/columns'
-    ];
-
-    $innerBlocks = innerBlocks([
-        'allowed_blocks' => $allowed_blocks,
-        'templateLock' => false,
-    ]);
-
-    if ($is_preview) {
-        $innerBlocks = '<div class="nc-allowed-blocks">' . $innerBlocks . '</div>';
-    }
-    echo $innerBlocks;
-}
-
-function accordion_wrapper($block, $content = '', $is_preview = false, $post_id = 0)
-{
-    $allowed_blocks = [
-        'pb/accordion-item',
-    ];
-
-    $template = [
-        [
-            'pb/accordion-item', [],
-        ],
-    ];
-
-    $rowSpacing = '';
-
-    if (function_exists('get_field')) {
-        $rowSpacing = get_field('spaceAfter');
-    }
-
-    $rowSpacing = $rowSpacing ? $rowSpacing : 'md';
-    $rowSpacing = get_row_spacing($rowSpacing);
-
-
-    echo '<div class="mx-auto prose nc-accordion container-narrow px-container' . " $rowSpacing" . '">'
-            . innerBlocks([
-                'allowed_blocks' => $allowed_blocks,
-                'template' => $template,
-                'templateLock' => false
-                ])
-                 . '</div>';
-}
-
-function post_list_slider($block, $content = '', $is_preview = false, $post_id = 0)
-{
-    $allowed_blocks = [
-        'core/query',
-        'core/post-featured-image',
-        'core/post-title',
-        'core/post-date',
-        'core/post-excerpt'
-    ];
-
-    $template = [
-        [
-            'core/query', [],
-        ],
-    ];
-
-    $innerBlocks = innerBlocks([
-        'allowed_blocks' => $allowed_blocks,
-        'template' => $template,
-        'templateLock' => false,
-    ]);
-
-    echo '<div class="py-4 nc-post-list-slider bg-tertiary">' . $innerBlocks . '</div>';
-}
-
-function alert_block($block, $content = '', $is_preview = false, $post_id = 0)
-{
-    $component = new Component();
-
-    $rowSpacing = '';
-    $body = '';
-
-    if (function_exists('get_field')) {
-        $rowSpacing = get_field('spaceAfter');
-
-        $body = get_field('body');
-    }
-
-    $content = $component->build('iconFlag', [
-        'content' => $body,
-        'className' => 'prose',
-    ]);
-
-    $component->build('pageSection', [
-        'content' => $content,
-        'rowSpacing' => $rowSpacing,
-        'className' => 'bg-[#e5ebf1] pt-4',
-    ], true);
-}
-
-function background_wrapper($block, $content = '', $is_preview = false, $post_id = 0)
-{
-    $component = new Component();
-    $rowSpacing = function_exists('get_field') ? get_field('spaceAfter') : '';
-    $rowSpacing = $rowSpacing ? $rowSpacing : 'md';
-
-    $verticalPadding = function_exists('get_field') ? get_field('verticalPadding') : '';
-    $verticalPadding = $verticalPadding ? $verticalPadding : 'md';
-
-    $backgroundColor = function_exists('get_field') ? get_field('backgroundColor') : '';
-    $backgroundColor = $backgroundColor ? $backgroundColor : 'gray';
-
-    $content = '<div class="background-wrapper-inner">' . innerBlocks([
-        // 'allowed_blocks' => $allowed_blocks,
-        'templateLock' => false,
-        'template' => [
-            [
-                'core/paragraph', [],
-            ],
-        ],
-    ]) . '</div>';
-
-    $wrapper = $component->build('pageSection', [
-        'wrapperClasses' => 'background-wrapper',
-        'backgroundColor' => $backgroundColor,
-        'rowSpacing' => $rowSpacing,
-        'content' => $content,
-        'verticalPadding' => $verticalPadding,
-        'fullWidth' => true,
-    ], true);
-
-    return $wrapper;
 }
 
 function query_from_fields(array $user_fields = array())
@@ -615,93 +457,120 @@ function get_post_type_from_editor()
     return false;
 }
 
+// Begin render callback functions
+function post_list_slider($block, $content = '', $is_preview = false, $post_id = 0)
+{
+    if (function_exists('get_fields')) {
+        $fields_from_block = get_fields();
+        $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
+        $query_args = query_from_fields($fields_from_block);
+
+        $results = new \WP_Query($query_args);
+
+        $teasers = [];
+
+        if (count($results->posts) < 1) {
+            if ($is_preview) {
+                echo '<div class="p-6 border">No posts match the current query. Try adjusting the query settings.</div>';
+            } else {
+                return;
+            }
+        }
+
+        foreach ($results->posts as $result) {
+            $primary_category = get_primary_category($result->ID);
+            if ($primary_category && is_object($primary_category)) {
+                $primary_category = $primary_category->name;
+            } else {
+                $primary_category = '';
+            }
+
+            $post_formats = wp_get_post_terms($result->ID, 'post_format', ['fields' => 'names']);
+
+            $is_video = in_array('Video', $post_formats);
+
+            $teasers[] = [
+                'image' => nc_blocks_image(get_post_thumbnail_id($result->ID), 'teaser'),
+                'url' => get_permalink($result->ID),
+                'superhead' => $primary_category,
+                'title' => $result->post_title,
+                'withVideoLogo' => $is_video,
+            ];
+        }
+
+        $teasers = $teasers;
+
+        $teasers = array_map(function ($teaser_args) {
+            return Timber::compile(get_blocks_twig_directory('/teaser.twig'), $teaser_args);
+        }, $teasers);
+
+        Timber::render(get_blocks_twig_directory('/sliding-teasers.twig'), ['teasers' => $teasers]);
+    }
+}
+
+function breaker_feature($block, $content = '', $is_preview = false, $post_id = 0)
+{
+    if (function_exists('get_field')) {
+        $image = get_field('image');
+        if ($image) {
+            $image = nc_blocks_image($image, 'landscape_full_xl');
+        }
+
+        $args = [
+            'image' => $image,
+            'superhead' => [
+                'title' => get_field('superhead'),
+                'url' => get_field('superhead_url')
+            ],
+            'headline' => get_field('title'),
+            'description' => get_field('body'),
+            'link' => get_field('link'),
+        ];
+
+        echo "<div class='relative full-width'>" . Timber::compile(get_blocks_twig_directory('/breaker-feature.twig'), $args) . "</div>";
+    }
+}
+
 add_action('acf/init', function () {
-    if (function_exists('acf_register_block')) {
+    if (function_exists('acf_register_block_type')) {
         // Blocks to register for all post types
-        acf_register_block([
-            'name' => 'nc-post-list-slider',
-            'title' => __('Post List Slider', 'colby-news-theme'),
-            'description' => __(
-                'List of posts displayed as a horizontal slider.',
-                'colby-news-theme'
-            ),
-            'category' => 'colby-news',
-            'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
-            'render_callback' => function ($block, $content = '', $is_preview = false, $post_id = 0) {
-                if (function_exists('get_fields')) {
-                    $fields_from_block = get_fields();
-                    $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
-                    $query_args = query_from_fields($fields_from_block);
 
-                    $results = new \WP_Query($query_args);
-
-                    $teasers = [];
-
-                    if (count($results->posts) < 1) {
-                        if ($is_preview) {
-                            echo '<div class="p-6 border">No posts match the current query. Try adjusting the query settings.</div>';
-                        } else {
-                            return;
-                        }
-                    }
-
-                    foreach ($results->posts as $result) {
-                        $primary_category = get_primary_category($result->ID);
-                        if ($primary_category && is_object($primary_category)) {
-                            $primary_category = $primary_category->name;
-                        } else {
-                            $primary_category = '';
-                        }
-
-                        $post_formats = wp_get_post_terms($result->ID, 'post_format', ['fields' => 'names']);
-
-                        $is_video = in_array('Video', $post_formats);
-
-                        $teasers[] = [
-                            'image' => nc_blocks_image(get_post_thumbnail_id($result->ID), 'teaser'),
-                            'url' => get_permalink($result->ID),
-                            'superhead' => $primary_category,
-                            'title' => $result->post_title,
-                            'withVideoLogo' => $is_video,
-                        ];
-                    }
-
-                    $teasers = $teasers;
-
-                    $teasers = array_map(function ($teaser_args) {
-                        return Timber::compile(get_blocks_twig_directory('/teaser.twig'), $teaser_args);
-                    }, $teasers);
-
-                    Timber::render(get_blocks_twig_directory('/sliding-teasers.twig'), ['teasers' => $teasers]);
-                }
-            },
-            'supports' => ['align' => false, 'multiple' => true, 'jsx' => true],
-            'enqueue_assets' => function () {
-                wp_enqueue_script(
-                    'sliding-teasers',
-                    get_template_directory_uri() . '/js/sliding-teasers.js',
-                    [],
-                    '',
-                    true
-                );
-            },
-        ]);
 
         // Blocks to register except on `post` post type
         if (get_post_type_from_editor() !== 'post') {
-            acf_register_block([
-                'name' => 'nc-info-getter',
-                'title' => __('Info Getter', 'colby-news-theme'),
+            acf_register_block_type([
+                'name' => 'nc-post-list-slider',
+                'title' => __('Post List Slider', 'colby-news-theme'),
                 'description' => __(
-                    'Blank block for debugging.',
+                    'List of posts displayed as a horizontal slider.',
                     'colby-news-theme'
                 ),
                 'category' => 'colby-news',
                 'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
-                'render_callback' => function ($block, $content = '', $is_preview = false, $post_id = 0) {
-                    echo '<pre>' . print_r($content, true) . '</pre>';
-                },
+                'render_callback' => 'NC_Blocks\post_list_slider',
                 'supports' => ['align' => false, 'multiple' => true, 'jsx' => true],
+                'enqueue_assets' => function () {
+                    wp_enqueue_script(
+                        'sliding-teasers',
+                        get_template_directory_uri() . '/js/sliding-teasers.js',
+                        [],
+                        '',
+                        true
+                    );
+                },
+            ]);
+
+            acf_register_block_type([
+                'name' => 'nc-breaker-feature',
+                'title' => __('Breaker Feature', 'colby-news-theme'),
+                'description' => __(
+                    'Image with text overlay that fills page width',
+                    'colby-news-theme'
+                ),
+                'category' => 'colby-news',
+                'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
+                'render_callback' => 'NC_Blocks\breaker_feature',
+                'supports' => ['align' => false, 'multiple' => true],
             ]);
         }
     }
