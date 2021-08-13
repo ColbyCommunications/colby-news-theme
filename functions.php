@@ -406,7 +406,7 @@ if (! function_exists('newcity_colby_news_setup')) :
         load_theme_textdomain('colby-news-theme', get_template_directory() . '/languages');
 
         // Allow featured image on blog posts
-        add_theme_support('post-thumbnails', array( 'post' ));
+        add_theme_support('post-thumbnails', array( 'post', 'external_post' ));
 
         // Add default posts and comments RSS feed links to head.
         add_theme_support('automatic-feed-links');
@@ -820,6 +820,11 @@ require get_template_directory() . '/inc/template-tags.php';
  * Functions which enhance the theme by hooking into WordPress.
  */
 require get_template_directory() . '/inc/template-functions.php';
+
+/**
+ * Register custom post types
+ */
+require get_template_directory() . '/inc/post-types.php';
 
 /**
  * Customizer additions.

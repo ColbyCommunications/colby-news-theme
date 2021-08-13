@@ -2,7 +2,8 @@
 
 namespace NC_Blocks;
 
-function is_link_valid(array $linkArgs) {
+function is_link_valid(array $linkArgs)
+{
     $titleIsString = is_string(get_key($linkArgs, 'title', false));
     $urlIsString = is_string(get_key($linkArgs, 'url', false));
     return $titleIsString || $urlIsString;

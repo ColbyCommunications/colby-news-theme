@@ -69,5 +69,4 @@ function linkListHorizontal(array $args = array())
     ]);
 
     return $component->build('iconList', $listArgs);
-
 }
