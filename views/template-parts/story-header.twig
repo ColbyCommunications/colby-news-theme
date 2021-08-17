@@ -1,5 +1,6 @@
-{# TODO: if `orientation` is `'portrait'`, image should stretch all the way up so that it's 'behind' the site-header  #}
-
+{% if element is empty %}
+  {% set element = header %}
+{% endif %}
 
 {% set _shareButtons %}
   {% if shareButtons %}
@@ -11,11 +12,21 @@
 {% endset %}
 
 {% set contentGroup1 %}
+  {% if element != 'header' and primaryCategory %}
+    <div class="mb-3 text-sm uppercase">
+      {% if primaryCategory.url %}
+        <a href="{{ primaryCategory.url }}">{{ primaryCategory.title }}</a>
+      {% else %}
+        {{ primaryCategory.title }}
+      {% endif %}
+    </div>
+  {% endif %}
+  
   <h1 class="text-4xl font-bold md:text-5xl">{{ title }}</h1>
 
-  {% if primaryCategory or lengthOfRead %}
+  {% if (primaryCategory and element == 'header') or lengthOfRead %}
     <div class="flex flex-col mt-4 uppercase sm:block">{% apply spaceless %}
-      {% if primaryCategory %}
+      {% if primaryCategory and element == 'header' %}
         <span class="{{ lengthOfRead ? 'mr-2 sm:after:content-pipe sm:after:ml-2' }}">
           {% if primaryCategory.url %}
             <a href="{{ primaryCategory.url }}">{{ primaryCategory.title }}</a>
@@ -30,8 +41,15 @@
   {% endif %}
 
   {% if summary %}
-    <p class="text-xl lg:text-2xl xl:text-3xl mt-4 sm:mt-8 {{ orientation == 'landscape' ? 'max-w-2xl mx-auto' }}">{{ summary }}</p>
+    <p class="text-xl lg:text-2xl xl:text-3xl mt-4 sm:mt-8 {{ (orientation == 'landscape' and element == 'header') ? 'max-w-2xl mx-auto' }}">{{ summary }}</p>
   {% endif %}
+
+  {% if link %}
+    <div class="mt-16">
+      <a href="{{ link.url }}" class="px-10 py-2 text-sm text-white uppercase transition-colors bg-black rounded-lg hover:bg-gray-800">{{ link.title }}</a>
+    </div>
+  {% endif %}
+  
 {% endset %}
 
 {% set contentGroup2 %}
@@ -83,14 +101,28 @@
 {% endset %}
 
 {% if orientation == 'portrait' %}
-<header class="mb-8 space-y-8 xl:mb-10 page-header-grid full-width md:space-y-0 md:space-x-8 xl:space-x-16">
-    <div class="page-header-figure-wrapper">{{ figure }}</div>
-    <div class="self-center page-header-text">{{ contentGroup1 }}{{ contentGroup2 }}</div>
-  </header>
+  <{{ element }} class="
+    flex flex-col space-y-8
+    md:flex-row md:space-y-0 md:space-x-16 md:justify-center md:items-center
+    {{ element == 'header' ? 'md:-mx-container-gutter' }}
+  ">
+    <div class="
+      {{ element != 'header' ? 'md:max-w-1/2 md:min-w-[50%]' : 'md:w-screen' }}
+      -mx-container-gutter md:mx-0 md:self-stretch
+      descendant-figcaption:mx-page-padding md:descendant-figcaption:mr-0
+      descendant-img:h-auto
+    ">{{ figure }}</div>
+    <div class="{{ element == 'header' ? 'md:pr-container-gutter' }}">{{ contentGroup1 }}{{ element == 'header' ? contentGroup2 }}</div>
+  </{{ element }}>
+{% elseif element != 'header' %}
+  <{{ element }} class="flex flex-col space-y-6 xl:flex-row-reverse xl:space-y-0 xl:space-x-reverse xl:space-x-16 xl:justify-center xl:items-center xl:-mx-container-gutter">
+    <div class=" -mx-container-gutter xl:mx-0 xl:self-stretch descendant-img:h-auto">{{ figure }}</div>
+    <div class="xl:pl-page-padding">{{ contentGroup1 }}</div>
+  </{{ element }}>
 {% else %}
-  <header class="mt-10 mb-8 xl:mb-10">
+  <{{ element }}>
     <div class="text-center">{{ contentGroup1 }}</div>
-    <div class="mt-8">{{ figure }}</div>
+    <div class="mt-8 -mx-container-gutter md:mx-0 descendant-figcaption:mx-page-padding md:descendant-figcaption:mx-0 descendant-img:h-auto">{{ figure }}</div>
     <div>{{ contentGroup2 }}</div>
-  </header>
+  </{{ element }}>
 {% endif %}

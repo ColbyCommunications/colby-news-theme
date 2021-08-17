@@ -9,6 +9,7 @@ namespace NC_Blocks;
 use Masterminds\HTML5;
 use DOMXPath;
 use Timber\Timber;
+use WP_Query;
 
 require_once(get_template_directory() . '/gutenberg-blocks/blocks-utilities.php');
 require_once(get_template_directory() . '/gutenberg-blocks/components/block-components.php');
@@ -465,7 +466,7 @@ function post_list_slider($block, $content = '', $is_preview = false, $post_id =
         $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
         $query_args = query_from_fields($fields_from_block);
 
-        $results = new \WP_Query($query_args);
+        $results = new WP_Query($query_args);
 
         $teasers = [];
 
@@ -504,8 +505,162 @@ function post_list_slider($block, $content = '', $is_preview = false, $post_id =
             return Timber::compile(get_blocks_twig_directory('/teaser.twig'), $teaser_args);
         }, $teasers);
 
-        Timber::render(get_blocks_twig_directory('/sliding-teasers.twig'), ['teasers' => $teasers]);
+        Timber::render(get_blocks_twig_directory('/sliding-teasers.twig'), ['teasers' => $teasers, 'is_preview' => $is_preview]);
     }
+}
+
+function external_post_list($block, $content = '', $is_preview = false, $post_id = 0)
+{
+
+    $title = 'Media Coverage';
+    $post_count = 4;
+
+    if (function_exists('get_field')) {
+        // If true, use the latest story with the "Editor's Pick" tag
+        $custom_title = get_field('title');
+        $custom_post_count = get_field('post_count');
+
+        $title = $custom_title ? $custom_title : $title;
+        $post_count = $custom_post_count ? $custom_post_count : $post_count;
+    }
+
+    $query_args = [
+        'post_type' => ['external_post'],
+        'posts_per_page' => $post_count,
+        'order' => 'DESC',
+        'orderby' => 'date',
+        'post_status' => ['publish'],
+        'perm' => 'readable',
+        'ignore_sticky_posts' => 1,
+    ];
+
+    $query_results = new WP_Query($query_args);
+    $post_results = $query_results->posts;
+
+    $post_items = [];
+
+    if (is_array($post_results) && count($post_results) > 0) {
+        foreach ($post_results as $index => $post) {
+            $sources = wp_get_post_terms($post->ID, 'media_source');
+
+            if (!is_wp_error($sources) && is_array($sources) && count($sources)) {
+                $source = $sources[0];
+                $source_name = $source->name;
+
+                $source_logo_id = get_field('logo', $source);
+                $source_logo = nc_blocks_image($source_logo_id, 'logo');
+            } else {
+                $source_name = null;
+                $source_logo = null;
+            }
+
+
+            if ($index === 0) {
+                $blurb = get_the_excerpt($post);
+            } else {
+                $blurb = null;
+            }
+
+            $item_args = [
+                'image' =>  $source_logo,
+                'source' =>  $source_name,
+                'link' =>  [
+                    'url' => get_permalink($post),
+                    'title' => get_the_title($post),
+                ],
+                'blurb' => $blurb,
+            ];
+
+            $post_items[] = Timber::compile(get_blocks_twig_directory('/media-coverage-item.twig'), $item_args);
+        }
+
+        $external_post_list = '<div class="space-y-6 sm:space-y-8">';
+        $external_post_list .= "<h2 class='text-2xl'>$title</h2>";
+        $external_post_list .= '<ul class="space-y-6">';
+
+        foreach ($post_items as $post_item) {
+            $external_post_list .= "<li class='block descendant-a:text-base sm:descendant-a:text-lg'>
+                                        $post_item
+                                    </li>";
+        }
+
+        $external_post_list .= '</ul></div>';
+    } else {
+        if ($is_preview) {
+            $external_post_list = '<div class="text-2xl font-bold">No posts match your selection.</div>';
+        } else {
+            $external_post_list = '';
+        }
+    }
+
+    echo $external_post_list;
+
+}
+
+function featured_story_large($block, $content = '', $is_preview = false, $post_id = 0)
+{
+    $featured_post_id = false;
+    $featured_post = false;
+
+    if (function_exists('get_field')) {
+        // If true, use the latest story with the "Editor's Pick" tag
+
+        $use_latest = get_field('use_latest');
+
+        if ($use_latest) {
+            $query_args = [
+                'post_type' => ['post'],
+                'posts_per_page' => 1,
+                'order' => 'DESC',
+                'orderby' => 'date',
+                'post_status' => ['publish'],
+                'perm' => 'readable',
+                'ignore_sticky_posts' => 1,
+                'tax_query' => [
+                    [
+                        'taxonomy' => 'post_tag',
+                        'field' => 'slug',
+                        'terms' => ['editors-pick'],
+                    ]
+                ],
+            ];
+
+            $query_results = new WP_Query($query_args);
+            $post_results = $query_results->posts;
+            if (is_array($post_results) && count($post_results) > 0) {
+                $featured_post_id = $post_results[0]->ID;
+            }
+        } else {
+            $featured_post_id = get_field('post_id');
+        }
+    }
+
+    if ($featured_post_id) {
+        $featured_post = get_post($featured_post_id);
+        if ($featured_post) {
+            $template_part = new TemplatePart();
+            $featured_story_block = $template_part->build(
+                'storyHeader',
+                [
+                    'post' => $featured_post,
+                    'postedDate' => false,
+                    'author' => false,
+                    'lengthOfRead' => false,
+                    'photoCredit' => false,
+                    'contact' => false,
+                    'element' => 'div',
+                ],
+            );
+        }
+    } else {
+        if ($is_preview) {
+            $featured_story_block = '<div class="text-xl font-bold">No posts match your selection.</div>';
+        } else {
+            $featured_story_block = '';
+        }
+    }
+
+    echo $featured_story_block;
 }
 
 function breaker_feature($block, $content = '', $is_preview = false, $post_id = 0)
@@ -539,6 +694,19 @@ add_action('acf/init', function () {
         // Blocks to register except on `post` post type
         if (get_post_type_from_editor() !== 'post') {
             acf_register_block_type([
+                'name' => 'nc-featured-story',
+                'title' => __('Featured Story', 'colby-news-theme'),
+                'description' => __(
+                    'Large image plus text, similar to a Story post header.',
+                    'colby-news-theme'
+                ),
+                'category' => 'colby-news',
+                'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
+                'render_callback' => 'NC_Blocks\featured_story_large',
+                'supports' => ['align' => false, 'multiple' => true],
+            ]);
+
+            acf_register_block_type([
                 'name' => 'nc-post-list-slider',
                 'title' => __('Post List Slider', 'colby-news-theme'),
                 'description' => __(
@@ -558,6 +726,19 @@ add_action('acf/init', function () {
                         true
                     );
                 },
+            ]);
+
+            acf_register_block_type([
+                'name' => 'nc-external-posts-list',
+                'title' => __('External Posts List', 'colby-news-theme'),
+                'description' => __(
+                    'List of posts of the External Posts type.',
+                    'colby-news-theme'
+                ),
+                'category' => 'colby-news',
+                'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
+                'render_callback' => 'NC_Blocks\external_post_list',
+                'supports' => ['align' => false, 'multiple' => true],
             ]);
 
             acf_register_block_type([

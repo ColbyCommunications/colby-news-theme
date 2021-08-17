@@ -12,7 +12,7 @@
                 {% for teaser in teasers %}
                     {# large variant should have image w/ 12:5 aspect-ratio; smaller should have 5:3 #}
                     <div
-                        class="sliding-teaser min-w-[16rem] max-w-[16rem] {{ large ? 'sm:min-w-[21rem] sm:max-w-[21rem]'}}"
+                        class="sliding-teaser min-h-[6.5rem] min-w-[16rem] max-w-[16rem] {{ large ? 'sm:min-w-[21rem] sm:max-w-[21rem]'}}"
                         style="scroll-snap-align: center;"
                     >
                         {{ teaser }}
@@ -21,6 +21,7 @@
             </div>
         </div>
 
+        {% if is_preview is not same as(true) %}
         {% set buttonClasses = 'absolute rounded-full p-1.5 border bg-white hover:bg-gray-300 transition-colors top-16' ~ (large ? ' sm:top-20' : '') %}
         {% set svgClasses = 'w-4 h-4 transform' %}
         <button aria-hidden="true" class="sliding-teasers-prev {{ buttonClasses }} left-0 2xl:-left-10">
@@ -30,5 +31,6 @@
         <button aria-hidden="true" class="sliding-teasers-next {{ buttonClasses }} right-0 2xl:-right-10">
             <svg class="{{ svgClasses }} translate-x-px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z"/></svg>
         </button>
+        {% endif %}
     </div>
 </div>

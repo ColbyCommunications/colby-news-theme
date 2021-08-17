@@ -11,7 +11,7 @@ acf_add_local_field_group(array(
 			'label' => 'Logo Image',
 			'name' => 'logo',
 			'type' => 'image',
-			'instructions' => 'For best results, use an SVG or a PNG image.',
+			'instructions' => 'For best results, use a PNG image.',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
@@ -21,7 +21,7 @@ acf_add_local_field_group(array(
 			),
 			'uploader' => '',
 			'acfe_thumbnail' => 0,
-			'return_format' => 'array',
+			'return_format' => 'id',
 			'preview_size' => 'medium',
 			'min_width' => '',
 			'min_height' => '',
@@ -29,7 +29,7 @@ acf_add_local_field_group(array(
 			'max_width' => '',
 			'max_height' => '',
 			'max_size' => '',
-			'mime_types' => 'svg, png',
+			'mime_types' => 'jpg, jpeg, png',
 			'library' => 'all',
 		),
 	),
@@ -57,7 +57,7 @@ acf_add_local_field_group(array(
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1628869225,
+	'modified' => 1629224966,
 ));
 
 endif;

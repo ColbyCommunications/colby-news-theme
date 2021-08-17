@@ -170,7 +170,8 @@ class TemplatePart
 
     protected function storyHeader($args = [])
     {
-        $post = $this->context['post'];
+        $post = get_key($args, 'post');
+        $post = $post ? $post : $this->context['post'];
 
         $defaultArgs = [
             'orientation' => 'portrait',
@@ -182,8 +183,8 @@ class TemplatePart
         $imageSize = 'header_vertical_lg';
 
         $defaultArgs['updatedDate'] = false;
-        if ($post->modified_date('U') > $post->date('U')) {
-            $defaultArgs['updatedDate']  = $post->modified_date;
+        if (get_the_modified_date($post->ID) > get_the_date($post->ID)) {
+            $defaultArgs['updatedDate']  = get_the_modified_date($post->ID);
         }
 
         if (function_exists('yoast_get_primary_term')) {
@@ -198,7 +199,7 @@ class TemplatePart
             $defaultArgs['contact'] = get_field('contact', $post->ID);
         }
 
-        $defaultArgs['title'] = $this->context['post']->title;
+        $defaultArgs['title'] = get_the_title($post->ID);
 
         $orientation = get_field('horizontal_header', $post->ID) ? 'landscape' : 'portrait';
 
