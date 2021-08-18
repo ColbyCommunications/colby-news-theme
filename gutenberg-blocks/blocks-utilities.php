@@ -208,7 +208,7 @@ function get_primary_category($post_id)
     }
 
     $all_categories = wp_get_post_categories($post_id, ['fields' => 'all']);
-    if (is_wp_error($all_categories) || !is_array($all_categories)) {
+    if (is_wp_error($all_categories) || !is_array($all_categories) || !count($all_categories)) {
         return false;
     }
 

@@ -458,8 +458,126 @@ function get_post_type_from_editor()
     return false;
 }
 
+function post_list_slider($posts, $is_preview = false)
+{
+    $teasers = [];
+
+    if (count($posts) < 1) {
+        if ($is_preview) {
+            return '<div class="p-6 border">No posts match the current query. Try adjusting the query settings.</div>';
+        } else {
+            return;
+        }
+    }
+
+    foreach ($posts as $post) {
+        $primary_category = get_primary_category($post->ID);
+        if ($primary_category && is_object($primary_category)) {
+            $primary_category = $primary_category->name;
+        } else {
+            $primary_category = '';
+        }
+
+        $post_formats = wp_get_post_terms($post->ID, 'post_format', ['fields' => 'names']);
+
+        $is_video = in_array('Video', $post_formats);
+
+        $teasers[] = [
+            'image' => nc_blocks_image(get_post_thumbnail_id($post->ID), 'teaser'),
+            'url' => get_permalink($post->ID),
+            'superhead' => $primary_category,
+            'title' => $post->post_title,
+            'withVideoLogo' => $is_video,
+        ];
+    }
+
+    $teasers = $teasers;
+
+    $teasers = array_map(function ($teaser_args) {
+        return Timber::compile(get_blocks_twig_directory('/teaser.twig'), $teaser_args);
+    }, $teasers);
+
+    return Timber::compile(get_blocks_twig_directory('/sliding-teasers.twig'), ['teasers' => $teasers, 'is_preview' => $is_preview]);
+}
+
+function teaser_pair($posts, $is_preview = false)
+{
+    $teasers = [];
+
+    if (count($posts) < 1) {
+        if ($is_preview) {
+            return '<div class="p-6 border">No posts match the current query. Try adjusting the query settings.</div>';
+        } else {
+            return;
+        }
+    }
+
+    $posts = array_slice($posts, 0, 2);
+
+    foreach ($posts as $post) {
+        $primary_category = get_primary_category($post->ID);
+        if ($primary_category && is_object($primary_category)) {
+            $primary_category = $primary_category->name;
+        } else {
+            $primary_category = '';
+        }
+
+        $post_formats = wp_get_post_terms($post->ID, 'post_format', ['fields' => 'names']);
+
+        $is_video = in_array('Video', $post_formats);
+
+        $description = get_field('summary');
+
+        $description = $description ? $description : get_the_excerpt($post->ID);
+
+        $teasers[] = [
+            'image' => nc_blocks_image(get_post_thumbnail_id($post->ID), 'teaser'),
+            'url' => get_permalink($post->ID),
+            'superhead' => $primary_category,
+            'title' => $post->post_title,
+            'description' => $description,
+            'withVideoLogo' => $is_video,
+        ];
+    }
+
+    $teasers = $teasers;
+
+    $teasers = array_map(function ($teaser_args) {
+        return Timber::compile(get_blocks_twig_directory('/teaser.twig'), $teaser_args);
+    }, $teasers);
+
+    return Timber::compile(get_blocks_twig_directory('/teaser-pair.twig'), ['teasers' => $teasers, 'is_preview' => $is_preview]);
+}
+
+function slider_with_teaser_pair(array $posts, $is_preview = false)
+{
+    if (count($posts) > 2) {
+        $teaser_pair_posts = array_slice($posts, 0, 2);
+        $slider_posts = array_slice($posts, 2);
+    } else {
+        $teaser_pair_posts = $posts;
+        $slider_posts = false;
+    }
+
+    $teaser_pair = '';
+    $slider = '';
+
+    if (count($teaser_pair_posts)) {
+        $teaser_pair = teaser_pair($teaser_pair_posts, $is_preview);
+    }
+
+    if ($slider_posts) {
+        $slider = post_list_slider($slider_posts, $is_preview);
+    }
+
+    return "<div class='nc-slider-with-teaser-pair'>
+        $teaser_pair
+        $slider
+    </div>";
+}
+
 // Begin render callback functions
-function post_list_slider($block, $content = '', $is_preview = false, $post_id = 0)
+function post_list_slider_block($block, $content = '', $is_preview = false, $post_id = 0)
 {
     if (function_exists('get_fields')) {
         $fields_from_block = get_fields();
@@ -468,44 +586,33 @@ function post_list_slider($block, $content = '', $is_preview = false, $post_id =
 
         $results = new WP_Query($query_args);
 
-        $teasers = [];
+        echo post_list_slider($results->posts);
+    }
+}
 
-        if (count($results->posts) < 1) {
-            if ($is_preview) {
-                echo '<div class="p-6 border">No posts match the current query. Try adjusting the query settings.</div>';
-            } else {
-                return;
-            }
-        }
+function teaser_pair_block($block, $content = '', $is_preview = false, $post_id = 0)
+{
+    if (function_exists('get_fields')) {
+        $fields_from_block = get_fields();
+        $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
+        $query_args = query_from_fields($fields_from_block);
 
-        foreach ($results->posts as $result) {
-            $primary_category = get_primary_category($result->ID);
-            if ($primary_category && is_object($primary_category)) {
-                $primary_category = $primary_category->name;
-            } else {
-                $primary_category = '';
-            }
+        $results = new WP_Query($query_args);
 
-            $post_formats = wp_get_post_terms($result->ID, 'post_format', ['fields' => 'names']);
+        echo teaser_pair($results->posts);
+    }
+}
 
-            $is_video = in_array('Video', $post_formats);
+function slider_with_teaser_pair_block($block, $content = '', $is_preview = false, $post_id = 0)
+{
+    if (function_exists('get_fields')) {
+        $fields_from_block = get_fields();
+        $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
+        $query_args = query_from_fields($fields_from_block);
 
-            $teasers[] = [
-                'image' => nc_blocks_image(get_post_thumbnail_id($result->ID), 'teaser'),
-                'url' => get_permalink($result->ID),
-                'superhead' => $primary_category,
-                'title' => $result->post_title,
-                'withVideoLogo' => $is_video,
-            ];
-        }
+        $results = new WP_Query($query_args);
 
-        $teasers = $teasers;
-
-        $teasers = array_map(function ($teaser_args) {
-            return Timber::compile(get_blocks_twig_directory('/teaser.twig'), $teaser_args);
-        }, $teasers);
-
-        Timber::render(get_blocks_twig_directory('/sliding-teasers.twig'), ['teasers' => $teasers, 'is_preview' => $is_preview]);
+        echo slider_with_teaser_pair($results->posts, $is_preview);
     }
 }
 
@@ -594,7 +701,6 @@ function external_post_list($block, $content = '', $is_preview = false, $post_id
     }
 
     echo $external_post_list;
-
 }
 
 function featured_story_large($block, $content = '', $is_preview = false, $post_id = 0)
@@ -715,7 +821,7 @@ add_action('acf/init', function () {
                 ),
                 'category' => 'colby-news',
                 'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
-                'render_callback' => 'NC_Blocks\post_list_slider',
+                'render_callback' => 'NC_Blocks\post_list_slider_block',
                 'supports' => ['align' => false, 'multiple' => true, 'jsx' => true],
                 'enqueue_assets' => function () {
                     wp_enqueue_script(
@@ -726,6 +832,32 @@ add_action('acf/init', function () {
                         true
                     );
                 },
+            ]);
+
+            acf_register_block_type([
+                'name' => 'nc-teaser-pair',
+                'title' => __('Teaser Pair', 'colby-news-theme'),
+                'description' => __(
+                    'Two teasers, side-by-side.',
+                    'colby-news-theme'
+                ),
+                'category' => 'colby-news',
+                'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
+                'render_callback' => 'NC_Blocks\teaser_pair_block',
+                'supports' => ['align' => false, 'multiple' => true],
+            ]);
+
+            acf_register_block_type([
+                'name' => 'nc-slider-with-teaser-pair',
+                'title' => __('Teaser Pair with Slider', 'colby-news-theme'),
+                'description' => __(
+                    'List of posts, with first two displayed as a Teaser Pair and the rest displayed as a Post List slider.',
+                    'colby-news-theme'
+                ),
+                'category' => 'colby-news',
+                'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
+                'render_callback' => 'NC_Blocks\slider_with_teaser_pair_block',
+                'supports' => ['align' => false, 'multiple' => true],
             ]);
 
             acf_register_block_type([

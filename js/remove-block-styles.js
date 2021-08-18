@@ -6,8 +6,8 @@ wp.domReady(() => {
   wp.blocks.unregisterBlockStyle('core/quote', 'default');
   wp.blocks.unregisterBlockStyle('core/quote', 'large');
   // button
-  wp.blocks.unregisterBlockStyle('core/button', 'fill');
-  wp.blocks.unregisterBlockStyle('core/button', 'outline');
+  // wp.blocks.unregisterBlockStyle('core/button', 'fill');
+  // wp.blocks.unregisterBlockStyle('core/button', 'outline');
   // pullquote
   wp.blocks.unregisterBlockStyle('core/pullquote', 'default');
   wp.blocks.unregisterBlockStyle('core/pullquote', 'solid-color');
@@ -26,6 +26,17 @@ wp.domReady(() => {
     name: 'logos-only',
     label: 'Logos Only',
     isDefault: true,
+  });
+  wp.blocks.registerBlockStyle('core/social-links', {
+    name: 'large-icons',
+    label: 'Logos Only (Large)',
+    isDefault: false,
+  });
+
+  wp.blocks.registerBlockStyle('core/heading', {
+    name: 'block-heading',
+    label: 'Block Heading',
+    isDefault: false,
   });
 
   // wp.blocks.getBlockTypes().forEach((block) => {

@@ -285,11 +285,25 @@ All other settings above will be honored, so if a given ID does not meet the que
 				'value' => 'acf/nc-post-list-slider',
 			),
 		),
+		array(
+			array(
+				'param' => 'block',
+				'operator' => '==',
+				'value' => 'acf/nc-teaser-pair',
+			),
+		),
+		array(
+			array(
+				'param' => 'block',
+				'operator' => '==',
+				'value' => 'acf/nc-slider-with-teaser-pair',
+			),
+		),
 	),
-	'menu_order' => 0,
+	'menu_order' => 5,
 	'position' => 'normal',
 	'style' => 'default',
-	'label_placement' => 'left',
+	'label_placement' => 'top',
 	'instruction_placement' => 'tooltip',
 	'hide_on_screen' => '',
 	'active' => true,
@@ -301,7 +315,7 @@ All other settings above will be honored, so if a given ID does not meet the que
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1628800321,
+	'modified' => 1629234741,
 ));
 
 endif;
