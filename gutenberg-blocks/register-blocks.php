@@ -570,7 +570,7 @@ function slider_with_teaser_pair(array $posts, $is_preview = false)
         $slider = post_list_slider($slider_posts, $is_preview);
     }
 
-    return "<div class='nc-slider-with-teaser-pair'>
+    return "<div class='wp-block nc-slider-with-teaser-pair'>
         $teaser_pair
         $slider
     </div>";
@@ -586,7 +586,7 @@ function post_list_slider_block($block, $content = '', $is_preview = false, $pos
 
         $results = new WP_Query($query_args);
 
-        echo post_list_slider($results->posts);
+        echo '<div class="wp-block">' . post_list_slider($results->posts) . '</div>';
     }
 }
 
@@ -599,7 +599,7 @@ function teaser_pair_block($block, $content = '', $is_preview = false, $post_id 
 
         $results = new WP_Query($query_args);
 
-        echo teaser_pair($results->posts);
+        echo '<div class="wp-block">' . teaser_pair($results->posts) . '</div>';
     }
 }
 
@@ -612,7 +612,7 @@ function slider_with_teaser_pair_block($block, $content = '', $is_preview = fals
 
         $results = new WP_Query($query_args);
 
-        echo slider_with_teaser_pair($results->posts, $is_preview);
+        echo '<div class="wp-block">' . slider_with_teaser_pair($results->posts, $is_preview) . '</div>';
     }
 }
 
@@ -700,7 +700,7 @@ function external_post_list($block, $content = '', $is_preview = false, $post_id
         }
     }
 
-    echo $external_post_list;
+    echo '<div class="wp-block">' . $external_post_list . '</div>';
 }
 
 function featured_story_large($block, $content = '', $is_preview = false, $post_id = 0)
@@ -766,7 +766,7 @@ function featured_story_large($block, $content = '', $is_preview = false, $post_
         }
     }
 
-    echo $featured_story_block;
+    echo '<div class="wp-block">' . $featured_story_block . '</div>';
 }
 
 function breaker_feature($block, $content = '', $is_preview = false, $post_id = 0)
@@ -788,7 +788,9 @@ function breaker_feature($block, $content = '', $is_preview = false, $post_id = 
             'link' => get_field('link'),
         ];
 
-        echo "<div class='relative full-width'>" . Timber::compile(get_blocks_twig_directory('/breaker-feature.twig'), $args) . "</div>";
+        echo "<div class='wp-block'><div class='relative full-width'>"
+            . Timber::compile(get_blocks_twig_directory('/breaker-feature.twig'), $args)
+            . "</div></div>";
     }
 }
 

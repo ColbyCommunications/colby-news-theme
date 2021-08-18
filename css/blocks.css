@@ -3120,8 +3120,45 @@ pre.wp-block-verse {
 	z-index: 100000
 }
 
-.is-style-block-heading {
-	--text-heading-md: var(--text-lg);
+.is-root-container > .wp-block,
+article > .wp-block,
+.is-root-container > .wp-block-separator,
+article > .wp-block-separator {
+	margin-top: 2.25rem;
+	margin-bottom: 2.25rem;
+}
+
+@media (min-width: 42.0625rem) {
+
+	.is-root-container > .wp-block,
+	article > .wp-block,
+	.is-root-container > .wp-block-separator,
+	article > .wp-block-separator {
+		margin-top: 3.75rem;
+		margin-bottom: 3.75rem;
+	}
+}
+
+article > .wp-block:first-child {
+	margin-top: 0;
+}
+
+h2.wp-block,
+h3.wp-block,
+h4.wp-block,
+.wp-block-column > h2,
+.wp-block-column > h3,
+.wp-block-column > h4 {
 	--font-display: var(--font-sans);
+	--text-heading-md: var(--text-2xl);
+	--text-heading-sm: var(--text-xl);
+}
+
+.wp-block-column > .is-style-block-heading,
+h2.wp-block.is-style-block-heading {
+	--text-heading-md: var(--text-lg);
+}
+
+.is-style-block-heading {
 	text-transform: uppercase;
 }
