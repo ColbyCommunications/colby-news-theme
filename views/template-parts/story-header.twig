@@ -1,5 +1,5 @@
 {% if element is empty %}
-  {% set element = header %}
+  {% set element = 'header' %}
 {% endif %}
 
 {% set _shareButtons %}
@@ -101,28 +101,32 @@
 {% endset %}
 
 {% if orientation == 'portrait' %}
-  <{{ element }} class="
-    flex flex-col space-y-8
-    md:flex-row md:space-y-0 md:space-x-16 md:justify-center md:items-center
-    {{ element == 'header' ? 'md:-mx-container-gutter' }}
-  ">
-    <div class="
-      {{ element != 'header' ? 'md:max-w-1/2 md:min-w-[50%]' : 'md:w-screen' }}
-      -mx-container-gutter md:mx-0 md:self-stretch
-      descendant-figcaption:mx-page-padding md:descendant-figcaption:mr-0
-      descendant-img:h-auto
-    ">{{ figure }}</div>
+  <{{ element }} class="space-y-8 md:space-y-0 md:grid md:grid-cols-2 md:gap-16 md:items-center {{ element == 'header' ? 'md:-mx-container-gutter pb-9 md:pb-15' }}">
+    <div class="-mx-container-gutter md:mx-0 md:self-stretch">
+      <div class="md:ml-auto md:max-w-2xl descendant-figcaption:mx-page-padding md:descendant-figcaption:mr-0 descendant-img:h-auto">
+        {{ figure }}
+      </div>
+    </div>
     <div class="{{ element == 'header' ? 'md:pr-container-gutter' }}">{{ contentGroup1 }}{{ element == 'header' ? contentGroup2 }}</div>
   </{{ element }}>
-{% elseif element != 'header' %}
-  <{{ element }} class="flex flex-col space-y-6 xl:flex-row-reverse xl:space-y-0 xl:space-x-reverse xl:space-x-16 xl:justify-center xl:items-center xl:-mx-container-gutter">
-    <div class=" -mx-container-gutter xl:mx-0 xl:self-stretch descendant-img:h-auto">{{ figure }}</div>
-    <div class="xl:pl-page-padding">{{ contentGroup1 }}</div>
+{% elseif element != 'header' %}{# homepage landscape #}
+    <{{ element }} class="pt-8 xl:-mx-container-gutter flex flex-col items-center {{ element == 'header' ? 'pb-9 md:pb-15' }}">
+    <div class="max-w-[88rem] space-y-6 xl:space-y-0 xl:grid xl:grid-cols-12 xl:gap-16 xl:items-center">
+      <div class="-mx-container-gutter xl:mx-0 xl:self-stretch xl:col-span-7 2xl:col-span-8 descendant-img:h-auto">
+        {{ figure }}
+      </div>
+      <div class="xl:pl-container-gutter xl:order-first xl:col-span-5 2xl:col-span-4 2xl:ml-auto 2xl:pl-12">
+        {{ contentGroup1 }}
+      </div>
+    </div>
   </{{ element }}>
-{% else %}
-  <{{ element }}>
+
+{% else %}{# non-homepage landscape #}
+  <{{ element }} class="pt-8 {{ element == 'header' ? 'pb-9 md:pb-15' }}">
     <div class="text-center">{{ contentGroup1 }}</div>
-    <div class="mt-8 -mx-container-gutter md:mx-0 descendant-figcaption:mx-page-padding md:descendant-figcaption:mx-0 descendant-img:h-auto">{{ figure }}</div>
+    <div class="mt-8 -mx-container-gutter md:mx-0 descendant-figcaption:mx-page-padding md:descendant-figcaption:mx-0 descendant-img:h-auto">
+      {{ figure }}
+    </div>
     <div>{{ contentGroup2 }}</div>
   </{{ element }}>
 {% endif %}
