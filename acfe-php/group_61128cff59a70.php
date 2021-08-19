@@ -4,7 +4,7 @@ if( function_exists('acf_add_local_field_group') ):
 
 acf_add_local_field_group(array(
 	'key' => 'group_61128cff59a70',
-	'title' => 'Landscape Image',
+	'title' => 'Portrait Image',
 	'fields' => array(
 		array(
 			'key' => 'field_61128d0a9c6fa',
@@ -19,14 +19,14 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
-			'message' => 'The standard layout for featured images is a portrait-oriented image. If you want to use a landscape-oriented image at the top of the page instead, upload it here (you should also include a portrait-oriented image, since various previews and social media integrations require it).',
+			'message' => 'The standard layout for featured images is a landscape-oriented image. If you want to use a portrait-oriented image at the top of the page instead, upload it here (you should also include a landscape-oriented image as the featured image, since various previews and social media integrations require it).',
 			'new_lines' => 'wpautop',
 			'esc_html' => 0,
 		),
 		array(
 			'key' => 'field_61128de59c6fb',
-			'label' => 'Use Landscape Image for Header',
-			'name' => 'horizontal_header',
+			'label' => 'Use Portrait Image for Header',
+			'name' => 'vertical_header',
 			'type' => 'true_false',
 			'instructions' => '',
 			'required' => 0,
@@ -44,8 +44,8 @@ acf_add_local_field_group(array(
 		),
 		array(
 			'key' => 'field_61128e339c6fc',
-			'label' => 'Landscape Featured Image',
-			'name' => 'horizontal_image',
+			'label' => 'Portrait Featured Image',
+			'name' => 'vertical_image',
 			'type' => 'image',
 			'instructions' => '',
 			'required' => 0,
@@ -76,6 +76,11 @@ acf_add_local_field_group(array(
 				'operator' => '==',
 				'value' => 'post',
 			),
+			array(
+				'param' => 'post_format',
+				'operator' => '!=',
+				'value' => 'video',
+			),
 		),
 	),
 	'menu_order' => 1,
@@ -93,7 +98,7 @@ acf_add_local_field_group(array(
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1628606729,
+	'modified' => 1629389725,
 ));
 
 endif;

@@ -180,7 +180,7 @@ class TemplatePart
             'postedDate' => $post->date,
         ];
 
-        $imageSize = 'header_vertical_lg';
+        $imageSize = 'landscape_full_lg';
 
         $defaultArgs['updatedDate'] = false;
         if (get_the_modified_date($post->ID) > get_the_date($post->ID)) {
@@ -201,17 +201,28 @@ class TemplatePart
 
         $defaultArgs['title'] = get_the_title($post->ID);
 
-        $orientation = get_field('horizontal_header', $post->ID) ? 'landscape' : 'portrait';
-
-        if ($orientation === 'landscape') {
-            $imageSize = 'landscape_full_lg';
-            $horizontalFeaturedImage = get_field('horizontal_image', $post->ID);
-            $featuredImage = nc_blocks_image($horizontalFeaturedImage, $imageSize);
-            $featuredImageCaption = wp_get_attachment_caption($horizontalFeaturedImage);
-        } else {
-            $featuredImage = get_the_post_thumbnail($post->ID, $imageSize);
-            $featuredImageCaption = get_the_post_thumbnail_caption($post->ID);
+        $video = false;
+        if (get_post_format($post->ID) === 'video') {
+            $video = get_field('featured_video');
         }
+
+        if ($video) {
+            $orientation = 'landscape';
+            $featuredImage = $video;
+            $featuredImageCaption = '';
+        } else {
+            $orientation = get_field('vertical_header', $post->ID) ? 'portrait' : 'landscape';
+            if ($orientation === 'portrait') {
+                $imageSize = 'header_vertical_lg';
+                $verticalFeaturedImage = get_field('vertical_image', $post->ID);
+                $featuredImage = nc_blocks_image($verticalFeaturedImage, $imageSize);
+                $featuredImageCaption = wp_get_attachment_caption($verticalFeaturedImage);
+            } else {
+                $featuredImage = get_the_post_thumbnail($post->ID, $imageSize);
+                $featuredImageCaption = get_the_post_thumbnail_caption($post->ID);
+            }
+        }
+
 
         $figure = '<figure>';
         $figure .= $featuredImage;

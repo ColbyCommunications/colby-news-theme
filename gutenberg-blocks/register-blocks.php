@@ -448,7 +448,9 @@ function get_post_type_from_editor()
             }
             if ($post_id) {
                 $post = get_post($post_id);
-                $typenow = $post->post_type;
+                if ($post) {
+                    $typenow = $post->post_type;
+                }
             }
         }
 
@@ -458,10 +460,69 @@ function get_post_type_from_editor()
     return false;
 }
 
+function get_youtube_rss_items($channelID, $item_count = 10)
+{
+    $url = "https://www.youtube.com/feeds/videos.xml?channel_id=$channelID";
+
+    $parser = new \Gbuckingham89\YouTubeRSSParser\Parser($url);
+
+    $entries = $parser->channel->videos;
+
+    $items = [];
+    foreach ($entries as $item) {
+        $image = "<img src='" . $item->thumbnail_url . "' width='" . $item->thumbnail_width . "' height='" . $item->thumbnail_height . "' alt='' />";
+        $items[] = [
+            'title' => $item->title,
+            'image' => $image,
+            'url' => $item->url,
+        ];
+    }
+
+    return $items;
+}
+
+function teaser_list(array $posts)
+{
+    if (!count($posts)) {
+        return;
+    }
+
+    foreach ($posts as $post) {
+        if (!is_array($post)) {
+            $primary_category = get_primary_category($post->ID);
+            if ($primary_category && is_object($primary_category)) {
+                $primary_category = $primary_category->name;
+            } else {
+                $primary_category = '';
+            }
+
+            $post_formats = wp_get_post_terms($post->ID, 'post_format', ['fields' => 'names']);
+
+            $is_video = in_array('Video', $post_formats);
+
+            $teaser = [
+                'image' => nc_blocks_image(get_post_thumbnail_id($post->ID), 'teaser'),
+                'url' => get_permalink($post->ID),
+                'superhead' => $primary_category,
+                'title' => $post->post_title,
+                'withVideoLogo' => $is_video,
+            ];
+        } else {
+            $teaser = $post;
+        }
+
+        $teasers[] = $teaser;
+    }
+
+    $teasers = array_map(function ($teaser_args) {
+        return Timber::compile(get_blocks_twig_directory('/teaser.twig'), $teaser_args);
+    }, $teasers);
+
+    return $teasers;
+}
+
 function post_list_slider($posts, $is_preview = false)
 {
-    $teasers = [];
-
     if (count($posts) < 1) {
         if ($is_preview) {
             return '<div class="p-6 border">No posts match the current query. Try adjusting the query settings.</div>';
@@ -470,81 +531,25 @@ function post_list_slider($posts, $is_preview = false)
         }
     }
 
-    foreach ($posts as $post) {
-        $primary_category = get_primary_category($post->ID);
-        if ($primary_category && is_object($primary_category)) {
-            $primary_category = $primary_category->name;
-        } else {
-            $primary_category = '';
-        }
-
-        $post_formats = wp_get_post_terms($post->ID, 'post_format', ['fields' => 'names']);
-
-        $is_video = in_array('Video', $post_formats);
-
-        $teasers[] = [
-            'image' => nc_blocks_image(get_post_thumbnail_id($post->ID), 'teaser'),
-            'url' => get_permalink($post->ID),
-            'superhead' => $primary_category,
-            'title' => $post->post_title,
-            'withVideoLogo' => $is_video,
-        ];
-    }
-
-    $teasers = $teasers;
-
-    $teasers = array_map(function ($teaser_args) {
-        return Timber::compile(get_blocks_twig_directory('/teaser.twig'), $teaser_args);
-    }, $teasers);
+    $teasers = teaser_list($posts);
 
     return Timber::compile(get_blocks_twig_directory('/sliding-teasers.twig'), ['teasers' => $teasers, 'is_preview' => $is_preview]);
 }
 
 function teaser_pair($posts, $is_preview = false)
 {
-    $teasers = [];
-
     if (count($posts) < 1) {
         if ($is_preview) {
             return '<div class="p-6 border">No posts match the current query. Try adjusting the query settings.</div>';
         } else {
             return;
         }
+    } elseif (count($posts) > 2) {
+        $posts = array_slice($posts, 0, 2);
     }
 
-    $posts = array_slice($posts, 0, 2);
 
-    foreach ($posts as $post) {
-        $primary_category = get_primary_category($post->ID);
-        if ($primary_category && is_object($primary_category)) {
-            $primary_category = $primary_category->name;
-        } else {
-            $primary_category = '';
-        }
-
-        $post_formats = wp_get_post_terms($post->ID, 'post_format', ['fields' => 'names']);
-
-        $is_video = in_array('Video', $post_formats);
-
-        $description = get_field('summary');
-
-        $description = $description ? $description : get_the_excerpt($post->ID);
-
-        $teasers[] = [
-            'image' => nc_blocks_image(get_post_thumbnail_id($post->ID), 'teaser'),
-            'url' => get_permalink($post->ID),
-            'superhead' => $primary_category,
-            'title' => $post->post_title,
-            'description' => $description,
-            'withVideoLogo' => $is_video,
-        ];
-    }
-
-    $teasers = $teasers;
-
-    $teasers = array_map(function ($teaser_args) {
-        return Timber::compile(get_blocks_twig_directory('/teaser.twig'), $teaser_args);
-    }, $teasers);
+    $teasers = teaser_list($posts);
 
     return Timber::compile(get_blocks_twig_directory('/teaser-pair.twig'), ['teasers' => $teasers, 'is_preview' => $is_preview]);
 }
@@ -613,6 +618,38 @@ function slider_with_teaser_pair_block($block, $content = '', $is_preview = fals
         $results = new WP_Query($query_args);
 
         echo '<div class="wp-block">' . slider_with_teaser_pair($results->posts, $is_preview) . '</div>';
+    }
+}
+
+function video_slider_block($block, $content = '', $is_preview = false, $post_id = 0)
+{
+    $display_teaser_pair = false;
+    $video_count = false;
+    $youtube_id = 'UChGBTvH9tUJbjxiaAAHGPqg';
+
+    if (function_exists('get_field')) {
+        $display_teaser_pair = get_field('display_teaser_pair');
+        $youtube_id = get_field('youtube_id');
+        $video_count = get_field('video_count');
+    }
+
+    $video_count = $video_count ? $video_count : null;
+
+    // Get videos from YouTube
+    if ($youtube_id) {
+        $videos = get_youtube_rss_items($youtube_id, $video_count);
+
+        if ($videos) {
+            if ($display_teaser_pair) {
+                $content = slider_with_teaser_pair($videos, $is_preview);
+            } else {
+                $content = post_list_slider($videos, $is_preview);
+            }
+
+            echo '<div class="wp-block">' . $content . '</div>';
+        } else {
+            echo '<h2>No videos found</h2>';
+        }
     }
 }
 
@@ -798,7 +835,6 @@ add_action('acf/init', function () {
     if (function_exists('acf_register_block_type')) {
         // Blocks to register for all post types
 
-
         // Blocks to register except on `post` post type
         if (get_post_type_from_editor() !== 'post') {
             acf_register_block_type([
@@ -833,6 +869,13 @@ add_action('acf/init', function () {
                         '',
                         true
                     );
+                    wp_enqueue_script(
+                        'linkify',
+                        get_template_directory_uri() . '/js/linkify.js',
+                        [],
+                        '',
+                        true
+                    );
                 },
             ]);
 
@@ -847,6 +890,15 @@ add_action('acf/init', function () {
                 'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
                 'render_callback' => 'NC_Blocks\teaser_pair_block',
                 'supports' => ['align' => false, 'multiple' => true],
+                'enqueue_assets' => function () {
+                    wp_enqueue_script(
+                        'linkify',
+                        get_template_directory_uri() . '/js/linkify.js',
+                        [],
+                        '',
+                        true
+                    );
+                },
             ]);
 
             acf_register_block_type([
@@ -860,6 +912,37 @@ add_action('acf/init', function () {
                 'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
                 'render_callback' => 'NC_Blocks\slider_with_teaser_pair_block',
                 'supports' => ['align' => false, 'multiple' => true],
+                'enqueue_assets' => function () {
+                    wp_enqueue_script(
+                        'linkify',
+                        get_template_directory_uri() . '/js/linkify.js',
+                        [],
+                        '',
+                        true
+                    );
+                },
+            ]);
+
+            acf_register_block_type([
+                'name' => 'nc-video-slider',
+                'title' => __('YouTube Video Slider', 'colby-news-theme'),
+                'description' => __(
+                    'List of YouTube videos, with first two optionally displayed as a Teaser Pair and the rest displayed as a slider.',
+                    'colby-news-theme'
+                ),
+                'category' => 'colby-news',
+                'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
+                'render_callback' => 'NC_Blocks\video_slider_block',
+                'supports' => ['align' => false, 'multiple' => true],
+                'enqueue_assets' => function () {
+                    wp_enqueue_script(
+                        'linkify',
+                        get_template_directory_uri() . '/js/linkify.js',
+                        [],
+                        '',
+                        true
+                    );
+                },
             ]);
 
             acf_register_block_type([

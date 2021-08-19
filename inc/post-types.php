@@ -5,7 +5,8 @@
 function nc_register_external_posts()
 {
     $labels = [
-        'name' => _x('External Post', 'colby-news-theme'),
+        'name' => _x('External Posts', 'colby-news-theme'),
+        'singular_name' => _x('External Post', 'colby-news-theme'),
     ];
 
     $args = [
@@ -20,7 +21,7 @@ function nc_register_external_posts()
         'capability_type'    => 'post',
         'has_archive'        => true,
         'hierarchical'       => false,
-        'menu_position'      => null,
+        'menu_position'      => 5,
         'supports'           => array( 'title', 'editor', 'thumbnail' ),
         'taxonomies'         => array( 'media_source', 'category', 'post_tag' )
     ];
@@ -32,7 +33,7 @@ add_action('init', 'nc_register_external_posts');
 function nc_register_external_sources()
 {
     $labels = [
-        'name' => _x('Media Source', 'colby-news'),
+        'name' => _x('Media Sources', 'colby-news'),
         'singular_name' => _x('Media Source', 'colby-news'),
         'search_items'      => _x('Search Media Sources', 'colby-news'),
         'all_items'         => _x('All Media Sources', 'colby-news'),
@@ -40,7 +41,6 @@ function nc_register_external_sources()
         'update_item'       => _x('Update Media Source', 'colby-news'),
         'add_new_item'      => _x('Add New Source', 'colby-news'),
         'new_item_name'     => _x('New Media Source Name', 'colby-news'),
-        'menu_name'         => _x('Media Source', 'colby-news'),
     ];
 
     $args = array(
