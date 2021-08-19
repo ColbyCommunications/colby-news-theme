@@ -467,9 +467,16 @@ function get_youtube_rss_items($playlistID = null, $item_count = 10)
     } else {
         $url = "https://www.youtube.com/feeds/videos.xml?user=colbycollege";
     }
+    $remote_response = wp_remote_get($url);
 
-    $parser = new \Gbuckingham89\YouTubeRSSParser\Parser($url);
+    if (is_wp_error($remote_response) || $remote_response['response']['code'] !== 200) {
+        return false;
+    }
 
+    $feed_content = $remote_response['body'];
+
+    $parser = new \Gbuckingham89\YouTubeRSSParser\Parser();
+    $parser->loadString($feed_content);
     $entries = $parser->channel->videos;
 
     $items = [];
@@ -640,20 +647,18 @@ function video_slider_block($block, $content = '', $is_preview = false, $post_id
     $video_count = $video_count ? $video_count : null;
 
     // Get videos from YouTube
-    if ($youtube_id) {
-        $videos = get_youtube_rss_items($youtube_id, $video_count);
+    $videos = get_youtube_rss_items($youtube_id, $video_count);
 
-        if ($videos) {
-            if ($display_teaser_pair) {
-                $content = slider_with_teaser_pair($videos, $is_preview);
-            } else {
-                $content = post_list_slider($videos, $is_preview);
-            }
-
-            echo '<div class="wp-block">' . $content . '</div>';
+    if ($videos) {
+        if ($display_teaser_pair) {
+            $content = slider_with_teaser_pair($videos, $is_preview);
         } else {
-            echo '<h2>No videos found</h2>';
+            $content = post_list_slider($videos, $is_preview);
         }
+
+        echo '<div class="wp-block">' . $content . '</div>';
+    } else {
+        echo '<h2>No videos found</h2>';
     }
 }
 
