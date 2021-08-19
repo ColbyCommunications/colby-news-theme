@@ -460,9 +460,13 @@ function get_post_type_from_editor()
     return false;
 }
 
-function get_youtube_rss_items($channelID, $item_count = 10)
+function get_youtube_rss_items($playlistID = null, $item_count = 10)
 {
-    $url = "https://www.youtube.com/feeds/videos.xml?channel_id=$channelID";
+    if ($playlistID) {
+        $url = "https://www.youtube.com/feeds/videos.xml?playlist_id=$playlistID";
+    } else {
+        $url = "https://www.youtube.com/feeds/videos.xml?user=colbycollege";
+    }
 
     $parser = new \Gbuckingham89\YouTubeRSSParser\Parser($url);
 

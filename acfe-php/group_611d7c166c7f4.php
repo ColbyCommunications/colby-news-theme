@@ -11,7 +11,7 @@ acf_add_local_field_group(array(
 			'label' => 'YouTube Playlist ID',
 			'name' => 'youtube_id',
 			'type' => 'text',
-			'instructions' => '',
+			'instructions' => 'If no playlist ID is provided, the feed will display all public videos from https://www.youtube.com/user/colbycollege/videos',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
@@ -90,7 +90,7 @@ acf_add_local_field_group(array(
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1629322781,
+	'modified' => 1629400272,
 ));
 
 endif;
