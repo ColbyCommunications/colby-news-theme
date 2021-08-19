@@ -782,6 +782,10 @@ function featured_story_large($block, $content = '', $is_preview = false, $post_
         $featured_post = get_post($featured_post_id);
         if ($featured_post) {
             $template_part = new TemplatePart();
+            $link_text = 'Read More';
+            if (get_post_format($featured_post_id) === 'video') {
+                $link_text = 'Watch';
+            }
             $featured_story_block = $template_part->build(
                 'storyHeader',
                 [
@@ -792,6 +796,10 @@ function featured_story_large($block, $content = '', $is_preview = false, $post_
                     'photoCredit' => false,
                     'contact' => false,
                     'element' => 'div',
+                    'link' => [
+                        'title' => $link_text,
+                        'url' => get_the_permalink($featured_post_id),
+                    ],
                 ],
             );
         }

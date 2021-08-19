@@ -3123,7 +3123,9 @@ pre.wp-block-verse {
 .is-root-container > .wp-block,
 article > .wp-block,
 .is-root-container > .wp-block-separator,
-article > .wp-block-separator {
+article > .wp-block-separator,
+.is-root-container > .wp-block-pullquote,
+article > .wp-block-pullquote {
 	margin-top: 2.25rem;
 	margin-bottom: 2.25rem;
 }
@@ -3133,13 +3135,18 @@ article > .wp-block-separator {
 	.is-root-container > .wp-block,
 	article > .wp-block,
 	.is-root-container > .wp-block-separator,
-	article > .wp-block-separator {
+	article > .wp-block-separator,
+	.is-root-container > .wp-block-pullquote,
+	article > .wp-block-pullquote {
 		margin-top: 3.75rem;
 		margin-bottom: 3.75rem;
 	}
 }
 
-article > .wp-block:first-child {
+article > .wp-block:first-child,
+h2 + .wp-block,
+h3 + .wp-block,
+h4 + .wp-block {
 	margin-top: 0;
 }
 
@@ -3155,7 +3162,7 @@ h4.wp-block,
 }
 
 .wp-block-column > .is-style-block-heading,
-h2.wp-block.is-style-block-heading {
+h2.is-style-block-heading {
 	--text-heading-md: var(--text-lg);
 }
 

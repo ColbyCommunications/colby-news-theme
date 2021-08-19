@@ -4,9 +4,9 @@
 
 namespace NC_Blocks;
 
-add_filter('default_page_template_title', function () {
-    return __('Page with Sidebar (Default)', 'colby-news-theme');
-});
+// add_filter('default_page_template_title', function () {
+//     return __('Page (Default)', 'colby-news-theme');
+// });
 
 function nc_blog_post_block_types($allowed_block_types, $block_editor_context)
 {
