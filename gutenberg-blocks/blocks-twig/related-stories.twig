@@ -1,0 +1,19 @@
+<section class="max-w-4xl space-y-2">
+    <h2 class="uppercase text-xs sm:text-xl">{{ headline|default('Related') }}</h2>
+    <ul>
+        {% for item in items %}
+            <li>
+                <a class="grid grid-cols-3 gap-y-2 gap-x-7 hover:bg-gray-100 py-3.5 sm:py-5 border-b border-gray-700 {{ loop.first ? 'border-t sm:border-t-0' }} {{ loop.last ? 'sm:border-b-0' }}" href="{{ item.url }}">
+                    <div class="order-last sm:order-none">
+                        {# image gets "cropped" to a square on mobile w/ the padding-bottom trick #}
+                        <div class="relative after:block after:pb-[100%] after:content-empty sm:after:hidden descendant-img:absolute sm:descendant-img:static descendant-img:w-full descendant-img:h-full descendant-img:object-cover">{{ item.image }}</div>
+                    </div>
+                    <div class="contents sm:block sm:col-span-2 sm:space-y-2 lg:pt-6">
+                        <h3 class="col-span-2 text-sm sm:text-xl font-bold">{{ item.title }}</h3>
+                        <p class="col-span-2 text-xs sm:text-base">{{ item.description }}</p>
+                    </div>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</section>

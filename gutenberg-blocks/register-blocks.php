@@ -429,11 +429,67 @@ function query_from_fields(array $user_fields = array())
     return wp_parse_args($new_args, $default_args);
 }
 
+function related_posts($post_id, $item_count = 5)
+{
+    $primary_category = get_primary_category($post_id);
+
+    if (!$primary_category) {
+        return false;
+    }
+
+    $primary_category_id = $primary_category->term_id;
+
+    $cache_key = "posts_related_$post_id" . '_' . $primary_category_id;
+
+    // $results = wp_cache_get($cache_key);
+
+    // if ($results === null) {
+        $query_args = [
+            'post_type' => get_post_type($post_id),
+            'posts_per_page' => $item_count > 10 ? $item_count : 10,
+            'order' => 'DESC',
+            'orderby' => 'date',
+            'post_status' => ['publish'],
+            'perm' => 'readable',
+            'ignore_sticky_posts' => 1,
+            'post__not_in' => [$post_id],
+            'tax_query' => [
+                [
+                    'taxonomy' => 'category',
+                    'field' => 'slug',
+                    'terms' => [$primary_category->slug],
+                ]
+            ],
+        ];
+
+        $results = new WP_Query($query_args);
+        do_action('qm/debug', $results);
+
+        if (!is_object($results) || !is_array($results->posts)) {
+            wp_cache_set($cache_key, false, 120);
+            return false;
+        }
+    // }
+
+    $posts = $results->posts;
+
+    if (count($posts) > $item_count) {
+        $posts = array_slice($posts, 0, $item_count);
+    }
+
+    return $posts;
+}
+
 function get_post_type_from_editor()
 {
     if (is_admin()) {
         global $pagenow;
         $typenow = '';
+
+        if ('admin-ajax.php' === $pagenow || !$pagenow) {
+            return false;
+        }
+
         if ('post-new.php' === $pagenow) {
             if (isset($_REQUEST['post_type']) && post_type_exists($_REQUEST['post_type'])) {
                 $typenow = $_REQUEST['post_type'];
@@ -492,11 +548,19 @@ function get_youtube_rss_items($playlistID = null, $item_count = 10)
     return $items;
 }
 
-function teaser_list(array $posts)
+function teaser_list(array $posts, $show_fields = array(
+    'image',
+    'category',
+    'video'
+))
 {
     if (!count($posts)) {
         return;
     }
+
+    $show_fields[] = 'title';
+    $show_fields[] = 'url';
+
 
     foreach ($posts as $post) {
         if (!is_array($post)) {
@@ -512,12 +576,29 @@ function teaser_list(array $posts)
             $is_video = in_array('Video', $post_formats);
 
             $teaser = [
-                'image' => nc_blocks_image(get_post_thumbnail_id($post->ID), 'teaser'),
                 'url' => get_permalink($post->ID),
                 'superhead' => $primary_category,
                 'title' => $post->post_title,
                 'withVideoLogo' => $is_video,
             ];
+
+            if (in_array('image', $show_fields)) {
+                $teaser['image'] = nc_blocks_image(get_post_thumbnail_id($post->ID), 'teaser');
+            }
+
+            if (in_array('category', $show_fields)) {
+                $teaser['superhead'] = $primary_category;
+            }
+
+            if (in_array('video', $show_fields)) {
+                $teaser['withVideoLogo'] = $is_video;
+            }
+
+            if (in_array('description', $show_fields)) {
+                $summary = get_field('summary', $post->ID);
+                $teaser['description'] = $summary ? $summary : get_the_excerpt($post->ID);
+            }
+
         } else {
             $teaser = $post;
         }
@@ -749,6 +830,51 @@ function external_post_list($block, $content = '', $is_preview = false, $post_id
     echo '<div class="wp-block">' . $external_post_list . '</div>';
 }
 
+function related_posts_block($block, $content = '', $is_preview = false, $post_id = 0)
+{
+    $post_source = get_field('post_source');
+
+    $related_posts = false;
+
+    if (!$post_source || $post_source === 'auto') {
+        $related_posts = related_posts($post_id);
+    } else {
+        $related_posts = get_field('select_posts');
+    }
+
+
+    if ($related_posts) {
+        $teasers = array_map(function ($post_item) {
+            $image = nc_blocks_image(get_post_thumbnail_id($post_item->ID), 'teaser_small');
+            $summary = get_field('summary', $post_item->ID);
+            $summary = $summary ? $summary : get_the_excerpt($post_item->ID);
+            return [
+                'title' => get_the_title($post_item->ID),
+                'image' => $image,
+                'description' => $summary,
+            ];
+        }, $related_posts);
+
+        $align = '';
+        $align_class = '';
+        $block_class = 'wp-block';
+        if ($block['align']) {
+            $align = 'data-align="' . $block['align'] . '"';
+            $align_class = 'align' . $block['align'];
+
+            if ($block['align'] === 'left' || $block['align'] === 'right') {
+                $block_class = '';
+            }
+        }
+
+        echo "<div class='$block_class $align_class' $align>";
+        Timber::render(get_blocks_twig_directory('/related-stories.twig'), ['items' => $teasers]);
+        echo '</div>';
+    } elseif ($is_preview) {
+        echo 'No posts found';
+    }
+}
+
 function featured_story_large($block, $content = '', $is_preview = false, $post_id = 0)
 {
     $featured_post_id = false;
@@ -851,10 +977,15 @@ function breaker_feature($block, $content = '', $is_preview = false, $post_id = 
 
 add_action('acf/init', function () {
     if (function_exists('acf_register_block_type')) {
+
+        $post_type = get_post_type_from_editor();
+
+        $always_allow = !$post_type || $post_type === 'acf-field-group';
         // Blocks to register for all post types
 
+
         // Blocks to register except on `post` post type
-        if (get_post_type_from_editor() !== 'post') {
+        if ($always_allow || $post_type !== 'post') {
             acf_register_block_type([
                 'name' => 'nc-featured-story',
                 'title' => __('Featured Story', 'colby-news-theme'),
@@ -987,6 +1118,22 @@ add_action('acf/init', function () {
                 'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
                 'render_callback' => 'NC_Blocks\breaker_feature',
                 'supports' => ['align' => false, 'multiple' => true],
+            ]);
+        }
+
+        if ($always_allow || $post_type === 'post') {
+            // Register blocks that should only appear on posts
+            acf_register_block_type([
+                'name' => 'nc-related-posts',
+                'title' => __('Related Posts', 'colby-news-theme'),
+                'description' => __(
+                    'List of posts that share the same Primary Category as the current post.',
+                    'colby-news-theme'
+                ),
+                'category' => 'colby-news',
+                'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
+                'render_callback' => 'NC_Blocks\related_posts_block',
+                'supports' => ['align' => true, 'multiple' => true],
             ]);
         }
     }
