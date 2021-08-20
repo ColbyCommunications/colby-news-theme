@@ -809,6 +809,7 @@ function featured_story_large($block, $content = '', $is_preview = false, $post_
                         'title' => $link_text,
                         'url' => get_the_permalink($featured_post_id),
                     ],
+                    'is_preview' => $is_preview,
                 ],
             );
         }
@@ -819,7 +820,7 @@ function featured_story_large($block, $content = '', $is_preview = false, $post_
             $featured_story_block = '';
         }
     }
-
+    do_action('qm/debug', 'Is this firing early?');
     echo '<div class="wp-block">' . $featured_story_block . '</div>';
 }
 

@@ -1,5 +1,11 @@
 <figure class="{{ display|default('grid') }} {{ caption is not empty ? 'grid-caption' }} gap-4 {{ classes|join( ' ' ) }}">
-        {{ media }}
+        {% if isResponsiveEmbed %}
+            <div class="responsive-embed">
+                {{ media }}
+            </div>
+        {% else %}
+            {{ media }}
+        {% endif %}
 
     {% if caption is not empty %}
         <figcaption class="{{ captionClasses|join(' ') }}">

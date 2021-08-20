@@ -204,10 +204,13 @@ class TemplatePart
             $video = get_field('featured_video');
         }
 
+        $figure_responsive = false;
+
         if ($video) {
             $orientation = 'landscape';
             $featuredImage = $video;
             $featuredImageCaption = '';
+            $figure_responsive = true;
         } else {
             $orientation = get_field('vertical_header', $post->ID) ? 'portrait' : 'landscape';
             if ($orientation === 'portrait') {
@@ -223,8 +226,13 @@ class TemplatePart
 
 
         $figure = '<figure>';
+        if ($figure_responsive) {
+            $figure .= '<div class="responsive-embed">';
+        }
         $figure .= $featuredImage;
-
+        if ($figure_responsive) {
+            $figure .= '</div>';
+        }
         if ($featuredImageCaption) {
             $figure .= "<figcaption class='text-sm'>$featuredImageCaption</figcaption>";
         }
