@@ -98,8 +98,7 @@ if (! function_exists('get_newcity_colby_news_entry_footer')) :
                         get_the_title()
                     )
                 );
-                $footer .= ob_get_contents();
-            ob_end_clean();
+                $footer .= ob_get_clean();
             $footer .= '</span>';
         }
 

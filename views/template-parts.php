@@ -52,8 +52,7 @@ class TemplatePart
         if (is_active_sidebar('footer_widgets')) :
             ob_start();
             dynamic_sidebar('footer_widgets');
-            $socialLinks = ob_get_contents();
-            ob_end_clean();
+            $socialLinks = ob_get_clean();
         else :
             $socialLinks = '';
         endif;
@@ -84,8 +83,7 @@ class TemplatePart
         if (is_active_sidebar('main_menu_widgets')) :
             ob_start();
             dynamic_sidebar('main_menu_widgets');
-            $emailSignupForm = ob_get_clean();  //or ob_get_clean();
-            ob_end_clean();
+            $emailSignupForm = ob_get_clean();
         else :
             $emailSignupForm = '';
         endif;
