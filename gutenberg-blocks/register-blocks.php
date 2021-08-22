@@ -768,6 +768,18 @@ function external_post_list($block, $content = '', $is_preview = false, $post_id
         'ignore_sticky_posts' => 1,
     ];
 
+    $terms = get_field('terms');
+
+    if ($terms) {
+        $query_args['tax_query'] = [
+            [
+                'taxonomy' => 'post_tag',
+                'field' => 'term_id',
+                'terms' => $terms,
+            ],
+        ];
+    }
+
     $query_results = new WP_Query($query_args);
     $post_results = $query_results->posts;
 
@@ -775,19 +787,25 @@ function external_post_list($block, $content = '', $is_preview = false, $post_id
 
     if (is_array($post_results) && count($post_results) > 0) {
         foreach ($post_results as $index => $post) {
+            $featured_image = get_post_thumbnail_id($post);
+            $source_logo = null;
+            if ($featured_image) {
+                $source_logo = nc_blocks_image($featured_image, 'logo');
+            }
+
             $sources = wp_get_post_terms($post->ID, 'media_source');
 
             if (!is_wp_error($sources) && is_array($sources) && count($sources)) {
                 $source = $sources[0];
                 $source_name = $source->name;
 
-                $source_logo_id = get_field('logo', $source);
-                $source_logo = nc_blocks_image($source_logo_id, 'logo');
+                if (!$source_logo) {
+                    $source_logo_id = get_field('logo', $source);
+                    $source_logo = nc_blocks_image($source_logo_id, 'logo');
+                }
             } else {
                 $source_name = null;
-                $source_logo = null;
             }
-
 
             if ($index === 0) {
                 $blurb = get_the_excerpt($post);

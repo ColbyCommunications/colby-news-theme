@@ -64,6 +64,13 @@ class TemplatePart
         return Timber::compile($this->twigPath . '/site-footer.twig', $args);
     }
 
+    protected function siteSearch($args = array())
+    {
+        $searchTwig = $this->twigPath . '/site-search.twig';
+
+        return Timber::compile($searchTwig, $args);
+    }
+
     protected function siteHeader($args)
     {
         $component = new Component();
@@ -103,7 +110,7 @@ class TemplatePart
             'modalSiteFooter' => $this->build('siteFooter', []),
         ]);
 
-        $searchModalContent = '';
+        $searchModalContent = $this->siteSearch();
 
         $searchModal = Timber::compile($this->twigPath . '/modal.twig', [
             'modalId' => 'site-search',

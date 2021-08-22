@@ -739,6 +739,28 @@ function newcity_colby_news_scripts()
         true
     );
 
+    wp_enqueue_script(
+        'algolia-search',
+        'https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch.umd.js',
+        null,
+        true
+    );
+
+    wp_enqueue_script(
+        'instant-search',
+        'https://cdnjs.cloudflare.com/ajax/libs/instantsearch.js/4.23.0/instantsearch.production.min.js',
+        null,
+        true
+    );
+
+    wp_enqueue_script(
+        'colby-news-site-search',
+        get_template_directory_uri() . '/js/site-search.js',
+        array('algolia-search', 'instant-search'),
+        filemtime(get_template_directory() . '/js/site-search.js'),
+        true
+    );
+
     if (is_singular() && comments_open() && get_option('thread_comments')) {
         wp_enqueue_script('comment-reply');
     }
