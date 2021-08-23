@@ -10,23 +10,18 @@
 
 {% else %}
     {% set featuredStory = featuredStory|default(false) %}
-    {% set verticalAlign = 'flex flex-col justify-center' %}
-    <article id="post-{{ post.id }}" class="grid gap-y-4 sm:gap-x-8 lg:gap-x-12 xl:gap-x-16 story-teaser {{ featuredStory ? 'story-teaser--featured' : '' }}">
-        <div class="text-sm story-teaser__date text-tertiary-dark {{ featuredStory ? '' : '' }}">
-            {% if featuredStory is not same as(true) %}
-                <div class="hidden mb-1 lg:block">Posted</div>
-            {% endif %}
-            <div class="font-semibold">{{ post.date }}</div>
+    <div id="post-{{ post.id }}" class="post-list-item">
+    <a class="grid grid-cols-3 gap-y-2 gap-x-7 hover:bg-gray-100 py-3.5 sm:py-5 border-b border-gray-700 {{ loop.first ? 'border-t sm:border-t-0' }} {{ loop.last ? 'sm:border-b-0' }}" href="{{ post.link }}">
+        <div class="order-last sm:order-none">
+            {# image gets "cropped" to a square on mobile w/ the padding-bottom trick #}
+            <div class="relative after:block after:pb-[100%] after:content-empty sm:after:hidden descendant-img:absolute sm:descendant-img:static descendant-img:w-full descendant-img:h-full descendant-img:object-cover">
+                {{ post.thumbnail }}
+            </div>
         </div>
-        {# <div class="story-teaser__text {{ featuredStory ? '' : 'flex ' ~ verticalAlign }}"> #}
-            <h3 class="story-teaser__title font-serif leading-none {{ featuredStory ? '' : 'text-[1.75rem]' }} ">
-                <a class="text-primary-light hocus:underline" href="{{ post.link }}" rel="bookmark">{{ post.title }}</a>
-            </h3>
-            <div class="story-teaser__body">{{ post.preview }}</div>
-        {# </div> #}
-        <div class="story-teaser__image">
-            <img class="object-top w-full h-auto"
-                src="{{ image.src }}" alt="{{ image.alt }}." width="{{ image.width }}" height="{{ image.height }}">
+        <div class="contents sm:block sm:col-span-2 sm:space-y-2 lg:pt-6">
+            <h3 class="col-span-2 text-sm font-bold sm:text-xl">{{ post.title }}</h3>
+            <p class="col-span-2 text-xs sm:text-base">{{ post.description }}</p>
         </div>
-    </article>
+    </a>
+    </div>
 {% endif %}

@@ -6,12 +6,17 @@ require_once(get_template_directory() . '/gutenberg-blocks/blocks-utilities.php'
 require_once(get_template_directory() . '/gutenberg-blocks/components/block-components.php');
 
 use Timber\Timber;
+use Timber\Post as TimberPost;
+use Timber\PostQuery as TimberPostQuery;
+use Timber\Image as TimberImage;
 
 class TemplatePart
 {
     protected $components;
     protected $context;
     protected $twigPath;
+    protected $pagination;
+    protected $paginatedPostList;
 
     public function __construct($context = null)
     {
@@ -21,6 +26,8 @@ class TemplatePart
             'siteHeader' => 'siteHeader',
             'siteFooter' => 'siteFooter',
             'storyHeader' => 'storyHeader',
+            'pagination' => 'pagination',
+            'paginatedPostList' => 'paginatedPostList',
         );
     }
 
@@ -43,6 +50,65 @@ class TemplatePart
         }
 
         return $output;
+    }
+
+    protected function pagination($postList)
+    {
+        if (isset($this->pagination)) {
+            return $this->pagination;
+        }
+
+        return Timber::compile($this->twigPath . '/pagination.twig', [
+            'pagination' => $postList->pagination()
+        ]);
+    }
+
+    protected function paginatedPostList()
+    {
+        if (!isset($this->paginatedPostList)) {
+            $timber_posts = new TimberPostQuery();
+            $fallback_image = '';
+            if (function_exists('nc_fallback_image')) {
+                $fallback_image = nc_fallback_image();
+            }
+
+            $post_previews = [];
+
+            foreach ($timber_posts->get_posts() as $key => $post_item) {
+                if ($post_item->thumbnail) {
+                    $thumbnail = nc_blocks_image($post_item->thumbnail->ID, 'teaser_small');
+                } else {
+                    $thumbnail = new TimberImage($fallback_image);
+                    $thumbnail = "<img src='" . $thumbnail->src() . "' alt='' />";
+                }
+
+                $preview = '';
+
+                if (function_exists('get_field')) {
+                    $preview = get_field('summary', $post_item->id());
+                }
+
+                $preview = $preview ? $preview : $post_item->preview()->read_more(false);
+
+                $post_previews[] = [
+                    'title' => $post_item->title(),
+                    'id' => $post_item->id(),
+                    'link' => $post_item->link(),
+                    'post_type' => $post_item->post_type(),
+                    'description' => $preview,
+                    'thumbnail' => $thumbnail
+                ];
+            }
+
+            $this->paginatedPostList = Timber::compile($this->twigPath . '/post-list.twig', [
+                'posts' => $post_previews,
+                'pagination' => $timber_posts->pagination(),
+                'pagination_links' => $this->pagination($timber_posts),
+                'fallback_image' => $fallback_image
+            ]);
+        }
+
+        return $this->paginatedPostList;
     }
 
     protected function siteFooter($args)
@@ -193,7 +259,12 @@ class TemplatePart
         }
 
         if (function_exists('yoast_get_primary_term')) {
-            $defaultArgs['primaryCategory'] = yoast_get_primary_term('category', $post->ID);
+            $primaryCategoryID = yoast_get_primary_term_id('category', $post->ID);
+            $primaryCategory = get_term($primaryCategoryID);
+            $defaultArgs['primaryCategory'] = [
+                'title' => $primaryCategory->name,
+                'url' => get_term_link($primaryCategoryID, 'category'),
+            ];
         }
 
         if (function_exists('get_field')) {

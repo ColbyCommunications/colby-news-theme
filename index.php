@@ -17,14 +17,21 @@ use Timber\Timber;
 use Timber\Post as TimberPost;
 
 $context = Timber::context();
-$context['posts'] = $timber_posts = Timber::get_posts();
-$context['post'] = $timber_post = new TimberPost();
+$templateParts = new \NC_Blocks\TemplatePart($context);
+
+$context['postList'] = $timber_posts = $templateParts->build('paginatedPostList');
+
+if (is_home()) {
+    $timber_post = new TimberPost();
+    $title = $timber_post->title();
+} else {
+    $title = get_the_archive_title();
+}
+
 $context['archive'] = [
-    'title' => $timber_post->title(),
+    'title' => $title,
     'description' => get_the_archive_description(),
 ];
-
-
 
 if (post_password_required($post->ID)) {
     Timber::render(

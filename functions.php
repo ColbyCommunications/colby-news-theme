@@ -212,6 +212,25 @@ function nc_get_section_nav($post_id = null, $args = [])
     return $nav_links;
 }
 
+// Set archive titles
+function nc_colby_archive_titles($title)
+{
+    if (is_category()) {
+        $title = single_cat_title('', false);
+    } elseif (is_tag()) {
+        $title = single_tag_title('', false);
+    } elseif (is_author()) {
+        $title = '<span class="vcard">' . get_the_author() . '</span>';
+    } elseif (is_post_type_archive()) {
+        $title = post_type_archive_title('', false);
+    } elseif (is_tax()) {
+        $title = single_term_title('', false);
+    }
+
+    return $title;
+}
+add_filter('get_the_archive_title', 'nc_colby_archive_titles');
+
 if (! function_exists('newcity_customizer_control')) :
     function newcity_add_customizer_control($args, $wp_customize)
     {
@@ -454,7 +473,7 @@ if (! function_exists('newcity_colby_news_setup')) :
         $timber_dir = Timber\Timber::$dirname;
 
         // Add the registered menu to Timber for Twig access
-        add_filter('timber/context', 'add_menus_to_context');
+        // add_filter('timber/context', 'add_menus_to_context');
         function add_menus_to_context($context)
         {
             $context['menu_primary'] = new \Timber\Menu('menu-primary');
@@ -606,6 +625,25 @@ if (! function_exists('newcity_colby_news_setup')) :
     }
 endif;
 add_action('after_setup_theme', 'newcity_colby_news_setup');
+
+if (! function_exists('nc_fallback_image')) {
+    function nc_fallback_image()
+    {
+        $relative_file_path = '/assets/images/placeholder.png';
+        $parent_placeholder = get_template_directory() . $relative_file_path;
+        $child_placeholder = get_stylesheet_directory() . $relative_file_path;
+
+        if (file_exists($child_placeholder)) {
+            return get_stylesheet_directory_uri() . $relative_file_path;
+        }
+
+        if (file_exists($parent_placeholder)) {
+            return get_template_directory_uri() . $relative_file_path;
+        }
+
+        return false;
+    }
+}
 
 /**
  * Force dimensions of default image sizes, if necessary
