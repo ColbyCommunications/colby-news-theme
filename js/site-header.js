@@ -16,8 +16,17 @@ const setUpSiteHeader = () => {
     const { MicroModal } = window;
     const menu = document.querySelector(`#${menuId}`);
     const openButtons = document.querySelectorAll(`.${openButtonClass}`);
+    const openButtonWrappers = document.querySelectorAll(
+      `.${openButtonClass}-wrapper`
+    );
 
-    if (!MicroModal || !menu || !openButtons.length) return;
+    if (
+      !MicroModal ||
+      !menu ||
+      !openButtons.length ||
+      !openButtonWrappers.length
+    )
+      return;
 
     const realHeaderOpenButton =
       realHeader &&
@@ -29,6 +38,12 @@ const setUpSiteHeader = () => {
 
     const closeButton = menu.querySelector(`#${closeButtonId}`);
     if (!closeButton) return;
+
+    // set openButtonWrappers to trigger closeButton
+    // (safe b/c closeButton will be disabled when we don't want it clicked)
+    openButtonWrappers.forEach((e) =>
+      e.addEventListener('click', () => closeButton.click())
+    );
 
     const focusTargetAncestor = menu.querySelector('.focus-target-ancestor');
 
@@ -600,6 +615,35 @@ const setUpSiteHeader = () => {
     });
   };
 
+  /*
+    because sticky-position header can hide focused-elements, we want to make sure
+    that any element that receives focus gets scrolled into visibility if it was
+    behind the sticky-header (it's a keyboard-accessibility issue)
+  */
+  const setUpFocusUnblocker = () => {
+    document.addEventListener(
+      'focus',
+      () => {
+        const el = document.activeElement;
+
+        // if focused element is IN a sticky-position header (or is the body) then do nothing
+        if (el === document.body || el.matches('.site-header *')) return;
+
+        // determine whether focused element is behind the sticky-header
+        const { top } = el.getBoundingClientRect();
+        const headerHeight =
+          parseInt(
+            document.documentElement.style.getPropertyValue('--header-height')
+          ) * 16;
+        const diff = top - headerHeight;
+
+        // if it is, then scroll the element to the bottom of the viewport
+        if (diff < 0) el.scrollIntoView(false);
+      },
+      true
+    );
+  };
+
   setUpModal({
     menuId: 'main-menu',
     openButtonClass: 'open-menu',
@@ -615,7 +659,8 @@ const setUpSiteHeader = () => {
   setUpHeightTracker();
 
   setUpStickyEvents();
+
+  setUpFocusUnblocker();
 };
 
-// if live site (i.e., not Storybook), run function
-if (!window.STORYBOOK_ENV) setUpSiteHeader();
+setUpSiteHeader();

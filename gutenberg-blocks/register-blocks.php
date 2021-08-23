@@ -429,7 +429,7 @@ function query_from_fields(array $user_fields = array())
     return wp_parse_args($new_args, $default_args);
 }
 
-function related_posts($post_id, $item_count = 5)
+function related_posts($post_id, $item_count = 5, array $tags = [])
 {
     $primary_category = get_primary_category($post_id);
 
@@ -454,6 +454,7 @@ function related_posts($post_id, $item_count = 5)
             'ignore_sticky_posts' => 1,
             'post__not_in' => [$post_id],
             'tax_query' => [
+                'relation' => 'AND',
                 [
                     'taxonomy' => 'category',
                     'field' => 'slug',
@@ -461,6 +462,14 @@ function related_posts($post_id, $item_count = 5)
                 ]
             ],
         ];
+
+        if (count($tags)) {
+            $query_args['tax_query'][] = [
+                'taxonomy' => 'post_tag',
+                'field' => 'term_id',
+                'terms' => $tags,
+            ];
+        }
 
         $results = new WP_Query($query_args);
         do_action('qm/debug', $results);
@@ -855,7 +864,15 @@ function related_posts_block($block, $content = '', $is_preview = false, $post_i
     $related_posts = false;
 
     if (!$post_source || $post_source === 'auto') {
-        $related_posts = related_posts($post_id);
+        $tags = get_field('tags');
+        if (!is_array($tags)) {
+            $tags = [];
+        }
+        $post_count = get_field('post_count');
+        if (!$post_count) {
+            $post_count = 5;
+        }
+        $related_posts = related_posts($post_id, $post_count, $tags);
     } else {
         $related_posts = get_field('select_posts');
     }
