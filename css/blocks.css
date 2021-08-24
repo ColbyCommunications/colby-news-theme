@@ -3124,3 +3124,8 @@ h2.is-style-block-heading {
 .is-style-block-heading {
 	text-transform: uppercase;
 }
+
+
+.editor-styles-wrapper .block-editor-block-list__layout.is-root-container > [data-align="left"][data-type="acf/nc-related-posts"] {
+	margin-right: 1.5rem !important;
+}

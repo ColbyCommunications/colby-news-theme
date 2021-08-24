@@ -477,44 +477,41 @@ function related_posts($post_id, $item_count = 5, array $tags = [])
 
     $cache_key = "posts_related_$post_id" . '_' . $primary_category_id;
 
-    // $results = wp_cache_get($cache_key);
 
-    // if ($results === null) {
-        $query_args = [
-            'post_type' => get_post_type($post_id),
-            'posts_per_page' => $item_count > 10 ? $item_count : 10,
-            'order' => 'DESC',
-            'orderby' => 'date',
-            'post_status' => ['publish'],
-            'perm' => 'readable',
-            'ignore_sticky_posts' => 1,
-            'post__not_in' => [$post_id],
-            'tax_query' => [
-                'relation' => 'AND',
-                [
-                    'taxonomy' => 'category',
-                    'field' => 'slug',
-                    'terms' => [$primary_category->slug],
-                ]
-            ],
+    $query_args = [
+        'post_type' => get_post_type($post_id),
+        'posts_per_page' => $item_count > 10 ? $item_count : 10,
+        'order' => 'DESC',
+        'orderby' => 'date',
+        'post_status' => ['publish'],
+        'perm' => 'readable',
+        'ignore_sticky_posts' => 1,
+        'post__not_in' => [$post_id],
+        'tax_query' => [
+            'relation' => 'AND',
+            [
+                'taxonomy' => 'category',
+                'field' => 'slug',
+                'terms' => [$primary_category->slug],
+            ]
+        ],
+    ];
+
+    if (count($tags)) {
+        $query_args['tax_query'][] = [
+            'taxonomy' => 'post_tag',
+            'field' => 'term_id',
+            'terms' => $tags,
         ];
+    }
 
-        if (count($tags)) {
-            $query_args['tax_query'][] = [
-                'taxonomy' => 'post_tag',
-                'field' => 'term_id',
-                'terms' => $tags,
-            ];
-        }
+    $results = new WP_Query($query_args);
+    do_action('qm/debug', $results);
 
-        $results = new WP_Query($query_args);
-        do_action('qm/debug', $results);
-
-        if (!is_object($results) || !is_array($results->posts)) {
-            wp_cache_set($cache_key, false, 120);
-            return false;
-        }
-    // }
+    if (!is_object($results) || !is_array($results->posts)) {
+        wp_cache_set($cache_key, false, 120);
+        return false;
+    }
 
     $posts = $results->posts;
 
@@ -929,17 +926,6 @@ function related_posts_block($block, $content = '', $is_preview = false, $post_i
 
 
     if ($related_posts) {
-        $teasers = array_map(function ($post_item) {
-            $image = nc_blocks_image(get_post_thumbnail_id($post_item->ID), 'teaser_small');
-            $summary = get_field('summary', $post_item->ID);
-            $summary = $summary ? $summary : get_the_excerpt($post_item->ID);
-            return [
-                'title' => get_the_title($post_item->ID),
-                'image' => $image,
-                'description' => $summary,
-            ];
-        }, $related_posts);
-
         $align = '';
         $align_class = '';
         $block_class = 'wp-block';
@@ -952,8 +938,22 @@ function related_posts_block($block, $content = '', $is_preview = false, $post_i
             }
         }
 
+        $image_size = $align ? 'logo' : 'teaser_small';
+
+        $teasers = array_map(function ($post_item) use ($image_size) {
+            $image = nc_blocks_image(get_post_thumbnail_id($post_item->ID), $image_size);
+            $summary = get_field('summary', $post_item->ID);
+            $summary = $summary ? $summary : get_the_excerpt($post_item->ID);
+            return [
+                'title' => get_the_title($post_item->ID),
+                'image' => $image,
+                'description' => $summary,
+            ];
+        }, $related_posts);
+
+
         echo "<div class='$block_class $align_class' $align>";
-        Timber::render(get_blocks_twig_directory('/related-stories.twig'), ['items' => $teasers]);
+        Timber::render(get_blocks_twig_directory('/related-stories.twig'), ['items' => $teasers, 'float' => $align]);
         echo '</div>';
     } elseif ($is_preview) {
         echo 'No posts found';
