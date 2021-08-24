@@ -314,7 +314,7 @@ function innerBlocks($args = [])
     return $innerBlocksTag . ' />';
 }
 
-function query_from_fields(array $user_fields = array())
+function query_from_fields(array $user_fields = array(), $has_pagination = false)
 {
     $default_args = [
         'post_type' => ['post'],
@@ -412,6 +412,7 @@ function query_from_fields(array $user_fields = array())
     $new_args['tax_query'] = $tax_query_master;
 
     $posts_in = get_key($user_fields, 'post__in');
+    $posts_not_in = get_key($user_fields, 'post__not_in');
 
     if ($posts_in && is_string($posts_in)) {
         $posts_in = explode(',', $posts_in);
@@ -426,7 +427,36 @@ function query_from_fields(array $user_fields = array())
         }
     }
 
-    return wp_parse_args($new_args, $default_args);
+    if ($posts_not_in && is_string($posts_in)) {
+        $posts_not_in = explode(',', $posts_in);
+
+        if (count($posts_not_in)) {
+            $posts_not_in = array_map(function ($post_id) {
+                return trim($post_id);
+            }, $posts_not_in);
+
+            $new_args['post__not_in'] = $posts_not_in;
+        }
+    }
+
+    $new_args = wp_parse_args($new_args, $default_args);
+
+    $offset = get_field('offset');
+
+    if ($offset) {
+        $new_args['raw_offset'] = $offset;
+        if ($has_pagination) {
+            $current_page = get_query_var('paged');
+            $current_page = $current_page ? $current_page : 1;
+            $ppp = $new_args['posts_per_page'];
+
+            $offset = $offset + (($current_page - 1) * $ppp);
+        }
+
+        $new_args['offset'] = $offset;
+    }
+
+    return $new_args;
 }
 
 function related_posts($post_id, $item_count = 5, array $tags = [])

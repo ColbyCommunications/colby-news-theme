@@ -199,6 +199,27 @@ acf_add_local_field_group(array(
 			'placeholder' => '',
 		),
 		array(
+			'key' => 'field_6125167591cde',
+			'label' => 'Offset Posts',
+			'name' => 'offset',
+			'type' => 'number',
+			'instructions' => 'Instead of starting with the first post found, skip this many items. This is useful when you are displaying the latest post separately.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => 0,
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'min' => '',
+			'max' => '',
+			'step' => '',
+		),
+		array(
 			'key' => 'field_6113ecfb22ee2',
 			'label' => 'Post Status',
 			'name' => 'post_status',
@@ -276,6 +297,25 @@ All other settings above will be honored, so if a given ID does not meet the que
 			'append' => '',
 			'maxlength' => '',
 		),
+		array(
+			'key' => 'field_6125152b2ccf4',
+			'label' => 'Exclude Specific Posts',
+			'name' => 'post__not_in',
+			'type' => 'text',
+			'instructions' => 'If you want specific posts to NOT show up, list their ID\'s here, separated by commas.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
+		),
 	),
 	'location' => array(
 		array(
@@ -299,6 +339,13 @@ All other settings above will be honored, so if a given ID does not meet the que
 				'value' => 'acf/nc-slider-with-teaser-pair',
 			),
 		),
+		array(
+			array(
+				'param' => 'page_template',
+				'operator' => '==',
+				'value' => 'special-project.php',
+			),
+		),
 	),
 	'menu_order' => 5,
 	'position' => 'normal',
@@ -315,7 +362,7 @@ All other settings above will be honored, so if a given ID does not meet the que
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1629234741,
+	'modified' => 1629820639,
 ));
 
 endif;

@@ -17,6 +17,7 @@
                 {% include ['teasers/teaser-'~listed_post.post_type~'.twig', 'teasers/teaser.twig'] with {
                     post: listed_post,
                     featuredStory: featuredStory,
+                    is_archive: true
                 }%}
             </div>
         {% endfor %}

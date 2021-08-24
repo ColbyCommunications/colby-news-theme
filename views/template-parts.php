@@ -63,10 +63,24 @@ class TemplatePart
         ]);
     }
 
-    protected function paginatedPostList()
+    protected function paginatedPostList($args = [])
     {
         if (!isset($this->paginatedPostList)) {
-            $timber_posts = new TimberPostQuery();
+            $args = wp_parse_args($args, ['query' => null]);
+
+            // Build pagination if not using the default query
+            if ($args['query']) {
+                global $paged;
+                if (!isset($paged) || !$paged) {
+                    $paged = 1;
+                }
+
+                $args['query']['paged'] = $paged;
+                $timber_posts = new TimberPostQuery($args['query']);
+            } else {
+                $timber_posts = new TimberPostQuery();
+            }
+
             $fallback_image = '';
             if (function_exists('nc_fallback_image')) {
                 $fallback_image = nc_fallback_image();
@@ -90,19 +104,38 @@ class TemplatePart
 
                 $preview = $preview ? $preview : $post_item->preview()->read_more(false);
 
+                $primaryCategory = false;
+                if (function_exists('yoast_get_primary_term')) {
+                    $primaryCategoryID = yoast_get_primary_term_id('category', $post_item->ID);
+                    if ($primaryCategoryID) {
+                        $primaryCategory = get_term($primaryCategoryID);
+                        $primaryCategory = [
+                            'title' => $primaryCategory->name,
+                            'url' => get_term_link($primaryCategoryID, 'category'),
+                        ];
+                    }
+                }
+
                 $post_previews[] = [
                     'title' => $post_item->title(),
                     'id' => $post_item->id(),
                     'link' => $post_item->link(),
                     'post_type' => $post_item->post_type(),
                     'description' => $preview,
+                    'primary_category' => $primaryCategory,
                     'thumbnail' => $thumbnail
                 ];
             }
 
+            $pagination_args = [];
+
+            if ($args['query'] && array_key_exists('raw_offset', $args['query'])) {
+                $pagination_args['total'] = ceil(($timber_posts->found_posts - $args['query']['raw_offset']) / $args['query']['posts_per_page']);
+            }
+
             $this->paginatedPostList = Timber::compile($this->twigPath . '/post-list.twig', [
                 'posts' => $post_previews,
-                'pagination' => $timber_posts->pagination(),
+                'pagination' => $timber_posts->pagination($pagination_args),
                 'pagination_links' => $this->pagination($timber_posts),
                 'fallback_image' => $fallback_image
             ]);

@@ -352,13 +352,16 @@
 	width: 100%
 }
 
+.wp-block-cover-image {
+	width: 100%;
+}
+
 .wp-block-cover,
 .wp-block-cover-image {
 	position: relative;
 	background-size: cover;
 	background-position: 50%;
-	min-height: 430px;
-	width: 100%;
+	min-height: 26.875rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -3065,10 +3068,13 @@ pre.wp-block-verse {
 	z-index: 100000
 }
 
+.archive-wrapper > .wp-block:not(.alignleft):not(.alignright),
 .is-root-container > .wp-block:not(.alignleft):not(.alignright),
 article > .wp-block:not(.alignleft):not(.alignright),
+.archive-wrapper > .wp-block-separator,
 .is-root-container > .wp-block-separator,
 article > .wp-block-separator,
+.archive-wrapper > .wp-block-pullquote,
 .is-root-container > .wp-block-pullquote,
 article > .wp-block-pullquote {
 	margin-top: 2.25rem;
@@ -3077,10 +3083,13 @@ article > .wp-block-pullquote {
 
 @media (min-width: 42.0625rem) {
 
+	.archive-wrapper > .wp-block:not(.alignleft):not(.alignright),
 	.is-root-container > .wp-block:not(.alignleft):not(.alignright),
 	article > .wp-block:not(.alignleft):not(.alignright),
+	.archive-wrapper > .wp-block-separator,
 	.is-root-container > .wp-block-separator,
 	article > .wp-block-separator,
+	.archive-wrapper > .wp-block-pullquote,
 	.is-root-container > .wp-block-pullquote,
 	article > .wp-block-pullquote {
 		margin-top: 3.75rem;
@@ -3088,7 +3097,8 @@ article > .wp-block-pullquote {
 	}
 }
 
-article > .wp-block:first-child,
+article > .wp-block.wp-block.wp-block:first-child,
+.archive-wrapper > .wp-block.wp-block.wp-block:first-child,
 h2 + .wp-block,
 h3 + .wp-block,
 h4 + .wp-block {
