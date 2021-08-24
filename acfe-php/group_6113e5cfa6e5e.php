@@ -157,6 +157,25 @@ acf_add_local_field_group(array(
 			'save_other_choice' => 0,
 		),
 		array(
+			'key' => 'field_6125370d5e060',
+			'label' => 'Include Current Post',
+			'name' => 'include_current',
+			'type' => 'true_false',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => '',
+			'default_value' => 0,
+			'ui' => 1,
+			'ui_on_text' => 'Include',
+			'ui_off_text' => 'Exclude',
+		),
+		array(
 			'key' => 'field_6113ed4422ee3',
 			'label' => 'Advanced',
 			'name' => '',
@@ -362,7 +381,7 @@ All other settings above will be honored, so if a given ID does not meet the que
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1629820639,
+	'modified' => 1629828947,
 ));
 
 endif;

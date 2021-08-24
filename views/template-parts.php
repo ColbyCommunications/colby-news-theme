@@ -293,11 +293,13 @@ class TemplatePart
 
         if (function_exists('yoast_get_primary_term')) {
             $primaryCategoryID = yoast_get_primary_term_id('category', $post->ID);
-            $primaryCategory = get_term($primaryCategoryID);
-            $defaultArgs['primaryCategory'] = [
-                'title' => $primaryCategory->name,
-                'url' => get_term_link($primaryCategoryID, 'category'),
-            ];
+            if ($primaryCategoryID && ! is_wp_error($primaryCategoryID)) {
+                $primaryCategory = get_term($primaryCategoryID);
+                $defaultArgs['primaryCategory'] = [
+                    'title' => $primaryCategory->name,
+                    'url' => get_term_link($primaryCategoryID, 'category'),
+                ];
+            }
         }
 
         if (function_exists('get_field')) {

@@ -314,7 +314,7 @@ function innerBlocks($args = [])
     return $innerBlocksTag . ' />';
 }
 
-function query_from_fields(array $user_fields = array(), $has_pagination = false)
+function query_from_fields(array $user_fields = array(), $has_pagination = false, $post_id = null)
 {
     $default_args = [
         'post_type' => ['post'],
@@ -414,6 +414,12 @@ function query_from_fields(array $user_fields = array(), $has_pagination = false
     $posts_in = get_key($user_fields, 'post__in');
     $posts_not_in = get_key($user_fields, 'post__not_in');
 
+    $include_current = get_key($user_fields, 'include_current');
+
+    if (!$include_current && $post_id) {
+        $posts_not_in = is_array($posts_not_in) ? array_merge($posts_not_in, [$post_id]) : [$post_id];
+    }
+
     if ($posts_in && is_string($posts_in)) {
         $posts_in = explode(',', $posts_in);
 
@@ -427,16 +433,16 @@ function query_from_fields(array $user_fields = array(), $has_pagination = false
         }
     }
 
-    if ($posts_not_in && is_string($posts_in)) {
-        $posts_not_in = explode(',', $posts_in);
+    if ($posts_not_in && is_string($posts_not_in)) {
+        $posts_not_in = explode(',', $posts_not_in);
+        $posts_not_in = array_map(function ($post_id) {
+            return trim($post_id);
+        }, $posts_not_in);
+    }
 
-        if (count($posts_not_in)) {
-            $posts_not_in = array_map(function ($post_id) {
-                return trim($post_id);
-            }, $posts_not_in);
+    if (is_array($posts_not_in) && count($posts_not_in)) {
 
-            $new_args['post__not_in'] = $posts_not_in;
-        }
+        $new_args['post__not_in'] = $posts_not_in;
     }
 
     $new_args = wp_parse_args($new_args, $default_args);
@@ -626,7 +632,7 @@ function teaser_list(array $posts, $show_fields = array(
             }
 
             if (in_array('category', $show_fields)) {
-                $teaser['superhead'] = $primary_category;
+                $teaser['superhead'] = [ 'title' => $primary_category];
             }
 
             if (in_array('video', $show_fields)) {
@@ -667,7 +673,11 @@ function post_list_slider($posts, $is_preview = false)
     return Timber::compile(get_blocks_twig_directory('/sliding-teasers.twig'), ['teasers' => $teasers, 'is_preview' => $is_preview]);
 }
 
-function teaser_pair($posts, $is_preview = false)
+function teaser_pair($posts, $is_preview = false, $show_fields = array(
+    'image',
+    'category',
+    'video'
+))
 {
     if (count($posts) < 1) {
         if ($is_preview) {
@@ -680,7 +690,7 @@ function teaser_pair($posts, $is_preview = false)
     }
 
 
-    $teasers = teaser_list($posts);
+    $teasers = teaser_list($posts, $is_preview, $show_fields);
 
     return Timber::compile(get_blocks_twig_directory('/teaser-pair.twig'), ['teasers' => $teasers, 'is_preview' => $is_preview]);
 }
@@ -718,7 +728,7 @@ function post_list_slider_block($block, $content = '', $is_preview = false, $pos
     if (function_exists('get_fields')) {
         $fields_from_block = get_fields();
         $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
-        $query_args = query_from_fields($fields_from_block);
+        $query_args = query_from_fields($fields_from_block, false, $post_id);
 
         $results = new WP_Query($query_args);
 
@@ -731,11 +741,21 @@ function teaser_pair_block($block, $content = '', $is_preview = false, $post_id 
     if (function_exists('get_fields')) {
         $fields_from_block = get_fields();
         $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
-        $query_args = query_from_fields($fields_from_block);
+        $query_args = query_from_fields($fields_from_block, false, $post_id);
+
+        $show_fields = get_field('show_fields');
 
         $results = new WP_Query($query_args);
 
-        echo '<div class="wp-block">' . teaser_pair($results->posts) . '</div>';
+        if (is_array($show_fields)) {
+            $show_fields[] = 'image';
+            $teaser_pair = teaser_pair($results->posts, $show_fields);
+        } else {
+            $teaser_pair = teaser_pair($results->posts);
+        }
+
+
+        echo '<div class="wp-block">' . $teaser_pair . '</div>';
     }
 }
 
@@ -744,7 +764,7 @@ function slider_with_teaser_pair_block($block, $content = '', $is_preview = fals
     if (function_exists('get_fields')) {
         $fields_from_block = get_fields();
         $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
-        $query_args = query_from_fields($fields_from_block);
+        $query_args = query_from_fields($fields_from_block, false, $post_id);
 
         $results = new WP_Query($query_args);
 
@@ -1048,6 +1068,28 @@ add_action('acf/init', function () {
         $always_allow = !$post_type || $post_type === 'acf-field-group';
         // Blocks to register for all post types
 
+        acf_register_block_type([
+            'name' => 'nc-teaser-pair',
+            'title' => __('Teaser Pair', 'colby-news-theme'),
+            'description' => __(
+                'Two teasers, side-by-side.',
+                'colby-news-theme'
+            ),
+            'category' => 'colby-news',
+            'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
+            'render_callback' => 'NC_Blocks\teaser_pair_block',
+            'supports' => ['align' => false, 'multiple' => true],
+            'enqueue_assets' => function () {
+                wp_enqueue_script(
+                    'linkify',
+                    get_template_directory_uri() . '/js/linkify.js',
+                    [],
+                    '',
+                    true
+                );
+            },
+        ]);
+
 
         // Blocks to register except on `post` post type
         if ($always_allow || $post_type !== 'post') {
@@ -1083,28 +1125,6 @@ add_action('acf/init', function () {
                         '',
                         true
                     );
-                    wp_enqueue_script(
-                        'linkify',
-                        get_template_directory_uri() . '/js/linkify.js',
-                        [],
-                        '',
-                        true
-                    );
-                },
-            ]);
-
-            acf_register_block_type([
-                'name' => 'nc-teaser-pair',
-                'title' => __('Teaser Pair', 'colby-news-theme'),
-                'description' => __(
-                    'Two teasers, side-by-side.',
-                    'colby-news-theme'
-                ),
-                'category' => 'colby-news',
-                'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
-                'render_callback' => 'NC_Blocks\teaser_pair_block',
-                'supports' => ['align' => false, 'multiple' => true],
-                'enqueue_assets' => function () {
                     wp_enqueue_script(
                         'linkify',
                         get_template_directory_uri() . '/js/linkify.js',
@@ -1172,18 +1192,18 @@ add_action('acf/init', function () {
                 'supports' => ['align' => false, 'multiple' => true],
             ]);
 
-            acf_register_block_type([
-                'name' => 'nc-breaker-feature',
-                'title' => __('Breaker Feature', 'colby-news-theme'),
-                'description' => __(
-                    'Image with text overlay that fills page width',
-                    'colby-news-theme'
-                ),
-                'category' => 'colby-news',
-                'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
-                'render_callback' => 'NC_Blocks\breaker_feature',
-                'supports' => ['align' => false, 'multiple' => true],
-            ]);
+            // acf_register_block_type([
+            //     'name' => 'nc-breaker-feature',
+            //     'title' => __('Breaker Feature', 'colby-news-theme'),
+            //     'description' => __(
+            //         'Image with text overlay that fills page width',
+            //         'colby-news-theme'
+            //     ),
+            //     'category' => 'colby-news',
+            //     'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path d="M22.089 23.98c-.05 0-.09-.01-.13-.01H2.02c-.05 0-.09 0-.13 0 -.528 0-.973-.38-1.057-.9 -.05-.27.01-.54.16-.76L11.09 2.13c.29-.583.72-.645.89-.645 .21 0 .61.08.89.645L22.96 22.311c.31.47.19 1.12-.27 1.45 -.19.13-.4.2-.63.2ZM1.89 22.8c-.02.02-.03.04-.05.06 -.02.01-.02.03-.02.05 0 .03.03.05.06.05 .03-.01.06-.01.09-.01h20c.02 0 .05 0 .08 0 0 0 0 0 0 0 .02 0 .03-.01.04-.02 .03-.03.03-.07.01-.1 -.02-.02-.03-.05-.05-.07L11.94 2.54V2.54L1.83 22.75Z"/><path d="M11.996 17.479c-.28 0-.5-.23-.5-.5v-7c0-.28.22-.5.5-.5 .27 0 .5.22.5.5v7c0 .27-.23.5-.5.5Z"/><path d="M12.01 19.979c-.42-.01-.75-.32-.77-.73 -.01-.21.06-.4.2-.55 .13-.15.32-.23.52-.24 .42 0 .75.32.76.72 0 .2-.07.39-.21.54 -.14.14-.33.22-.53.23 -.01-.01-.01-.01-.01-.01s0 0 0 0Z"/></g></svg>',
+            //     'render_callback' => 'NC_Blocks\breaker_feature',
+            //     'supports' => ['align' => false, 'multiple' => true],
+            // ]);
         }
 
         if ($always_allow || $post_type === 'post') {
