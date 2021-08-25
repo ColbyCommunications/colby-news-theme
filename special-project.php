@@ -14,6 +14,7 @@ require_once get_template_directory() . '/gutenberg-blocks/register-blocks.php';
 $context = colby_news_page\get_context();
 
 $fields = get_fields($context['post']->ID);
+$fields = is_array($fields) ? $fields : [];
 $query = NC_Blocks\query_from_fields($fields, true);
 
 $templateParts = new \NC_Blocks\TemplatePart($context);
