@@ -33,12 +33,6 @@ wp.domReady(() => {
     isDefault: false,
   });
 
-  wp.blocks.registerBlockStyle('core/heading', {
-    name: 'block-heading',
-    label: 'Block Heading',
-    isDefault: false,
-  });
-
   // wp.blocks.getBlockTypes().forEach((block) => {
   //   if (Array.isArray(block['styles']) && block['styles'].length > 0) {
   //     console.log(

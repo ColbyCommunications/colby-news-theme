@@ -767,6 +767,48 @@ function video_slider_block($block, $content = '', $is_preview = false, $post_id
     }
 }
 
+function external_post_teaser_args($post, $args = [])
+{
+    $featured_image = get_post_thumbnail_id($post);
+    $source_logo = null;
+    if ($featured_image) {
+        $source_logo = nc_blocks_image($featured_image, 'logo');
+    }
+
+    $sources = wp_get_post_terms($post->ID, 'media_source');
+
+    if (!is_wp_error($sources) && is_array($sources) && count($sources)) {
+        $source = $sources[0];
+        $source_name = $source->name;
+
+        if (!$source_logo) {
+            $source_logo_id = get_field('logo', $source);
+            $source_logo = nc_blocks_image($source_logo_id, 'logo');
+        }
+    } else {
+        $source_name = null;
+    }
+
+    if (!empty($args['show_description'])) {
+        $blurb = get_the_excerpt($post);
+    } else {
+        $blurb = null;
+    }
+
+    $item_args = [
+        'image' =>  $source_logo,
+        'source' =>  $source_name,
+        'link' =>  [
+            'url' => get_field('external_url', $post->ID),
+            'title' => get_the_title($post),
+        ],
+        'blurb' => $blurb,
+        'post_type' => $post->post_type,
+    ];
+
+    return $item_args;
+}
+
 function external_post_list($block, $content = '', $is_preview = false, $post_id = 0)
 {
 
@@ -811,41 +853,13 @@ function external_post_list($block, $content = '', $is_preview = false, $post_id
 
     if (is_array($post_results) && count($post_results) > 0) {
         foreach ($post_results as $index => $post) {
-            $featured_image = get_post_thumbnail_id($post);
-            $source_logo = null;
-            if ($featured_image) {
-                $source_logo = nc_blocks_image($featured_image, 'logo');
-            }
-
-            $sources = wp_get_post_terms($post->ID, 'media_source');
-
-            if (!is_wp_error($sources) && is_array($sources) && count($sources)) {
-                $source = $sources[0];
-                $source_name = $source->name;
-
-                if (!$source_logo) {
-                    $source_logo_id = get_field('logo', $source);
-                    $source_logo = nc_blocks_image($source_logo_id, 'logo');
-                }
-            } else {
-                $source_name = null;
-            }
+            $show_description = false;
 
             if ($index === 0) {
-                $blurb = get_the_excerpt($post);
-            } else {
-                $blurb = null;
+                $show_description = true;
             }
 
-            $item_args = [
-                'image' =>  $source_logo,
-                'source' =>  $source_name,
-                'link' =>  [
-                    'url' => get_permalink($post),
-                    'title' => get_the_title($post),
-                ],
-                'blurb' => $blurb,
-            ];
+            $item_args = external_post_teaser_args($post, ['show_description' => $show_description]);
 
             $post_items[] = Timber::compile(get_blocks_twig_directory('/media-coverage-item.twig'), $item_args);
         }

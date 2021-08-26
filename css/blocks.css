@@ -2537,6 +2537,8 @@ hr.wp-block-separator.is-style-wide {
 	display: -webkit-flex;
 	display: -ms-flexbox;
 	display: flex;
+
+	color: #000;
 }
 
 .wp-block-social-links svg path {

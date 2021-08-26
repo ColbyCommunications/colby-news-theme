@@ -4,9 +4,9 @@ namespace NC_Blocks;
 
 require_once(get_template_directory() . '/gutenberg-blocks/blocks-utilities.php');
 require_once(get_template_directory() . '/gutenberg-blocks/components/block-components.php');
+require_once(get_template_directory() . '/gutenberg-blocks/acf-block-functions.php');
 
 use Timber\Timber;
-use Timber\Post as TimberPost;
 use Timber\PostQuery as TimberPostQuery;
 use Timber\Image as TimberImage;
 
@@ -89,42 +89,47 @@ class TemplatePart
             $post_previews = [];
 
             foreach ($timber_posts->get_posts() as $key => $post_item) {
-                if ($post_item->thumbnail) {
-                    $thumbnail = nc_blocks_image($post_item->thumbnail->ID, 'teaser_small');
+                if (!empty($args['transformer_function']) && function_exists($args['transformer_function'])) {
+                    $transformer_args = !empty($args['transformer_args']) ? $args['transformer_args'] : [];
+                    $post_previews[] = $args['transformer_function']($post_item, $transformer_args);
                 } else {
-                    $thumbnail = new TimberImage($fallback_image);
-                    $thumbnail = "<img src='" . $thumbnail->src() . "' alt='' />";
-                }
-
-                $preview = '';
-
-                if (function_exists('get_field')) {
-                    $preview = get_field('summary', $post_item->id());
-                }
-
-                $preview = $preview ? $preview : $post_item->preview()->read_more(false);
-
-                $primaryCategory = false;
-                if (function_exists('yoast_get_primary_term')) {
-                    $primaryCategoryID = yoast_get_primary_term_id('category', $post_item->ID);
-                    if ($primaryCategoryID) {
-                        $primaryCategory = get_term($primaryCategoryID);
-                        $primaryCategory = [
-                            'title' => $primaryCategory->name,
-                            'url' => get_term_link($primaryCategoryID, 'category'),
-                        ];
+                    if ($post_item->thumbnail) {
+                        $thumbnail = nc_blocks_image($post_item->thumbnail->ID, 'teaser_small');
+                    } else {
+                        $thumbnail = new TimberImage($fallback_image);
+                        $thumbnail = "<img src='" . $thumbnail->src() . "' alt='' />";
                     }
-                }
 
-                $post_previews[] = [
-                    'title' => $post_item->title(),
-                    'id' => $post_item->id(),
-                    'link' => $post_item->link(),
-                    'post_type' => $post_item->post_type(),
-                    'description' => $preview,
-                    'primary_category' => $primaryCategory,
-                    'thumbnail' => $thumbnail
-                ];
+                    $preview = '';
+
+                    if (function_exists('get_field')) {
+                        $preview = get_field('summary', $post_item->id());
+                    }
+
+                    $preview = $preview ? $preview : $post_item->preview()->read_more(false);
+
+                    $primaryCategory = false;
+                    if (function_exists('yoast_get_primary_term')) {
+                        $primaryCategoryID = yoast_get_primary_term_id('category', $post_item->ID);
+                        if ($primaryCategoryID) {
+                            $primaryCategory = get_term($primaryCategoryID);
+                            $primaryCategory = [
+                                'title' => $primaryCategory->name,
+                                'url' => get_term_link($primaryCategoryID, 'category'),
+                            ];
+                        }
+                    }
+
+                    $post_previews[] = [
+                        'title' => $post_item->title(),
+                        'id' => $post_item->id(),
+                        'link' => $post_item->link(),
+                        'post_type' => $post_item->post_type(),
+                        'description' => $preview,
+                        'primary_category' => $primaryCategory,
+                        'thumbnail' => $thumbnail
+                    ];
+                }
             }
 
             $pagination_args = [];
@@ -133,11 +138,16 @@ class TemplatePart
                 $pagination_args['total'] = ceil(($timber_posts->found_posts - $args['query']['raw_offset']) / $args['query']['posts_per_page']);
             }
 
+            $pagination = $timber_posts->pagination($pagination_args);
+
             $this->paginatedPostList = Timber::compile($this->twigPath . '/post-list.twig', [
                 'posts' => $post_previews,
-                'pagination' => $timber_posts->pagination($pagination_args),
+                'pagination' => $pagination,
                 'pagination_links' => $this->pagination($timber_posts),
-                'fallback_image' => $fallback_image
+                'fallback_image' => $fallback_image,
+                'first_page' => $pagination->current === 1,
+                'postListClasses' => !empty($args['postListClasses']) ? $args['postListClasses'] : '',
+                'itemClasses' => !empty($args['itemClasses']) ? $args['itemClasses'] : '',
             ]);
         }
 

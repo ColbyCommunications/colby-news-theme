@@ -13,7 +13,7 @@
 
 {% set contentGroup1 %}
   {% if element != 'header' and primaryCategory %}
-    <div class="mb-3 text-sm uppercase">
+    <div class="mb-2 text-sm uppercase">
       {% if primaryCategory.url %}
         <a href="{{ primaryCategory.url }}">{{ primaryCategory.title }}</a>
       {% else %}
@@ -41,11 +41,11 @@
   {% endif %}
 
   {% if summary %}
-    <p class="text-xl lg:text-2xl xl:text-3xl mt-4 sm:mt-8 {{ (orientation == 'landscape' and element == 'header') ? 'max-w-2xl mx-auto' }}">{{ summary }}</p>
+    <p class="text-xl sm:mt-8 {{ element == 'header' ? 'mt-4' : 'mt-3' }} {{ (orientation == 'landscape' and element == 'header') ? 'lg:text-2xl xl:text-3xl max-w-2xl mx-auto' }}">{{ summary }}</p>
   {% endif %}
 
   {% if link and element != 'header' %}
-    <div class="mt-16">
+    <div class="{{ element == 'header' ? 'mt-16' : 'mt-2' }}">
       <a href="{{ link.url }}" class="px-10 py-2 text-sm text-white uppercase transition-colors bg-black rounded-lg hover:bg-gray-800">{{ link.title }}</a>
     </div>
   {% endif %}
@@ -57,7 +57,7 @@
     {{ _shareButtons }}
   {% endif %}
 
-  <div class="mt-4 sm:mt-8">
+  <div class="{{ element == 'header' ? 'mt-4' : 'mt-3' }} sm:mt-8">
     {% if author or photoCredit or videoCredit %}
       <div class="flex flex-col sm:block">{% apply spaceless %}
         {% if author %}
@@ -73,7 +73,7 @@
     {% endif %}
 
     {% if contact and contact.name %}
-      <address class="flex flex-col mt-4 not-italic">
+      <address class="flex flex-col {{ element == 'header' ? 'mt-4' : 'mt-3' }} not-italic">
         <span>Contact: {{ contact.name }}{% if contact.email %}
           (<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>){# assuming link for email? #}
         {% endif %}</span>

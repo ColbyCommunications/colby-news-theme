@@ -5,19 +5,16 @@
 </div>
 {% endif %}
 
-<div class="border-t border-gray-700 post-list">
+<div class="border-t border-gray-700 post-list {{ postListClasses }}">
     {% if posts|length > 0 %}
         {% for listed_post in posts %}
-            <div class="pt-8 pb-8 border-b border-gray-700 lg:pt-8">
-                {% if first_page and loop.first %}
-                    {% set featuredStory = true %}
-                {% else %}
-                    {% set featuredStory = false %}
-                {% endif %}
+            <div class="post-list-item {{ itemClasses }} border-b border-gray-700">
                 {% include ['teasers/teaser-'~listed_post.post_type~'.twig', 'teasers/teaser.twig'] with {
                     post: listed_post,
                     featuredStory: featuredStory,
-                    is_archive: true
+                    is_archive: true,
+                    loop: loop,
+                    first_page: first_page
                 }%}
             </div>
         {% endfor %}

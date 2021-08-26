@@ -9,9 +9,17 @@
     </article><!-- #post-<?php the_ID(); ?> -->
 
 {% else %}
-    {% set featuredStory = featuredStory|default(false) %}
+    {% if featuredStory is empty and loop is not empty %}
+        {% if first_page and loop.first %}
+            {% set featuredStory = true %}
+        {% else %}
+            {% set featuredStory = false %}
+        {% endif %}
+    {% else %}
+        {% set featuredStory = featuredStory|default(false) %}
+    {% endif %}
     <div id="post-{{ post.id }}" class="post-list-item">
-    <a class="grid grid-cols-3 gap-y-2 gap-x-7 hover:bg-gray-100 py-3.5 sm:py-5 border-b border-gray-700 {{ loop.first ? 'border-t sm:border-t-0' }} {{ loop.last ? 'sm:border-b-0' }}" href="{{ post.link }}">
+    <a class="grid grid-cols-3 gap-y-2 gap-x-7 hover:bg-gray-100 py-3.5 sm:py-5" href="{{ post.link }}">
         <div class="order-last sm:order-none">
             {# image gets "cropped" to a square on mobile w/ the padding-bottom trick #}
             <div class="relative after:block after:pb-[100%] after:content-empty sm:after:hidden descendant-img:absolute sm:descendant-img:static descendant-img:w-full descendant-img:h-full descendant-img:object-cover">
