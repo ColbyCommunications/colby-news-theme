@@ -39,6 +39,26 @@ acf_add_local_field_group(array(
 			'width' => 1066,
 			'height' => 600,
 		),
+		array(
+			'key' => 'field_612d32031cc49',
+			'label' => 'Video File',
+			'name' => 'video_file',
+			'type' => 'file',
+			'instructions' => 'Use this field to add a video file associated with the post. This theme does not currently support displaying video files.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'uploader' => '',
+			'return_format' => 'url',
+			'min_size' => '',
+			'max_size' => '',
+			'mime_types' => '',
+			'library' => 'all',
+		),
 	),
 	'location' => array(
 		array(
@@ -58,7 +78,7 @@ acf_add_local_field_group(array(
 	'position' => 'side',
 	'style' => 'default',
 	'label_placement' => 'top',
-	'instruction_placement' => 'label',
+	'instruction_placement' => 'tooltip',
 	'hide_on_screen' => '',
 	'active' => true,
 	'description' => '',
@@ -69,7 +89,7 @@ acf_add_local_field_group(array(
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1629389760,
+	'modified' => 1630352003,
 ));
 
 endif;
