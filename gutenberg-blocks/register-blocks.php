@@ -8,6 +8,28 @@ namespace NC_Blocks;
 
 require_once(__DIR__ . '/acf-block-functions.php');
 
+function register_colby_block_patterns()
+{
+    register_block_pattern_category('headers', [
+        'label' => __('Headers', 'colby-news'),
+    ]);
+    register_block_pattern_category('colby-news', [
+        'label' => __('Colby', 'colby-news'),
+    ]);
+
+    register_block_pattern(
+        'colbycommunications/header-image',
+        array(
+            'title'       => __('Page Title with Image', 'colby-news-theme'),
+            'description' => _x('Page title and optional description, set against a photo background.', 'Block pattern description', 'colby-news-theme'),
+            'categories' => ['headers'],
+            'content'     => "<!-- wp:cover {\"overlayColor\":\"black\",\"align\":\"full\"} --><div class=\"wp-block-cover alignfull has-black-background-color has-background-dim\"><div class=\"wp-block-cover__inner-container\"><!-- wp:post-title {\"textAlign\":\"center\",\"level\":1,\"textColor\":\"white\"} /--><!-- wp:paragraph {\"align\":\"center\",\"textColor\":\"white\",\"fontSize\":\"large\",\"placeholder\":\"" . _x('Add description here', 'colby-news') . "\"} --><p class=\"has-text-align-center has-white-color has-text-color has-large-font-size\"></p><!-- /wp:paragraph --></div></div><!-- /wp:cover -->",
+            )
+    );
+
+}
+add_action('init', 'NC_Blocks\register_colby_block_patterns');
+
 add_action('wp_enqueue_scripts', 'NC_Blocks\nc_replace_block_library', 100);
 add_action('admin_enqueue_scripts', 'NC_Blocks\nc_replace_block_library', 100);
 

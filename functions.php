@@ -430,7 +430,7 @@ if (! function_exists('newcity_colby_news_setup')) :
         // Add default posts and comments RSS feed links to head.
         add_theme_support('automatic-feed-links');
 
-        add_theme_support('core-block-patterns');
+        remove_theme_support('core-block-patterns');
 
         add_theme_support(
             'post-formats',
