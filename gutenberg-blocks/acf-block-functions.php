@@ -714,9 +714,9 @@ function teaser_pair_block($block, $content = '', $is_preview = false, $post_id 
 
         if (is_array($show_fields)) {
             $show_fields[] = 'image';
-            $teaser_pair = teaser_pair($results->posts, $show_fields);
+            $teaser_pair = teaser_pair($results->posts, $is_preview, $show_fields);
         } else {
-            $teaser_pair = teaser_pair($results->posts);
+            $teaser_pair = teaser_pair($results->posts, $is_preview);
         }
 
 

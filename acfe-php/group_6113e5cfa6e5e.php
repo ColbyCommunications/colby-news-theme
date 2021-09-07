@@ -177,7 +177,7 @@ acf_add_local_field_group(array(
 		),
 		array(
 			'key' => 'field_6113ed4422ee3',
-			'label' => 'Advanced',
+			'label' => 'Advanced Query Settings',
 			'name' => '',
 			'type' => 'accordion',
 			'instructions' => '',
@@ -381,7 +381,7 @@ All other settings above will be honored, so if a given ID does not meet the que
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1629828947,
+	'modified' => 1631034694,
 ));
 
 endif;
