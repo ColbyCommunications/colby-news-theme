@@ -30,6 +30,7 @@
         "typography": {
             "customLineheight": false,
             "dropCap": false,
+            "customFontSize": false,
             "fontSizes": [
                 {
                     "slug": "small",
