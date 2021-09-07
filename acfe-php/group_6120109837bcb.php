@@ -90,7 +90,7 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
-			'default_value' => 5,
+			'default_value' => 3,
 			'placeholder' => '',
 			'prepend' => '',
 			'append' => '',

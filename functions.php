@@ -11,7 +11,7 @@
 function nc_display_post_blocks()
 {
     global $post;
-    if ($post) {
+    if ($post && is_single()) {
         do_action('qm/info', esc_html($post->post_content));
     }
 }

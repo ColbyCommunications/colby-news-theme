@@ -17,18 +17,30 @@ class TemplatePart
     protected $twigPath;
     protected $pagination;
     protected $paginatedPostList;
+    protected $fallbackImage;
 
     public function __construct($context = null)
     {
         $this->context = $context ?? Timber::get_context();
         $this->twigPath = get_template_directory() . '/views/template-parts';
+        $this->fallbackImage = '';
+        if (function_exists('nc_fallback_image')) {
+            $this->fallbackImage = nc_fallback_image();
+        }
+
         $this->components = array(
             'siteHeader' => 'siteHeader',
             'siteFooter' => 'siteFooter',
             'storyHeader' => 'storyHeader',
             'pagination' => 'pagination',
+            'defaultTeaserBuilder' => 'defaultTeaserBuilder',
             'paginatedPostList' => 'paginatedPostList',
         );
+    }
+
+    public function getTwigPath()
+    {
+        return $this->twigPath;
     }
 
     public function build($component_name, $args = [], $print = false)
@@ -63,10 +75,52 @@ class TemplatePart
         ]);
     }
 
+    protected function defaultTeaserBuilder($post_item)
+    {
+        if ($post_item->thumbnail) {
+            $thumbnail = nc_blocks_image($post_item->thumbnail->ID, 'teaser_small');
+        } else {
+            $thumbnail = new TimberImage($this->fallbackImage);
+            $thumbnail = "<img src='" . $thumbnail->src() . "' alt='' />";
+        }
+
+        $preview = '';
+
+        if (function_exists('get_field')) {
+            $preview = get_field('summary', $post_item->id());
+        }
+
+        $preview = $preview ? $preview : $post_item->preview()->read_more(false);
+
+        $primaryCategory = false;
+        if (function_exists('yoast_get_primary_term')) {
+            $primaryCategoryID = yoast_get_primary_term_id('category', $post_item->ID);
+            if ($primaryCategoryID) {
+                $primaryCategory = get_term($primaryCategoryID);
+                $primaryCategory = [
+                    'title' => $primaryCategory->name,
+                    'url' => get_term_link($primaryCategoryID, 'category'),
+                ];
+            }
+        }
+
+        $post_preview = [
+            'title' => $post_item->title(),
+            'id' => $post_item->id(),
+            'link' => $post_item->link(),
+            'post_type' => $post_item->post_type(),
+            'description' => $preview,
+            'primary_category' => $primaryCategory,
+            'thumbnail' => $thumbnail
+        ];
+
+        return $post_preview;
+    }
+
     protected function paginatedPostList($args = [])
     {
         if (!isset($this->paginatedPostList)) {
-            $args = wp_parse_args($args, ['query' => null]);
+            $args = wp_parse_args($args, ['query' => null, 'render' => true]);
 
             // Build pagination if not using the default query
             if ($args['query']) {
@@ -81,54 +135,14 @@ class TemplatePart
                 $timber_posts = new TimberPostQuery();
             }
 
-            $fallback_image = '';
-            if (function_exists('nc_fallback_image')) {
-                $fallback_image = nc_fallback_image();
-            }
-
             $post_previews = [];
 
-            foreach ($timber_posts->get_posts() as $key => $post_item) {
+            foreach ($timber_posts->get_posts() as $post_item) {
                 if (!empty($args['transformer_function']) && function_exists($args['transformer_function'])) {
                     $transformer_args = !empty($args['transformer_args']) ? $args['transformer_args'] : [];
                     $post_previews[] = $args['transformer_function']($post_item, $transformer_args);
                 } else {
-                    if ($post_item->thumbnail) {
-                        $thumbnail = nc_blocks_image($post_item->thumbnail->ID, 'teaser_small');
-                    } else {
-                        $thumbnail = new TimberImage($fallback_image);
-                        $thumbnail = "<img src='" . $thumbnail->src() . "' alt='' />";
-                    }
-
-                    $preview = '';
-
-                    if (function_exists('get_field')) {
-                        $preview = get_field('summary', $post_item->id());
-                    }
-
-                    $preview = $preview ? $preview : $post_item->preview()->read_more(false);
-
-                    $primaryCategory = false;
-                    if (function_exists('yoast_get_primary_term')) {
-                        $primaryCategoryID = yoast_get_primary_term_id('category', $post_item->ID);
-                        if ($primaryCategoryID) {
-                            $primaryCategory = get_term($primaryCategoryID);
-                            $primaryCategory = [
-                                'title' => $primaryCategory->name,
-                                'url' => get_term_link($primaryCategoryID, 'category'),
-                            ];
-                        }
-                    }
-
-                    $post_previews[] = [
-                        'title' => $post_item->title(),
-                        'id' => $post_item->id(),
-                        'link' => $post_item->link(),
-                        'post_type' => $post_item->post_type(),
-                        'description' => $preview,
-                        'primary_category' => $primaryCategory,
-                        'thumbnail' => $thumbnail
-                    ];
+                    $post_previews[] = $this->defaultTeaserBuilder($post_item);
                 }
             }
 
@@ -140,15 +154,21 @@ class TemplatePart
 
             $pagination = $timber_posts->pagination($pagination_args);
 
-            $this->paginatedPostList = Timber::compile($this->twigPath . '/post-list.twig', [
+            $paginatedPostListArgs = [
                 'posts' => $post_previews,
                 'pagination' => $pagination,
                 'pagination_links' => $this->pagination($timber_posts),
-                'fallback_image' => $fallback_image,
+                'fallback_image' => $this->fallbackImage,
                 'first_page' => $pagination->current === 1,
                 'postListClasses' => !empty($args['postListClasses']) ? $args['postListClasses'] : '',
                 'itemClasses' => !empty($args['itemClasses']) ? $args['itemClasses'] : '',
-            ]);
+            ];
+
+            if (! $args['render']) {
+                return $paginatedPostListArgs;
+            }
+
+            $this->paginatedPostList = Timber::compile($this->twigPath . '/post-list.twig', $paginatedPostListArgs);
         }
 
         return $this->paginatedPostList;

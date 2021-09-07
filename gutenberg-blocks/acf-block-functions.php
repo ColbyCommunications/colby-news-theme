@@ -473,7 +473,6 @@ function related_posts($post_id, $item_count = 5, array $tags = [])
     }
 
     $results = new WP_Query($query_args);
-    do_action('qm/debug', $results);
 
     if (!is_object($results) || !is_array($results->posts)) {
         wp_cache_set($cache_key, false, 120);
@@ -1013,7 +1012,6 @@ function featured_story_large($block, $content = '', $is_preview = false, $post_
             $featured_story_block = '';
         }
     }
-    do_action('qm/debug', 'Is this firing early?');
     echo '<div class="wp-block">' . $featured_story_block . '</div>';
 }
 
