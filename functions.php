@@ -618,10 +618,10 @@ if (! function_exists('newcity_colby_news_setup')) :
         add_image_size('header_vertical_lg', 800, 1066);
         add_image_size('header_vertical_md', 640, 850);
         add_image_size('header_vertical_sm', 320, 425);
-        add_image_size('landscape_full_xl', 2400, 1500);
-        add_image_size('landscape_full_lg', 1090, 610);
-        add_image_size('landscape_full_md', 800, 500);
-        add_image_size('landscape_full_sm', 400, 250);
+        add_image_size('landscape_full_xl', 2400);
+        add_image_size('landscape_full_lg', 1090);
+        add_image_size('landscape_full_md', 800);
+        add_image_size('landscape_full_sm', 400);
     }
 endif;
 add_action('after_setup_theme', 'newcity_colby_news_setup');
