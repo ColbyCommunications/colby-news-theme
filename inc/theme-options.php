@@ -181,22 +181,22 @@ function newcity_colby_news_add_options_page()
 // }
 
 // /** Add options page for global alert banner */
-// function newcity_add_global_alert_options()
-// {
+function newcity_add_global_alert_options()
+{
 
-//     // Check function exists.
-//     if (function_exists('acf_add_options_page')) {
-//         // Register options page.
-//         $option_page = acf_add_options_page(array(
-//             'page_title'    => __('Global Alert Settings'),
-//             'menu_title'    => __('Global Alert'),
-//             'menu_slug'     => 'global-alert',
-//             'capability'    => 'edit_posts',
-//             'redirect'      => false
-//         ));
-//     }
-// }
-// add_action('acf/init', 'newcity_add_global_alert_options');
+    // Check function exists.
+    if (function_exists('acf_add_options_page')) {
+        // Register options page.
+        $option_page = acf_add_options_page(array(
+            'page_title'    => __('Global Alert Settings'),
+            'menu_title'    => __('Global Alert'),
+            'menu_slug'     => 'global-alert',
+            'capability'    => 'edit_posts',
+            'redirect'      => false
+        ));
+    }
+}
+add_action('acf/init', 'newcity_add_global_alert_options');
 
 // /**
 //  * Build the WP-Admin settings page.

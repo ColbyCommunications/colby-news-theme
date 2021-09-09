@@ -26,10 +26,10 @@ acf_add_local_field_group(array(
 			'ui_off_text' => '',
 		),
 		array(
-			'key' => 'field_609a9fa0a0d21',
-			'label' => 'Alert Text and URL',
+			'key' => 'field_613a091eca396',
+			'label' => 'Alert Text',
 			'name' => 'alert',
-			'type' => 'acfe_advanced_link',
+			'type' => 'wysiwyg',
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
@@ -38,11 +38,11 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
-			'post_type' => array(
-				0 => 'post',
-				1 => 'page',
-			),
-			'taxonomy' => '',
+			'default_value' => '',
+			'tabs' => 'all',
+			'toolbar' => 'minimum_with_links',
+			'media_upload' => 0,
+			'delay' => 0,
 		),
 	),
 	'location' => array(
@@ -69,7 +69,7 @@ acf_add_local_field_group(array(
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1621963596,
+	'modified' => 1631193404,
 ));
 
 endif;

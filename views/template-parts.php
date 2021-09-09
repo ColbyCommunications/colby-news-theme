@@ -280,9 +280,10 @@ class TemplatePart
 
         $globalAlert = false;
 
-        $show_globalalert = function_exists('get_field') ? get_field('show_globalalert', 'option') : '';
-        if ($show_globalalert) {
-            $globalalert = function_exists('get_field') ? get_field('alert', 'option') : '';
+        $show_global_alert = function_exists('get_field') ? get_field('show_global_alert', 'option') : '';
+        if ($show_global_alert) {
+            $globalAlert = [];
+            $globalalert['alert'] = function_exists('get_field') ? get_field('alert', 'option') : '';
 
             $iconLocation = get_template_directory_uri() . '/assets/icons/icon-sprites.svg#interface-exclamation-triangle';
             $icon = "<svg class='w-8 h-8 transition-transform transform fill-current group-hover:scale-110'>
