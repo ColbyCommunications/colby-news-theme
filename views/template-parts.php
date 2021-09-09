@@ -385,6 +385,7 @@ class TemplatePart
 
         $defaultArgs['figure'] = $figure;
         $defaultArgs['orientation'] = $orientation;
+        $defaultArgs['shareButtons'] = Timber::compile($this->twigPath . '/social-sharing.twig');
 
         $headerArgs = wp_parse_args($args, $defaultArgs);
 

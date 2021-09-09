@@ -799,6 +799,14 @@ function newcity_colby_news_scripts()
         true
     );
 
+    wp_enqueue_script(
+        'social-sharing',
+        get_template_directory_uri() . '/js/social-sharing.js',
+        array(),
+        filemtime(get_template_directory() . '/js/social-sharing.js'),
+        true
+    );
+
     if (is_singular() && comments_open() && get_option('thread_comments')) {
         wp_enqueue_script('comment-reply');
     }
