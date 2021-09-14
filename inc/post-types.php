@@ -98,7 +98,7 @@ add_action('init', function () {
 // Change title of category archives
 
 add_filter('get_the_archive_title', function ($title) {
-    if (get_post_type() === 'external_post' && $story_type = get_query_var('story_type')) {
+    if (is_post_type_archive('external_post') && $story_type = get_query_var('story_type')) {
         $story_type_object = get_term_by('slug', $story_type, 'story_type');
         $title = $story_type_object->name;
     } elseif (is_category()) {
@@ -108,7 +108,8 @@ add_filter('get_the_archive_title', function ($title) {
     return $title;
 });
 
-function colby_story_type_title($title) {
+function colby_story_type_title($title)
+{
     if (is_post_type_archive('external_post')) {
         if ($story_type = get_query_var('story_type')) {
             global $page, $paged;
