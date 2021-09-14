@@ -35,6 +35,8 @@ function nc_register_external_posts()
 }
 add_action('init', 'nc_register_external_posts');
 
+// Register custom taxonomies
+
 function nc_register_external_sources()
 {
     $labels = [
@@ -92,3 +94,82 @@ add_action('init', 'nc_register_story_types');
 add_action('init', function () {
     add_rewrite_rule('external/([a-z0-9-]+)[/]?$', 'index.php?post_type=external_post&story_type=$matches[1]', 'top');
 });
+
+// Change title of category archives
+
+add_filter('get_the_archive_title', function ($title) {
+    if (get_post_type() === 'external_post' && $story_type = get_query_var('story_type')) {
+        $story_type_object = get_term_by('slug', $story_type, 'story_type');
+        $title = $story_type_object->name;
+    } elseif (is_category()) {
+        $title = single_cat_title('', false);
+    }
+
+    return $title;
+});
+
+function colby_story_type_title($title) {
+    if (is_post_type_archive('external_post')) {
+        if ($story_type = get_query_var('story_type')) {
+            global $page, $paged;
+
+            $title_array = [];
+
+            $story_type_object = get_term_by('slug', $story_type, 'story_type');
+            $title_array['title'] = $story_type_object->name;
+
+            // Add a page number if necessary.
+            if (( $paged >= 2 || $page >= 2 ) && ! is_404()) {
+                /* translators: %s: Page number. */
+                $title_array['page'] = sprintf(__('Page %s'), max($paged, $page));
+            }
+
+            $title_array['site'] = get_bloginfo('name', 'display');
+
+            /**
+             * Filters the separator for the document title.
+             *
+             * @since 4.4.0
+             *
+             * @param string $sep Document title separator. Default '-'.
+             */
+            if (class_exists('WPSEO_Options')) {
+                $yoast_options = new Yoast\WP\SEO\Helpers\Options_Helper();
+                $sep = $yoast_options->get_title_separator();
+            } else {
+                $sep = apply_filters('document_title_separator', '-');
+            }
+
+            /**
+             * Filters the parts of the document title.
+             *
+             * @since 4.4.0
+             *
+             * @param array $title {
+             *     The document title parts.
+             *
+             *     @type string $title   Title of the viewed page.
+             *     @type string $page    Optional. Page number if paginated.
+             *     @type string $tagline Optional. Site description when on home page.
+             *     @type string $site    Optional. Site title when not on home page.
+             * }
+             */
+            $title_array = apply_filters('document_title_parts', $title_array);
+
+            $title = implode(" $sep ", array_filter($title_array));
+
+            /**
+             * Filters the document title.
+             *
+             * @since 5.8.0
+             *
+             * @param string $title Document title.
+             */
+            $title = apply_filters('document_title', $title);
+        }
+    }
+    return $title;
+}
+
+add_filter('pre_get_document_title', 'colby_story_type_title', 10, 1);
+add_filter('wpseo_title', 'colby_story_type_title', 10, 1);

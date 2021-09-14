@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '2f550d440baa66e86cee50ca62b50e15fc54f685',
+    'reference' => '7fe100706df9bd56e48b4d509f4e639ac84dd5e3',
     'name' => 'colbycommunications/colby-news-theme',
   ),
   'versions' => 
@@ -62,7 +62,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '2f550d440baa66e86cee50ca62b50e15fc54f685',
+      'reference' => '7fe100706df9bd56e48b4d509f4e639ac84dd5e3',
     ),
     'composer/installers' => 
     array (
