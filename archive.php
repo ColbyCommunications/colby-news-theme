@@ -25,10 +25,16 @@ if ($post_type === 'external_post') {
     $current_page = get_query_var('paged');
     $current_page = $current_page ? $current_page : 1;
 
-    $post_list_args['transformer_function'] = 'NC_Blocks\external_post_teaser_args';
+    $story_type = get_query_var('story_type');
+
+    if ($story_type === 'media-coverage') {
+        $post_list_args['transformer_function'] = 'NC_Blocks\external_post_teaser_args';
+    } else {
+        $post_list_args['transformer_function'] = 'NC_Blocks\basic_post_teaser_args';
+    }
     $post_list_args['transformer_args'] = ['show_description' => true];
 
-    if ($current_page === 1) {
+    if ($current_page === 1 && $story_type === 'media-coverage') {
         $post_list_args['postListClasses'] = 'feature-archive';
         $frontLoadPicks = true;
     } else {
@@ -84,9 +90,8 @@ $context['archive'] = [
     'description' => get_the_archive_description(),
 ];
 
-
-
 Timber::render([
+    'templates/archive-' . $story_type . '.twig',
     'templates/archive-' . get_post_type() . '.twig',
     'templates/archive.twig'
 ], $context);

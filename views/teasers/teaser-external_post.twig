@@ -1,13 +1,15 @@
-{% if featuredStory is empty %}
-    {% if first_page %}
-        {% if loop.first %}
-            {% set variant = 'featured' %}
-        {% elseif loop.index == 2 or loop.index == 3 %}
-            {% set variant = 'split' %}
+{% if variant is empty %}
+    {% if featuredStory is empty %}
+        {% if first_page %}
+            {% if loop.first %}
+                {% set variant = 'featured' %}
+            {% elseif loop.index == 2 or loop.index == 3 %}
+                {% set variant = 'split' %}
+            {% endif %}
         {% endif %}
+    {% else %}
+        {% set variant = featuredStory ? 'featured' : false %}
     {% endif %}
-{% else %}
-    {% set variant = featuredStory ? 'featured' : false %}
 {% endif %}
 
 {% if variant == 'featured' %}
@@ -71,6 +73,25 @@
         {% endif %}
     </div>
 
+{% elseif variant == 'basic' %}
+
+    <div class="space-y-2">
+        <div class="grid gap-x-4 gap-y-2">
+                <div class="space-y-1 title-wrapper lg:space-y-2">
+
+                    {% set hTag = 'h' ~ post.hLevel|default(3) %}
+                    <{{ hTag }} class="leading-tight">
+                        <a href="{{ post.link.url }}" class="font-bold">{{ post.link.title }}</a>
+                    </{{ hTag }}>
+                </div>
+
+                <div class="blurb-wrapper">
+                {% if post.blurb %}
+                        <div class=" text-base-minus-2 lg:text-base">{{ post.blurb }}</div>
+                {% endif %}
+                </div>
+        </div>
+    </div>
 {% else %}{# 'plain' #}
 
     <div class="space-y-2">

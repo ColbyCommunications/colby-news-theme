@@ -808,6 +808,27 @@ function external_post_teaser_args($post, $args = [])
     return $item_args;
 }
 
+function basic_post_teaser_args($post, $args = [])
+{
+    if (!empty($args['show_description'])) {
+        $blurb = get_the_excerpt($post);
+    } else {
+        $blurb = null;
+    }
+
+    $item_args = [
+        'link' =>  [
+            'url' => get_field('external_url', $post->ID),
+            'title' => get_the_title($post),
+        ],
+        'blurb' => $blurb,
+        'post_type' => $post->post_type,
+        'variant' => 'basic'
+    ];
+
+    return $item_args;
+}
+
 function external_post_list($block, $content = '', $is_preview = false, $post_id = 0)
 {
 

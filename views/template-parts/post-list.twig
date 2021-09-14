@@ -12,6 +12,7 @@
                 {% include ['teasers/teaser-'~listed_post.post_type~'.twig', 'teasers/teaser.twig'] with {
                     post: listed_post,
                     featuredStory: featuredStory,
+                    variant: listed_post.variant,
                     is_archive: true,
                     loop: loop,
                     first_page: first_page
