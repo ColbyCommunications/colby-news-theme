@@ -7,6 +7,30 @@ acf_add_local_field_group(array(
 	'title' => 'Related Posts',
 	'fields' => array(
 		array(
+			'key' => 'field_61420a60ab194',
+			'label' => 'Block Layout',
+			'name' => 'layout',
+			'type' => 'radio',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'choices' => array(
+				'full' => 'Full Width',
+				'left' => 'Floated Left',
+			),
+			'allow_null' => 0,
+			'other_choice' => 0,
+			'default_value' => '',
+			'layout' => 'horizontal',
+			'return_format' => 'value',
+			'save_other_choice' => 0,
+		),
+		array(
 			'key' => 'field_612010c1f5d6b',
 			'label' => 'Choose Posts',
 			'name' => 'post_source',
@@ -168,7 +192,7 @@ acf_add_local_field_group(array(
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1629740523,
+	'modified' => 1631718043,
 ));
 
 endif;

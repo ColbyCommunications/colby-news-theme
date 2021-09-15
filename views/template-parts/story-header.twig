@@ -27,7 +27,7 @@
   {% if (primaryCategory and element == 'header') or lengthOfRead %}
     <div class="flex flex-col mt-4 uppercase sm:block">{% apply spaceless %}
       {% if primaryCategory and element == 'header' %}
-        <span class="primary-category {{ lengthOfRead ? 'mr-2 sm:after:content-pipe sm:after:ml-2' }}">
+        <span class="primary-category {{ lengthOfRead ? 'text-sm lg:text-base mr-2 sm:after:content-pipe sm:after:ml-2' }}">
           {% if primaryCategory.url %}
             <a href="{{ primaryCategory.url }}">{{ primaryCategory.title }}</a>
           {% else %}
@@ -35,13 +35,13 @@
           {% endif %}
         </span>
       {% endif %}
-      {% if lengthOfRead %}<span>{{ lengthOfRead }}</span>{% endif %}
+      {% if lengthOfRead %}<span class="text-sm lg:text-base ">{{ lengthOfRead }}</span>{% endif %}
     {% endapply %}
     </div>
   {% endif %}
 
   {% if summary %}
-    <p class="text-xl sm:mt-8 {{ element == 'header' ? 'mt-4' : 'mt-3' }} {{ (orientation == 'landscape' and element == 'header') ? 'lg:text-2xl xl:text-3xl max-w-2xl mx-auto' }}">{{ summary }}</p>
+    <p class="md:mt-8 {{ element == 'header' ? 'mt-4' : 'mt-3' }} {{ (orientation == 'landscape' and element == 'header') ? 'text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl max-w-2xl mx-auto' }}">{{ summary }}</p>
   {% endif %}
 
   {% if link and element != 'header' %}
@@ -121,7 +121,7 @@
     </div>
   </{{ element }}>
 {% else %}{# non-homepage landscape #}
-  <{{ element }} class="pt-8 {{ element == 'header' ? 'pb-9 md:pb-15' }}">
+  <{{ element }} class="md:pt-4 lg:pt-8 {{ element == 'header' ? 'pb-9 md:pb-15' }}">
     <div class="text-center">{{ contentGroup1 }}</div>
     <div class="mt-8 -mx-container-gutter md:mx-0 descendant-figcaption:mx-page-padding md:descendant-figcaption:mx-0 descendant-img:h-auto">
       {{ figure }}

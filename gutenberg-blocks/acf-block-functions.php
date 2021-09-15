@@ -432,6 +432,45 @@ function query_from_fields(array $user_fields = array(), $has_pagination = false
     return $new_args;
 }
 
+function nc_get_excerpt($post, $trim = false, array $custom_fields = [])
+{
+    $post = get_post($post);
+    if (empty($post)) {
+        return '';
+    }
+
+    if (post_password_required($post)) {
+        return __('Password protected post.');
+    }
+
+    $excerpt = $post->post_excerpt;
+    $excerpt = $excerpt ? $excerpt : $post->post_content;
+
+    if (! $excerpt) {
+        return '';
+    }
+
+    if ($trim) {
+        if (is_int($trim)) {
+            $trim = [
+                'length' => $trim,
+            ];
+        }
+
+        if (is_array($trim) && ! empty($trim['length'])) {
+            if (empty($trim['more'])) {
+                $trim['more'] = '[&hellip;]';
+            }
+
+            $excerpt_length = apply_filters('excerpt_length', $trim['length']);
+            $excerpt_more = apply_filters('excerpt_more', ' ' . $trim['more']);
+            $excerpt = wp_trim_words($excerpt, $excerpt_length, $excerpt_more);
+        }
+    }
+
+    return apply_filters('get_the_excerpt', $excerpt, $post);
+}
+
 function related_posts($post_id, $item_count = 5, array $tags = [])
 {
     $primary_category = get_primary_category($post_id);
@@ -789,7 +828,7 @@ function external_post_teaser_args($post, $args = [])
     }
 
     if (!empty($args['show_description'])) {
-        $blurb = get_the_excerpt($post);
+        $blurb = nc_get_excerpt($post);
     } else {
         $blurb = null;
     }
@@ -811,7 +850,7 @@ function external_post_teaser_args($post, $args = [])
 function basic_post_teaser_args($post, $args = [])
 {
     if (!empty($args['show_description'])) {
-        $blurb = get_the_excerpt($post);
+        $blurb = nc_get_excerpt($post);
     } else {
         $blurb = null;
     }
@@ -931,11 +970,13 @@ function related_posts_block($block, $content = '', $is_preview = false, $post_i
         $align = '';
         $align_class = '';
         $block_class = 'wp-block';
-        if ($block['align']) {
-            $align = 'data-align="' . $block['align'] . '"';
-            $align_class = 'align' . $block['align'];
 
-            if ($block['align'] === 'left' || $block['align'] === 'right') {
+        if (function_exists('get_field')) {
+            $align_setting = get_field('layout');
+            if ($align_setting === 'left') {
+                $align = 'data-align="' . $align_setting . '"';
+                $align_class = 'align' . $align_setting;
+
                 $block_class = '';
             }
         }
@@ -950,6 +991,7 @@ function related_posts_block($block, $content = '', $is_preview = false, $post_i
                 'title' => get_the_title($post_item->ID),
                 'image' => $image,
                 'description' => $summary,
+                'url' => get_permalink($post_item)
             ];
         }, $related_posts);
 

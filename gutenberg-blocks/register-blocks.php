@@ -231,7 +231,7 @@ add_action('acf/init', function () {
                 'category' => 'colby-news',
                 'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0Z"/><path d="M4 14h4v-4H4v4Zm0 5h4v-4H4v4ZM4 9h4V5H4v4Zm5 5h12v-4H9v4Zm0 5h12v-4H9v4ZM9 5v4h12V5H9Z"/></svg>',
                 'render_callback' => 'NC_Blocks\related_posts_block',
-                'supports' => ['align' => true, 'multiple' => true],
+                'supports' => ['align' => false, 'multiple' => true],
             ]);
         }
     }

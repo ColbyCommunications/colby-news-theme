@@ -1072,7 +1072,8 @@ h6.has-background {
 }
 
 .wp-block-image {
-	margin: 0 0 1em
+	margin-top: 1em;
+	margin-bottom: 1em;
 }
 
 .wp-block-image img {
@@ -1128,6 +1129,14 @@ h6.has-background {
 .wp-block-image.is-style-circle-mask img,
 .wp-block-image.is-style-rounded img {
 	border-radius: 9999px
+}
+
+.wp-block-image.size-full figcaption {
+	max-width: var(--max-content-width);
+	margin-right: auto;
+	margin-left: auto;
+	padding-right: 1.5rem;
+	padding-left: 1.5rem;
 }
 
 @supports ((-webkit-mask-image:none) or (mask-image:none)) or (-webkit-mask-image:none) {
@@ -3078,7 +3087,8 @@ article > .wp-block:not(.alignleft):not(.alignright),
 article > .wp-block-separator,
 .archive-wrapper > .wp-block-pullquote,
 .is-root-container > .wp-block-pullquote,
-article > .wp-block-pullquote {
+article > .wp-block-pullquote,
+.wp-block-embed > .wp-block-embed__wrapper {
 	margin-top: 2.25rem;
 	margin-bottom: 2.25rem;
 }
@@ -3093,7 +3103,8 @@ article > .wp-block-pullquote {
 	article > .wp-block-separator,
 	.archive-wrapper > .wp-block-pullquote,
 	.is-root-container > .wp-block-pullquote,
-	article > .wp-block-pullquote {
+	article > .wp-block-pullquote,
+	.wp-block-embed > .wp-block-embed__wrapper {
 		margin-top: 3.75rem;
 		margin-bottom: 3.75rem;
 	}

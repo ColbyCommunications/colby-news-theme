@@ -1,7 +1,9 @@
 {% extends 'template-parts/base.twig' %}
 
 {% block content %}
+    {% if breadcrumbs %}
     <div class="my-4 lg:my-10">{{ breadcrumbs }}</div>
+    {% endif %}
 
     {% include 'content/post.twig' with {
         post: post,
