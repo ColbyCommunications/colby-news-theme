@@ -309,7 +309,7 @@ class TemplatePart
         $post = $post ? $post : $this->context['post'];
 
         $defaultArgs = [
-            'orientation' => 'portrait',
+            'orientation' => 'landscape',
             'shareButtonsLast' => false,
             'author' => $post->author,
             'postedDate' => $post->date,
@@ -333,12 +333,19 @@ class TemplatePart
             }
         }
 
+        $all_fields = get_fields($post->ID);
+        $is_revision = wp_is_post_revision($post);
+
         if (function_exists('get_field')) {
-            $defaultArgs['lengthOfRead'] = get_field('lengthOfRead', $post->ID);
-            $defaultArgs['summary'] = get_field('summary', $post->ID);
-            $defaultArgs['author'] = get_field('author', $post->ID);
-            $defaultArgs['photoCredit'] = get_field('photoCredit', $post->ID);
-            $defaultArgs['contact'] = get_field('contact', $post->ID);
+            $defaultArgs['lengthOfRead'] = get_post_field('lengthOfRead', $post->ID);
+            $defaultArgs['summary'] = get_post_field('summary', $post->ID);
+            $defaultArgs['author'] = get_post_field('author', $post->ID);
+            $defaultArgs['photoCredit'] = get_post_field('photoCredit', $post->ID);
+            $defaultArgs['contact'] = [
+                'name' => get_post_field('contact_name', $post->ID),
+                'email' => get_post_field('contact_email', $post->ID),
+                'phone' => get_post_field('contact_phone', $post->ID),
+            ];
         }
 
         $defaultArgs['title'] = get_the_title($post->ID);
@@ -356,10 +363,10 @@ class TemplatePart
             $featuredImageCaption = '';
             $figure_responsive = true;
         } else {
-            $orientation = get_field('vertical_header', $post->ID) ? 'portrait' : 'landscape';
-            if ($orientation === 'portrait') {
+            $orientation = get_post_field('vertical_header', $post->ID) ? 'portrait' : 'landscape';
+            $verticalFeaturedImage = get_post_field('vertical_image', $post->ID);
+            if ($orientation === 'portrait' && $verticalFeaturedImage) {
                 $imageSize = 'header_vertical_lg';
-                $verticalFeaturedImage = get_field('vertical_image', $post->ID);
                 $featuredImage = nc_blocks_image($verticalFeaturedImage, $imageSize);
                 $featuredImageCaption = wp_get_attachment_caption($verticalFeaturedImage);
             } else {
