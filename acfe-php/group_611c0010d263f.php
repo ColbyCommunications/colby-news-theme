@@ -26,6 +26,43 @@ acf_add_local_field_group(array(
 			'maxlength' => '',
 		),
 		array(
+			'key' => 'field_61425c6f01334',
+			'label' => 'Story Type',
+			'name' => 'story_type',
+			'type' => 'acfe_taxonomy_terms',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'taxonomy' => array(
+				0 => 'story_type',
+			),
+			'allow_terms' => '',
+			'allow_level' => '',
+			'field_type' => 'checkbox',
+			'default_value' => array(
+			),
+			'return_format' => 'id',
+			'layout' => 'vertical',
+			'toggle' => 0,
+			'save_terms' => 0,
+			'load_terms' => 0,
+			'choices' => array(
+			),
+			'ui' => 0,
+			'multiple' => 0,
+			'allow_null' => 0,
+			'ajax' => 0,
+			'placeholder' => '',
+			'search_placeholder' => '',
+			'allow_custom' => 0,
+			'other_choice' => 0,
+		),
+		array(
 			'key' => 'field_611c001ff3d7c',
 			'label' => 'Number of Posts',
 			'name' => 'post_count',
@@ -108,7 +145,7 @@ acf_add_local_field_group(array(
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1629902410,
+	'modified' => 1631739058,
 ));
 
 endif;

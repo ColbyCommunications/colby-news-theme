@@ -893,17 +893,38 @@ function external_post_list($block, $content = '', $is_preview = false, $post_id
         'ignore_sticky_posts' => 1,
     ];
 
+    $story_types = get_field('story_type');
     $terms = get_field('terms');
 
-    if ($terms) {
-        $query_args['tax_query'] = [
-            [
-                'taxonomy' => 'post_tag',
-                'field' => 'term_id',
-                'terms' => $terms,
-            ],
-        ];
+    if (is_array($story_types) || is_array($terms)) {
+        $tax_query = [];
+        if (is_array($story_types) && is_array($terms)) {
+            $tax_query['relation'] = 'AND';
+        }
+
+        if (is_array($story_types)) {
+            $tax_query[] = [
+                [
+                    'taxonomy' => 'story_type',
+                    'field' => 'term_id',
+                    'terms' => $story_types,
+                ],
+            ];
+        }
+
+        if (is_array($terms)) {
+            $tax_query[] = [
+                [
+                    'taxonomy' => 'post_tag',
+                    'field' => 'term_id',
+                    'terms' => $terms,
+                ],
+            ];
+        }
+
+        $query_args['tax_query'] = $tax_query;
     }
+
 
     $query_results = new WP_Query($query_args);
     $post_results = $query_results->posts;

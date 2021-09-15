@@ -21,7 +21,7 @@ $post_type = get_post_type();
 
 $frontLoadPicks = false;
 
-if ($post_type === 'external_post') {
+if (is_post_type_archive('external_post')) {
     $current_page = get_query_var('paged');
     $current_page = $current_page ? $current_page : 1;
 
@@ -58,11 +58,20 @@ if ($frontLoadPicks) {
         'tax_query' => [
             [
                 'taxonomy' => 'post_tag',
-                'field' => 'term_id',
+                'field' => 'slug',
                 'terms' => ['editors-pick'],
             ]
         ]
     ];
+
+    if ($story_type) {
+        $picksQuery['tax_query']['relation'] = 'AND';
+        $picksQuery['tax_query'][] = [
+            'taxonomy' => 'story_type',
+            'field' => 'slug',
+            'terms' => [$story_type],
+        ];
+    }
 
     $editorsPicks = new TimberPostQuery($picksQuery);
     if (count($editorsPicks->get_posts())) {
