@@ -32,6 +32,16 @@ wp.domReady(() => {
     label: 'Logos Only (Large)',
     isDefault: false,
   });
+  wp.blocks.registerBlockStyle('core/heading', {
+    name: 'block-heading',
+    label: 'Section Heading (Uppercase)',
+    isDefault: false,
+  });
+  wp.blocks.registerBlockStyle('core/heading', {
+    name: 'large-heading',
+    label: 'Large Heading',
+    isDefault: false,
+  });
 
   // wp.blocks.getBlockTypes().forEach((block) => {
   //   if (Array.isArray(block['styles']) && block['styles'].length > 0) {

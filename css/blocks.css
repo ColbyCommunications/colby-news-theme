@@ -3100,6 +3100,60 @@ h3.has-large-font-size {
 	z-index: 100000
 }
 
+.archive-wrapper > h2 + .wp-block:not(.alignleft):not(.alignright),
+.is-root-container > h2 + .wp-block:not(.alignleft):not(.alignright),
+article > h2 + .wp-block:not(.alignleft):not(.alignright),
+.archive-wrapper > h2 + .wp-block-separator,
+.is-root-container > h2 + .wp-block-separator,
+article > h2 + .wp-block-separator,
+.archive-wrapper > h2 + .wp-block-pullquote,
+.archive-wrapper > h2 + .wp-block-gallery,
+.archive-wrapper > h2 + .wp-block-image,
+.is-root-container > h2 + .wp-block-pullquote,
+.is-root-container > h2 + .wp-block-gallery,
+.is-root-container > h2 + .wp-block-image,
+article > h2 + .wp-block-pullquote,
+article > h2 + .wp-block-gallery,
+article > h2 + .wp-block-image {
+  margin-top: 0;
+}
+
+.archive-wrapper > h3 + .wp-block:not(.alignleft):not(.alignright),
+.is-root-container > h3 + .wp-block:not(.alignleft):not(.alignright),
+article > h3 + .wp-block:not(.alignleft):not(.alignright),
+.archive-wrapper > h3 + .wp-block-separator,
+.is-root-container > h3 + .wp-block-separator,
+article > h3 + .wp-block-separator,
+.archive-wrapper > h3 + .wp-block-pullquote,
+.archive-wrapper > h3 + .wp-block-gallery,
+.archive-wrapper > h3 + .wp-block-image,
+.is-root-container > h3 + .wp-block-pullquote,
+.is-root-container > h3 + .wp-block-gallery,
+.is-root-container > h3 + .wp-block-image,
+article > h3 + .wp-block-pullquote,
+article > h3 + .wp-block-gallery,
+article > h3 + .wp-block-image {
+  margin-top: 0;
+}
+
+.archive-wrapper > h4 + .wp-block:not(.alignleft):not(.alignright),
+.is-root-container > h4 + .wp-block:not(.alignleft):not(.alignright),
+article > h4 + .wp-block:not(.alignleft):not(.alignright),
+.archive-wrapper > h4 + .wp-block-separator,
+.is-root-container > h4 + .wp-block-separator,
+article > h4 + .wp-block-separator,
+.archive-wrapper > h4 + .wp-block-pullquote,
+.archive-wrapper > h4 + .wp-block-gallery,
+.archive-wrapper > h4 + .wp-block-image,
+.is-root-container > h4 + .wp-block-pullquote,
+.is-root-container > h4 + .wp-block-gallery,
+.is-root-container > h4 + .wp-block-image,
+article > h4 + .wp-block-pullquote,
+article > h4 + .wp-block-gallery,
+article > h4 + .wp-block-image {
+  margin-top: 0;
+}
+
 .archive-wrapper > .wp-block:not(.alignleft):not(.alignright),
 .is-root-container > .wp-block:not(.alignleft):not(.alignright),
 article > .wp-block:not(.alignleft):not(.alignright),
@@ -3107,8 +3161,14 @@ article > .wp-block:not(.alignleft):not(.alignright),
 .is-root-container > .wp-block-separator,
 article > .wp-block-separator,
 .archive-wrapper > .wp-block-pullquote,
+.archive-wrapper > .wp-block-gallery,
+.archive-wrapper > .wp-block-image,
 .is-root-container > .wp-block-pullquote,
+.is-root-container > .wp-block-gallery,
+.is-root-container > .wp-block-image,
 article > .wp-block-pullquote,
+article > .wp-block-gallery,
+article > .wp-block-image,
 .wp-block-embed > .wp-block-embed__wrapper {
 	margin-top: 2.25rem;
 }
@@ -3120,8 +3180,15 @@ article > .wp-block:not(.alignleft):not(.alignright),
 .is-root-container > .wp-block-separator,
 article > .wp-block-separator,
 .archive-wrapper > .wp-block-pullquote,
+.archive-wrapper > .wp-block-gallery,
+.archive-wrapper > .wp-block-image,
 .is-root-container > .wp-block-pullquote,
-article > .wp-block-pullquote {
+.is-root-container > .wp-block-gallery,
+.is-root-container > .wp-block-image,
+article > .wp-block-pullquote,
+article > .wp-block-gallery,
+article > .wp-block-embed,
+article > .wp-block-image {
 	margin-bottom: 2.25rem;
 }
 
@@ -3129,13 +3196,17 @@ article > .wp-block-pullquote {
 
 	.archive-wrapper > .wp-block:not(.alignleft):not(.alignright),
 	.is-root-container > .wp-block:not(.alignleft):not(.alignright),
-	article > .wp-block:not(.alignleft):not(.alignright),
-	.archive-wrapper > .wp-block-separator,
 	.is-root-container > .wp-block-separator,
 	article > .wp-block-separator,
 	.archive-wrapper > .wp-block-pullquote,
+	.archive-wrapper > .wp-block-gallery,
+	.archive-wrapper > .wp-block-image,
 	.is-root-container > .wp-block-pullquote,
+	.is-root-container > .wp-block-gallery,
+	.is-root-container > .wp-block-image,
 	article > .wp-block-pullquote,
+	article > .wp-block-gallery,
+	article > .wp-block-image,
 	.wp-block-embed > .wp-block-embed__wrapper {
 		margin-top: 3.75rem;
 	}
@@ -3147,8 +3218,15 @@ article > .wp-block-pullquote {
 	.is-root-container > .wp-block-separator,
 	article > .wp-block-separator,
 	.archive-wrapper > .wp-block-pullquote,
+	.archive-wrapper > .wp-block-gallery,
+	.archive-wrapper > .wp-block-image,
 	.is-root-container > .wp-block-pullquote,
-	article > .wp-block-pullquote {
+	.is-root-container > .wp-block-gallery,
+	.is-root-container > .wp-block-image,
+	article > .wp-block-pullquote,
+	article > .wp-block-gallery,
+	article > .wp-block-embed,
+	article > .wp-block-image {
 		margin-bottom: 3.75rem;
 	}
 }
@@ -3174,11 +3252,20 @@ h4.wp-block,
 
 .wp-block-column > .is-style-block-heading,
 h2.is-style-block-heading {
-	--text-heading-md: var(--text-lg);
+	--text-heading-md: var(--text-lg) !important;
 }
 
 .is-style-block-heading {
 	text-transform: uppercase;
+}
+
+.wp-block-column > .is-style-large-heading,
+h2.is-style-large-heading {
+	font-size: clamp(2rem, 4.6875vw, 3rem) !important;
+}
+
+.is-style-large-heading {
+	font-weight: bold !important;
 }
 
 

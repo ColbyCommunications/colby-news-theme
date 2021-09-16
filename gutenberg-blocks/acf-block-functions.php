@@ -1021,7 +1021,7 @@ function related_posts_block($block, $content = '', $is_preview = false, $post_i
         Timber::render(get_blocks_twig_directory('/related-stories.twig'), ['items' => $teasers, 'float' => $align]);
         echo '</div>';
     } elseif ($is_preview) {
-        echo 'No posts found';
+        echo 'No posts found. You may not have added a category to this post yet, or your filter settings may be too restrictive.';
     }
 }
 
