@@ -3006,11 +3006,25 @@ pre.wp-block-verse {
 }
 
 .has-medium-font-size {
-	font-size: 1.25em
+	font-size: 1.25em;
+}
+
+h2.has-medium-font-size,
+h3.has-medium-font-size {
+	font-size: clamp(1.125rem, 3.8vw, 1.25rem) !important;
+}
+
+.has-base-font-size {
+	font-size: 1.125rem !important;
 }
 
 .has-large-font-size {
 	font-size: 2.25em
+}
+
+h2.has-large-font-size,
+h3.has-large-font-size {
+	font-size: clamp(1.5rem, 6vw, 1.75rem) !important;
 }
 
 .has-huge-font-size,
