@@ -92,7 +92,8 @@ function nc_register_story_types()
 add_action('init', 'nc_register_story_types');
 
 add_action('init', function () {
-    add_rewrite_rule('external/([a-z0-9-]+)[/]?$', 'index.php?post_type=external_post&story_type=$matches[1]', 'top');
+    add_rewrite_rule('external/([a-z0-9-]+)/page/([0-9]{1,})/?$', 'index.php?post_type=external_post&story_type=$matches[1]&paged=$matches[2]', 'top');
+    add_rewrite_rule('external/([a-z0-9-]+)[/]?(.*)$', 'index.php?post_type=external_post&story_type=$matches[1]', 'top');
 });
 
 // Change title of category archives

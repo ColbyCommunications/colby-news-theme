@@ -40,6 +40,8 @@ if (is_post_type_archive('external_post')) {
     } else {
         $post_list_args['postListClasses'] = 'normal-archive';
     }
+} else {
+    $story_type = '';
 }
 
 $post_list_args['render'] = false;

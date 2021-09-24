@@ -822,7 +822,7 @@ section.wp-block-cover-image > h2 {
 .blocks-gallery-grid .blocks-gallery-item,
 .wp-block-gallery .blocks-gallery-image,
 .wp-block-gallery .blocks-gallery-item {
-	margin: 0 1em 1em 0;
+	margin: 0 0.75em 0.75em 0;
 	display: flex;
 	flex-grow: 1;
 	flex-direction: column;
@@ -831,6 +831,16 @@ section.wp-block-cover-image > h2 {
 	align-self: flex-start;
 	width: calc(50% - 1em)
 }
+
+@media (min-width: 56rem) {
+	.blocks-gallery-grid .blocks-gallery-image,
+	.blocks-gallery-grid .blocks-gallery-item,
+	.wp-block-gallery .blocks-gallery-image,
+	.wp-block-gallery .blocks-gallery-item {
+		margin: 0 1em 1em 0;
+	}
+}
+
 
 .blocks-gallery-grid .blocks-gallery-image:nth-of-type(2n),
 .blocks-gallery-grid .blocks-gallery-item:nth-of-type(2n),
@@ -952,14 +962,14 @@ section.wp-block-cover-image > h2 {
 	margin-right: 0
 }
 
-@media (min-width: 600px) {
+@media (min-width: 37.5rem) {
 
 	.blocks-gallery-grid.columns-3 .blocks-gallery-image.blocks-gallery-image,
 	.blocks-gallery-grid.columns-3 .blocks-gallery-item.blocks-gallery-item,
 	.wp-block-gallery.columns-3 .blocks-gallery-image.blocks-gallery-image,
 	.wp-block-gallery.columns-3 .blocks-gallery-item.blocks-gallery-item {
 		width: calc(33.33333% - 0.66667em);
-		margin-right: 1em
+		margin-right: 1em;
 	}
 
 	.blocks-gallery-grid.columns-4 .blocks-gallery-image.blocks-gallery-image,
@@ -967,7 +977,7 @@ section.wp-block-cover-image > h2 {
 	.wp-block-gallery.columns-4 .blocks-gallery-image.blocks-gallery-image,
 	.wp-block-gallery.columns-4 .blocks-gallery-item.blocks-gallery-item {
 		width: calc(25% - 0.75em);
-		margin-right: 1em
+		margin-right: 1em;
 	}
 
 	.blocks-gallery-grid.columns-5 .blocks-gallery-image.blocks-gallery-image,
@@ -975,7 +985,7 @@ section.wp-block-cover-image > h2 {
 	.wp-block-gallery.columns-5 .blocks-gallery-image.blocks-gallery-image,
 	.wp-block-gallery.columns-5 .blocks-gallery-item.blocks-gallery-item {
 		width: calc(20% - 0.8em);
-		margin-right: 1em
+		margin-right: 1em;
 	}
 
 	.blocks-gallery-grid.columns-6 .blocks-gallery-image.blocks-gallery-image,
@@ -983,7 +993,7 @@ section.wp-block-cover-image > h2 {
 	.wp-block-gallery.columns-6 .blocks-gallery-image.blocks-gallery-image,
 	.wp-block-gallery.columns-6 .blocks-gallery-item.blocks-gallery-item {
 		width: calc(16.66667% - 0.83333em);
-		margin-right: 1em
+		margin-right: 1em;
 	}
 
 	.blocks-gallery-grid.columns-7 .blocks-gallery-image.blocks-gallery-image,
@@ -991,7 +1001,7 @@ section.wp-block-cover-image > h2 {
 	.wp-block-gallery.columns-7 .blocks-gallery-image.blocks-gallery-image,
 	.wp-block-gallery.columns-7 .blocks-gallery-item.blocks-gallery-item {
 		width: calc(14.28571% - 0.85714em);
-		margin-right: 1em
+		margin-right: 1em;
 	}
 
 	.blocks-gallery-grid.columns-8 .blocks-gallery-image.blocks-gallery-image,
@@ -999,9 +1009,11 @@ section.wp-block-cover-image > h2 {
 	.wp-block-gallery.columns-8 .blocks-gallery-image.blocks-gallery-image,
 	.wp-block-gallery.columns-8 .blocks-gallery-item.blocks-gallery-item {
 		width: calc(12.5% - 0.875em);
-		margin-right: 1em
+		margin-right: 1em;
 	}
 
+	.blocks-gallery-grid[class*="columns-"] .blocks-gallery-image:last-child,
+	.blocks-gallery-grid[class*="columns-"] .blocks-gallery-item:last-child,
 	.blocks-gallery-grid.columns-1 .blocks-gallery-image:nth-of-type(1n),
 	.blocks-gallery-grid.columns-1 .blocks-gallery-item:nth-of-type(1n),
 	.blocks-gallery-grid.columns-2 .blocks-gallery-image:nth-of-type(2n),
@@ -1018,6 +1030,8 @@ section.wp-block-cover-image > h2 {
 	.blocks-gallery-grid.columns-7 .blocks-gallery-item:nth-of-type(7n),
 	.blocks-gallery-grid.columns-8 .blocks-gallery-image:nth-of-type(8n),
 	.blocks-gallery-grid.columns-8 .blocks-gallery-item:nth-of-type(8n),
+	.wp-block-gallery[class*="columns-"] .blocks-gallery-image:last-child,
+	.wp-block-gallery[class*="columns-"] .blocks-gallery-item:last-child,
 	.wp-block-gallery.columns-1 .blocks-gallery-image:nth-of-type(1n),
 	.wp-block-gallery.columns-1 .blocks-gallery-item:nth-of-type(1n),
 	.wp-block-gallery.columns-2 .blocks-gallery-image:nth-of-type(2n),
@@ -1132,11 +1146,11 @@ h6.has-background {
 }
 
 .wp-block-image.size-full figcaption {
-	max-width: var(--max-content-width);
+	max-width: calc(var(--max-content-width) + var(--page-padding));
 	margin-right: auto;
 	margin-left: auto;
-	padding-right: 1.5rem;
-	padding-left: 1.5rem;
+	padding-left: var(--page-padding);
+	padding-right: var(--page-padding);
 }
 
 @supports ((-webkit-mask-image:none) or (mask-image:none)) or (-webkit-mask-image:none) {

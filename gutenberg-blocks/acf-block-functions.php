@@ -615,9 +615,10 @@ function teaser_list(array $posts, bool $is_preview = false, array $show_fields 
         if (!is_array($post)) {
             $primary_category = get_primary_category($post->ID);
             if ($primary_category && is_object($primary_category)) {
-                $primary_category = $primary_category->name;
+                $primary_category_url = get_term_link($primary_category);
+                $primary_category_name = $primary_category->name;
             } else {
-                $primary_category = '';
+                $primary_category_name = '';
             }
 
             $post_formats = wp_get_post_terms($post->ID, 'post_format', ['fields' => 'names']);
@@ -626,7 +627,7 @@ function teaser_list(array $posts, bool $is_preview = false, array $show_fields 
 
             $teaser = [
                 'url' => get_permalink($post->ID),
-                'superhead' => $primary_category,
+                'superhead' => $primary_category_name,
                 'title' => $post->post_title,
                 'withVideoLogo' => $is_video,
             ];
@@ -636,7 +637,7 @@ function teaser_list(array $posts, bool $is_preview = false, array $show_fields 
             }
 
             if (in_array('category', $show_fields)) {
-                $teaser['superhead'] = [ 'title' => $primary_category];
+                $teaser['superhead'] = [ 'title' => $primary_category_name, 'url' => $primary_category_url];
             }
 
             if (in_array('video', $show_fields)) {
