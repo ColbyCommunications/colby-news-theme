@@ -7,17 +7,17 @@
         {% block modalSiteHeader %}
             {{ modalSiteHeader }}
         {% endblock %}
-        <div class="focus-target-ancestor">
+        <div class="focus-target-ancestor js-focus-visible">
             {# Wrapper around button is needed for Micromodal (b/c it checks for `offsetParent !== null`, and fixed-position makes it null). #}
             <div class="fixed z-10 w-full mt-px pointer-events-none md:mt-10" style="top: var(--header-height);">
                 <div class="container text-right">
                     <button
-                        class="p-2 transition-colors bg-white rounded-lg pointer-events-auto bg-opacity-90 hover:bg-opacity-100 group disabled:pointer-events-none"
+                        class="p-2 transition-colors bg-white rounded-lg pointer-events-auto close-modal bg-opacity-90 hover:bg-opacity-100 group disabled:pointer-events-none"
                         id="{{ closeButtonId }}"
                         aria-label="Close modal"
                         disabled
                     >
-                        <svg class="w-8 h-8 transition-transform transform group-hover:scale-125" aria-hidden="true" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><path d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z"/></svg>
+                        <svg class="w-6 h-6 transition-transform transform group-hover:scale-125" aria-hidden="true" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><path d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z"/></svg>
                     </button>
                 </div>
             </div>

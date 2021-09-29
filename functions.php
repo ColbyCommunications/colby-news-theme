@@ -770,6 +770,14 @@ function newcity_colby_news_scripts()
     );
 
     wp_enqueue_script(
+        'focus-visible-polyfill',
+        'https://cdn.jsdelivr.net/npm/focus-visible@5.2.0/dist/focus-visible.min.js',
+        ['jquery'],
+        '',
+        true
+    );
+
+    wp_enqueue_script(
         'colby-news-theme-navigation',
         get_template_directory_uri() . '/js/site-header.js',
         array('jquery', 'micromodal-library'),

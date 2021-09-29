@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '393950e960ed2e507dbccd6ee02262657442ce1a',
+    'reference' => 'edd89d44199495f8e70e4d8d386a1af8920a25a3',
     'name' => 'colbycommunications/colby-news-theme',
   ),
   'versions' => 
@@ -36,7 +36,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '393950e960ed2e507dbccd6ee02262657442ce1a',
+      'reference' => 'edd89d44199495f8e70e4d8d386a1af8920a25a3',
     ),
     'composer/installers' => 
     array (

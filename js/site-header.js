@@ -39,10 +39,11 @@ const setUpSiteHeader = () => {
     const closeButton = menu.querySelector(`#${closeButtonId}`);
     if (!closeButton) return;
 
-    // set openButtonWrappers to trigger closeButton
-    // (safe b/c closeButton will be disabled when we don't want it clicked)
+    // set openButtonWrappers to trigger closeButton (when it's not disabled)
     openButtonWrappers.forEach((e) =>
-      e.addEventListener('click', () => closeButton.click())
+      e.addEventListener('click', () => {
+        if (!closeButton.disabled) closeButton.click();
+      })
     );
 
     const focusTargetAncestor = menu.querySelector('.focus-target-ancestor');
@@ -117,19 +118,29 @@ const setUpSiteHeader = () => {
         modals.forEach(({ isOpen, close, openButtons: openers }, id) => {
           if (id !== menu.id) {
             if (isOpen) close();
-            openers.forEach((button) => (button.disabled = true));
+            openers.forEach((button) => {
+              button.disabled = true;
+              button.classList.remove(
+                'focus-visible'
+              ); /* help "focus-visible" polyfill in Firefox */
+            });
           }
         });
 
         // prevent interrupting open-animation
-        openButtons.forEach((button) => (button.disabled = true));
+        openButtons.forEach((button) => {
+          button.disabled = true;
+          button.classList.remove(
+            'focus-visible'
+          ); /* help "focus-visible" polyfill in Firefox */
+        });
         document.addEventListener('keydown', disableEscapeKey);
 
         /*
         When open-animation ends:
         1. enable the closing-mechanisms (closeButton and escape-key);
         2. set the main site-header to `invisible` (to avoid presence of duplicate markup/landmark-roles/ids);
-        3. if applicable, give focus to focusTarget
+        3. give focus to focusTarget
         4. enable opening-mechanisms for OTHER MODALS
       */
         menu.addEventListener(
@@ -172,7 +183,12 @@ const setUpSiteHeader = () => {
 
           menu.removeEventListener('animationend', closeCleanup);
           document.removeEventListener('keydown', closeOnEscape);
-          openButtons.forEach((button) => (button.disabled = false));
+          openButtons.forEach((button) => {
+            button.disabled = false;
+            button.classList.remove(
+              'focus-visible'
+            ); /* help "focus-visible" polyfill in Firefox */
+          });
 
           if (realHeaderOpenButton) realHeaderOpenButton.focus();
         }
@@ -193,25 +209,34 @@ const setUpSiteHeader = () => {
   };
 
   const setUpHeightTracker = () => {
-    new ResizeObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.contentBoxSize) {
-          // Firefox implements `contentBoxSize` as a single content rect, rather than an array
-          const contentBoxSize = Array.isArray(entry.contentBoxSize)
-            ? entry.contentBoxSize[0]
-            : entry.contentBoxSize;
-          document.documentElement.style.setProperty(
-            '--header-height',
-            rem(contentBoxSize.blockSize)
-          );
-        } else {
-          document.documentElement.style.setProperty(
-            '--header-height',
-            rem(entry.contentRect.height)
-          );
-        }
-      });
-    }).observe(realHeader);
+    if (window.ResizeObserver) {
+      new ResizeObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.contentBoxSize) {
+            // Firefox implements `contentBoxSize` as a single content rect, rather than an array
+            const contentBoxSize = Array.isArray(entry.contentBoxSize)
+              ? entry.contentBoxSize[0]
+              : entry.contentBoxSize;
+            document.documentElement.style.setProperty(
+              '--header-height',
+              rem(contentBoxSize.blockSize)
+            );
+          } else {
+            document.documentElement.style.setProperty(
+              '--header-height',
+              rem(entry.contentRect.height)
+            );
+          }
+        });
+      }).observe(realHeader);
+    } else {
+      // Fallback to prevent erros if ResizeObserver is unsupported.
+      // Realistically, setting this variable statically should suffice, anyway.
+      document.documentElement.style.setProperty(
+        '--header-height',
+        rem(realHeader.clientHeight)
+      );
+    }
   };
 
   const setUpStickyEvents = () => {
