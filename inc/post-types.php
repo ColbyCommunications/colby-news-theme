@@ -18,6 +18,7 @@ function nc_register_external_posts()
         'labels' => $labels,
         'public' => true,
         'publicly_queryable' => true,
+        'show_in_graphql'    => true,
         'show_ui'            => true,
         'show_in_menu'       => true,
         'show_in_nav_menus'  => false,
