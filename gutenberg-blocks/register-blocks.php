@@ -45,6 +45,15 @@ add_action('init', 'NC_Blocks\register_colby_block_patterns');
 add_action('wp_enqueue_scripts', 'NC_Blocks\nc_replace_block_library', 100);
 add_action('admin_enqueue_scripts', 'NC_Blocks\nc_replace_block_library', 100);
 
+function filter_acf_blocks($attrs)
+{
+    if ($attrs['name'] === 'acf/nc-teaser-pair') {
+        $attrs['id'] = 'block_' . time();
+    }
+    return $attrs;
+}
+add_filter('acf/pre_save_block', 'NC_Blocks\filter_acf_blocks');
+
 function nc_replace_block_library()
 {
     wp_dequeue_style('wp-block-library');

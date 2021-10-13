@@ -350,6 +350,10 @@ function query_from_fields(array $user_fields = array(), $has_pagination = false
         $taxonomies = [];
 
         foreach ($taxonomy_terms as $term_object) {
+            if (is_int($term_object)) {
+                $term_object = get_term($term_object);
+            }
+
             if (is_object($term_object)) {
                 if (! array_key_exists($term_object->taxonomy, $taxonomies)) {
                     $taxonomies[$term_object->taxonomy] = [];
@@ -444,7 +448,10 @@ function nc_get_excerpt($post, $trim = false, array $custom_fields = [])
     }
 
     $excerpt = $post->post_excerpt;
-    $excerpt = $excerpt ? $excerpt : $post->post_content;
+    if (!$excerpt) {
+        $excerpt = $post->post_content;
+        $trim = $trim ? $trim : 20;
+    }
 
     if (! $excerpt) {
         return '';
@@ -464,6 +471,10 @@ function nc_get_excerpt($post, $trim = false, array $custom_fields = [])
 
             $excerpt_length = apply_filters('excerpt_length', $trim['length']);
             $excerpt_more = apply_filters('excerpt_more', ' ' . $trim['more']);
+            $allowed_tags = wp_kses_allowed_html('data');
+            unset($allowed_tags['a']);
+            $excerpt = wp_kses($excerpt, $allowed_tags);
+            $excerpt = preg_replace('/<!--(.|\s)*?-->/', '', $excerpt);
             $excerpt = wp_trim_words($excerpt, $excerpt_length, $excerpt_more);
         }
     }
@@ -646,7 +657,7 @@ function teaser_list(array $posts, bool $is_preview = false, array $show_fields 
 
             if (in_array('description', $show_fields)) {
                 $summary = get_field('summary', $post->ID);
-                $teaser['description'] = $summary ? $summary : get_the_excerpt($post->ID);
+                $teaser['description'] = $summary ? $summary : nc_get_excerpt($post->ID);
             }
         } else {
             $teaser = $post;
@@ -731,6 +742,9 @@ function post_list_slider_block($block, $content = '', $is_preview = false, $pos
 {
     if (function_exists('get_fields')) {
         $fields_from_block = get_fields();
+        if (!$fields_from_block) {
+            $fields_from_block = $block['data'];
+        }
         $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
         $query_args = query_from_fields($fields_from_block, false, $post_id);
 
@@ -744,10 +758,17 @@ function teaser_pair_block($block, $content = '', $is_preview = false, $post_id 
 {
     if (function_exists('get_fields')) {
         $fields_from_block = get_fields();
+        if (!$fields_from_block) {
+            $fields_from_block = $block['data'];
+        }
         $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
         $query_args = query_from_fields($fields_from_block, false, $post_id);
 
-        $show_fields = get_field('show_fields');
+        if (!empty($block['data']['show_fields'])) {
+            $show_fields = $block['data']['show_fields'];
+        } else {
+            $show_fields = array();
+        }
 
         $results = new WP_Query($query_args);
 
@@ -767,6 +788,9 @@ function slider_with_teaser_pair_block($block, $content = '', $is_preview = fals
 {
     if (function_exists('get_fields')) {
         $fields_from_block = get_fields();
+        if (!$fields_from_block) {
+            $fields_from_block = $block['data'];
+        }
         $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
         $query_args = query_from_fields($fields_from_block, false, $post_id);
 
@@ -1008,7 +1032,7 @@ function related_posts_block($block, $content = '', $is_preview = false, $post_i
         $teasers = array_map(function ($post_item) use ($image_size) {
             $image = nc_blocks_image(get_post_thumbnail_id($post_item->ID), $image_size);
             $summary = get_field('summary', $post_item->ID);
-            $summary = $summary ? $summary : get_the_excerpt($post_item->ID);
+            $summary = $summary ? $summary : nc_get_excerpt($post_item->ID);
             return [
                 'title' => get_the_title($post_item->ID),
                 'image' => $image,

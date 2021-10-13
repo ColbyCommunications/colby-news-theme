@@ -25,8 +25,6 @@ acf_add_local_field_group(array(
 			),
 			'allow_custom' => 0,
 			'default_value' => array(
-				0 => 'category',
-				1 => 'description',
 			),
 			'layout' => 'vertical',
 			'toggle' => 0,
@@ -65,7 +63,7 @@ acf_add_local_field_group(array(
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1629827337,
+	'modified' => 1634127827,
 ));
 
 endif;
