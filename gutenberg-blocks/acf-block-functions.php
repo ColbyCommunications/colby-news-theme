@@ -764,11 +764,15 @@ function teaser_pair_block($block, $content = '', $is_preview = false, $post_id 
         $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
         $query_args = query_from_fields($fields_from_block, false, $post_id);
 
-        if (!empty($block['data']['show_fields'])) {
-            $show_fields = $block['data']['show_fields'];
-        } else {
-            $show_fields = array();
+        $show_fields = get_field('show_fields');
+
+        if (!$show_fields) {
+            if (!empty($block['data']['show_fields'])) {
+                $show_fields = $block['data']['show_fields'];
+            }
         }
+
+        $show_fields = is_array($show_fields) ? $show_fields : array();
 
         $results = new WP_Query($query_args);
 
