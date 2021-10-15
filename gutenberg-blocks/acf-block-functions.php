@@ -450,14 +450,18 @@ function nc_get_excerpt($post, $trim = false, array $custom_fields = [])
     $excerpt = $post->post_excerpt;
     if (!$excerpt) {
         $excerpt = $post->post_content;
-        $trim = $trim ? $trim : 20;
+
+        if ($trim === true) {
+            $trim = 20;
+        }
     }
 
     if (! $excerpt) {
         return '';
     }
 
-    if ($trim) {
+    // If the post is an `external_post`, never trim its content
+    if ($trim && $post->post_type !== 'external_post') {
         if (is_int($trim)) {
             $trim = [
                 'length' => $trim,
@@ -621,6 +625,20 @@ function teaser_list(array $posts, bool $is_preview = false, array $show_fields 
     $show_fields[] = 'title';
     $show_fields[] = 'url';
 
+    $show_fields_arrays = [];
+
+    foreach ($show_fields as $field_def) {
+        if (is_string($field_def)) {
+            $show_fields_arrays[$field_def] = [
+                'display' => true
+            ];
+        }
+
+        if (is_array($field_def)) {
+            $show_fields[$field_def][0] = $field_def;
+        }
+    }
+
 
     foreach ($posts as $post) {
         if (!is_array($post)) {
@@ -655,9 +673,15 @@ function teaser_list(array $posts, bool $is_preview = false, array $show_fields 
                 $teaser['withVideoLogo'] = $is_video;
             }
 
-            if (in_array('description', $show_fields)) {
+            if (! empty($show_fields_arrays['description'])) {
+                if (empty($show_fields_arrays['description']['trim'])) {
+                    $trim = false;
+                } else {
+                    $trim = $show_fields_arrays['description']['trim'];
+                }
+
                 $summary = get_field('summary', $post->ID);
-                $teaser['description'] = $summary ? $summary : nc_get_excerpt($post->ID);
+                $teaser['description'] = $summary ? $summary : nc_get_excerpt($post->ID, $trim);
             }
         } else {
             $teaser = $post;
@@ -1036,7 +1060,7 @@ function related_posts_block($block, $content = '', $is_preview = false, $post_i
         $teasers = array_map(function ($post_item) use ($image_size) {
             $image = nc_blocks_image(get_post_thumbnail_id($post_item->ID), $image_size);
             $summary = get_field('summary', $post_item->ID);
-            $summary = $summary ? $summary : nc_get_excerpt($post_item->ID);
+            $summary = $summary ? $summary : nc_get_excerpt($post_item->ID, true);
             return [
                 'title' => get_the_title($post_item->ID),
                 'image' => $image,
