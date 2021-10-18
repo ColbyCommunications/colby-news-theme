@@ -86,6 +86,13 @@ if ($frontLoadPicks) {
     }
 }
 
+if (is_category()) {
+    $postListRenderArgs['posts'] = array_map(function ($post_args) {
+        $post_args['primary_category'] = false;
+        return $post_args;
+    }, $postListRenderArgs['posts']);
+}
+
 $postList = Timber::compile($templateParts->getTwigPath() . '/post-list.twig', $postListRenderArgs);
 $context['postList'] = $postList;
 
