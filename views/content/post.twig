@@ -22,7 +22,8 @@
     <a class="grid grid-cols-3 gap-y-2 gap-x-7 hover:bg-gray-100 py-3.5 sm:py-5" href="{{ post.link }}">
         <div class="">
             {# image gets "cropped" to a square on mobile w/ the padding-bottom trick #}
-            <div class="relative after:block after:pb-[100%] after:content-empty sm:after:hidden descendant-img:absolute sm:descendant-img:static descendant-img:w-full descendant-img:h-full descendant-img:object-cover">
+            {# <div class="relative after:block after:pb-[100%] after:content-empty sm:after:hidden descendant-img:absolute sm:descendant-img:static descendant-img:w-full descendant-img:h-full descendant-img:object-cover"> #}
+            <div class="">
                 {{ post.thumbnail }}
             </div>
         </div>
