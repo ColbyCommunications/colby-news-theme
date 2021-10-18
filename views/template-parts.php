@@ -375,6 +375,10 @@ class TemplatePart
             }
         }
 
+        if (is_front_page()) {
+            $featuredImageCaption = false;
+        }
+
 
         $figure = '<figure>';
         if ($figure_responsive) {

@@ -998,7 +998,7 @@ function external_post_list($block, $content = '', $is_preview = false, $post_id
         }
 
         $external_post_list = '<div class="space-y-6 sm:space-y-8">';
-        $external_post_list .= "<h2>$title</h2>";
+        $external_post_list .= "<h2 class='text-h2-prose'>$title</h2>";
         $external_post_list .= '<ul class="space-y-6">';
 
         foreach ($post_items as $post_item) {
