@@ -1,42 +1,22 @@
 {% extends 'template-parts/base.twig' %}
 
 {% block content %}
-    <section class="error-404 not-found">
-        <header>
-            {% include theme.parent.path ~ '/gutenberg-blocks/blocks-twig/page-header.twig' with {
-                title: __('Page Not Found', 'colby-admissions-theme'),
-                superheader: __('Error 404', 'colby-admissions-theme'),
-                werapperClasses: page_header.wrapperClasses,
-                classes: page_header.classes,
-                contentClasses: page_header.contentClasses,
-                backgroundImage: page_header.backgroundImage,
-                topDecoration: page_header.topDecoration
-            } %}
-        </header>
-            <div class="pt-6 mx-auto page-content container-narrow px-container">
-                <div class="mb-6 prose">
-                    <p>
-                        {{
-                            __(
-                                'We couldn’t find that page for you. The address may have changed, or the page may no longer exist.',
-                                'colby-admissions-theme'
-                        )
-                        }}
-                    </p>
-                    <p>
-                        Try starting from the <a href="{{ site.link }}">Admissions Homepage</a>, or search
-                        for your page below.
-                    </p>
-                </div>
+    <section class="container mx-auto error-404 not-found archive-wrapper px-container">
+        <header class="mt-12 mb-8 page-header">
+                <h1 class="mb-6 font-sans text-3xl font-bold sm:text-4xl md:text-6xl">
+                    {{ __('Page Not Found') }}
+                </h1>
+        </header><!-- .page-header -->
+        <div class="pt-6 page-content">
+            <div class="mb-6 prose">
+                <p>
+                    Our previous Colby News and Colby Magazine sites have a new home at news.colby.edu.
+                    The page you're looking for may have a new address or no longer exist.
+                </p>
 
-                <div class="mb-6 text-xl sm:bg-gray-200 sm:border sm:p-6 search-bar border-primary">
-                    <label for="search-field-404" class="block mb-2 font-bold text-primary-dark">Search the Site</label>
-                    <form action="{{ searchField.url }}" class="flex w-full border border-gray-300">
-                        <input name="{{ searchField.name }}" id="search-field-404" type="search" placeholder="Enter Keyword" class="flex-grow text-sm leading-none border-0 rounded-none" />
-                        <button class="flex-none px-2 bg-white text-primary hocus:bg-blue-400">{{ searchButton.content }}</button>
-                    </form>
-                </div>
+                <p>Visit the <a href="/">new home for Colby News</a>, or search for what you're looking for by clicking the magnifying glass icon above.</p>
+            </div>
 
-            </div><!-- .page-content -->
-        </section><!-- .error-404 -->
+        </div><!-- .page-content -->
+    </section><!-- .error-404 -->
 {% endblock %}
