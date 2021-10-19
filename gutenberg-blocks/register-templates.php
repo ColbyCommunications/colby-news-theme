@@ -55,7 +55,7 @@ function nc_register_templates()
         ],
         ],
         ['core/heading', [
-            'content' => __('Editor’s Picks', 'colby-news'),
+            'content' => __('Highlights', 'colby-news'),
             'className' => 'is-style-large-heading'
         ]],
         ['acf/nc-teaser-pair', [
