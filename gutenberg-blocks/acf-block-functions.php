@@ -928,7 +928,7 @@ function external_post_list($block, $content = '', $is_preview = false, $post_id
     $post_count = 4;
 
     if (function_exists('get_field')) {
-        // If true, use the latest story with the "Editor's Pick" tag
+        // If true, use the latest story with the "Highlight" tag
         $custom_title = get_field('title');
         $custom_post_count = get_field('post_count');
 
@@ -1084,7 +1084,7 @@ function featured_story_large($block, $content = '', $is_preview = false, $post_
     $featured_post = false;
 
     if (function_exists('get_field')) {
-        // If true, use the latest story with the "Editor's Pick" tag
+        // If true, use the latest story with the "Highlight" tag
 
         $use_latest = get_field('use_latest');
 

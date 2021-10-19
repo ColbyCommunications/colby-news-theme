@@ -34,9 +34,9 @@ function register_colby_block_patterns()
         'colbycommunications/editors-picks',
         array(
             'title'       => __('Highlights / Editor’s Picks', 'colby-news-theme'),
-            'description' => _x('Teaser Pair pre-set with a filter for the "Editor’s Pick" tag.', 'Block pattern description', 'colby-news-theme'),
+            'description' => _x('Teaser Pair pre-set with a filter for the "Highlight" tag.', 'Block pattern description', 'colby-news-theme'),
             'categories' => ['post-lists'],
-            'content'     => "<!-- wp:heading {\"className\":\"is-style-large-heading\"} --><h2 class=\"is-style-large-heading\">Editor’s Picks</h2><!-- /wp:heading --><!-- wp:acf/nc-teaser-pair {\"name\":\"acf/nc-teaser-pair\",\"data\":{\"tags\":[92],\"posts_per_page\":2},\"align\":\"\",\"mode\":\"preview\",\"wpClassName\":\"wp-block-acf-nc-teaser-pair\"} /-->",
+            'content'     => "<!-- wp:heading {\"className\":\"is-style-large-heading\"} --><h2 class=\"is-style-large-heading\">Highlights</h2><!-- /wp:heading --><!-- wp:acf/nc-teaser-pair {\"name\":\"acf/nc-teaser-pair\",\"data\":{\"tags\":[92],\"posts_per_page\":2},\"align\":\"\",\"mode\":\"preview\",\"wpClassName\":\"wp-block-acf-nc-teaser-pair\"} /-->",
             )
     );
 }

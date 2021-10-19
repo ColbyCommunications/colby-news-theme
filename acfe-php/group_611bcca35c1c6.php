@@ -8,10 +8,10 @@ acf_add_local_field_group(array(
 	'fields' => array(
 		array(
 			'key' => 'field_611bccbbf90bf',
-			'label' => 'Use latest Editor\'s Pick',
+			'label' => 'Use latest Highlight',
 			'name' => 'use_latest',
 			'type' => 'true_false',
-			'instructions' => 'If set to Yes, the story will be the most recent post with the tag "Editor\'s Pick"',
+			'instructions' => 'If set to Yes, the story will be the most recent post with the tag "Highlight"',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
