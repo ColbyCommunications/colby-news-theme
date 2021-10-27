@@ -486,7 +486,7 @@ function nc_get_excerpt($post, $trim = false, array $custom_fields = [])
     return apply_filters('get_the_excerpt', $excerpt, $post);
 }
 
-function related_posts($post_id, $item_count = 5, array $tags = [])
+function related_posts($post_id, $item_count = 3, array $tags = [])
 {
     $primary_category = get_primary_category($post_id);
 
@@ -496,12 +496,19 @@ function related_posts($post_id, $item_count = 5, array $tags = [])
 
     $primary_category_id = $primary_category->term_id;
 
-    $cache_key = "posts_related_$post_id" . '_' . $primary_category_id;
+    $item_count = $item_count < 10 ? $item_count : 10;
 
+    $cache_key = "posts_related_$post_id" . '_' . $primary_category_id . '_' . $item_count;
+
+    $_posts = wp_cache_get($cache_key, 'nc-related-posts');
+
+    if (is_array($_posts)) {
+        return $_posts;
+    }
 
     $query_args = [
         'post_type' => get_post_type($post_id),
-        'posts_per_page' => $item_count > 10 ? $item_count : 10,
+        'posts_per_page' => $item_count,
         'order' => 'DESC',
         'orderby' => 'date',
         'post_status' => ['publish'],
@@ -529,7 +536,7 @@ function related_posts($post_id, $item_count = 5, array $tags = [])
     $results = new WP_Query($query_args);
 
     if (!is_object($results) || !is_array($results->posts)) {
-        wp_cache_set($cache_key, false, 120);
+        wp_cache_set($cache_key, false, 'nc-related-posts', 120);
         return false;
     }
 
@@ -538,6 +545,8 @@ function related_posts($post_id, $item_count = 5, array $tags = [])
     if (count($posts) > $item_count) {
         $posts = array_slice($posts, 0, $item_count);
     }
+
+    wp_cache_set($cache_key, $posts, 'nc-related-posts', 120);
 
     return $posts;
 }
