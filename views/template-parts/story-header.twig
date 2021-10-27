@@ -22,7 +22,9 @@
     </div>
   {% endif %}
   
-  <h1 class="text-4xl font-bold md:text-5xl">{{ title }}</h1>
+  {% set storyHTag = element == 'header' ? 'h1' : 'h2' %}
+  <{{ storyHTag }} class="text-4xl font-bold md:text-5xl">{{ title }}</{{ storyHTag }}>
+
 
   {% if (primaryCategory and element == 'header') or lengthOfRead %}
     <div class="flex flex-col mt-4 uppercase sm:block">{% apply spaceless %}
@@ -100,26 +102,138 @@
   {% endif %}
 {% endset %}
 
+{% if element is empty %}
+  {% set element = 'header' %}
+{% endif %}
+
+{% set _shareButtons %}
+  {% if shareButtons %}
+    <div class="flex flex-wrap items-center my-5 sm:my-6 md:my-8 lg:my-10">
+      <div class="mr-5 text-sm uppercase">Share</div>
+      <div>{{ shareButtons }}</div>
+    </div>
+  {% endif %}
+{% endset %}
+
+{% set contentGroup1 %}
+  {% if element != 'header' and primaryCategory %} {# homepage primaryCategory #}
+    <div class="mb-3 text-sm uppercase">
+      {% if primaryCategory.url %}
+        <a href="{{ primaryCategory.url }}">{{ primaryCategory.title }}</a>
+      {% else %}
+        {{ primaryCategory.title }}
+      {% endif %}
+    </div>
+  {% endif %}
+  
+  {# story title is h2 if we're on the homepage, otherwise h1 #}
+  {% set storyHTag = element == 'header' ? 'h1' : 'h2' %}
+  <{{ storyHTag }} class="text-4xl font-bold md:text-5xl">{{ title }}</{{ storyHTag }}>
+
+  {% if (primaryCategory and element == 'header') or lengthOfRead %} {# non-homepage primaryCategory / lengthOfRead #}
+    <div class="flex flex-col mt-4 uppercase sm:block">{% apply spaceless %}
+      {% if primaryCategory and element == 'header' %}
+        <span class="primary-category {{ lengthOfRead ? 'mr-2 sm:after:content-pipe sm:after:ml-2' }}">
+          {% if primaryCategory.url %}
+            <a href="{{ primaryCategory.url }}">{{ primaryCategory.title }}</a>
+          {% else %}
+            {{ primaryCategory.title }}
+          {% endif %}
+        </span>
+      {% endif %}
+      {% if lengthOfRead %}<span>{{ lengthOfRead }}</span>{% endif %}
+    {% endapply %}
+    </div>
+  {% endif %}
+
+  {% if summary %}
+    <p class="text-xl lg:text-2xl xl:text-3xl mt-4 sm:mt-8 {{ (orientation == 'landscape' and element == 'header') ? 'max-w-2xl mx-auto' }}">{{ summary }}</p>
+  {% endif %}
+
+  {% if link and element != 'header' %} {# homepage link to featured-story #}
+    <div class="mt-16">
+      <a href="{{ link.url }}" class="px-10 py-2 text-sm text-white uppercase transition-colors bg-black rounded-lg hover:bg-gray-800">{{ link.title }}</a>
+    </div>
+  {% endif %}
+  
+{% endset %}
+
+{% set contentGroup2 %}
+  {% if shareButtons and not shareButtonsLast %}
+    {{ _shareButtons }}
+  {% endif %}
+
+  <div class="mt-4 sm:mt-8">
+    {% if author or photoCredit or videoCredit %}
+      <div class="flex flex-col sm:block">{% apply spaceless %}
+        {% if author %}
+          <span class="{{ photoCredit ? 'sm:mr-2 sm:after:content-pipe sm:after:ml-2' }}">By {{ author }}</span>
+        {% endif %}
+        {% if photoCredit %}
+          <span class="{{ videoCredit ? 'sm:mr-2 sm:after:content-pipe sm:after:ml-2' }}">{{ photoCredit }}</span>
+        {% endif %}
+        {% if videoCredit %}
+          <span>Videography by {{ videoCredit }}</span>
+        {% endif %}
+      {% endapply %}</div>
+    {% endif %}
+
+    {% if contact and contact.name %}
+      <address class="flex flex-col mt-4 not-italic">
+        <span>Contact: {{ contact.name }}{% if contact.email %}
+          (<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>){# assuming link for email? #}
+        {% endif %}</span>
+        {% if contact.phone %}
+          <span>{{ contact.phone }}</span>{# link or just text for phone? #}
+        {% endif %}
+      </address>
+    {% endif %}
+  </div>
+
+  {% if postedDate or updatedDate %}
+    <div class="mt-2 text-sm">{% apply spaceless %}
+      {% if postedDate %}
+        <span class="{{ updatedDate ? 'mr-3' }}">{{ postedDate }}</span>
+      {% endif %}
+      {% if updatedDate %}<span><span class="mr-1 text-xs uppercase">Updated </span>{{ updatedDate }}</span>{% endif %}
+    {% endapply %}
+    </div>
+  {% endif %}
+  
+  
+  {% if shareButtons and shareButtonsLast %}
+    {{ _shareButtons }}
+  {% endif %}
+{% endset %}
+
 {% if orientation == 'portrait' %}
-  <{{ element }} class="space-y-8 md:space-y-0 md:grid md:grid-cols-2 md:gap-16 md:items-center {{ element == 'header' ? 'md:-mx-container-gutter pb-9 md:pb-15' }}">
-    <div class="-mx-container-gutter md:mx-0 md:self-stretch">
-      <div class="md:ml-auto md:max-w-2xl descendant-figcaption:mx-page-padding md:descendant-figcaption:mr-0 descendant-img:h-auto">
-        {{ figure }}
+  <div>
+    {% if element != 'header' %} {# homepage h1 #}
+      <h1 class="sr-only">Colby College News</h1>
+    {% endif %}
+    <{{ element }} class="space-y-8 md:space-y-0 md:grid md:grid-cols-2 md:gap-16 md:items-center {{ element == 'header' ? 'md:-mx-container-gutter pb-9 md:pb-15' }}">
+      <div class="-mx-container-gutter md:mx-0 md:self-stretch">
+        <div class="md:ml-auto md:max-w-2xl descendant-figcaption:mx-page-padding md:descendant-figcaption:mr-0 descendant-img:h-auto">
+          {{ figure }}
+        </div>
       </div>
-    </div>
-    <div class="{{ element == 'header' ? 'md:pr-container-gutter' }}">{{ contentGroup1 }}{{ element == 'header' ? contentGroup2 }}</div>
-  </{{ element }}>
+      <div class="{{ element == 'header' ? 'md:pr-container-gutter' }}">{{ contentGroup1 }}{{ element == 'header' ? contentGroup2 }}</div>
+    </{{ element }}>
+  </div>
 {% elseif element != 'header' %}{# homepage landscape #}
-  <{{ element }} class="pt-8 {% if is_preview == false %} xl:-mx-container-gutter {% endif %} flex flex-col items-center {{ element == 'header' ? 'pb-9 md:pb-15' }}">
-    <div class="max-w-[88rem] space-y-6 xl:space-y-0 xl:grid xl:grid-cols-12 xl:gap-16 xl:items-center">
-      <div class="-mx-container-gutter xl:mx-0 xl:self-stretch xl:col-span-7 2xl:col-span-8 descendant-img:h-auto">
-        {{ figure }}
+  <div>
+    <h1 class="sr-only">Colby College News</h1>
+    <{{ element }} class="pt-8 {% if is_preview != true %} xl:-mx-container-gutter {% endif %} flex flex-col items-center {{ element == 'header' ? 'pb-9 md:pb-15' }}">
+      <div class="max-w-[88rem] space-y-6 xl:space-y-0 xl:grid xl:grid-cols-12 xl:gap-16 xl:items-center">
+        <div class="-mx-container-gutter xl:mx-0 xl:self-stretch xl:col-span-7 2xl:col-span-8 descendant-img:h-auto">
+          {{ figure }}
+        </div>
+        <div class="xl:pl-container-gutter xl:order-first xl:col-span-5 2xl:col-span-4 2xl:ml-auto 2xl:pl-12">
+          {{ contentGroup1 }}
+        </div>
       </div>
-      <div class="xl:pl-container-gutter xl:order-first xl:col-span-5 2xl:col-span-4 2xl:ml-auto 2xl:pl-12">
-        {{ contentGroup1 }}
-      </div>
-    </div>
-  </{{ element }}>
+    </{{ element }}>
+  </div>
 {% else %}{# non-homepage landscape #}
   <{{ element }} class="md:pt-4 lg:pt-8 {{ element == 'header' ? 'pb-9 md:pb-15' }}">
     <div class="text-center">{{ contentGroup1 }}</div>
