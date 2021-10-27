@@ -19,7 +19,7 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
-			'message' => 'The standard layout for featured images is a landscape-oriented image. If you want to use a portrait-oriented image at the top of the page instead, upload it here (you should also include a landscape-oriented image as the featured image, since various previews and social media integrations require it).',
+			'message' => 'The standard layout for featured images is a landscape-oriented image. If you want to use a portrait-oriented image at the top of the page instead, upload it here (you should also include a landscape-oriented image as the featured image, since various previews and social media integrations require it). Images must be 1500x2000 px.',
 			'new_lines' => 'wpautop',
 			'esc_html' => 0,
 		),
@@ -83,7 +83,7 @@ acf_add_local_field_group(array(
 			),
 		),
 	),
-	'menu_order' => 1,
+	'menu_order' => 2,
 	'position' => 'side',
 	'style' => 'default',
 	'label_placement' => 'top',
@@ -98,7 +98,7 @@ acf_add_local_field_group(array(
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1629389725,
+	'modified' => 1635343926,
 ));
 
 endif;

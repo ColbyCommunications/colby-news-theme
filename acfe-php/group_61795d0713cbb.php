@@ -3,15 +3,15 @@
 if( function_exists('acf_add_local_field_group') ):
 
 acf_add_local_field_group(array(
-	'key' => 'group_611691f83003b',
-	'title' => 'Media Source Logo',
+	'key' => 'group_61795d0713cbb',
+	'title' => 'Featured Image',
 	'fields' => array(
 		array(
-			'key' => 'field_611692006b00c',
-			'label' => 'Logo Image',
-			'name' => 'logo',
+			'key' => 'field_61795d36cd3f2',
+			'label' => 'Set Featured Image',
+			'name' => 'image',
 			'type' => 'image',
-			'instructions' => 'For best results, use a PNG image. Images must be 200x200 px.',
+			'instructions' => 'Featured images are required for every post. Images must be 1600x1067 px.',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
@@ -20,34 +20,36 @@ acf_add_local_field_group(array(
 				'id' => '',
 			),
 			'uploader' => '',
-			'acfe_thumbnail' => 0,
+			'acfe_thumbnail' => 1,
 			'return_format' => 'id',
 			'preview_size' => 'medium',
-			'min_width' => '',
-			'min_height' => '',
+			'min_width' => 1600,
+			'min_height' => 1067,
 			'min_size' => '',
 			'max_width' => '',
 			'max_height' => '',
-			'max_size' => '',
-			'mime_types' => 'jpg, jpeg, png',
+			'max_size' => 2,
+			'mime_types' => 'jpg, jpeg, webp',
 			'library' => 'all',
 		),
 	),
 	'location' => array(
 		array(
 			array(
-				'param' => 'taxonomy',
+				'param' => 'post_type',
 				'operator' => '==',
-				'value' => 'media_source',
+				'value' => 'post',
 			),
 		),
 	),
 	'menu_order' => 1,
-	'position' => 'acf_after_title',
+	'position' => 'side',
 	'style' => 'default',
-	'label_placement' => 'top',
+	'label_placement' => 'left',
 	'instruction_placement' => 'label',
-	'hide_on_screen' => '',
+	'hide_on_screen' => array(
+		0 => 'featured_image',
+	),
 	'active' => true,
 	'description' => '',
 	'acfe_display_title' => '',
@@ -57,7 +59,7 @@ acf_add_local_field_group(array(
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1635342105,
+	'modified' => 1635344070,
 ));
 
 endif;

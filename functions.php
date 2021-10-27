@@ -821,12 +821,13 @@ function newcity_colby_news_scripts()
 }
 add_action('wp_enqueue_scripts', 'newcity_colby_news_scripts');
 
-add_action('enqueue_admin_scripts', function () {
-    wp_enqueue_style(
-        'colby-news-theme-fonts',
-        newcity_colby_news_fonts_url(),
-        array(),
-        null,
+add_action('enqueue_block_editor_assets', function () {
+    wp_enqueue_script(
+        'hide-editor-panels',
+        get_template_directory_uri() . '/js/hide-editor-panels.js',
+        [],
+        false,
+        true
     );
 });
 

@@ -11,7 +11,7 @@ acf_add_local_field_group(array(
 			'label' => 'Length of Read',
 			'name' => 'lengthOfRead',
 			'type' => 'text',
-			'instructions' => 'Include units as you want them to be displayed, e.g. "5 min."',
+			'instructions' => 'Include units as you want them to be displayed, e.g. "5 MIN. READ"',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
@@ -169,7 +169,7 @@ acf_add_local_field_group(array(
 			),
 		),
 	),
-	'menu_order' => 5,
+	'menu_order' => 10,
 	'position' => 'side',
 	'style' => 'default',
 	'label_placement' => 'top',
@@ -184,7 +184,7 @@ acf_add_local_field_group(array(
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1628606166,
+	'modified' => 1635344023,
 ));
 
 endif;
