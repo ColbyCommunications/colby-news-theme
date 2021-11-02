@@ -723,7 +723,7 @@ add_action('after_setup_theme', 'newcity_colby_news_content_width', 0);
  */
 function newcity_colby_news_fonts_url()
 {
-    $fonts_url = 'https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100;0,400;0,800;1,100;1,400;1,800&display=swap';
+    $fonts_url = 'https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100;0,400;0,600;0,800;1,100;1,400;1,600;1,800&display=swap';
 
     return $fonts_url;
 }

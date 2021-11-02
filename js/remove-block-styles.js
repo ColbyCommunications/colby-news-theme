@@ -1,4 +1,6 @@
 wp.domReady(() => {
+  // Remove (unregister) default block styles
+
   // image
   wp.blocks.unregisterBlockStyle('core/image', 'rounded');
   wp.blocks.unregisterBlockStyle('core/image', 'default');
@@ -22,6 +24,9 @@ wp.domReady(() => {
   // wp.blocks.unregisterBlockStyle('core/social-links', 'default');
   wp.blocks.unregisterBlockStyle('core/social-links', 'pill-shape');
   wp.blocks.unregisterBlockStyle('core/social-links', 'logos-only');
+
+  // Add (register) custom block styles
+
   wp.blocks.registerBlockStyle('core/social-links', {
     name: 'logos-only',
     label: 'Logos Only',
@@ -43,15 +48,7 @@ wp.domReady(() => {
     isDefault: false,
   });
 
-  // wp.blocks.getBlockTypes().forEach((block) => {
-  //   if (Array.isArray(block['styles']) && block['styles'].length > 0) {
-  //     console.log(
-  //       block.name,
-  //       block['styles'].map((style) => style.name)
-  //     );
-  //   }
-  // });
-
+  // Limit options in the "embed" block to certain sources
   const allowedEmbedBlocks = ['vimeo', 'youtube'];
   wp.blocks.getBlockVariations('core/embed').forEach(function (blockVariation) {
     if (-1 === allowedEmbedBlocks.indexOf(blockVariation.name)) {

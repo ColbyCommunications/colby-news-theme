@@ -34,12 +34,12 @@
             "fontSizes": [
                 {
                     "slug": "small",
-                    "size": "0.8125rem (13px)",
+                    "size": "0.8125rem",
                     "name": "Small"
                 },
                 {
                     "slug": "medium",
-                    "size": "0.8125rem",
+                    "size": "1rem",
                     "name": "Medium"
                 },
                 {
