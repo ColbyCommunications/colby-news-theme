@@ -388,10 +388,6 @@ function query_from_fields(array $user_fields = array(), $has_pagination = false
 
     $include_current = get_key($user_fields, 'include_current');
 
-    if (!$include_current && $post_id) {
-        $posts_not_in = is_array($posts_not_in) ? array_merge($posts_not_in, [$post_id]) : [$post_id];
-    }
-
     if ($posts_in && is_string($posts_in)) {
         $posts_in = explode(',', $posts_in);
 
@@ -408,8 +404,12 @@ function query_from_fields(array $user_fields = array(), $has_pagination = false
     if ($posts_not_in && is_string($posts_not_in)) {
         $posts_not_in = explode(',', $posts_not_in);
         $posts_not_in = array_map(function ($post_id) {
-            return trim($post_id);
+            return intval(trim($post_id));
         }, $posts_not_in);
+    }
+
+    if (!$include_current && $post_id) {
+        $posts_not_in = is_array($posts_not_in) ? array_merge($posts_not_in, [$post_id]) : [$post_id];
     }
 
     if (is_array($posts_not_in) && count($posts_not_in)) {
