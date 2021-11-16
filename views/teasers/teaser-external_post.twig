@@ -15,7 +15,7 @@
 {% if variant == 'featured' %}
 
     <div class="grid gap-4 media-coverage-item-grid lg:gap-x-9">
-        <div>
+        <div class="media-coverage-item__image">
             {% if post.image %}
                 <div class="lg:w-24">
                     {% include './linkify.twig' with {
@@ -26,7 +26,7 @@
             {% endif %}
         </div>
 
-        <div class="space-y-1 lg:space-y-2">
+        <div class="space-y-1 lg:space-y-2 lg:row-span-2">
             {% if post.source %}
                 <div class="text-xs uppercase">{{ post.source }}</div>
             {% endif %}
@@ -46,7 +46,7 @@
 
     <div class="grid gap-4 media-coverage-item-grid lg:gap-x-9">
         <div class="contents">
-            <div>
+            <div class="media-coverage-item__image">
                 {% if post.image %}
                     <div class="lg:w-24">
                         {% include './linkify.twig' with {

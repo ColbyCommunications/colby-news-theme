@@ -1,6 +1,6 @@
 <div class="space-y-2">
-    <div class="grid media-coverage-item-grid gap-x-4">
-        <div class="">
+    <div class="grid media-coverage-item-grid gap-x-4 gap-y-2">
+        <div class="media-coverage-item__image">
             {% if image %}
                 {{ image }}
             {% endif %}
@@ -18,6 +18,6 @@
         </div>
 
     {% if blurb %}
-        <div class="col-start-2 media-coverage-blurb text-base-minus-2 sm:text-base descendant-a:text-inherit sm:descendant-a:text-inherit">{{ blurb }}</div>
+        <div class="col-span-2 lg:col-span-1 lg:col-start-2 media-coverage-blurb text-base-minus-2 sm:text-base descendant-a:text-inherit sm:descendant-a:text-inherit">{{ blurb }}</div>
     {% endif %}
 </div>
