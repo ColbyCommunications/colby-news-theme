@@ -281,14 +281,20 @@ class TemplatePart
         $globalAlert = false;
 
         $show_global_alert = function_exists('get_field') ? get_field('show_global_alert', 'option') : '';
+        $show_icon = function_exists('get_field') ? get_field('show_icon', 'option') : '';
+
         if ($show_global_alert) {
             $globalAlert = [];
             $globalalert['alert'] = function_exists('get_field') ? get_field('alert', 'option') : '';
 
             $iconLocation = get_template_directory_uri() . '/assets/icons/icon-sprites.svg#interface-exclamation-triangle';
-            $icon = "<svg class='w-8 h-8 transition-transform transform fill-current group-hover:scale-110'>
-            <use xlink:href='$iconLocation'></use>
-            </svg>";
+            $icon = false;
+
+            if ($show_icon) {
+                $icon = "<svg class='w-8 h-8 transition-transform transform fill-current group-hover:scale-110'>
+                <use xlink:href='$iconLocation'></use>
+                </svg>";
+            }
 
             $globalalert['icon'] = $icon;
 

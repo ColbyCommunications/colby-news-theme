@@ -44,6 +44,25 @@ acf_add_local_field_group(array(
 			'media_upload' => 0,
 			'delay' => 0,
 		),
+		array(
+			'key' => 'field_619c2327a4148',
+			'label' => 'Show/Hide Icon',
+			'name' => 'show_icon',
+			'type' => 'true_false',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => '',
+			'default_value' => 1,
+			'ui' => 1,
+			'ui_on_text' => 'Show',
+			'ui_off_text' => 'Hide',
+		),
 	),
 	'location' => array(
 		array(
@@ -69,7 +88,7 @@ acf_add_local_field_group(array(
 	'acfe_form' => 0,
 	'acfe_meta' => '',
 	'acfe_note' => '',
-	'modified' => 1631193404,
+	'modified' => 1637622610,
 ));
 
 endif;
