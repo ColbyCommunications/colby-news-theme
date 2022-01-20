@@ -18,13 +18,9 @@ jobs:
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
-      - run: npm install
-
-      - name: Install Node.js dependencies
-        run: npm ci
+      - run: npm install --save-dev
 
       - name: Run Linters
-        uses: wearerequired/lint-action@v1
-        with:
-          eslint: true
-          prettier: true
+        run: |
+          npm run stylelint-report
+          npm run eslint
