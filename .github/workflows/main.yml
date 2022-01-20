@@ -10,7 +10,7 @@ on:
 jobs:
   run-linters:
     name: Run Linters
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Check out Git repository
