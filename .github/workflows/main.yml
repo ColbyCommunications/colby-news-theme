@@ -10,7 +10,7 @@ on:
 jobs:
   run-linters:
     name: Run Linters
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out Git repository
@@ -23,9 +23,6 @@ jobs:
 
       - name: Install Node.js dependencies
         run: npm ci
-
-      - name: Install npm
-        run: npm install
 
       - name: Run Linters
         uses: wearerequired/lint-action@v1
