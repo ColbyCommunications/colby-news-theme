@@ -24,3 +24,4 @@ jobs:
         run: |
           npm run stylelint-report
           npm run eslint
+          cat eslint-theme-results.xml
