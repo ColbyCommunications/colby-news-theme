@@ -1,7 +1,7 @@
 {
   "name": "colby-news-theme",
   "version": "1.0.0",
-  "description": "This package file sets up some local linting tools. Everything else is handled inside docker and lando.",
+  "description": "This package file sets up some local linting tools. Everything else is handled inside docker and lando..",
   "main": "index.js",
   "scripts": {
     "start": "npm run storybook-up",
