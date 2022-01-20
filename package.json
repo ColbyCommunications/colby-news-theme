@@ -30,8 +30,7 @@
     "storybook-up": "docker-compose --file storybook-compose.yml up -d",
     "storybook-restart": "docker-compose --file storybook-compose.yml rm -s storybook && npm run storybook-up",
     "storybook-down": "docker-compose --file storybook-compose.yml down",
-    "storybook-destroy": "docker-compose --file storybook-compose.yml down -v",
-    "eslint:github-action": "eslint src/"
+    "storybook-destroy": "docker-compose --file storybook-compose.yml down -v"
   },
   "repository": {
     "type": "git",
