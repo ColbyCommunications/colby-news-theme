@@ -1,0 +1,9 @@
+{% if buttons is iterable and buttons.length > 0 %}
+    <div class="container mx-auto px-container">
+        <div class="grid gap-2 my-4 routing-buttons auto-cols-fr">
+            {% for button in buttons %}
+                <a href="{{ button.url }}" class="flex items-center justify-center text-sm text-center btn btn-solid">{{ button.title }}</a>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,17 @@
+<div class="bg-[#EFEEE8] pt-8 pb-10 px-10 space-y-6">
+	{% if headline %}
+		<h2 class="font-display text-3xl-minus-2">{{ headline }}</h2>
+	{% endif %}
+
+	{% if image %}
+		<div>{{ image }}</div>
+	{% endif %}
+
+	{% if wysiwyg %}
+		<div class="prose-figcaption">{{ wysiwyg }}</div>
+	{% endif %}
+
+	{% if linkGroup %}
+		<div>{{ linkGroup }}</div>
+	{% endif %}
+</div>

@@ -1,0 +1,7 @@
+{% extends 'template-parts/base.twig' %}
+
+{% block content %}
+    {% include 'content/page.twig' with {
+        post: post
+    } %}
+{% endblock %}

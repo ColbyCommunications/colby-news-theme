@@ -1,0 +1,102 @@
+name: colby-news
+recipe: wordpress
+env_file:
+  - .local.env
+config:
+  webroot: .
+  xdebug: true
+  php: '7.4'
+  composer_version: '2.1.3'
+  conf:
+    php: .vscode/php.ini
+events:
+  post-rebuild:
+    - composer install
+    - composer run-script wp-setup
+    - composer --working-dir=wp-content/themes/colby-news-theme install
+    - wp db import wp-setup/dev-theme-site.db
+    - wp rewrite flush && wp cache flush
+    # - wp plugin activate --all
+    # - wp plugin deactivate wordpress-beta-tester
+    - rm -f theme-preview.xml
+    # - ~/.platformsh/bin/platform auth:api-token-login
+services:
+  node:
+    type: node:14
+    run:
+      - npm install
+
+tooling:
+  # Custom Commands
+  db-default:
+    description: Import default site database
+    service: appserver
+    cmd:
+      - wp db import wp-setup/dev-theme-site.db
+      - wp rewrite flush && wp cache flush
+  db-default-update:
+    description: Export the current database and make it the new default database for testing.
+    service: appserver
+    cmd: wp db export wp-setup/dev-theme-site.db
+  db-snapshot:
+    description: Export current database to `.db-snapshots` as timestamped file. Not committed to repo.
+    service: appserver
+    cmd: wp db export ".db-snapshots/dev-theme-site-backup-$(date +"%F--%H-%M-%S").db"
+  plugins-sync:
+    description: Copy all plugins present on the live site to the local environment
+    service: appserver
+    cmd: 
+      - composer update
+      - rsync -azv --delete "$(/var/www/.platformsh/bin/platform ssh --pipe --project=4nvswumupeimi)":web/wp-content/plugins/ ./wp-content/plugins
+  uploads-sync:
+    description: Copy contents of the production server's uploads directory to local environment
+    service: appserver
+    cmd: /var/www/.platformsh/bin/platform -v mount:download --mount web/wp-content/uploads --target ./wp-content/uploads --project=4nvswumupeimi
+  plugins-default:
+    service: appserver
+    cmd:
+      - wp plugin activate --all
+      - wp plugin deactivate wordpress-beta-tester
+  db-sync:
+    service: appserver
+    cmd:
+      - rm -f /tmp/remote-db.sql
+      - /var/www/.platformsh/bin/platform -v db:dump -f /tmp/remote-db.sql --project=4nvswumupeimi
+      - wp db import /tmp/remote-db.sql
+      - wp search-replace 'https://master-7rqtwti-4nvswumupeimi.us-4.platformsh.site/' 'https://colby-news.lndo.site'
+      - wp search-replace 'https://news.colby.edu' 'https://colby-news.lndo.site'
+      - wp rewrite flush
+  platform-logs:
+    service: appserver
+    cmd:
+      - /var/www/.platformsh/bin/platform logs --project=4nvswumupeimi
+  eslint:
+    service: node
+    cmd: npm run eslint
+  stylelint:
+    service: node
+    cmd: npm run stylelint
+  composer-theme:
+    service: appserver
+    cmd: composer --working-dir=wp-content/themes/colby-news-theme
+  # Passthrough commands
+  behat:
+    service: appserver
+    cmd: ./vendor/bin/behat
+  npm:
+    service: node
+  phpcs:
+    service: appserver
+    cmd: ./vendor/bin/phpcs
+  phpcbf:
+    service: appserver
+    cmd: ./vendor/bin/phpcbf
+  platform:
+    service: appserver
+    cmd: /var/www/.platformsh/bin/platform
+  rsync:
+    service: appserver
+  scp:
+    service: appserver
+  wget:
+    service: appserver

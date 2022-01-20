@@ -1,71 +1,23 @@
 <?xml version="1.0"?>
-<ruleset name="Roots">
-  <description>Roots Coding Standards</description>
 
-  <!-- Scan these files -->
-  <file>resources/functions.php</file>
-  <file>resources/index.php</file>
-  <file>app</file>
-  <file>resources/views</file>
+<ruleset  name="PHP_CodeSniffer">
 
-  <!-- Show colors in console -->
-  <arg value="-colors"/>
+<description>PHPCS configuration file.</description>
+<!-- check all files in the app directory, feel free to add more files with:
+<file>FOLDER NAME</file>
+-->
+<file>wp-content/themes/</file>
 
-  <!-- Show sniff codes in all reports -->
-  <arg value="s"/>
+<exclude-pattern>wordpress/*</exclude-pattern>
+<exclude-pattern>wp-content/themes/twentytwenty/*</exclude-pattern>
+<exclude-pattern>wp-content/plugins/*</exclude-pattern>
+<exclude-pattern>*/vendor/*</exclude-pattern>
+<exclude-pattern>*/acfe-php/*</exclude-pattern>
 
-  <!-- Use PSR-2 as a base -->
-  <rule ref="PSR2"/>
+<!-- ignore warnings and display ERRORS only -->
+<!-- <arg  value="np"/> -->
 
-  <!-- Exclusions below are for resources/views/ folder -->
+<!-- Our base rule: set to WordPress standards -->
+<rule  ref="PSR12"/>
 
-  <!-- Allow php files without any PHP in them -->
-  <rule ref="Internal.NoCodeFound">
-    <exclude-pattern>resources/views</exclude-pattern>
-  </rule>
-
-  <!-- Allow braces on same line for named functions -->
-  <rule ref="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine">
-    <exclude-pattern>resources/views</exclude-pattern>
-  </rule>
-
-  <!-- Allow closing braces to be on the same line -->
-  <rule ref="Squiz.WhiteSpace.ScopeClosingBrace">
-    <exclude-pattern>resources/views</exclude-pattern>
-  </rule>
-
-  <!-- Disable newline after opening brace -->
-  <rule ref="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace">
-    <exclude-pattern>resources/views</exclude-pattern>
-  </rule>
-
-  <!-- Allow multiple PHP statements in the same line -->
-  <rule ref="Generic.Formatting.DisallowMultipleStatements.SameLine">
-    <exclude-pattern>resources/views</exclude-pattern>
-  </rule>
-
-  <!-- Disable PSR-2 indentation rules that are buggy with 2 spaces -->
-  <rule ref="PSR2.ControlStructures.SwitchDeclaration.BreakIndent">
-    <exclude-pattern>resources/views</exclude-pattern>
-  </rule>
-
-  <!-- Don't require a blank line after the last `use` -->
-  <rule ref="PSR2.Namespaces.UseDeclaration.SpaceAfterLastUse">
-    <exclude-pattern>resources/views</exclude-pattern>
-  </rule>
-
-  <!-- Allow long lines -->
-  <rule ref="Generic.Files.LineLength.TooLong">
-    <exclude-pattern>resources/views</exclude-pattern>
-  </rule>
-
-  <!-- Ignore indentation rules -->
-  <rule ref="Generic.WhiteSpace.ScopeIndent">
-    <exclude-pattern>resources/views</exclude-pattern>
-  </rule>
-
-  <!-- Allow PHP closing tags -->
-  <rule ref="PSR2.Files.ClosingTag.NotAllowed">
-    <exclude-pattern>resources/views</exclude-pattern>
-  </rule>
 </ruleset>

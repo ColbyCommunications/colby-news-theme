@@ -1,0 +1,28 @@
+
+{% if pagination %}
+<div class="mb-8 xl:mb-10">
+    <span class="font-light uppercase text-md">Page {{ pagination.current }} of {{ pagination.total }}</span>
+</div>
+{% endif %}
+
+<div class="border-t border-gray-700 post-list {{ postListClasses }}">
+    {% if posts|length > 0 %}
+        {% for listed_post in posts %}
+            <div class="post-list-item {{ itemClasses }} border-b border-gray-700">
+                {% include ['teasers/teaser-'~listed_post.post_type~'.twig', 'teasers/teaser.twig'] with {
+                    post: listed_post,
+                    featuredStory: featuredStory,
+                    variant: listed_post.variant,
+                    is_archive: true,
+                    loop: loop,
+                    first_page: first_page
+                }%}
+            </div>
+        {% endfor %}
+    
+    {% else %}
+        {% include 'content/no-entries.twig' %}
+    {% endif %} {# posts|length > 0 #}
+</div>
+
+{% if pagination %}<div class="lg:py-10">{{ pagination_links }}</div>{% endif %}

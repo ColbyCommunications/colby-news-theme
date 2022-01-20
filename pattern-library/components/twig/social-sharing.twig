@@ -1,0 +1,27 @@
+{% set svgClasses = 'w-5 h-5' %}
+
+{# `social-sharing.js` gets the buttons working and fleshes out the mailto: link #}
+<div class="p-2 -m-2 overflow-hidden leading-0">
+  <ul class="inline-flex flex-wrap items-center -m-1.5 children:m-1.5">
+    <li>
+      <a class="social-share email inline-block w-7 h-7" href="mailto:">
+        <img src="./images/icons8-mail-90.png" alt="Share in an email (opens email app)" />
+      </a>
+    </li>
+    <li>
+      <button class="social-share facebook" aria-label="Share page on Facebook (opens new window).">
+        <svg class="{{ svgClasses }}" aria-hidden="true" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M1024,512C1024,229.2,794.8,0,512,0S0,229.2,0,512c0,255.6,187.2,467.4,432,505.8V660H302V512h130V399.2 C432,270.9,508.4,200,625.4,200c56,0,114.6,10,114.6,10v126h-64.6c-63.6,0-83.4,39.5-83.4,80v96h142l-22.7,148H592v357.8 C836.8,979.4,1024,767.6,1024,512z"/></svg>
+      </button>
+    </li>
+    <li>
+      <button class="social-share twitter" aria-label="Share page on Twitter (opens new window).">
+        <svg class="{{ svgClasses }}" aria-hidden="true" viewBox="0 0 246.138 200" xmlns="http://www.w3.org/2000/svg"><path d="M221.952,51.287c.147,2.166.147,4.342.147,6.528,0,66.732-50.8,143.685-143.685,143.685v-.04a142.964,142.964,0,0,1-77.4-22.644,102.754,102.754,0,0,0,12.021.728,101.328,101.328,0,0,0,62.716-21.66,50.557,50.557,0,0,1-47.18-35.07,50.406,50.406,0,0,0,22.8-.866,50.518,50.518,0,0,1-40.514-49.5v-.64a50.12,50.12,0,0,0,22.921,6.321A50.536,50.536,0,0,1,18.14,10.714,143.372,143.372,0,0,0,122.217,63.476a50.546,50.546,0,0,1,86.059-46.057A101.213,101.213,0,0,0,240.343,5.161a50.672,50.672,0,0,1-22.2,27.932,100.784,100.784,0,0,0,29-7.946A102.748,102.748,0,0,1,221.952,51.287Z" transform="translate(-1.009 -1.5)"/></svg>
+      </button>
+    </li>
+    <li>
+      <button class="social-share linkedin" aria-label="Share page on LinkedIn (opens new window).">
+        <svg class="{{ svgClasses }}" aria-hidden="true" viewBox="0 0 549 548.992" xmlns="http://www.w3.org/2000/svg"><path d="M467.783,467.779H386.436V340.387c0-30.378-.542-69.483-42.307-69.483-42.369,0-48.852,33.1-48.852,67.271V467.769H213.932V205.8h78.091v35.8h1.095a85.684,85.684,0,0,1,77.05-42.315c82.447,0,97.65,54.229,97.65,124.781ZM122.147,169.99h-.01a47.205,47.205,0,1,1,47.206-47.214v.01a47.428,47.428,0,0,1-47.2,47.2m40.672,297.789H81.389V205.8h81.43ZM508.335.038H40.51A40.253,40.253,0,0,0,0,39.607V509.375a40.277,40.277,0,0,0,40.51,39.614H508.335A40.344,40.344,0,0,0,549,509.375V39.576A40.323,40.323,0,0,0,508.335,0"/></svg>
+      </button>
+    </li>
+  </ul>
+</div>

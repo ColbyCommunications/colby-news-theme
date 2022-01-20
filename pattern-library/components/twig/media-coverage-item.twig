@@ -1,0 +1,27 @@
+<div class="space-y-2">
+    <div class="grid gap-4 media-coverage-item-grid sm:gap-y-0">
+        <div class="media-coverage-item__image">
+            {% if image %}
+                {% include './linkify.twig' with {
+                    url: imageUrl ? imageUrl : link.url,
+                    component: image
+                } only %}
+            {% endif %}
+        </div>
+
+        <div class="space-y-1">
+            {% if source %}
+                <div class="text-xs uppercase">{{ source }}</div>
+            {% endif %}
+
+            {% set hTag = 'h' ~ hLevel|default(3) %}
+            <{{ hTag }} class="leading-tight">
+                <a href="{{ link.url }}" class="font-bold">{{ link.title }}</a>
+            </{{ hTag }}>
+        </div>
+
+    {% if blurb %}
+        <div class="col-span-2 sm:col-span-1 sm:col-start-2 text-base-minus-2 sm:text-base">{{ blurb }}</div>
+    {% endif %}
+    </div>
+</div>

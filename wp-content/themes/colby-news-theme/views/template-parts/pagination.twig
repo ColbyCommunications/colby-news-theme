@@ -1,0 +1,38 @@
+{% if pagination and pagination.pages is iterable %}
+    <nav role="navigation" aria-label="pagination" class="flex justify-center space-x-4 font-light uppercase flex-nowrap">
+        {% if pagination.prev %}
+            <a href="{{ pagination.prev.link }}" class="{{ pagination.prev.class }} flex-grow block text-primary-light hocus:underline">
+                <span role="presentation">&lt;&lt;</span>
+                Previous
+            </a>
+        {% else %}
+            <div class="flex-grow"></div>
+        {% endif %}
+        <ul class="justify-center hidden space-x-4 pages sm:flex flex-nowrap">
+            {% for page in pagination.pages %}
+                <li>
+                    {% if page.current %}
+                        <span class="font-bold">{{ page.title }}</span>
+                    {% else %}
+                        <a class=" text-primary-light hocus:underline" href="{{ page.link }}">{{ page.title }}</a>
+                    {% endif %}
+                </li>
+                {% if page.beforeBreak %}
+                    <li role="presentation">
+                        <div>…</div>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% if pagination.next %}
+            <a href="{{ pagination.next.link }}" class="{{ pagination.next.class }} text-right flex-grow lock text-primary-light hocus:underline">
+                <div>
+                    Next
+                    <span role="presentation">&gt;&gt;</span>
+                </div>
+            </a>
+        {% else %}
+            <div class="flex-grow"></div>
+        {% endif %}
+    </nav>
+{% endif %}

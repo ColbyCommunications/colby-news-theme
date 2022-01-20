@@ -1,0 +1,25 @@
+{
+    "name": "colbycommunications/colby-news-theme",
+    "type": "wordpress-theme",
+    "scripts": {
+        "post-update-cmd": [
+            "find . -name '.??*' -type f -delete",
+            "find . -name 'phpunit*' -type f -delete",
+            "find . -name '.??*' -type d -exec rm -rf {} +",
+            "rm -rf vendor/timber/timber/tests",
+            "rm -rf vendor/timber/timber/phpcs.xml",
+            "rm -rf vendor/timber/timber/phpunit*",
+            "rm -rf vendor/timber/timber/phpunit*",
+            "rm -rf vendor/timber/timber/bin/*.sh*",
+            "rm -rf vendor/twig/twig/src/Test"
+        ],
+        "post-install-cmd": [
+            "composer run-script post-update-cmd"
+        ]
+    },
+    "require": {
+        "timber/timber": "^1.18",
+        "masterminds/html5": "^2.7",
+        "gbuckingham89/youtube-rss-parser": "^0.4.0"
+    }
+}

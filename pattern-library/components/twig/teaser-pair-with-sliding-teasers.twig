@@ -1,0 +1,12 @@
+<div>
+    {% if headline %}
+        {% set hTag = 'h' ~ hLevel|default(2) %}
+        <{{ hTag }} class="uppercase text-lg">{{ headline }}</{{ hTag }}>
+    {% endif %}
+
+    <div{% if headline %} class="mt-4"{% endif %}>{{ teaserPair }}</div>
+
+    {% if slidingTeasers %}
+        <div class="mt-10">{{ slidingTeasers }}</div>
+    {% endif %}
+</div>

@@ -1,0 +1,102 @@
+/**
+  * This CSS is specifically for the Accordion Blocks plugin
+  * https://wordpress.org/plugins/accordion-blocks/
+**/
+
+/* The accordion item container */
+.c-accordion__item {
+
+	@apply bg-tertiary;
+
+	.c-accordion__title {
+		margin-bottom: 0;
+	}
+
+	/* is-open is added to open accordion items */
+	&.is-open {
+
+		.c-accordion__title {
+
+			@apply bg-transparent;
+
+			&::before,
+			&::after {
+
+				@apply transition-transform;
+				transform: translateY(-50%) rotate(45deg);
+				transform-origin: center;
+			}
+		}
+	}
+
+	/* is-read is added to accordion items that have been opened at least once */
+	// &.is-read {}
+
+	& + & {
+
+		@apply mt-1;
+	}
+}
+
+/* An accordion item title */
+.c-accordion__title.c-accordion__title {
+
+	@apply relative text-primary bg-tertiary py-4 lg:py-8 px-14 text-lg md:text-xl lg:text-2xl;
+
+	/* To modify the style when hovering over an accordion item title
+       or when an accordion item title currently has broswer focus*/
+	&:hover,
+	&:focus {
+
+		@apply bg-transparent;
+	}
+
+	/* To modify the style when hovering over an accordion item title */
+	// &:hover {
+	// }
+
+	/* To modify the style when an accordion item
+	   title currently has broswer focus */
+	// &:focus {}
+
+	/* An accordion item title that is using a `<button>` tag */
+	// &--button {}
+
+	&::before,
+	&::after {
+
+		@apply absolute block bg-primary transition-transform;
+		content: "";
+		top: 50%;
+		right: auto;
+		transform: translateY(-50%);
+	}
+
+	&::before {
+		left: 1rem;
+		height: 0.1875rem;
+		width: 1.25rem;
+	}
+
+	&::after {
+		left: 1.562rem;
+		height: 1.25rem;
+		width: 0.1875rem;
+	}
+}
+
+/* An accordion item content container */
+.c-accordion__content {
+
+	@apply px-5 pb-5 lg:px-9 lg:pb-9 bg-tertiary;
+
+	> :first-child {
+
+		@apply mt-0;
+	}
+
+	> :last-child {
+
+		@apply mb-0;
+	}
+}

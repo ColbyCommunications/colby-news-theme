@@ -1,0 +1,27 @@
+<div class="
+    {% if aspect == 'auto' %}
+        grid
+    {% else %}
+        relative overflow-hidden
+    {% endif %}
+     {{ maxHeight }}">
+    <div class="relative z-10 
+        {{ contentClasses|default('container mx-auto px-container') }}
+        {% if aspect == 'auto' %}
+            col-start-1 row-start-1
+        {% endif %}
+    ">
+        <div class="py-16 text-2xl text-black" style="height: {{ contentHeight ? contentHeight ~ 'px' : '' }}">
+            Main content goes here.
+        </div>
+    </div>
+    <div class="background-image z-0 {{ overlay ? 'has-overlay text-' ~ overlay }}
+        {% if aspect == 'auto' %}
+            col-start-1 row-start-1
+        {% else %}
+            absolute w-full h-full inset-0
+        {% endif %}
+         ">
+        {{ backgroundImage }}
+    </div>
+</div>

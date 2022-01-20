@@ -1,0 +1,25 @@
+<div class="{{ wrapperClasses }}">
+    <div class="{{ textColorScheme == 'light' ? 'text-white' : 'text-primary-dark' }}
+                {{ textJustify }}
+                {{ classes|join(' ') }}
+                ">
+        {% if superheader is not empty or title is not empty %}
+        <header>
+            <{{ element|default('h2') }} class="">
+                {% if superheader is not empty %}
+                    <div class="mb-2 font-serif font-normal {{ superheaderSize|default('text-5xl') }} italic superhead 
+                    {{ (textColorScheme != 'light' and textColorScheme != 'dark') ? 'text-secondary' : '' }}
+                    ">{{ superheader }}</div>
+                {% endif %}
+                <div class="{{ headerSize|default('text-6xl') }} font-bold">{{ title }}</div>
+            </{{ element|default('h2') }}>
+        </header>
+        {% endif %}
+    
+        {% if body is not empty %}
+            <div class="mt-4 text-2xl prose body text-text">
+                {{ body }}
+            </div>
+        {% endif %} {# body is not empty #}
+    </div>
+</div>

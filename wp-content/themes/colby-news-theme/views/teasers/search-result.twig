@@ -1,0 +1,28 @@
+<article id="post-{{ post.id }}" {{ function('post_class') }}>
+    <div class="py-4 border-b border-hr lg:py-8">
+        <header class="mb-2 entry-header">
+            <h2 class="font-serif text-2xl entry-title">
+                <a href="{{ post.link }}" rel="bookmark">
+                    {% if relevanssi %}
+                        {{ function('relevanssi_get_the_title', post.id) }}
+                    {% else %}
+                        {{ post.title }}
+                    {% endif %}
+                </a>
+            </h2>
+            <div class="entry-meta">
+            {% if post.type|trim in [ 'post' ] %}
+                <div class="mt-2 text-xs font-semibold text-tertiary-dark post-date">{{ __('Posted on', 'colby-news-theme') }} {{ post.date }}</div>
+            {% endif %}
+            </div>
+        </header><!-- .entry-header -->
+        <div class="text-sm entry-content">
+            {% if relevanssi %}
+                {{ function('relevanssi_the_excerpt', post.id) }}
+            {% else %}
+                {{ post.preview.length(30).strip('b','strong','i','em').read_more(false) }}
+            {% endif %}
+        </div><!-- .entry-content -->
+    </div>
+    
+</article><!-- #post-<?php the_ID(); ?> -->

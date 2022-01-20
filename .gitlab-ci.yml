@@ -1,0 +1,276 @@
+default:
+  image: newcity/docker-compose:latest
+  services:
+    - docker:dind
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    - when: always
+
+.ssh_authentication:
+  before_script:
+    - echo "MODE=build" > .env
+    - . ./.deploy/ssh-find-agent.sh
+
+.test:
+  allow_failure: true
+  needs: 
+    - job: test:prep
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+.requires-sitemap:
+  extends: .test
+  needs:
+    - job: test:sitemap
+      artifacts: true
+
+# Variables beginning with "$CI_" are presets from GitLab
+variables: &global-variables
+  REPO_NAME: $CI_PROJECT_NAME
+  PROJECT_DIR: $CI_PROJECT_DIR
+  BRANCH_NAME: $CI_COMMIT_REF_NAME
+  WP_THEME_NAME: colby-news-theme
+  DEPLOY_PRIVATE_KEY: $DEPLOY_PRIVATE_KEY
+  DEPLOY_THEMES: "themes_deploy"
+  GIT_EMAIL: "geeks@insidenewcity.com"
+  GIT_USER: "NewCity GitLab CI"
+  GITHUB_REPO_FOLDER: "/tmp/remote-github"
+  PLATFORM_REPO_FOLDER: "/tmp/remote-platform"
+  PLATFORM_REPO_URL: $PLATFORM_REPO_URL
+  PLATFORM_PRIVATE_KEY: $PLATFORM_PRIVATE_KEY
+  PLATFORM_URL_DEV: $PLATFORM_URL_DEV
+  PLATFORM_URL_PROD: $PLATFORM_URL_PROD
+
+stages:
+  - lint
+  - assets
+  - build
+  - deploy-dev
+  - test
+  - deploy-prod
+
+lint:node:
+  stage: lint
+  image: node:14
+  script:
+    - npm install --save-dev
+    - npm run stylelint-report
+    - npm run eslint
+  artifacts:
+    when: always
+    reports:
+      junit: 
+        - ./stylelint-*-results.xml
+        - ./eslint-*-results.xml
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+
+lint:php:
+  stage: lint
+  image: composer:2.0
+  script:
+    - mv composer-linting.json composer.json
+    - composer update
+    - composer run-script phpcbf-prod
+  artifacts:
+    when: always
+    reports:
+      junit: 
+        - ./php-*-results.xml
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+
+shared:assets:
+  stage: assets
+  script:
+    - docker-compose --file storybook-build-compose.yml --project-directory . --verbose run builder
+  artifacts:
+    paths:
+      - dist
+    expire_in: 1 week
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+build:storybook:
+  stage: build
+  script:
+    - docker-compose --file storybook-build-compose.yml --project-directory . run storybook
+  artifacts:
+    paths:
+      - storybook-static
+    expire_in: 1 week
+  needs: 
+    - job: shared:assets
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+build:wordpress_theme:
+   stage: build
+   image: composer:2.0
+   script:
+     - mkdir -p $DEPLOY_THEMES
+     - cp -rf $PROJECT_DIR/wp-content/themes/$WP_THEME_NAME $PROJECT_DIR/$DEPLOY_THEMES/$WP_THEME_NAME
+     - mkdir -p $PROJECT_DIR/$DEPLOY_THEMES/$WP_THEME_NAME/assets && rm -rf $PROJECT_DIR/$DEPLOY_THEMES/$WP_THEME_NAME/assets
+     - cp -rf dist $PROJECT_DIR/$DEPLOY_THEMES/$WP_THEME_NAME/assets
+     - cd $PROJECT_DIR/$DEPLOY_THEMES/$WP_THEME_NAME && composer install
+   artifacts:
+     paths:
+       - $DEPLOY_THEMES
+     expire_in: 1 week
+   needs: 
+     - job: shared:assets
+       artifacts: true
+   rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+deploy:wordpress_theme:
+  stage: deploy-dev
+  extends: .ssh_authentication
+  image: newcity/builder
+  needs:
+    - job: build:wordpress_theme
+      artifacts: true
+  script:
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$GITHUB_PRIVATE_KEY")
+    - /bin/bash .deploy/deploy-github.sh
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+deploy:platform:
+  stage: deploy-dev
+  extends: .ssh_authentication
+  image: newcity/builder
+  script:
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$PLATFORM_PRIVATE_KEY")
+    - ssh-add <(echo "$GITHUB_PRIVATE_KEY")
+    - /bin/bash .deploy/deploy-platform.sh
+  needs:
+    - job: deploy:wordpress_theme
+  environment:
+    name: development
+    url: $PLATFORM_URL_DEV
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+pages:
+  stage: deploy-dev
+  extends: .ssh_authentication
+  script:
+    - cp -rf storybook-static public
+    - cp -rf dist public/dist
+  artifacts:
+    paths:
+      - public
+  needs: 
+    - job: build:storybook
+      artifacts: true
+    - job: shared:assets
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+# Syncs database from production to dev
+# Requires CI variables for $PLATFORM_PROJECT_ID and $PLATFORMSH_CLI_TOKEN
+test:prep:
+  stage: test
+  image: pjcdawkins/platformsh-cli
+  script:
+    - platform sync data --project=$PLATFORM_PROJECT_ID --environment=dev --yes
+  needs: 
+    - job: deploy:platform
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+test:sitemap:
+  stage: test
+  image: node:14
+  extends: .test
+  script:
+    - cp -rf ./.tests/test-build-sitemap/* .
+    - ./prep_sitemap_data.sh
+  needs:
+    - job: test:prep
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - ./sitemap.json
+
+test:check-status:
+  stage: test
+  image: newcity/docker-compose:latest
+  extends: .requires-sitemap
+  allow_failure: false
+  script:
+    - cp -f sitemap.json ./.tests/test-http-status/
+    - docker-compose --file .tests/test-http-status/docker-compose.yml --project-directory . run nightwatch
+  artifacts:
+    when: always
+    expire_in: 1 month
+    reports:
+      junit:
+        - ./.tests/test-http-status/output/*.xml
+
+
+test:performance:
+  stage: test
+  extends: .test
+  image: docker:stable
+  services:
+   - name: docker:dind
+     alias: localhost
+  variables:
+    # disable Docker TLS validation
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: "tcp://localhost:2375"
+    DOCKER_DRIVER: overlay2
+  script:
+    - cp -rf ./.tests/test-performance/* .
+    - docker run --rm -v "$(pwd):/sitespeed.io" sitespeedio/sitespeed.io:19.3.0 --outputFolder sitespeed-result --budget.configPath budget.json --budget.output junit -b chrome $PLATFORM_URL_DEV || exit_code=$?
+  needs: 
+    - job: test:prep
+  artifacts:
+    when: always
+    expire_in: 1 month
+    paths:
+      - sitespeed-result
+    reports:
+      junit: sitespeed-result/junit.xml
+
+test:pa11y:
+  stage: test
+  extends: 
+    - .requires-sitemap
+  image: buildkite/puppeteer
+  script:
+    - echo "Checking for presence of sitemap files" && ls -al | grep sitemap
+    - cp -rf ./.tests/test-accessibility/* .
+    - npm install --unsafe-perm=true
+    - npm run test
+  artifacts:
+    when: always
+    paths:
+      - results-pa11y.xml
+    reports:
+      junit: results-pa11y.xml
+    expire_in: 1 week
+
+deploy:production:
+  stage: deploy-prod
+  image: pjcdawkins/platformsh-cli
+  script:
+    - platform merge --project=$PLATFORM_PROJECT_ID --environment=dev --yes
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+  environment:
+    name: production
+    url: $PLATFORM_URL_PROD

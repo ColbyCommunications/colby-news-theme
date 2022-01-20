@@ -1,0 +1,12 @@
+<span class="comments-link">
+    {% if post.comments|length %}
+        <a href="{{ post.link }}#comments">
+            {{ post.comments|length }} {{ __('Comment', 'colby-news-theme') }}
+            <span class="screen-reader-text"> {{ __('on', 'colby-news-theme') }} {{ post.title }}</span>
+        </a>
+    {% else %}
+        {{ __(
+            'Leave a Comment<span class="screen-reader-text"> on ' ~ post.title ~ '</span>', 'colby-news-theme'
+        ) }}
+    {% endif %} {# post.comments|count #}
+</span>

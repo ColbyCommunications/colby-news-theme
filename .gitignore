@@ -1,9 +1,37 @@
-# Include your project-specific ignores in this file
-# Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
-.cache-loader
-# dist
-node_modules
-npm-debug.log
-yarn-error.log
-# /vendor
-resources/assets/config-local.json
+*-results.xml
+xdebug*.log
+
+/wordpress
+**/vendor/
+**/node_modules/
+/wp-setup/theme-preview.xml*
+/logs/*
+robots.txt
+
+.htaccess
+
+.env-local
+
+/package-lock.json
+
+/wp-content/uploads/*
+!/wp-content/uploads/.gitkeep
+/wp-content/webp-express/*
+
+/wp-content/plugins/*
+/wp-content/mu-plugins/*
+!/wp-content/plugins/index.php
+!/wp-content/mu-plugins/index.php
+
+/wp-content/themes/twenty*
+
+/.db-snapshots/*
+!/.db-snapshots/.gitkeep
+
+/wp-content/themes/twenty*
+/wp-content/themes/colby-news-theme/assets
+/wp-content/db.php
+
+/dist
+/dist/*
+/storybook-static/*

@@ -1,0 +1,164 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import ImageRow from '../components/ImageRow';
+import WPCSS from '../components/content/WPThemeCSS';
+import RawHTML from '../utilities/RawHTML';
+import faker from 'faker';
+import {TextUtilities} from '../components/content/FormattedText';
+import generate from '../components/content/ContentGenerator';
+
+<Meta title="Component Demos/50-50 Rows/Image Row" />
+
+## Image Right
+<Canvas>
+<Story name='Image on Right'>
+    {
+        () => {
+            const links = Array.from({length: 2}, () => {
+                return {
+                    title: TextUtilities.headline(5),
+                    url: faker.internet.url()
+                }
+            })
+            const imageRow = (
+                <ImageRow title="Schedule a Virtual or In Person Visit"
+                    body="During your visit, you will hear from our faculty, admissions counselors, and students. Tour our historic campus and get immersed in the safe, supportive enviroment that an Colby News experience provides."
+                    button={
+                        {
+                            title: 'Request a Visit',
+                            url: '#request'
+                        }
+                    }
+                    mediaSrc={generate.placeholderSrc(800, 450)}
+                    links={links}
+                    inset={true}
+                ></ImageRow>
+            );
+            return <RawHTML component={imageRow}></RawHTML>
+        }
+    }
+</Story>
+</Canvas>
+
+## Image Left
+<Canvas>
+<Story name='Image on Left'>
+    {
+        () => {
+            const imageRow = (
+                <ImageRow title="Schedule a Virtual or In Person Visit"
+                    body="During your visit, you will hear from our faculty, admissions counselors, and students. Tour our historic campus and get immersed in the safe, supportive enviroment that an Colby News experience provides."
+                    button={
+                        {
+                            title: 'Request a Visit',
+                            url: '#request'
+                        }
+                    }
+                    mediaSrc={generate.placeholderSrc(800, 450)}
+                    mediaSide="left"
+                    inset={true}
+                ></ImageRow>);
+            return (<RawHTML component={imageRow}></RawHTML>);
+        }
+    }
+    
+</Story>
+</Canvas>
+
+## White Background
+<Canvas>
+    <Story name='White Background'>
+        {
+            () => {
+                const imageRow = (
+                    <ImageRow title="Schedule a Virtual or In Person Visit"
+                    body="During your visit, you will hear from our faculty, admissions counselors, and students. Tour our historic campus and get immersed in the safe, supportive enviroment that an Colby News experience provides."
+                    button={
+                        {
+                            title: 'Request a Visit',
+                            url: '#request'
+                        }
+                    }
+                    mediaSrc={generate.placeholderSrc(800, 450)}
+                    inset={true}
+                ></ImageRow>
+                );
+                return <RawHTML component={imageRow}></RawHTML>
+            }
+        }
+    </Story>
+</Canvas>
+
+## Dark Background
+<Canvas>
+<Story name='Dark Background'>
+    {
+        () => {
+            const imageRow = (
+                <ImageRow title="Schedule a Virtual or In Person Visit"
+                    body="During your visit, you will hear from our faculty, admissions counselors, and students. Tour our historic campus and get immersed in the safe, supportive enviroment that an Colby News experience provides."
+                    button={
+                        {
+                            title: 'Request a Visit',
+                            url: '#request'
+                        }
+                    }
+                    mediaSrc={generate.placeholderSrc(800, 450)}
+                    mediaSide="left"
+                    inset={true}
+                ></ImageRow>);
+            return (<RawHTML component={imageRow}></RawHTML>);
+        }
+    }
+    
+</Story>
+</Canvas>
+
+## Not Inset
+<Canvas>
+<Story name='Not Inset'>
+    {
+        () => {
+            const imageRow = (
+                <ImageRow title="Schedule a Virtual or In Person Visit"
+                    body="During your visit, you will hear from our faculty, admissions counselors, and students. Tour our historic campus and get immersed in the safe, supportive enviroment that an Colby News experience provides."
+                    button={
+                        {
+                            title: 'Request a Visit',
+                            url: '#request'
+                        }
+                    }
+                    mediaSrc={generate.placeholderSrc(800, 450)}
+                    mediaSide="right"
+                    inset={false}
+                ></ImageRow>);
+            return (<RawHTML component={imageRow}></RawHTML>);
+        }
+    }
+</Story>
+</Canvas>
+
+## Not Inset Dark
+<Canvas>
+<Story name='Not Inset Dark'>
+    {
+        () => {
+            const imageRow = (
+                <ImageRow title="Schedule a Virtual or In Person Visit"
+                    body="During your visit, you will hear from our faculty, admissions counselors, and students. Tour our historic campus and get immersed in the safe, supportive enviroment that an Colby News experience provides."
+                    button={
+                        {
+                            title: 'Request a Visit',
+                            url: '#request'
+                        }
+                    }
+                    mediaSrc={generate.placeholderSrc(800, 450)}
+                    className={'py-8'}
+                    mediaSide="right"
+                    inset={false}
+                    textColorScheme={"light"}
+                ></ImageRow>);
+            return (<RawHTML component={imageRow}></RawHTML>);
+        }
+    }
+</Story>
+</Canvas>

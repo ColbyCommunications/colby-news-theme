@@ -1,0 +1,19 @@
+<{{ element|default('a') }}
+    {% if videoLink is not empty %}
+        href="{{ videoLink }}"
+    {% endif %} {# videoLink is not empty #}
+    {% if id is not empty %}
+        id="{{ id }}" 
+    {% endif %} {# id is not empty #}
+    class="video-preview grid bg-black group cursor-pointer
+    {% if stretch %}
+        h-full
+    {% endif %}">
+    {% if videoLink is not empty %}
+        <span class="sr-only">Play Video</span>
+    {% endif %}
+    <div class="z-10 flex items-center justify-center col-start-1 row-start-1 text-white transition-opacity group opacity-70 group-hover:opacity-100">
+        {{ icon }}
+    </div>
+    {{ image }}
+</{{ element|default('a') }}>

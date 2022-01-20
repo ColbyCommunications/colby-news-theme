@@ -1,0 +1,37 @@
+<div class="relative">
+    <div
+        aria-hidden="true"
+        class="absolute inset-0 z-0 overflow-hidden after:content-empty after:absolute after:inset-0 after:bg-black after:opacity-30 descendants:w-full descendants:h-full descendant-img:object-cover"
+    >
+        {{ image }}
+    </div>
+
+    <div class="relative z-10 pb-20 text-white pt-60 sm:pt-20">
+        <div class="container">
+            <div class="space-y-12 sm:space-y-16">
+                <div class="space-y-4 sm:space-y-5">
+                    {% if superhead %}
+                        <div class="max-w-xs uppercase text-base-minus-2">
+                            {% if superhead.url %}
+                                <a href="{{ superhead.url }}" class="hover:text-gray-200">{{ superhead.title }}</a>
+                            {% else %}
+                                {{ superhead.title }}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    {% if headline %}
+                        <h2 class="max-w-md text-3xl font-bold sm:text-5xl">{{ headline }}</h2>
+                    {% endif %}
+                    {% if description %}
+                        <p class="max-w-xs text-lg sm:text-xl">{{ description }}</p>
+                    {% endif %}
+                </div>
+                {% if link %}
+                    <div class="max-w-xs">
+                        <a class="font-bold text-lg sm:text-xl hover:text-gray-200 !no-underline" href="{{ link.url }}">{{ link.title }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

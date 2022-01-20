@@ -1,0 +1,58 @@
+footer.theme-dark {
+	--color-link: var(--color-tertiary);
+	--color-link-hover: var(--color-text-light);
+}
+
+footer {
+
+	a {
+		color: var(--color-link);
+	}
+}
+
+.grid-cols-footer {
+
+	grid-auto-flow: dense;
+
+	display: grid;
+	grid-template-columns: 1fr;
+
+	@screen sm {
+		grid-template-rows: auto auto auto;
+		grid-template-columns: 13.5rem 1fr;
+	}
+
+	@screen lg {
+		grid-template-rows: auto auto;
+		grid-template-columns: 19.375rem minmax(min-content, max-content) 1fr;
+	}
+
+	@screen xl {
+		grid-template-rows: auto;
+		grid-template-columns: 19.375rem minmax(min-content, max-content) minmax(8rem, max-content) 1fr;
+	}
+
+	> *:first-child {
+		grid-row: 1/-1;
+	}
+}
+
+.footer-logo {
+
+	svg {
+		max-width: 100%;
+		height: auto;
+	}
+}
+
+.footer-background-logo {
+
+	@apply h-64 bottom-0 right-0;
+
+	@screen xl {
+
+		@apply top-0;
+		bottom: auto;
+		height: 110%;
+	}
+}

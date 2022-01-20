@@ -1,0 +1,47 @@
+{# If `show_tags` is set to true, both tags and categories
+    will be displayed unless `show_categories` is explicitly
+    set to false.
+#}
+{% if show_tags is not defined and post.type|trim in [ 'post' ] %}
+    {% set show_tags = true %}
+{% endif %}
+
+{% if show_tags and show_categories is not defined %}
+    {% set show_categories = true %}
+{% endif %}
+
+{% if show_comments is not defined and post.type|trim in [ 'post' ] %}
+    {% set show_comments = true %}
+{% endif %}
+
+<footer class="entry-footer {{ function('is_singular') ? '' : 'mb-4 text-sm text-gray-700' }}">
+{% if post.categories|length and show_categories %}
+    {{ __('Posted in ', 'colby-news-theme' ) }}
+    {%- for category in post.categories -%}
+        <a href="{{ category.link }}">{{ category.name }}</a>
+        {%- if loop.last == false -%}
+            ,
+        {%- endif -%} {# loop.last == false #}
+    {% endfor %}
+{%- endif -%} {# post.categories|length #}
+
+{% if post.tags|length and show_tags %}
+    {{ __('Tagged with ', 'colby-news-theme' ) }}
+    {%- for tag in post.tags -%}
+        <a href="{{ tag.link }}">{{ tag.name }}</a>
+        {%- if loop.last == false -%}
+            ,
+        {%- endif -%} {# loop.last == false #}
+    {% endfor %}
+{%- endif -%} {# post.tags|length #}
+
+{% if function('comments_open') and show_comments %}
+    {% if function('is_single') == false %}
+        <div>
+            {% include 'comments/popup-link.twig' %}
+        </div>
+    {% endif %}
+    
+{% endif %} {# function('comments_open') && show_comments && post.comments|length #}
+
+</footer><!-- .entry-footer -->

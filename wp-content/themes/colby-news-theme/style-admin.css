@@ -1,0 +1,10 @@
+@media (min-width: 782px) {
+
+	.is-sidebar-opened .interface-interface-skeleton__sidebar {
+		width: clamp(300px, 25%, 450px);
+	}
+
+	.is-sidebar-opened .interface-complementary-area {
+		width: 100%;
+	}
+}

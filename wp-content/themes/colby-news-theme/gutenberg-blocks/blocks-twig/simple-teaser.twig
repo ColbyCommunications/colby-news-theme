@@ -1,0 +1,23 @@
+<div class="{{ wrapperClasses }}">
+  {% if figure is not empty %}
+    {% if mediaUrl is not empty %}
+      <a href="{{ mediaUrl }}">{{ figure }}</a>
+    {% else %}
+      {{ figure }}
+    {% endif %}
+  {% endif %} {# figure is not empty #}
+  
+  {% if title is not empty %}
+    <h2 class="mt-2 font-sans text-4xl font-bold text-blue-900">
+      {% if titleUrl is not empty or url is not empty %}
+        <a href="{{ titleUrl|default(url) }}" {# underline? hover-color? #}>{{ title }}</a>
+      {% else %}
+        {{ title }}
+      {% endif %}
+    </h2>
+  {% endif %} {# title is not empty #}
+
+  {% if body is not empty %}
+    <p class="mt-2 text-xl text-gray-900">{{ body }}</p>
+  {% endif %}
+</div>

@@ -1,0 +1,21 @@
+/*
+Theme Name: Colby News Theme
+Theme URI: https://gitlab.com/newcity/colby-news
+Author: newcity
+Author URI: https://insidenewcity.com
+Description: Custom theme for Colby News
+Version: 1.0.0
+Text Domain: colby-news-theme
+Tested up to: 5.8
+Requires PHP: 7.4
+Requires ACF: 5.9 (Pro)
+Tags: translation-ready
+
+Actual CSS styles are located in various .css files across this theme,
+with a majority of them being transpiled by PostCSS into
+`assets/css/tailwind.css`
+
+Do not attempt to edit that stylesheet directly inside this theme,
+as changes will be overwritten during the next automatic deployment.
+
+*/
