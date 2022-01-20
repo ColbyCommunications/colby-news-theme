@@ -3,7 +3,7 @@ name: Github Actions Test
 on:
   push:
     branches:
-      - news2.0
+      - 'news-2.0'
 
   workflow_dispatch:
 
