@@ -38,6 +38,5 @@ jobs:
         with:
           php_version: 7.4
       - run: |
-          mv composer-linting.json composer.json
           composer update
           composer run-script phpcbf-prod

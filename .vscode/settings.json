@@ -1,6 +1,0 @@
-{
-    "editor.codeActionsOnSave": null,
-    "phpcs.executablePath": "vendor/bin/phpcs",
-    "phpcs.standard": "PHP_CodeSniffer"
-
-}
