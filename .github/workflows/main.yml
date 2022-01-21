@@ -29,17 +29,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v2
 
       - name: Set Up PHP
-        uses: "shivammathur/setup-php@v2"
+        uses: shivammathur/setup-php@v2
           with:
-            php-version: "7.4"
+            php-version: 7.4
 
       - name: Install composer
-        uses: "ramsey/composer-install@v2"
-        
-      - run: |
+        uses: ramsey/composer-install@v2
+
+      - name: Run PHPCBF
+        run: |
           composer update
           composer run-script phpcbf-prod
