@@ -24,4 +24,9 @@ jobs:
         run: |
           npm run stylelint-report
           npm run eslint
-          cat eslint-theme-results.xml
+
+      - name: Upload ESLint Artifact
+        uses: actions/upload-artifact@v2.2.0
+        with:
+          name: eslintartifacts
+          path: themes/colby-news-theme/js
