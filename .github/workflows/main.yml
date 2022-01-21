@@ -31,5 +31,11 @@ jobs:
 
     steps:
       - name: Set up Composer
-      - uses: actions/checkout@v2
-      - uses: php-actions/composer@v2
+        uses: actions/checkout@v2
+
+      - name: Install composer
+        uses: php-actions/composer@v2
+      - run: |
+          mv composer-linting.json composer.json
+          composer update
+          composer run-script phpcbf-prod
