@@ -2,8 +2,8 @@
 xdebug*.log
 
 /wordpress
-**/vendor/
-**/node_modules/
+vendor
+node_modules
 /wp-setup/theme-preview.xml*
 /logs/*
 robots.txt
