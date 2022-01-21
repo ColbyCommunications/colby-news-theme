@@ -27,7 +27,7 @@ jobs:
 
   job2:
     name: PHP
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Set up Composer
