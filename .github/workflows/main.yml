@@ -24,9 +24,13 @@ jobs:
         run: |
           npm run stylelint-report
           npm run eslint
+          cat result.xml
 
       - name: Upload ESLint Artifact
         uses: actions/upload-artifact@v2.2.0
         with:
           name: eslintartifacts
-          path: wp-content/themes/colby-news-*/js/*.js
+          path: result.xml
+
+      - name: Download result
+        uses: actions/download-artifact@v2
