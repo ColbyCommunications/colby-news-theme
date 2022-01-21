@@ -35,8 +35,6 @@ jobs:
 
       - name: Install composer
         uses: php-actions/composer@v6
-        with:
-          php_version: 7.4
       - run: |
           composer update
           mv composer-linting.json composer.json
