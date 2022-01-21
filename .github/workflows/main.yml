@@ -8,23 +8,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-linters:
-    name: Run Linters
-    runs-on: macos-latest
+  job1:
+    ESLint:
+      name: Run Linters
+      runs-on: macos-latest
 
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v2
+      steps:
+        - name: Check out Git repository
+          uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-      - run: npm install --save-dev
+        - name: Set up Node.js
+          uses: actions/setup-node@v2
+        - run: npm install --save-dev
 
-      - name: Run ESLint
-        run: |
-          npm run stylelint-report
-          npm run eslint
+        - name: Run ESLint
+          run: |
+            npm run stylelint-report
+            npm run eslint
 
-      - name: Install Composer
-        uses: docker://composer2.0
-        run: composer update
+  job2:
+    PHP:
+      name: Install Composer
+      runs-on: macos-latest
+
+      steps:
+        - name: Set up Composer
+          uses: composer2.0
+          run: composer update
