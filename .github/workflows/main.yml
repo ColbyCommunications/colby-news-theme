@@ -26,5 +26,5 @@ jobs:
           npm run eslint
 
       - name: Install Composer
-        container: composer:2.0
-        run: phpcbf-prod
+        uses: docker://composer2.0
+        run: composer update
