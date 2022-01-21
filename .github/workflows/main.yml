@@ -20,17 +20,11 @@ jobs:
         uses: actions/setup-node@v2
       - run: npm install --save-dev
 
-      - name: Run Linters
+      - name: Run ESLint
         run: |
           npm run stylelint-report
           npm run eslint
-          cat result.xml
 
-      - name: Upload ESLint Artifact
-        uses: actions/upload-artifact@v2.2.0
-        with:
-          name: eslintartifacts
-          path: result.xml
-
-      - name: Download result
-        uses: actions/download-artifact@v2
+      - name: Install Composer
+        container: composer:2.0
+        run: phpcbf-prod
