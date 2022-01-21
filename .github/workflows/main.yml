@@ -1,9 +1,9 @@
-name: Github Actions Test1
+name: Github Actions Test
 
 on:
   push:
     branches:
-      - 'news-2.0'
+      - 'brandon-changes'
 
   workflow_dispatch:
 
