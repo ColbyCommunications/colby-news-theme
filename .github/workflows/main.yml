@@ -34,8 +34,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install composer
-        uses: php-actions/composer@v2
+        uses: php-actions/composer@v6
+        with:
+          php_version: 7.4
       - run: |
-          mv composer-linting.json composer.json
           composer update
+          mv composer-linting.json composer.json
           composer run-script phpcbf-prod
