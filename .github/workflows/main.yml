@@ -9,29 +9,26 @@ on:
 
 jobs:
   job1:
-    ESLint:
-      name: Run Linters
-      runs-on: macos-latest
+    name: ESLINT
+    runs-on: macos-latest
 
-      steps:
-        - name: Check out Git repository
-          uses: actions/checkout@v2
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
 
-        - name: Set up Node.js
-          uses: actions/setup-node@v2
-        - run: npm install --save-dev
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+      - run: npm install --save-dev
 
-        - name: Run ESLint
-          run: |
-            npm run stylelint-report
-            npm run eslint
+      - name: Run ESLint
+        run: |
+          npm run stylelint-report
+          npm run eslint
 
   job2:
-    PHP:
-      name: Install Composer
-      runs-on: macos-latest
+    name: PHP
+    runs-on: macos-latest
 
-      steps:
-        - name: Set up Composer
-          uses: composer2.0
-          run: composer update
+    steps:
+      - name: Set up Composer
+        uses: docker://composer2.0
