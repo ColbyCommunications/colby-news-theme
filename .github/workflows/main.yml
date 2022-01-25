@@ -44,4 +44,4 @@ jobs:
       - name: Run PHPCBF
         run: |
           composer update
-          composer run-script phpcbf-prod
+          composer run-script phpcs
