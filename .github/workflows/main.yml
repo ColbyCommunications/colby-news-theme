@@ -43,6 +43,5 @@ jobs:
 
       - name: Run PHPCBF
         run: |
-          mv composer-linting.json composer.json
           composer update
-          composer run-script phpcs
+          composer run-script phpcbf-prod
