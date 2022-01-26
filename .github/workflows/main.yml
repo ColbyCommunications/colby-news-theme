@@ -8,7 +8,7 @@ env:
   WEBMASTER_GITHUB_ACTIONS_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}
 jobs:
   job1:
-    name: ESLINT
+    name: Lint JavaScript
     runs-on: macos-latest
 
     steps:
@@ -25,7 +25,7 @@ jobs:
           npm run eslint
 
   job2:
-    name: PHP
+    name: Lint PHP
     runs-on: ubuntu-latest
 
     steps:
@@ -45,3 +45,10 @@ jobs:
         run: |
           composer update
           composer run-script phpcbf-prod
+  job3:
+    name: Build Storybook
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run Storybook
+        run: docker-compose --file storybook-build-compose.yml --project-directory . run storybook
