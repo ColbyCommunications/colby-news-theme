@@ -50,5 +50,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Assets
-        run: docker-compose --file ../../storybook-build-compose.yml --project-directory . --verbose run builder
+      - name: Build Storybook
+        run: docker-compose --file ./storybook-build-compose.yml --project-directory . run storybook
