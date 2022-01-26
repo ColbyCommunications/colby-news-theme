@@ -51,4 +51,4 @@ jobs:
 
     steps:
       - name: Assets
-        run: docker-compose --file storybook-build-compose.yml --project-directory . --verbose run builder
+        run: docker-compose --file ../../storybook-build-compose.yml --project-directory . --verbose run builder
