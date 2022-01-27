@@ -50,7 +50,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
       - name: Build Storybook
-        run: |
-          pwd
-          docker-compose --file storybook-build-compose.yml --project-directory . run storybook
+        run: docker-compose --file storybook-build-compose.yml --project-directory . run storybook
