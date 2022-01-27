@@ -51,4 +51,6 @@ jobs:
 
     steps:
       - name: Build Storybook
-        run: docker-compose --file storybook-build-compose.yml --project-directory . run storybook
+        run: |
+          pwd
+          docker-compose --file storybook-build-compose.yml --project-directory . run storybook
