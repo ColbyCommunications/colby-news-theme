@@ -45,7 +45,17 @@ jobs:
         run: |
           composer update
           composer run-script phpcbf-prod
+
   job3:
+    name: Assets
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Assets
+        run: docker-compose --file storybook-build-compose.yml --project-directory . --verbose run builder
+
+  job4:
     name: Build Storybook
     runs-on: ubuntu-latest
 
