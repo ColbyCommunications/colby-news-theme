@@ -48,6 +48,7 @@ jobs:
 
   job3:
     name: Assets
+    needs: [job1, job2]
     runs-on: ubuntu-latest
 
     steps:
