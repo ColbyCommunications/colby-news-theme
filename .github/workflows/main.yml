@@ -57,10 +57,10 @@ jobs:
 
   job4:
     name: Build Storybook
+    needs: job3
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
       - name: Build Storybook
-        needs: job3
         run: docker-compose --file storybook-build-compose.yml --project-directory . run storybook
