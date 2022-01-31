@@ -83,3 +83,15 @@ jobs:
         with:
           name: storybook-static
           path: ./storybook-static
+      - name: Prepare Pages
+        run: |
+          cp -rf storybook-static public
+          cp -rf dist public/dist
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: ghpages
+          build_dir: public
+        env:
+          GITHUB_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}
