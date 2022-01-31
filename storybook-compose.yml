@@ -4,30 +4,29 @@ services:
   storybook:
     image: newcity/storybook:react
     environment:
-      - "MODE=${MODE}"
+      - 'MODE=${MODE}'
     command: npm run storybook
     volumes:
       - ./pattern-library/components:/app/components
-      - ./wp-content/themes/colby-news-theme/assets:/app/dist:ro
+      - ./assets:/app/dist:ro
       - ./pattern-library/.storybook-config:/app/config
       - ./pattern-library/.storybook-config/preview-head.html:/app/.storybook/preview-head.html
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - '3000:3000'
 
   builder:
     image: newcity/stonemason:tailwind-2-1
     environment:
-      - "MODE=${MODE}"
-      - "NODE_ENV=${NODE_ENV}"
+      - 'MODE=${MODE}'
+      - 'NODE_ENV=${NODE_ENV}'
       - "NODE_OPTIONS='--max-old-space-size=8192'"
     volumes:
       - ./pattern-library/.builder-config:/app/config
       - ./pattern-library/src:/app/src
       - ./pattern-library/components:/app/components
-      - ./wp-content/themes/colby-news-theme/assets:/app/dist
-      - ./wp-content/themes/colby-news-theme:/app/wp-components:ro
+      - ./assets:/app/dist
+      - ./:/app/wp-components:ro
       - ./pattern-library/webpack.mix.js:/app/webpack.mix.js
       - ./logs:/app/.npm/_logs
     restart: unless-stopped
-

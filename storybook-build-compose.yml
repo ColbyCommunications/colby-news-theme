@@ -5,7 +5,7 @@ services:
     # Available tags: https://hub.docker.com/r/newcity/storybook/tags
     image: newcity/storybook:react
     environment:
-      - "MODE=build"
+      - 'MODE=build'
     volumes:
       - ./pattern-library/components:/app/components
       - ./pattern-library/.storybook-config:/app/config
@@ -13,18 +13,17 @@ services:
       - ./dist:/app/dist:ro
       - ./storybook-static:/app/public/
 
-
   builder:
     # Available tags: https://hub.docker.com/r/newcity/stonemason/tags
     image: newcity/stonemason:tailwind-2-1
     environment:
-      - "MODE=build"
-      - "NODE_ENV=production"
+      - 'MODE=build'
+      - 'NODE_ENV=production'
       - "NODE_OPTIONS='--max-old-space-size=8192'"
     volumes:
       - ./pattern-library/.builder-config:/app/config
       - ./pattern-library/src:/app/src
       - ./pattern-library/components:/app/components
-      - ./wp-content/themes/colby-news-theme/:/app/wp-components:ro
+      - ./:/app/wp-components:ro
       - ./dist:/app/dist
       - ./pattern-library/webpack.mix.js:/app/webpack.mix.js
