@@ -71,5 +71,5 @@ jobs:
       - name: Build Storybook
         uses: actions/download-artifact@v2
         with:
-          name: my-artifact
+          name: dist
       - run: docker-compose --file storybook-build-compose.yml --project-directory . run storybook
