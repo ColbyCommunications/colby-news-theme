@@ -63,7 +63,7 @@ jobs:
 
   job2:
     name: Build Storybook
-    needs: job3
+    needs: job1
     runs-on: ubuntu-latest
 
     steps:
