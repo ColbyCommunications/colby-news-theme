@@ -59,7 +59,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: dist
-          path: .
+          path: dist
 
   job2:
     name: Build Storybook
@@ -72,8 +72,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dist
+          path: ./dist
       - name: Build Storybook
         run: |
           pwd
           ls -la
           docker-compose --file storybook-build-compose.yml --project-directory . run storybook
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: storybook-static
+          path: ./storybook-static
