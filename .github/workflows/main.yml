@@ -59,7 +59,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: dist
-          path: .
+          path: dist
 
   job2:
     name: Build Storybook
@@ -72,6 +72,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dist
+          path: ./dist
       - name: Build Storybook
         run: |
           pwd
