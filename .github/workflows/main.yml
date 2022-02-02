@@ -57,7 +57,7 @@ jobs:
       - name: Assets
         run: | 
           docker-compose --file storybook-build-compose.yml --project-directory . --verbose run builder
-          docker container ls
+          docker compose ls
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -71,30 +71,30 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Download dist
-        uses: actions/download-artifact@v2
-        with:
-          name: dist
-          path: ./dist
-      - name: Build Storybook
-        run: |
-          pwd
-          ls -la
-          docker-compose --file storybook-build-compose.yml --project-directory . run storybook
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: storybook-static
-          path: ./storybook-static
-      - name: Prepare Pages
-        run: |
-          cp -rf storybook-static public
-          cp -rf dist public/dist
-      - name: Deploy to GitHub Pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v2
-        with:
-          target_branch: ghpages
-          build_dir: public
-        env:
-          GITHUB_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}
+      # - name: Download dist
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: dist
+      #     path: ./dist
+      # - name: Build Storybook
+      #   run: |
+      #     pwd
+      #     ls -la
+      #     docker-compose --file storybook-build-compose.yml --project-directory . run storybook
+      # - name: Archive production artifacts
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: storybook-static
+      #     path: ./storybook-static
+      # - name: Prepare Pages
+      #   run: |
+      #     cp -rf storybook-static public
+      #     cp -rf dist public/dist
+      # - name: Deploy to GitHub Pages
+      #   if: success()
+      #   uses: crazy-max/ghaction-github-pages@v2
+      #   with:
+      #     target_branch: ghpages
+      #     build_dir: public
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}
