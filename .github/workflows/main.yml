@@ -55,9 +55,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Assets
-        run: | 
-          docker-compose --file storybook-build-compose.yml --project-directory . --verbose run builder
-          docker compose ls
+        run: docker-compose --file storybook-build-compose.yml --project-directory . --verbose run builder
+      - name: Check running containers
+        run: docker ps -a
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
