@@ -62,7 +62,7 @@ jobs:
         run: docker start $(docker ps -a -q --filter "status=exited")
       - name: See Contents
         run: |
-          docker exec $(docker ps -a -q) la -la wp-components
+          docker exec $(docker ps -a -q) ls -la wp-components
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
