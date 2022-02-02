@@ -63,6 +63,9 @@ jobs:
       - name: See Contents
         run: |
           docker exec $(docker ps -a -q) ls -la src
+          docker exec $(docker ps -a -q) ls -la src/images
+          docker exec $(docker ps -a -q) ls -la src/fonts
+          docker exec $(docker ps -a -q) cat src/index.js
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
