@@ -30,7 +30,12 @@
     "storybook-up": "docker-compose --file storybook-compose.yml up -d",
     "storybook-restart": "docker-compose --file storybook-compose.yml rm -s storybook && npm run storybook-up",
     "storybook-down": "docker-compose --file storybook-compose.yml down",
-    "storybook-destroy": "docker-compose --file storybook-compose.yml down -v"
+    "storybook-destroy": "docker-compose --file storybook-compose.yml down -v",
+    "dev": "npm run builder",
+    "watch": "npm run builder -- --watch",
+    "builder": "cross-env NODE_ENV=development ENV_FILE=./pattern-library/.builder-config/.env-dev node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm install && npm run builder-production",
+    "builder-production": "cross-env NODE_ENV=production ENV_FILE=./pattern-library/.builder-config/.env-prod node_modules/webpack/bin/webpack.js --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -47,7 +52,10 @@
     "object-fit-images": "^3.2.4",
     "stylelint": "^13.12.0",
     "stylelint-config-wordpress": "^17.0.0",
-    "stylelint-scss": "^3.19.0"
+    "stylelint-scss": "^3.19.0",
+    "@tailwindcss/aspect-ratio": "^0.2.0",
+    "@tailwindcss/forms": "^0.1.4",
+    "tailwindcss-pseudo-elements": "^1.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.13.13",
@@ -73,6 +81,29 @@
     "prettier": "^2.2.1",
     "stylelint-config-standard": "^22.0.0",
     "stylelint-junit-formatter": "^0.2.2",
-    "typescript": "^4.2.4"
+    "typescript": "^4.2.4",
+    "@ayctor/laravel-mix-svg-sprite": "^1.0.0",
+    "@tailwindcss/forms": "^0.3.2",
+    "@tailwindcss/typography": "^0.4.0",
+    "autoprefixer": "^10.0.4",
+    "babel-loader": "^8.1.0",
+    "faker": "^5.1.0",
+    "glob": "^7.1.6",
+    "laravel-mix": "^5.0.7",
+    "laravel-mix-copy-watched": "^2.3.0",
+    "laravel-mix-polyfill": "^2.0.0",
+    "laravel-mix-string-replace": "^0.1.0",
+    "mix-env-file": "<1.0.0",
+    "object-fit-images": "^3.2.4",
+    "postcss": "^8.1.10",
+    "postcss-preset-env": "^6.7.0",
+    "react-is": "^17.0.1",
+    "resolve-url-loader": "^3.1.2",
+    "sass": "^1.27.0",
+    "sass-loader": "^8.0.2",
+    "svg-spritemap-webpack-plugin": "^3.5.10",
+    "tailwindcss": "^2.1.0",
+    "tailwindcss-interaction-variants": "^5.0.0",
+    "vue-template-compiler": "^2.6.12"
   }
 }
