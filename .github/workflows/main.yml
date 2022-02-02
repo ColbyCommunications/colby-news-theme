@@ -63,8 +63,7 @@ jobs:
       - name: See Contents
         run: |
           docker exec $(docker ps -a -q) ls -la
-          docker exec $(docker ps -a -q) cat package.json
-          docker exec $(docker ps -a -q) cat webpack.mix.js
+          docker exec $(docker ps -a -q) cat webpack-default.mix.js
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
