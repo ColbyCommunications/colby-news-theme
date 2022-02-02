@@ -62,7 +62,7 @@ jobs:
         run: docker start $(docker ps -a -q --filter "status=exited")
       - name: See Contents
         run: |
-          docker ps -a
+          docker exec $(docker ps -a -q) ls -la
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
