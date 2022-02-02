@@ -15,8 +15,8 @@ exports.buildPaths = (overrides = {}) => {
   }
 
   const fixedPaths = {
-    srcRoot: "/app/src",
-    dist: "/app/dist",
+    srcRoot: "src",
+    dist: "dist",
     fonts: "fonts",
     images: "images",
   }
