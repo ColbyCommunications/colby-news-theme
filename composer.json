@@ -1,6 +1,7 @@
 {
-    "name": "newcity/wordpress-testing",
+    "name": "colbycommunications/colby-news-theme",
     "description": "Test environment for WordPress themes and plugins",
+    "type": "wordpress-theme",
     "repositories": [
         {
             "type": "composer",
@@ -10,6 +11,9 @@
     "extra": {
         "wordpress-install-dir": "wordpress"
     },
+    "keywords": [
+        "wordpress"
+    ],
     "scripts": {
         "post-install-cmd": [
             "composer run-script post-update-cmd"
