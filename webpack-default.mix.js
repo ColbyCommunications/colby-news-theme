@@ -16,7 +16,7 @@ exports.buildPaths = (overrides = {}) => {
 
   const fixedPaths = {
     srcRoot: 'pattern-library/src',
-    dist: 'dist',
+    dist: 'assets',
     fonts: 'fonts',
     images: 'images',
   };
