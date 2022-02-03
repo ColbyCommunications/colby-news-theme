@@ -86,8 +86,8 @@ module.exports = {
       './components/**/*.twig',
       './components/**/*.js',
       './components/**/*.mdx',
-      './wp-components/**/*.php',
-      './wp-components/**/*.twig',
+      './**/*.php',
+      './**/*.twig',
     ],
     options: {
       safelist: [
