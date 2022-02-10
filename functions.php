@@ -800,9 +800,16 @@ function newcity_colby_news_scripts()
     );
 
     wp_enqueue_script(
+        'algolia-insights',
+        get_template_directory_uri() . '/js/insightsScript.js',
+        null,
+        true
+    );
+
+    wp_enqueue_script(
         'colby-news-site-search',
         get_template_directory_uri() . '/js/site-search.js',
-        array('algolia-search', 'instant-search'),
+        array('algolia-search', 'instant-search', 'algolia-insights'),
         filemtime(get_template_directory() . '/js/site-search.js'),
         true
     );

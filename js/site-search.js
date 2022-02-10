@@ -36,6 +36,16 @@ const setUpSiteSearch = () => {
     searchFunction: (helper) => helper.state.query && helper.search(),
   });
 
+  const insightsMiddleware = instantsearch.middlewares.createInsightsMiddleware(
+    {
+      insightsClient: window.aa,
+    }
+  );
+
+  search.use(insightsMiddleware);
+
+  window.aa('setUserToken', 'user-1');
+
   search.addWidgets([
     instantsearch.widgets.searchBox({
       container: '#site-search-searchbox',
@@ -125,10 +135,14 @@ const setUpSiteSearch = () => {
       templates: {
         // related to `teaser.twig`;
         // note: there's no provided alt-text for the images, so using `alt=""` for now
-        item: (item) => /* html */ `
-          <a href="${
-            item.url
-          }" class="group block text-base-minus-2 space-y-1.5">
+        item(item, bindEvent) {
+          /* html */
+          return `
+          <a href="#" ${bindEvent(
+            'click',
+            item,
+            'Search Result Clicked'
+          )} class="group block text-base-minus-2 space-y-1.5">
             ${
               item.image
                 ? /* html */ `
@@ -145,9 +159,10 @@ const setUpSiteSearch = () => {
             }
             <div class="group-hover:text-link-hover transition-colors font-bold text-base-minus-1 sm:text-sm-plus-1">${
               item.title
-            }</div>
-          </a>
-        `,
+            } </div>
+          </a> 
+        `;
+        },
       },
     }),
   ]);

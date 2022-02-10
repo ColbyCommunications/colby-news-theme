@@ -83,6 +83,7 @@ module.exports = {
   mode: 'jit',
   purge: {
     content: [
+      // './js/*.js',
       './components/**/*.twig',
       './components/**/*.js',
       './components/**/*.mdx',
