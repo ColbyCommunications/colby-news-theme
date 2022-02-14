@@ -1,115 +1,108 @@
 :root,
 .theme-light {
-	--color-link-list: var(--color-secondary-light);
-	--color-link-list-hover: #202020;
-	--link-list-underline-width: 1px;
-	--link-list-underline-color: transparent;
-	--link-list-underline-style: solid;
-	--link-list-underline-width-hover: 1px;
-	--link-list-underline-color-hover: currentColor;
-	--link-list-underline-style-hover: solid;
+  --color-link-list: var(--color-secondary-light);
+  --color-link-list-hover: #202020;
+  --link-list-underline-width: 1px;
+  --link-list-underline-color: transparent;
+  --link-list-underline-style: solid;
+  --link-list-underline-width-hover: 1px;
+  --link-list-underline-color-hover: currentColor;
+  --link-list-underline-style-hover: solid;
 }
 
 .theme-dark {
-	--color-link-list: var(--color-text-light);
-	--color-link-list-hover: var(--color-text-light);
+  --color-link-list: var(--color-text-light);
+  --color-link-list-hover: var(--color-text-light);
 }
 
 .fancy-link-list {
-	--color-link: var(--color-link-list);
-	--color-link-hover: var(--color-link-list-hover);
-	--link-underline-width: var(--link-list-underline-width);
-	--link-underline-color: var(--link-list-underline-color);
-	--link-underline-style: var(--link-list-underline-style);
-	--link-underline-width-hover: var(--link-list-underline-width-hover);
-	--link-underline-color-hover: var(--link-list-underline-color-hover);
-	--link-underline-style-hover: var(--link-list-underline-style-hover);
+  --color-link: var(--color-link-list);
+  --color-link-hover: var(--color-link-list-hover);
+  --link-underline-width: var(--link-list-underline-width);
+  --link-underline-color: var(--link-list-underline-color);
+  --link-underline-style: var(--link-list-underline-style);
+  --link-underline-width-hover: var(--link-list-underline-width-hover);
+  --link-underline-color-hover: var(--link-list-underline-color-hover);
+  --link-underline-style-hover: var(--link-list-underline-style-hover);
 
-	.icon-flag__icon {
-		color: var(--color-link);
-	}
+  .icon-flag__icon {
+    color: var(--color-link);
+  }
 }
 
-
 .skip-link {
-	transform: translateY(-200%);
+  transform: translateY(-200%);
 
-	&:focus {
-		transform: translateY(0);
-	}
+  &:focus {
+    transform: translateY(0);
+  }
 }
 
 .link-animated,
 .links-animated a {
-
-	@include link-hover();
+  @include link-hover();
 }
 
 a:focus {
-	outline-color: var(--color-link-outline, #000);
+  outline-color: var(--color-link-outline, #000);
 }
 
 @responsive {
+  .link-block {
+    display: static;
+    pointer-events: none;
 
-	.link-block {
-		display: static;
-		pointer-events: none;
-
-		&::after {
-
-			@apply absolute inset-0;
-			content: "";
-			pointer-events: all;
-		}
-	}
+    &::after {
+      @apply absolute inset-0;
+      content: '';
+      pointer-events: all;
+    }
+  }
 }
 
 :root {
-	--social-link-color: var(--color-primary);
-	--social-link-color-hover: var(--color-secondary);
-	--social-link-background-color: transparent;
-	--social-link-background-hover: transparent;
+  --social-link-color: var(--color-primary);
+  --social-link-color-hover: var(--color-secondary);
+  --social-link-background-color: transparent;
+  --social-link-background-hover: transparent;
 }
 
 .social-link {
+  color: var(--social-link-color);
 
-	color: var(--social-link-color);
+  // .social-icon {
+  // 	background-color: var(--social-link-background-color);
+  // }
 
-	// .social-icon {
-	// 	background-color: var(--social-link-background-color);
-	// }
+  &:hover,
+  &:focus {
+    color: var(--social-link-color-hover);
 
-	&:hover,
-	&:focus {
-		color: var(--social-link-color-hover);
-
-		// .social-icon {
-		// 	background-color: var(--social-link-background-hover);
-		// }
-	}
-
+    // .social-icon {
+    // 	background-color: var(--social-link-background-hover);
+    // }
+  }
 }
 
 .theme-dark {
-	--social-link-color: #000;
-	--social-link-color-hover: #fff;
-	--social-link-background-color: var(--color-tertiary);
-	--social-link-background-hover: var(--color-primary);
+  --social-link-color: #000;
+  --social-link-color-hover: #fff;
+  --social-link-background-color: var(--color-tertiary);
+  --social-link-background-hover: var(--color-primary);
 }
 
 .link-external {
-
-	&::before {
-		display: inline-block;
-		position: relative;
-		top: 0.125em;
-		margin-right: 0.5em;
-		content: "";
-		width: 1em;
-		height: 1em;
-		background-color: currentColor;
-		mask-image: var(--icon-external);
-		mask-size: contain;
-		mask-repeat: no-repeat;
-	}
+  &::before {
+    display: inline-block;
+    position: relative;
+    top: 0.125em;
+    margin-right: 0.5em;
+    content: '';
+    width: 1em;
+    height: 1em;
+    background-color: currentColor;
+    mask-image: var(--icon-external);
+    mask-size: contain;
+    mask-repeat: no-repeat;
+  }
 }

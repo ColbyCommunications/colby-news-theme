@@ -3,6 +3,7 @@
     "/assets/css/tailwind.css": "/assets/css/tailwind.css",
     "/spritemap.js": "/spritemap.js",
     "/dist/icons/icon-sprites.svg": "/dist/icons/icon-sprites.svg",
+    "/vendor.js": "/vendor.js",
     "/assets/images/header_logo.svg": "/assets/images/header_logo.svg",
     "/assets/images/icons8-mail-90.png": "/assets/images/icons8-mail-90.png",
     "/assets/images/logo_colby.svg": "/assets/images/logo_colby.svg",
