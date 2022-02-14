@@ -275,12 +275,13 @@ article.post,
 
 .prose,
 *[class*='prose-'],
-article.page,
+// article.page,
 article.post,
 .rich-text-inner,
 .rich-text,
 .editor-styles-wrapper,
-.background-wrapper-inner {
+.background-wrapper-inner,
+.blurb-wrapper {
   &,
   > p,
   figcaption,
@@ -296,6 +297,12 @@ article.post,
         @include link-hover();
       }
     }
+  }
+}
+
+.blurb-wrapper {
+  a {
+    @include link-hover();
   }
 }
 
