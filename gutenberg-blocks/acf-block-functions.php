@@ -671,7 +671,7 @@ function teaser_list(array $posts, bool $is_preview = false, array $show_fields 
             ];
 
             if (in_array('image', $show_fields)) {
-                $teaser['image'] = nc_blocks_image(get_post_thumbnail_id($post->ID), 'teaser');
+                $teaser['image'] = nc_blocks_image(get_post_thumbnail_id($post->ID), 'teaser_new');
             }
 
             if (in_array('category', $show_fields)) {
