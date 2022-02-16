@@ -613,7 +613,7 @@ if (! function_exists('newcity_colby_news_setup')) :
         add_image_size('routing_card', 350, 500, ['center', 'center']);
         add_image_size('logo', 100, 100);
         add_image_size('teaser', 540, 360, ['center','center']);
-        add_image_size('teaser_new', 540, 360, ['center','center']);
+        add_image_size('teaser_new', 1080, 720, ['center','center']);
         add_image_size('teaser_small', 320, 180, ['center','center']);
         add_image_size('teaser_large', 800, 450, ['center','center']);
         add_image_size('header_vertical_lg', 800, 1066);

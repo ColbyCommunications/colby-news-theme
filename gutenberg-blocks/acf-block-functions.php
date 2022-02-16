@@ -1064,7 +1064,7 @@ function related_posts_block($block, $content = '', $is_preview = false, $post_i
             }
         }
 
-        $image_size = $align ? 'logo' : 'teaser';
+        $image_size = $align ? 'logo' : 'teaser_new';
 
         $teasers = array_map(function ($post_item) use ($image_size) {
             $image = nc_blocks_image(get_post_thumbnail_id($post_item->ID), $image_size);
