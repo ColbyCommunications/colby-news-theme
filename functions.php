@@ -963,3 +963,14 @@ function nc_opengraph_image($url)
     $file = get_attached_file(get_post_thumbnail_id());
     return $url . '?v=' . filemtime($file);
 }
+
+add_filter( 'wpseo_opengraph_type', 'yoast_change_opengraph_type', 10, 1 );
+
+function yoast_change_opengraph_type( $type ) {
+
+    if ( is_archive() ) {
+        return 'website';
+    } else {
+        return $type;
+    }
+}
