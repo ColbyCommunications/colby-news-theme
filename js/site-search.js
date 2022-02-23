@@ -138,7 +138,7 @@ const setUpSiteSearch = () => {
         item(item, bindEvent) {
           /* html */
           return `
-          <a href="#" ${bindEvent(
+          <a href="${item.url}" ${bindEvent(
             'click',
             item,
             'Search Result Clicked'
