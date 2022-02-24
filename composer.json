@@ -1,51 +1,51 @@
 {
-    "name": "colbycommunications/colby-news-theme",
-    "description": "Test environment for WordPress themes and plugins",
-    "type": "wordpress-theme",
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://wpackagist.org"
-        }
-    ],
-    "extra": {
-        "wordpress-install-dir": "wordpress"
-    },
-    "keywords": [
-        "wordpress"
-    ],
-    "scripts": {
-        "post-install-cmd": [
-            "composer run-script post-update-cmd"
-        ],
-        "wp-setup": [
-            "cp wordpress/index.php ./index.php",
-            "rm -rf wordpress/wp-content",
-            "cp wp-setup/wp-config.php wordpress/wp-config.php",
-            "sed -i 's/\\/wp-blog-header/\\/wordpress\\/wp-blog-header/g' ./index.php",
-            "mkdir -p /var/www/.wp-cli",
-            "rm /var/www/.wp-cli/config.yml",
-            "ln -s /app/wp-cli.yml /var/www/.wp-cli/config.yml"
-        ],
-        "phpcs": [
-            "./vendor/bin/phpcs -p --extensions=php"
-        ],
-        "phpcs-prod": [
-            "./vendor/bin/phpcs -p --extensions=php --warning-severity=8 --report=junit --report-file=php-codesniffer-results.xml"
-        ],
-        "phpcbf-prod": [
-            "./vendor/bin/phpcbf -p --extensions=php --warning-severity=8 -q || true",
-            "composer run-script phpcs-prod"
-        ]
-    },
-    "require": {
-        "timber/timber": "^1.18",
-        "masterminds/html5": "^2.7",
-        "gbuckingham89/youtube-rss-parser": "^0.4.0"
-    },
-    "require-dev": {
-        "squizlabs/php_codesniffer": "*",
-        "wp-coding-standards/wpcs": "^2.3",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0"
+  "name": "colbycommunications/colby-news-theme",
+  "description": "Test environment for WordPress themes and plugins",
+  "type": "wordpress-theme",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
     }
+  ],
+  "extra": {
+    "wordpress-install-dir": "wordpress"
+  },
+  "keywords": [
+    "wordpress"
+  ],
+  "scripts": {
+    "post-install-cmd": [
+      "composer run-script post-update-cmd"
+    ],
+    "wp-setup": [
+      "cp wordpress/index.php ./index.php",
+      "rm -rf wordpress/wp-content",
+      "cp wp-setup/wp-config.php wordpress/wp-config.php",
+      "sed -i 's/\\/wp-blog-header/\\/wordpress\\/wp-blog-header/g' ./index.php",
+      "mkdir -p /var/www/.wp-cli",
+      "rm /var/www/.wp-cli/config.yml",
+      "ln -s /app/wp-cli.yml /var/www/.wp-cli/config.yml"
+    ],
+    "phpcs": [
+      "./vendor/bin/phpcs -p --extensions=php"
+    ],
+    "phpcs-prod": [
+      "./vendor/bin/phpcs -p --extensions=php --warning-severity=8 --report=junit --report-file=php-codesniffer-results.xml"
+    ],
+    "phpcbf-prod": [
+      "./vendor/bin/phpcbf -p --extensions=php --warning-severity=8 -q || true",
+      "composer run-script phpcs-prod"
+    ]
+  },
+  "require": {
+    "timber/timber": "^1.18",
+    "masterminds/html5": "^2.7",
+    "gbuckingham89/youtube-rss-parser": "^0.4.0"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "*",
+    "wp-coding-standards/wpcs": "^2.3",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0"
+  }
 }
