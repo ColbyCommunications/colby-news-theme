@@ -1,6 +1,6 @@
 <article id="post-{{ post.id }}" class="{{ post.post_class }} {% if sidebar %}sidebar-layout{% endif %} mb-6">
 
-        <div class="prose">{{ post.content }}</div>
+        {{ post.content }}
 
         {% if sidebar_nav or sidebar_blocks %}
             <section class="mb-6 sidebar-layout__sidebar">

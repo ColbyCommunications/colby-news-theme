@@ -3,7 +3,10 @@
 
         {{ postHeader }}
         
-        {{ post.content }}
+        <div class="prose">{{ post.content }}</div>
+
+        {% include 'content/parts/subscribe.twig' %}
+        
         <!-- .entry-content -->
         
     </article><!-- #post-<?php the_ID(); ?> -->
