@@ -146,7 +146,7 @@ const setUpSiteSearch = () => {
             ${
               item.image
                 ? /* html */ `
-              <div class="aspect-w-5 aspect-h-3">
+              <div class="aspect-w-3 aspect-h-2">
                 <img class="object-cover" src="${item.image}" alt="" />
               </div>
             `
