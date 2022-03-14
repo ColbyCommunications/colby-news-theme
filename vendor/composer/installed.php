@@ -1,264 +1,293 @@
-<?php return array (
-  'root' => 
-  array (
-    'pretty_version' => 'dev-main',
-    'version' => 'dev-main',
-    'aliases' => 
-    array (
+<?php return array(
+    'root' => array(
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'type' => 'wordpress-theme',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'reference' => '0aa356a0a67a13fdb849afb0389f077f4ecc3278',
+        'name' => 'colbycommunications/colby-news-theme',
+        'dev' => true,
     ),
-    'reference' => '0540572b184c30b52ea43bcb3f1e92c85b82a2b4',
-    'name' => 'colbycommunications/colby-news-theme',
-  ),
-  'versions' => 
-  array (
-    'altorouter/altorouter' => 
-    array (
-      'pretty_version' => 'v1.2.0',
-      'version' => '1.2.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '39c50092470128c12284d332bb57f306bb5b58e4',
+    'versions' => array(
+        'altorouter/altorouter' => array(
+            'pretty_version' => '2.0.2',
+            'version' => '2.0.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../altorouter/altorouter',
+            'aliases' => array(),
+            'reference' => 'f6fede4f94ced7c22ba63a9b8af0bf2dc38e3cb2',
+            'dev_requirement' => false,
+        ),
+        'colbycommunications/colby-news-theme' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'wordpress-theme',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'reference' => '0aa356a0a67a13fdb849afb0389f077f4ecc3278',
+            'dev_requirement' => false,
+        ),
+        'composer/installers' => array(
+            'pretty_version' => 'v1.12.0',
+            'version' => '1.12.0.0',
+            'type' => 'composer-plugin',
+            'install_path' => __DIR__ . '/./installers',
+            'aliases' => array(),
+            'reference' => 'd20a64ed3c94748397ff5973488761b22f6d3f19',
+            'dev_requirement' => false,
+        ),
+        'dealerdirect/phpcodesniffer-composer-installer' => array(
+            'pretty_version' => 'v0.7.2',
+            'version' => '0.7.2.0',
+            'type' => 'composer-plugin',
+            'install_path' => __DIR__ . '/../dealerdirect/phpcodesniffer-composer-installer',
+            'aliases' => array(),
+            'reference' => '1c968e542d8843d7cd71de3c5c9c3ff3ad71a1db',
+            'dev_requirement' => true,
+        ),
+        'gbuckingham89/youtube-rss-parser' => array(
+            'pretty_version' => '0.4.0',
+            'version' => '0.4.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../gbuckingham89/youtube-rss-parser',
+            'aliases' => array(),
+            'reference' => 'fe4eaf5a8e0458b57244e3ed88175735e026a566',
+            'dev_requirement' => false,
+        ),
+        'guzzlehttp/guzzle' => array(
+            'pretty_version' => '7.4.1',
+            'version' => '7.4.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../guzzlehttp/guzzle',
+            'aliases' => array(),
+            'reference' => 'ee0a041b1760e6a53d2a39c8c34115adc2af2c79',
+            'dev_requirement' => false,
+        ),
+        'guzzlehttp/promises' => array(
+            'pretty_version' => '1.5.1',
+            'version' => '1.5.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../guzzlehttp/promises',
+            'aliases' => array(),
+            'reference' => 'fe752aedc9fd8fcca3fe7ad05d419d32998a06da',
+            'dev_requirement' => false,
+        ),
+        'guzzlehttp/psr7' => array(
+            'pretty_version' => '2.1.0',
+            'version' => '2.1.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../guzzlehttp/psr7',
+            'aliases' => array(),
+            'reference' => '089edd38f5b8abba6cb01567c2a8aaa47cec4c72',
+            'dev_requirement' => false,
+        ),
+        'masterminds/html5' => array(
+            'pretty_version' => '2.7.5',
+            'version' => '2.7.5.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../masterminds/html5',
+            'aliases' => array(),
+            'reference' => 'f640ac1bdddff06ea333a920c95bbad8872429ab',
+            'dev_requirement' => false,
+        ),
+        'nesbot/carbon' => array(
+            'pretty_version' => '2.57.0',
+            'version' => '2.57.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../nesbot/carbon',
+            'aliases' => array(),
+            'reference' => '4a54375c21eea4811dbd1149fe6b246517554e78',
+            'dev_requirement' => false,
+        ),
+        'psr/http-client' => array(
+            'pretty_version' => '1.0.1',
+            'version' => '1.0.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/http-client',
+            'aliases' => array(),
+            'reference' => '2dfb5f6c5eff0e91e20e913f8c5452ed95b86621',
+            'dev_requirement' => false,
+        ),
+        'psr/http-client-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.0',
+            ),
+        ),
+        'psr/http-factory' => array(
+            'pretty_version' => '1.0.1',
+            'version' => '1.0.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/http-factory',
+            'aliases' => array(),
+            'reference' => '12ac7fcd07e5b077433f5f2bee95b3a771bf61be',
+            'dev_requirement' => false,
+        ),
+        'psr/http-factory-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.0',
+            ),
+        ),
+        'psr/http-message' => array(
+            'pretty_version' => '1.0.1',
+            'version' => '1.0.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/http-message',
+            'aliases' => array(),
+            'reference' => 'f6561bf28d520154e4b0ec72be95418abe6d9363',
+            'dev_requirement' => false,
+        ),
+        'psr/http-message-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.0',
+            ),
+        ),
+        'ralouphie/getallheaders' => array(
+            'pretty_version' => '3.0.3',
+            'version' => '3.0.3.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../ralouphie/getallheaders',
+            'aliases' => array(),
+            'reference' => '120b605dfeb996808c31b6477290a714d356e822',
+            'dev_requirement' => false,
+        ),
+        'roundcube/plugin-installer' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
+        'shama/baton' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
+        'squizlabs/php_codesniffer' => array(
+            'pretty_version' => '3.6.2',
+            'version' => '3.6.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../squizlabs/php_codesniffer',
+            'aliases' => array(),
+            'reference' => '5e4e71592f69da17871dba6e80dd51bce74a351a',
+            'dev_requirement' => true,
+        ),
+        'symfony/deprecation-contracts' => array(
+            'pretty_version' => 'v2.5.0',
+            'version' => '2.5.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/deprecation-contracts',
+            'aliases' => array(),
+            'reference' => '6f981ee24cf69ee7ce9736146d1c57c2780598a8',
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-ctype' => array(
+            'pretty_version' => 'v1.24.0',
+            'version' => '1.24.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-ctype',
+            'aliases' => array(),
+            'reference' => '30885182c981ab175d4d034db0f6f469898070ab',
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-mbstring' => array(
+            'pretty_version' => 'v1.24.0',
+            'version' => '1.24.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-mbstring',
+            'aliases' => array(),
+            'reference' => '0abb51d2f102e00a4eefcf46ba7fec406d245825',
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-php72' => array(
+            'pretty_version' => 'v1.24.0',
+            'version' => '1.24.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-php72',
+            'aliases' => array(),
+            'reference' => '9a142215a36a3888e30d0a9eeea9766764e96976',
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-php80' => array(
+            'pretty_version' => 'v1.24.0',
+            'version' => '1.24.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-php80',
+            'aliases' => array(),
+            'reference' => '57b712b08eddb97c762a8caa32c84e037892d2e9',
+            'dev_requirement' => false,
+        ),
+        'symfony/translation' => array(
+            'pretty_version' => 'v5.4.3',
+            'version' => '5.4.3.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/translation',
+            'aliases' => array(),
+            'reference' => 'a9dd7403232c61e87e27fb306bbcd1627f245d70',
+            'dev_requirement' => false,
+        ),
+        'symfony/translation-contracts' => array(
+            'pretty_version' => 'v2.5.0',
+            'version' => '2.5.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/translation-contracts',
+            'aliases' => array(),
+            'reference' => 'd28150f0f44ce854e942b671fc2620a98aae1b1e',
+            'dev_requirement' => false,
+        ),
+        'symfony/translation-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '2.3',
+            ),
+        ),
+        'timber/timber' => array(
+            'pretty_version' => '1.19.1',
+            'version' => '1.19.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../timber/timber',
+            'aliases' => array(),
+            'reference' => '3e213fbd3587eb36adec2d5a081824c4722a0acf',
+            'dev_requirement' => false,
+        ),
+        'twig/cache-extension' => array(
+            'pretty_version' => 'v1.5.0',
+            'version' => '1.5.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../twig/cache-extension',
+            'aliases' => array(),
+            'reference' => '2c243643f59132194458bd03c745b079bbb12e78',
+            'dev_requirement' => false,
+        ),
+        'twig/twig' => array(
+            'pretty_version' => 'v2.14.11',
+            'version' => '2.14.11.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../twig/twig',
+            'aliases' => array(),
+            'reference' => '66baa66f29ee30e487e05f1679903e36eb01d727',
+            'dev_requirement' => false,
+        ),
+        'upstatement/routes' => array(
+            'pretty_version' => '0.8.1',
+            'version' => '0.8.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../upstatement/routes',
+            'aliases' => array(),
+            'reference' => '02eb866668f5478d794547aa79e73dd92a989ad9',
+            'dev_requirement' => false,
+        ),
+        'wp-coding-standards/wpcs' => array(
+            'pretty_version' => '2.3.0',
+            'version' => '2.3.0.0',
+            'type' => 'phpcodesniffer-standard',
+            'install_path' => __DIR__ . '/../wp-coding-standards/wpcs',
+            'aliases' => array(),
+            'reference' => '7da1894633f168fe244afc6de00d141f27517b62',
+            'dev_requirement' => true,
+        ),
     ),
-    'asm89/twig-cache-extension' => 
-    array (
-      'pretty_version' => '1.4.0',
-      'version' => '1.4.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '13787226956ec766f4770722082288097aebaaf3',
-    ),
-    'colbycommunications/colby-news-theme' => 
-    array (
-      'pretty_version' => 'dev-main',
-      'version' => 'dev-main',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '0540572b184c30b52ea43bcb3f1e92c85b82a2b4',
-    ),
-    'composer/installers' => 
-    array (
-      'pretty_version' => 'v1.11.0',
-      'version' => '1.11.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'ae03311f45dfe194412081526be2e003960df74b',
-    ),
-    'gbuckingham89/youtube-rss-parser' => 
-    array (
-      'pretty_version' => '0.4.0',
-      'version' => '0.4.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'fe4eaf5a8e0458b57244e3ed88175735e026a566',
-    ),
-    'guzzlehttp/guzzle' => 
-    array (
-      'pretty_version' => '7.3.0',
-      'version' => '7.3.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '7008573787b430c1c1f650e3722d9bba59967628',
-    ),
-    'guzzlehttp/promises' => 
-    array (
-      'pretty_version' => '1.4.1',
-      'version' => '1.4.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '8e7d04f1f6450fef59366c399cfad4b9383aa30d',
-    ),
-    'guzzlehttp/psr7' => 
-    array (
-      'pretty_version' => '2.0.0',
-      'version' => '2.0.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '1dc8d9cba3897165e16d12bb13d813afb1eb3fe7',
-    ),
-    'masterminds/html5' => 
-    array (
-      'pretty_version' => '2.7.4',
-      'version' => '2.7.4.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '9227822783c75406cfe400984b2f095cdf03d417',
-    ),
-    'nesbot/carbon' => 
-    array (
-      'pretty_version' => '2.51.1',
-      'version' => '2.51.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '8619c299d1e0d4b344e1f98ca07a1ce2cfbf1922',
-    ),
-    'psr/http-client' => 
-    array (
-      'pretty_version' => '1.0.1',
-      'version' => '1.0.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '2dfb5f6c5eff0e91e20e913f8c5452ed95b86621',
-    ),
-    'psr/http-client-implementation' => 
-    array (
-      'provided' => 
-      array (
-        0 => '1.0',
-      ),
-    ),
-    'psr/http-factory' => 
-    array (
-      'pretty_version' => '1.0.1',
-      'version' => '1.0.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '12ac7fcd07e5b077433f5f2bee95b3a771bf61be',
-    ),
-    'psr/http-factory-implementation' => 
-    array (
-      'provided' => 
-      array (
-        0 => '1.0',
-      ),
-    ),
-    'psr/http-message' => 
-    array (
-      'pretty_version' => '1.0.1',
-      'version' => '1.0.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'f6561bf28d520154e4b0ec72be95418abe6d9363',
-    ),
-    'psr/http-message-implementation' => 
-    array (
-      'provided' => 
-      array (
-        0 => '1.0',
-      ),
-    ),
-    'ralouphie/getallheaders' => 
-    array (
-      'pretty_version' => '3.0.3',
-      'version' => '3.0.3.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '120b605dfeb996808c31b6477290a714d356e822',
-    ),
-    'roundcube/plugin-installer' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '*',
-      ),
-    ),
-    'shama/baton' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '*',
-      ),
-    ),
-    'symfony/deprecation-contracts' => 
-    array (
-      'pretty_version' => 'v2.4.0',
-      'version' => '2.4.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '5f38c8804a9e97d23e0c8d63341088cd8a22d627',
-    ),
-    'symfony/polyfill-ctype' => 
-    array (
-      'pretty_version' => 'v1.23.0',
-      'version' => '1.23.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '46cd95797e9df938fdd2b03693b5fca5e64b01ce',
-    ),
-    'symfony/polyfill-mbstring' => 
-    array (
-      'pretty_version' => 'v1.23.0',
-      'version' => '1.23.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '2df51500adbaebdc4c38dea4c89a2e131c45c8a1',
-    ),
-    'symfony/polyfill-php80' => 
-    array (
-      'pretty_version' => 'v1.23.1',
-      'version' => '1.23.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '1100343ed1a92e3a38f9ae122fc0eb21602547be',
-    ),
-    'symfony/translation' => 
-    array (
-      'pretty_version' => 'v5.3.4',
-      'version' => '5.3.4.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'd89ad7292932c2699cbe4af98d72c5c6bbc504c1',
-    ),
-    'symfony/translation-contracts' => 
-    array (
-      'pretty_version' => 'v2.4.0',
-      'version' => '2.4.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '95c812666f3e91db75385749fe219c5e494c7f95',
-    ),
-    'symfony/translation-implementation' => 
-    array (
-      'provided' => 
-      array (
-        0 => '2.3',
-      ),
-    ),
-    'timber/timber' => 
-    array (
-      'pretty_version' => '1.18.2',
-      'version' => '1.18.2.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '18766d1af8650ca919534cc497e7f0e8d82423a3',
-    ),
-    'twig/twig' => 
-    array (
-      'pretty_version' => 'v2.14.6',
-      'version' => '2.14.6.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '27e5cf2b05e3744accf39d4c68a3235d9966d260',
-    ),
-    'upstatement/routes' => 
-    array (
-      'pretty_version' => '0.5',
-      'version' => '0.5.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '3267d28be0a73f197087d58384e1a358d85671b6',
-    ),
-  ),
 );

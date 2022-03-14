@@ -1,0 +1,97 @@
+svg.icon {
+
+	@apply max-w-full max-h-full;
+	fill: currentColor;
+}
+
+.icon-flag,
+.icon-flag-list {
+	--icon-size: 1.2em;
+	--flag-gap: 0.5rem;
+	--icon-flag-title-size: inherit;
+	--icon-mv: calc(0.125 * var(--icon-size));
+
+	@each $size in [base, lg, xl, "2xl", "3xl", "4xl", "5xl", "6xl", "7xl", "8xl", "9xl"] {
+		&.title-#{$size} {
+			--icon-flag-title-size: var(--text-#{$size});
+			--icon-flag-title-leading: var(--leading-#{$size});
+			--icon-size: calc(var(--text-#{$size}) * var(--leading-#{$size}));
+		}
+	}
+
+	&.icon-sm {
+		--icon-width: 1rem;
+	}
+}
+
+.icon-flag.icon-flag-arrow,
+.icon-flag-list.icon-flag-arrow .icon-flag {
+	--icon-width: 0.5em;
+	--flag-gap: 0.25rem;
+}
+
+
+.icon-flag,
+.icon-flag-list > li > a {
+
+	display: inline-grid;
+
+	grid-column-gap: var(--flag-gap, 1em);
+	grid-template-columns: auto 1fr;
+	grid-template-rows: repeat(3, minmax(min-content, max-content)) 1fr;
+	grid-template-areas:
+		"icon ."
+		"icon title"
+		"icon content"
+		". content";
+}
+
+.icon-flag__icon {
+	grid-area: icon;
+	display: flex;
+	align-self: first baseline;
+	font-size: var(--icon-size);
+	width: var(--icon-width, var(--icon-size));
+
+	> *,
+	svg {
+		min-width: 100%;
+		height: var(--icon-size);
+	}
+
+	svg {
+		fill: var(--icon-color, currentColor);
+	}
+}
+
+.icon-flag.icon-flag--xl,
+.icon-flag-list.icon-flag--xl {
+	--icon-size: 1.5em;
+}
+
+.icon-flag__content {
+	grid-area: content;
+}
+
+.icon-flag__title {
+	grid-area: title;
+	align-self: center;
+	display: flex;
+	align-items: center;
+	font-size: var(--icon-flag-title-size, inherit);
+	line-height: var(--icon-flag-title-leading, inherit);
+
+	&:empty {
+		grid-column: 1;
+		grid-row: 2;
+
+		&::after {
+			content: "x";
+			visibility: hidden;
+		}
+
+		~ .icon-flag__content {
+			grid-row-start: 2;
+		}
+	}
+}

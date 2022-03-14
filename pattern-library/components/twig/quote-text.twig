@@ -1,0 +1,15 @@
+<figure class="flex items-end relative font-sans quote__wrapper {{ image ? 'with-image -mt-8 lg:mt-0' : '' }} {{ className }}">
+    <div class="w-full pr-8 bg-black quote__text theme-dark rounded-xl">
+        <blockquote class="text-lg leading-tight quote__quotation">{{ quotation }}</blockquote>
+        
+        {% if attribution %}
+        <figcaption class="mt-4 text-sm quote__attribution ">{{ attribution }}</figcaption>
+        {% endif %}
+    </div>
+    
+    {% if image %}
+        <div class="absolute top-0 right-0 overflow-hidden rounded-full lg:top-auto lg:bottom-0 lg:left-0 quote__image">
+            {{ image }}
+        </div>
+    {% endif %}
+</figure>

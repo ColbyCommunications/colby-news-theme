@@ -1,0 +1,30 @@
+import RawHTML from '../utilities/RawHTML';
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+
+import DemoHtml from '../components/content/FormattedText';
+
+<Meta title="Component Demos/Formatted Text" />
+
+## TailwindCSS `.prose` class
+
+The following text is formatted using the [TailwindCSS typography plugin](https://tailwindcss.com/docs/typography-plugin).
+
+
+### Default `.prose`
+<Canvas>
+<Story name='Prose Default'>
+    <div className="prose">
+        <RawHTML componentFunction={DemoHtml}></RawHTML>
+    </div>
+</Story>
+</Canvas>
+
+### `.prose with dark theme`
+<Canvas>
+<Story name='Prose dark theme'>
+    <div className="prose-sm prose theme-dark bg-primary-dark">
+        <RawHTML componentFunction={DemoHtml}></RawHTML>
+    </div>
+</Story>
+</Canvas>
+

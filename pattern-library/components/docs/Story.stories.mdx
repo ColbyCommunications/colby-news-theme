@@ -1,0 +1,74 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import PageWrapper from '../components/PageWrapper';
+import StoryHeader from '../components/StoryHeader';
+import WPCSS from '../components/content/WPThemeCSS';
+import RawHTML from '../utilities/RawHTML';
+import DemoHtml from '../components/content/FormattedText';
+
+<Meta title="Page Demos/Story Page" />
+
+<Canvas>
+<Story name='Story Page with Vertical Header'>
+    {
+        () => {
+            const page = (
+                <PageWrapper>
+                    <StoryHeader
+                        shareButtonsLast={false}
+                        orientation={'portrait'}
+                        title={'Something Doesn’t Compute'}
+                        primaryCategory={{ url: '#', title: 'Artificial Intelligence' }}
+                        lengthOfRead={'5 Min. Read'}
+                        summary={'Using art and computer science, Hannah Wolfe reveals tech’s shortcomings.'}
+                        author={'Laura Meader'}
+                        caption={'Assistant Professor of Computer Science Hannah Wolfe, left, and Rayna Hata ’23 wear active 3D glasses while exploring the virtual version of Wolfe’s sound installation Cacophonic Choir, set up in Wolfe’s lab in the Runnals Building.'}
+                        photoCredit={'Gabe Souza'}
+                        contact={{
+                            name: 'George Sopko',
+                            email: 'pr@colby.edu',
+                            phone: '207-859-4346'
+                        }}
+                        postedDate={'Sept. 30, 2020'}
+                        updatedDate={'Jan. 3, 2021'}
+                    ></StoryHeader>
+                    <DemoHtml></DemoHtml>
+                </PageWrapper>
+            );
+            return <RawHTML component={page}></RawHTML>;
+        }
+    }
+</Story>
+</Canvas>
+
+<Canvas>
+<Story name='Story Page with Horizontal Header'>
+    {
+        () => {
+            const page = (
+                <PageWrapper>
+                    <StoryHeader
+                        shareButtonsLast={false}
+                        orientation={'landscape'}
+                        title={'Something Doesn’t Compute'}
+                        primaryCategory={{ url: '#', title: 'Artificial Intelligence' }}
+                        lengthOfRead={'5 Min. Read'}
+                        summary={'Using art and computer science, Hannah Wolfe reveals tech’s shortcomings.'}
+                        author={'Laura Meader'}
+                        caption={'Assistant Professor of Computer Science Hannah Wolfe, left, and Rayna Hata ’23 wear active 3D glasses while exploring the virtual version of Wolfe’s sound installation Cacophonic Choir, set up in Wolfe’s lab in the Runnals Building.'}
+                        photoCredit={'Gabe Souza'}
+                        contact={{
+                            name: 'George Sopko',
+                            email: 'pr@colby.edu',
+                            phone: '207-859-4346'
+                        }}
+                        postedDate={'Sept. 30, 2020'}
+                        updatedDate={'Jan. 3, 2021'}
+                    ></StoryHeader>
+                    <DemoHtml></DemoHtml>
+                </PageWrapper>
+            );
+            return <RawHTML component={page}></RawHTML>;
+        }
+    }
+</Story>
+</Canvas>

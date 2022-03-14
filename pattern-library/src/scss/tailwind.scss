@@ -1,0 +1,297 @@
+$max-content-width: 67.875rem;
+
+:root,
+body.block-editor-page {
+  --max-content-width: #{$max-content-width};
+  --max-prose-width: var(--max-content-width);
+  --page-padding: 1.25rem;
+
+  --container-grid-columns: var(--page-padding)
+    minmax(calc(100% - var(--page-padding) * 2), var(--max-content-width))
+    var(--page-padding);
+
+  /* don't use this (doesn't work at small screen-widths): */
+  --raw-container-gutter: calc(
+    var(--page-padding) +
+      ((100vw - calc(var(--max-content-width) + var(--page-padding))) / 2)
+  );
+  /* use this instead: */
+  --container-gutter: max(var(--page-padding), var(--raw-container-gutter));
+
+  /* Color Variables */
+  --color-primary: #000;
+  --color-secondary: #707070;
+  --color-tertiary: #aaa;
+  --color-text-dark: var(--color-primary);
+  --color-text-alt: var(--color-secondary);
+  --color-text-light: #fff;
+  --color-text: var(--color-text-dark);
+  --color-button: var(--color-primary-dark);
+  --color-heading-default: var(--color-text-dark);
+  --color-heading: var(--color-heading-default);
+  --color-link: var(--color-text);
+  --color-link-hover-base: #4476e3;
+  --color-link-hover: var(--color-link-hover-base);
+  --color-hr: var(--color-text);
+
+  --link-underline-width: 0;
+  --link-underline-width-hover: var(--link-underline-width);
+  --link-underline-color: currentColor;
+  --link-underline-color-hover: currentColor;
+  --link-underline-style: none;
+  --link-underline-style-hover: none;
+
+  --arrow-size: 10px;
+
+  /* Font Variables */
+  --font-sans: 'Libre Franklin', ui-sans-serif, system-ui, -apple-system,
+    'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial',
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif: ui-serif, 'Georgia', 'Cambria', 'Times New Roman', 'Times',
+    serif;
+  --font-display: var(--font-sans);
+
+  --text-xxs: 0.625rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-md: 1rem;
+  --text-base: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.55rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2rem;
+  --text-5xl: 2.625rem;
+  --text-6xl: 3rem;
+  --text-7xl: 4.5rem;
+  --text-8xl: 5rem;
+  --text-9xl: 8rem;
+
+  --leading-base: 1.55;
+  --leading-xxs: var(--leading-base);
+  --leading-xs: var(--leading-base);
+  --leading-sm: var(--leading-base);
+  --leading-md: var(--leading-base);
+  --leading-lg: 1.4;
+  --leading-xl: 1.33;
+  --leading-2xl: 1.33;
+  --leading-3xl: 1.2;
+  --leading-4xl: 1.25;
+  --leading-5xl: 1.25;
+  --leading-6xl: 1;
+  --leading-7xl: 1;
+  --leading-8xl: 1;
+  --leading-9xl: 1;
+
+  --leading-xtight: 1.125;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+  --leading-display: 1;
+
+  --text-title-sm: 2rem;
+  --text-title-md: 2.25rem;
+  --text-title-lg: 3.125rem;
+
+  --text-heading-xxs: 1.125rem;
+  --text-heading-xs: 1.25rem;
+  --text-heading-sm: 1.5rem;
+  --text-heading-md: 1.75rem;
+  --text-heading-lg: 2rem;
+  --text-heading-xl: 2.375rem;
+  --text-heading-2xl: 3rem;
+
+  --text-heading-h2-prose: clamp(
+    var(--text-heading-md),
+    4.67vw,
+    var(--text-heading-lg)
+  );
+  --text-heading-h3-prose: clamp(
+    var(--text-heading-sm),
+    4.09vw,
+    var(--text-heading-md)
+  );
+  --text-heading-h4-prose: clamp(
+    var(--text-heading-xs),
+    3.5vw,
+    var(--text-heading-sm)
+  );
+  --text-heading-h5-prose: clamp(
+    var(--text-heading-xxs),
+    2.627vw,
+    var(--text-heading-xs)
+  );
+
+  --icon-angle-right: url("data:image/svg+xml,%3Csvg viewBox='0 0 8 24' width='8px' height='24px' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M 7.034 11.71 L 2.38 7.056 C 2.171 6.848 1.886 6.727 1.601 6.727 C 1.304 6.727 1.019 6.837 0.821 7.045 C 0.393 7.473 0.393 8.154 0.821 8.593 L 4.707 12.479 L 0.821 16.365 C 0.393 16.793 0.393 17.473 0.821 17.913 C 1.019 18.11 1.304 18.231 1.601 18.231 C 1.886 18.231 2.171 18.11 2.38 17.902 L 7.034 13.247 C 7.232 13.039 7.352 12.753 7.352 12.468 C 7.352 12.172 7.232 11.886 7.023 11.689 Z'%3E%3C/path%3E%3C/svg%3E");
+  --icon-external: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='17'%3E%3Cpath fill-rule='evenodd' d='M16.4 0a.6.6 0 01.6.6v6a.6.6 0 01-1 .5.6.6 0 01-.1-.4V1.9l-7 7a.6.6 0 01-1-.4c0-.1 0-.3.2-.4l7-7h-4.8a.6.6 0 01-.4-1l.4-.1h6.1zM4.8 2.4a.6.6 0 01.4 1l-.4.2h-3a.7.7 0 00-.7.6v11a.7.7 0 00.7.7h11a.7.7 0 00.6-.7v-3a.6.6 0 011-.4l.2.4v3a1.8 1.8 0 01-1.8 1.8h-11A1.8 1.8 0 010 15.2v-11a1.8 1.8 0 011.8-1.8h3z'/%3E%3C/svg%3E");
+}
+
+body main,
+body .editor-styles-wrapper {
+  --wp--preset--font-size--small: var(--text-sm);
+  --wp--preset--font-size--normal: var(--text-base);
+  --wp--preset--font-size--medium: 0.925rem;
+  --wp--preset--font-size--large: var(--text-xl);
+  --wp--preset--font-size--huge: var(--text-2xl);
+}
+
+@media (min-width: #{$max-content-width - 2}) {
+  :root {
+    --container-grid-columns: minmax(var(--page-padding), 1fr)
+      minmax(auto, #{$max-content-width}) minmax(var(--page-padding), 1fr);
+  }
+}
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import 'mixins';
+@import 'base';
+@import 'prose';
+@import 'fonts';
+@import 'icons';
+@import 'accordion';
+@import 'buttons';
+@import 'carousel';
+@import 'events';
+@import 'facts';
+@import 'footer';
+@import 'header';
+@import 'links';
+@import 'lists';
+@import 'media';
+@import 'quotes';
+@import 'tables';
+@import 'teasers';
+@import 'site-search';
+@import 'wp-editor';
+@import 'print';
+
+.site,
+.sb-show-main,
+.is-root-container {
+  --color-link: var(--color-primary-light);
+  --color-link-hover: #4476e3;
+}
+
+body {
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+}
+
+@layer base {
+  .px-container {
+    @apply px-6 md:px-8 lg:px-12 xl:px-14;
+  }
+
+  .menu-sm\:px-container {
+    @apply sm-down:px-6;
+  }
+
+  .md\:px-container {
+    @apply md:px-8 lg:px-12 xl:px-14;
+  }
+
+  .lg\:px-container {
+    @apply lg:px-12 xl:px-14;
+  }
+
+  .xl\:px-container {
+    @apply xl:px-14;
+  }
+
+  .container-grid {
+    display: grid;
+    grid-template-columns: var(--container-grid-columns);
+    grid-template-areas: 'edge_l content edge_r';
+
+    > *:not(.container-full) {
+      grid-area: content;
+    }
+  }
+
+  .background-wrapper-inner {
+    > .container-full {
+      > .container-grid {
+        display: block;
+      }
+    }
+  }
+
+  @responsive {
+    .container-wrapper > article:not(.sidebar-layout),
+    .container-wrapper > .container-grid,
+    .block-editor div[data-type='acf/nc-page-header'] .acf-block-preview,
+    .nc-allowed-blocks {
+      display: grid;
+      grid-template-columns: var(--container-grid-columns);
+
+      > * {
+        grid-column: 2 / -2;
+      }
+
+      .container-full {
+        grid-column: 1 / -1;
+      }
+    }
+
+    article.sidebar-layout
+      > .container-wrapper:not(.page-header)
+      > .container-grid {
+      display: block;
+    }
+
+    .container-narrow {
+      max-width: 56rem;
+    }
+  }
+}
+
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: var(--arrow-size) solid transparent;
+  border-right: var(--arrow-size) solid transparent;
+
+  border-bottom: var(--arrow-size) solid currentColor;
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: var(--arrow-size) solid transparent;
+  border-right: var(--arrow-size) solid transparent;
+
+  border-top: var(--arrow-size) solid currentColor;
+}
+
+.arrow-right {
+  width: 0;
+  height: 0;
+  border-top: var(--arrow-size) solid transparent;
+  border-bottom: var(--arrow-size) solid transparent;
+
+  border-left: var(--arrow-size) solid currentColor;
+}
+
+.arrow-left {
+  width: 0;
+  height: 0;
+  border-top: var(--arrow-size) solid transparent;
+  border-bottom: var(--arrow-size) solid transparent;
+
+  border-right: var(--arrow-size) solid currentColor;
+}
+
+.arrow-small {
+  --arrow-size: 6px;
+}
+
+@responsive {
+  .grid-cols-fit-right {
+    grid-template-columns: 1fr minmax(40%, max-content);
+  }
+}

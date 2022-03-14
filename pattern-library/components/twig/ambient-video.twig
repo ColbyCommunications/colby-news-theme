@@ -1,0 +1,12 @@
+<div class="relative overflow-hidden ambient-video-wrapper">
+    <div class="ambient-video aspect-w-16 aspect-h-9 aspect-video">
+
+        {% if video is not empty %}
+            <div class="z-10" id="ambientVideo" data-url="{{ video }}" data-play-icon="{{ icon.play }}" data-pause-icon="{{ icon.pause }}"></div>
+        {% endif %}
+
+        {% if fallbackImage is not empty %}
+            <div class="absolute inset-0 z-0 fallback-image">{{ fallbackImage }}</div>
+        {% endif %}
+    </div>
+</div>

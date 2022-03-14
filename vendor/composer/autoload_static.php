@@ -9,11 +9,12 @@ class ComposerStaticInite9181ca27f0418728b5295abd48bdfc9
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
-        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
-        'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
     );
 
@@ -26,6 +27,7 @@ class ComposerStaticInite9181ca27f0418728b5295abd48bdfc9
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
+            'Symfony\\Polyfill\\Php72\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
             'Symfony\\Contracts\\Translation\\' => 30,
@@ -47,6 +49,10 @@ class ComposerStaticInite9181ca27f0418728b5295abd48bdfc9
             'GuzzleHttp\\' => 11,
             'Gbuckingham89\\YouTubeRSSParser\\' => 31,
         ),
+        'D' => 
+        array (
+            'Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => 55,
+        ),
         'C' => 
         array (
             'Composer\\Installers\\' => 20,
@@ -67,6 +73,10 @@ class ComposerStaticInite9181ca27f0418728b5295abd48bdfc9
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
         ),
+        'Symfony\\Polyfill\\Php72\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php72',
+        ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
@@ -85,8 +95,8 @@ class ComposerStaticInite9181ca27f0418728b5295abd48bdfc9
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -112,6 +122,10 @@ class ComposerStaticInite9181ca27f0418728b5295abd48bdfc9
         array (
             0 => __DIR__ . '/..' . '/gbuckingham89/youtube-rss-parser/src',
         ),
+        'Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dealerdirect/phpcodesniffer-composer-installer/src',
+        ),
         'Composer\\Installers\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
@@ -123,7 +137,7 @@ class ComposerStaticInite9181ca27f0418728b5295abd48bdfc9
     );
 
     public static $fallbackDirsPsr4 = array (
-        0 => __DIR__ . '/..' . '/asm89/twig-cache-extension/lib',
+        0 => __DIR__ . '/..' . '/twig/cache-extension/lib',
     );
 
     public static $prefixesPsr0 = array (

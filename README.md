@@ -1,6 +1,6 @@
-# Colby News Wordpress Theme Development
+# Colby News Research Wordpress Theme Development
 
-- [Colby News Wordpress Theme Development](#colby-news-wordpress-theme-development)
+- [Colby News Research Wordpress Theme Development](#colby-news-research-wordpress-theme-development)
   - [Development Requirements](#development-requirements)
   - [Storybook Component Library Development](#storybook-component-library-development)
     - [First Time Storybook Setup](#first-time-storybook-setup)

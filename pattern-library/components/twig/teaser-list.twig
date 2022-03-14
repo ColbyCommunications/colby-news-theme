@@ -1,0 +1,16 @@
+{% if teasers is iterable %}
+
+    <div class="border-gray-700 lg:border-t teaser-list">
+        {% for teaser in teasers %}
+            <div class="{{ loop.first ? '' : 'pt-8' }} lg:pt-8 pb-8 border-b border-gray-700">{{ teaser }}</div>
+        {% endfor %}
+    </div>
+
+    {% if pagination %}
+    <div class="pt-12">
+    {{ pagination }}
+    </div>
+    
+    {% endif %}
+
+{% endif %}

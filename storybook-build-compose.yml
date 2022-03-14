@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  storybook:
+    # Available tags: https://hub.docker.com/r/newcity/storybook/tags
+    image: newcity/storybook:react
+    environment:
+      - 'MODE=build'
+    volumes:
+      - ./pattern-library/components:/app/components
+      - ./pattern-library/.storybook-config:/app/config
+      - ./pattern-library/.storybook-config/preview-head.html:/app/.storybook/preview-head.html
+      - ./dist:/app/dist:ro
+      - ./storybook-static:/app/public/
+
+  builder:
+    # Available tags: https://hub.docker.com/r/newcity/stonemason/tags
+    image: newcity/stonemason:tailwind-2-1
+    environment:
+      - 'MODE=build'
+      - 'NODE_ENV=production'
+      - "NODE_OPTIONS='--max-old-space-size=8192'"
+    volumes:
+      - ./pattern-library/.builder-config:/app/config
+      - ./pattern-library/src:/app/src
+      - ./pattern-library/components:/app/components
+      - ./:/app/wp-components:ro
+      - ./dist:/app/dist
+      - ./pattern-library/webpack.mix.js:/app/webpack.mix.js

@@ -1,0 +1,97 @@
+.quote__wrapper {
+	--quote-image-size: clamp(7.5rem, 21.45vw, 12rem);
+	--quote-image-padding: calc(var(--quote-image-size) / 2);
+	--quote-default-padding: 1rem;
+	--quote-left-padding: 0;
+	--quote-decoration-top: var(--quote-default-padding);
+	--quote-decoration-left: var(--quote-default-padding);
+	--quote-decoration-size: max(3.5625rem, calc(var(--quote-image-padding) - 2.25rem));
+	--quote-min-height: 0;
+
+	--quote-text-top: calc(var(--quote-image-padding) + var(--quote-default-padding));
+	--quote-text-left: var(--quote-default-padding);
+
+	--quote-decoration-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="88" height="70"><path d="M69.7 70c5.1 0 9.4-1.8 13-5.3a17 17 0 00.7-24 14.3 14.3 0 00-10.7-4.9c-3.5 0-6.3.8-8.6 2.4-.7.5-1.2.8-1.5.8-.4 0-.7-.2-1-.6-.4-.7-.6-1.7-.6-3 0-6.1 2-12 6.2-17.7C71.4 12 77.1 7.7 84.4 5V0a59.8 59.8 0 00-27.6 18C50.9 25.5 48 34 48 43.4a28 28 0 006.4 19.4c4.3 4.8 9.4 7.2 15.3 7.2zm-48 0c5.1 0 9.4-1.8 13-5.3a17 17 0 00.7-24 14.3 14.3 0 00-10.7-4.9c-3.5 0-6.3.8-8.6 2.4-.7.5-1.2.8-1.5.8-.4 0-.7-.2-1-.6-.4-.7-.6-1.7-.6-3 0-6.1 2-12 6.2-17.7C23.4 12 29.1 7.7 36.4 5V0A59.8 59.8 0 008.8 18C2.9 25.5 0 34 0 43.4a28 28 0 006.4 19.4c4.3 4.8 9.4 7.2 15.3 7.2z"/></svg>');
+
+	padding-left: var(--quote-left-padding);
+	padding-top: var(--quote-top-padding);
+
+	@screen md {
+		--quote-default-padding: 2rem;
+	}
+
+	@screen lg {
+		--quote-image-size: clamp(7.5rem, 18.25vw, 13.9375rem);
+		--quote-text-top: calc(var(--quote-default-padding) + var(--quote-decoration-size) * 0.45);
+		--quote-text-left: calc(var(--quote-image-padding) + 2rem);
+		--quote-min-height: calc(var(--quote-image-size) + var(--quote-decoration-size) + 1.5rem);
+		--quote-decoration-size: max(3.5625rem, calc(var(--quote-image-padding) - 2.25rem));
+	}
+
+}
+
+.quote__wrapper.with-image {
+	--quote-top-padding: var(--quote-image-padding);
+
+	@screen lg {
+		--quote-left-padding: var(--quote-image-padding);
+		--quote-top-padding: 0;
+	}
+}
+
+.quote__text {
+	position: relative;
+	padding-left: var(--quote-text-left);
+	padding-top: var(--quote-text-top);
+	padding-bottom: var(--quote-default-padding);
+	padding-right: var(--quote-default-padding);
+	min-height: var(--quote-min-height);
+
+	@screen lg {
+		padding-bottom: 3.75rem;
+	}
+
+	&::before {
+		content: "";
+		display: block;
+		position: absolute;
+		top: var(--quote-decoration-top);
+		left: var(--quote-decoration-top);
+		background-color: var(--color-tertiary);
+		mask: var(--quote-decoration-image);
+		mask-size: contain;
+		mask-repeat: no-repeat;
+		width: var(--quote-decoration-size);
+		height: var(--quote-decoration-size);
+		z-index: 10;
+	}
+}
+
+.quote__image {
+	width: var(--quote-image-size);
+	height: var(--quote-image-size);
+}
+
+figure.wp-block-pullquote {
+
+	@apply border-0 text-center max-w-4xl mx-auto font-thin font-display;
+
+	blockquote {
+
+		@apply text-xl sm:text-2xl;
+
+		@screen md {
+			font-size: 2.125rem;
+		}
+
+		cite,
+		.wp-block-pullquote__citation {
+
+			@apply inline-block normal-case text-base-minus-2 sm:text-lg md:text-xl mt-3 sm:mt-4;
+
+			&::before {
+				content: "—";
+			}
+		}
+	}
+}

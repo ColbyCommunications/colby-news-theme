@@ -1,0 +1,17 @@
+{% set featuredStory = featuredStory|default(false) %}
+{% set verticalAlign = 'flex flex-col justify-center' %}
+<div class="grid gap-y-4 sm:gap-x-8 lg:gap-x-12 xl:gap-x-16 story-teaser {{ featuredStory ? 'story-teaser--featured' : '' }}">
+    <div class="text-sm story-teaser__date text-tertiary {{ featuredStory ? '' : '' }}">
+        {% if featuredStory is not same as(true) %}
+            <div class="hidden mb-1 lg:block">Posted</div>
+        {% endif %}
+        <div class="font-semibold">{{ date }}</div>
+    </div>
+    {# <div class="story-teaser__text {{ featuredStory ? '' : 'flex ' ~ verticalAlign }}"> #}
+        <h3 class="story-teaser__title font-serif leading-none {{ featuredStory ? '' : 'text-[1.75rem]' }} ">
+            <a class="text-primary-light hocus:underline" href="{{ url }}">{{ title }}</a>
+        </h3>
+        <div class="story-teaser__body">{{ body }}</div>
+    {# </div> #}
+    <div class="story-teaser__image">{{ image }}</div>
+</div>

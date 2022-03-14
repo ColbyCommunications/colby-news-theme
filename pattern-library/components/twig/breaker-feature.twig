@@ -1,0 +1,41 @@
+<div class="relative -mx-container-gutter">
+    <div
+        aria-hidden="true"
+        class="
+            absolute inset-0 overflow-hidden -z-10
+            after:content-empty after:absolute after:inset-0 after:bg-black after:opacity-30
+            descendants:w-full descendants:h-full descendant-img:object-cover
+        "
+    >
+        {{ image }}
+    </div>
+
+    <div class="relative pb-20 pt-60 sm:pt-20 text-white">
+        <div class="container">
+            <div class="space-y-12 sm:space-y-16">
+                <div class="space-y-4 sm:space-y-5">
+                    {% if superhead %}
+                        <div class="uppercase text-base-minus-2 max-w-xs">
+                            {% if superhead.url %}
+                                <a href="{{ superhead.url }}" class="hover:text-gray-200">{{ superhead.title }}</a>
+                            {% else %}
+                                {{ superhead.title }}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    {% if headline %}
+                        <h2 class="font-bold text-3xl sm:text-5xl max-w-md">{{ headline }}</h2>
+                    {% endif %}
+                    {% if description %}
+                        <p class="text-lg sm:text-xl max-w-xs">{{ description }}</p>
+                    {% endif %}
+                </div>
+                {% if link %}
+                    <div class="max-w-xs">
+                        <a class="font-bold text-lg sm:text-xl hover:text-gray-200 !no-underline" href="{{ link.url }}">{{ link.title }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

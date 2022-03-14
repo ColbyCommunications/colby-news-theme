@@ -1,4 +1,6 @@
 node_modules
-dist
 vendor
-mix-manifest.json
+assets/*
+dist
+package-lock.json
+.DS_Store

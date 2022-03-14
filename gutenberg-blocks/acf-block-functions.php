@@ -671,7 +671,7 @@ function teaser_list(array $posts, bool $is_preview = false, array $show_fields 
             ];
 
             if (in_array('image', $show_fields)) {
-                $teaser['image'] = nc_blocks_image(get_post_thumbnail_id($post->ID), 'teaser');
+                $teaser['image'] = nc_blocks_image(get_post_thumbnail_id($post->ID), 'teaser_new');
             }
 
             if (in_array('category', $show_fields)) {
@@ -1064,7 +1064,7 @@ function related_posts_block($block, $content = '', $is_preview = false, $post_i
             }
         }
 
-        $image_size = $align ? 'logo' : 'teaser_small';
+        $image_size = $align ? 'logo' : 'teaser_new';
 
         $teasers = array_map(function ($post_item) use ($image_size) {
             $image = nc_blocks_image(get_post_thumbnail_id($post_item->ID), $image_size);

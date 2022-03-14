@@ -1,0 +1,12 @@
+# This file is set up for WPEngine. Uncomment and populate the fields below if you
+# are pulling from or deploying to WPEngine
+# path: /app/wordpress
+# @prod:
+#   ssh: >
+#     tamresearchprd@tamresearchprd.ssh.wpengine.net
+# @dev:
+#   ssh: >
+#     tamresearchdev@tamresearchdev.ssh.wpengine.net
+# @stage:
+#   ssh: >
+#     tamresearchstg@tamresearchstg.ssh.wpengine.net

@@ -1,0 +1,13 @@
+{
+  "name": "test-http-status",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ava": "^3.15.0",
+    "fs": "^0.0.1-security",
+    "puppeteer": "^10.2.0"
+  },
+  "type": "module"
+}

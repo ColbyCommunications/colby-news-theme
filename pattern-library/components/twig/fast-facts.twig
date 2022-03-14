@@ -1,0 +1,11 @@
+<div class="{{ themeClasses }}">
+    <div class="container justify-center py-10 mx-auto space-x-8 lg:flex px-container">
+        {% for fact in facts %}
+            <div class="flex flex-col items-center justify-center py-4 space-x-3 text-center sm:py-6 sm:space-x-4 sm:flex-row lg:justify-start lg:space-x-8 lg:flex-col lg:w-1/4 fast-fact">
+                <div class="flex-grow font-serif leading-none text-right fast-facts__stat lg:flex-none">{{ fact.stat }}</div>
+                <div class="font-serif text-2xl leading-none fast-facts__title lg:pb-3 lg:flex-none">{{ fact.title }}</div>
+                <div class="items-end flex-none flex-grow w-20 h-20 mx-auto text-left fast-facts__icon lg:flex lg:flex-grow">{{ fact.icon }}</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

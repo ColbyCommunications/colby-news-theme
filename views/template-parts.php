@@ -78,7 +78,7 @@ class TemplatePart
     protected function defaultTeaserBuilder($post_item)
     {
         if ($post_item->thumbnail) {
-            $thumbnail = nc_blocks_image($post_item->thumbnail->ID, 'teaser_small');
+            $thumbnail = nc_blocks_image($post_item->thumbnail->ID, 'teaser_new');
         } else {
             $thumbnail = new TimberImage($this->fallbackImage);
             $thumbnail = "<img src='" . $thumbnail->src() . "' alt='' />";
