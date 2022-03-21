@@ -966,6 +966,12 @@ function nc_opengraph_image($url)
 
 add_filter( 'wpseo_opengraph_type', 'yoast_change_opengraph_type', 10, 1 );
 
+add_filter('algolia_post_images_sizes', function($sizes) {
+    $sizes[] = array(720, 480);
+
+    return $sizes;
+});
+
 function yoast_change_opengraph_type( $type ) {
 
     if ( is_archive() ) {

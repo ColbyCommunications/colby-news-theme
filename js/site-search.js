@@ -94,7 +94,8 @@ const setUpSiteSearch = () => {
           https://www.algolia.com/doc/guides/managing-results/refine-results/faceting/how-to/declaring-attributes-for-faceting/
         */
         const finalItems = items.filter(
-          (item) => item.url && item.title && item.type === 'article'
+          (item) =>
+            item.permalink && item.post_title && item.post_type === 'post'
         );
 
         // handle focus (determining what needs it, then apply it)
@@ -138,27 +139,22 @@ const setUpSiteSearch = () => {
         item(item, bindEvent) {
           /* html */
           return `
-          <a href="${item.url}" ${bindEvent(
+          <a href="${item.permalink}" ${bindEvent(
             'click',
             item,
             'Search Result Clicked'
           )} class="group block text-base-minus-2 space-y-1.5">
             ${
-              item.image
+              item.images.thumbnail
                 ? /* html */ `
               <div class="aspect-w-3 aspect-h-2">
-                <img class="object-cover" src="${item.image}" alt="" />
+                <img class="object-cover" src="${item.images.thumbnail.url}" alt="" />
               </div>
             `
                 : ''
             }
-            ${
-              /* no such field yet; should be size-11 uppercase */ item.superhead
-                ? /* html */ `<div>${item.superhead}</div>`
-                : ''
-            }
             <div class="group-hover:text-link-hover transition-colors font-bold text-base-minus-1 sm:text-sm-plus-1">${
-              item.title
+              item.post_title
             } </div>
           </a> 
         `;
