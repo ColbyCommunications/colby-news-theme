@@ -31,7 +31,7 @@ const setUpSiteSearch = () => {
   );
 
   const search = instantsearch({
-    indexName: 'crawler_colby-news', // case-sensitive
+    indexName: 'wp_searchable_posts', // case-sensitive
     searchClient,
     searchFunction: (helper) => helper.state.query && helper.search(),
   });
