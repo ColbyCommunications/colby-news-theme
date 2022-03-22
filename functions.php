@@ -975,10 +975,16 @@ function yoast_change_opengraph_type( $type ) {
     }
 }
 
-function colby_algolia_post_type_blacklist( array $blacklist ) {
-    $blacklist = array( 'nav_menu_item', 'revision', 'page', 'external_post', 'attachment', 'custom_css', 'elementor_library', 'oembed_cache', 'wgg_preview', 'wp_block', 'wp_global_styles' );
+function exclude_post_types( $should_index, WP_Post $post )
+{
+    // Add all post types you don't want to make searchable.
+    $excluded_post_types = array( 'page' );
+    if ( false === $should_index ) {
+        return false;
+    }
 
-    return $blacklist;
+    return ! in_array( $post->post_type, $excluded_post_types, true );
 }
 
-add_filter( 'algolia_post_types_blacklist', 'colby_algolia_post_type_blacklist' );
+// Hook into Algolia to manipulate the post that should be indexed.
+add_filter( 'algolia_should_index_searchable_post', 'exclude_post_types', 10, 2 );
