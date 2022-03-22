@@ -148,7 +148,7 @@ const setUpSiteSearch = () => {
               item.images.thumbnail
                 ? /* html */ `
               <div class="aspect-w-3 aspect-h-2">
-                <img class="object-cover" src="${item.images.thumbnail.url}" alt="" />
+                <img class="object-cover" src="${item.images.teaser_new.url}" alt="" />
               </div>
             `
                 : ''
