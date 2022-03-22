@@ -966,12 +966,6 @@ function nc_opengraph_image($url)
 
 add_filter( 'wpseo_opengraph_type', 'yoast_change_opengraph_type', 10, 1 );
 
-add_filter('algolia_post_images_sizes', function($sizes) {
-    $sizes[] = array(720, 480);
-
-    return $sizes;
-});
-
 function yoast_change_opengraph_type( $type ) {
 
     if ( is_archive() ) {
@@ -980,3 +974,11 @@ function yoast_change_opengraph_type( $type ) {
         return $type;
     }
 }
+
+function colby_algolia_post_type_blacklist( array $blacklist ) {
+    $blacklist = array( 'nav_menu_item', 'revision', 'page', 'external_post', 'attachment', 'custom_css', 'elementor_library', 'oembed_cache', 'wgg_preview', 'wp_block', 'wp_global_styles' );
+
+    return $blacklist;
+}
+
+add_filter( 'algolia_post_types_blacklist', 'colby_algolia_post_type_blacklist' );
