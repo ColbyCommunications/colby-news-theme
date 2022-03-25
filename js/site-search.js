@@ -31,7 +31,7 @@ const setUpSiteSearch = () => {
   );
 
   const search = instantsearch({
-    indexName: 'wp_searchable_posts', // case-sensitive
+    indexName: 'prod_news_stories_publish-date_desc', // case-sensitive
     searchClient,
     searchFunction: (helper) => helper.state.query && helper.search(),
   });

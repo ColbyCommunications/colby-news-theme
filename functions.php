@@ -994,3 +994,49 @@ add_filter('algolia_post_images_sizes', function($sizes) {
 
     return $sizes;
 });
+
+add_action( 'page_metrics', 'page_metrics_function' );
+
+function page_metrics_function() {
+    $ch = curl_init();
+    curl_setopt_array($ch, array(
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_URL => 'https://api.siteimprove.com/v2/sites/28518335051/analytics/content/all_pages?page=1&page_size=1000&period=this_month&search_in=url',
+        CURLOPT_USERPWD => 'gaceto@colby.edu:d7a217c3a21f06ab4f52fb9c69d3ec02'
+    ));
+    $response_json = curl_exec($ch);
+    curl_close($ch);
+    $response=json_decode($response_json, true);
+
+    for ($i = 0; $i <= count($response['items']); $i++) {
+        $page_index = $response['items'][$i];
+        $slug = $page_index['url'];
+        $page_views = $page_index['page_views'];
+        $title = $page_index['title'];
+        $pattern = '^https://news.colby.edu/story/(.+)/$^';
+        $result = preg_match($pattern, $slug, $matches);
+        if (false !== $result && $matches) {
+            $char_blacklist = ['/', '%', 'wp-content', 'elementor', 'preview='];
+
+            $bypass = false;
+
+            foreach($char_blacklist as $char) {
+                if (stripos($matches[1], $char) !== false) {
+                    $bypass = true;
+                }
+            }
+
+            if ($title === 'Page not found - Colby News') {
+                $bypass = true;
+            }
+
+            if (!$bypass) {
+                $filtered_slug = $matches[1];
+                $post = get_page_by_path($filtered_slug, OBJECT, 'post');
+                if ($post) {
+                    update_post_meta($post->ID, 'siteimprove_page_views', $page_views);
+                }
+            }
+        }
+    }
+}
