@@ -29,6 +29,9 @@ if (! is_file(__DIR__ . '/vendor/autoload.php')) {
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
+global $algolia;
+$algolia = \Algolia\AlgoliaSearch\SearchClient::create("2XJQHYFX2S", "205a0b1532db5cec1206714e5e6b89a8");
+
 if (is_file(__DIR__ . '/gutenberg-blocks/register-blocks.php')) {
     require_once(__DIR__ . '/gutenberg-blocks/register-blocks.php');
 }
@@ -999,6 +1002,11 @@ add_action( 'page_metrics', 'page_metrics_function' );
 
 function page_metrics_function() {
 
+    global $algolia;
+    $index = $algolia->initIndex('prod_news_stories_publish-date_desc');
+
+    // die(var_dump($index));
+
     $ch = curl_init();
     curl_setopt_array($ch, array(
     CURLOPT_RETURNTRANSFER => true,
@@ -1008,8 +1016,7 @@ function page_metrics_function() {
 
     $response_json = curl_exec($ch);
     curl_close($ch);
-    $response=json_decode($response_json, true);
-    // die(var_dump($response));
+    $response = json_decode($response_json, true);
 
     $args = array(
         'numberposts'	=> -1,
@@ -1019,55 +1026,73 @@ function page_metrics_function() {
 
     $all_posts = get_posts($args);
 
-    for ($i = 0; $i <= count($all_posts); $i++) {
-        $index = $all_posts[$i];
-        $id = $index->ID;
-        $post_title = $index->post_title;
-        // die(var_dump($title));
+    foreach ($all_posts as $post) {
+        $id = $post->ID;
+        $post_title = $post->post_title;
+        $post_slug = $post->post_name;
 
-        $filtered_array = array_filter($response['items'], function ($item) use($post_title) {
-            $processed_title = str_replace(" - Colby News", "", $item['title']);
-            // die(var_dump($processed_title));
-            return $processed_title === $post_title;
+        die(var_dump($response['items']));
+
+        $filtered_array = array_filter($response['items'], function ($item) {
+            die(var_dump(filter_slug($item['url'])));
+            if ($processed_slug = filter_slug($item['url'])) {
+                // if ($id === 25507) {
+                //     die(var_dump($processed_slug));
+                // }
+                return $processed_slug === $post_slug;
+            } else {
+                return false;
+            }
         });
 
-        if (count($filtered_array) > 0) {
+        if ($id === 25507) {
+            die(var_dump($filtered_array));
+        }
+
+        if (empty($filtered_array)) {
             // we have a match
-            $page_index = $filtered_array;
-            $slug = $page_index['url'];
-            $page_views = $page_index['page_views'];
-            $title = $page_index['title'];
-            $pattern = '^https://news.colby.edu/story/(.+)/$^';
-            $result = preg_match($pattern, $slug, $matches);
-            if (false !== $result && $matches) {
-                $char_blacklist = ['/', '%', 'wp-content', 'elementor', 'preview='];
 
-                $bypass = false;
+            $slug = $filtered_array['url'];
+            $page_views = $filtered_array['page_views'];
+            $title = $filtered_array['title'];
 
-                foreach($char_blacklist as $char) {
-                    if (stripos($matches[1], $char) !== false) {
-                        $bypass = true;
-                    }
-                }
-
-                if ($title === 'Page not found - Colby News') {
-                    $bypass = true;
-                }
-
-                if (!$bypass) {
-                    $filtered_slug = $matches[1];
-                    $post = get_page_by_path($filtered_slug, OBJECT, 'post');
-                    if ($post) {
-                        update_post_meta($post->ID, 'siteimprove_page_views', $page_views);
-                    }
-                }
-            }
+            
             
         } else {
             // we dont
             update_post_meta($id, 'siteimprove_page_views', 0);
         }
     }
+}
+
+function filter_slug ($slug) {
+
+    $pattern = '^https://news.colby.edu/story/(.+)/$^';
+    $result = preg_match($pattern, $slug, $matches);
+
+    $final_slug = false;
+
+    if (false !== $result && $matches) {
+        $char_blacklist = ['/', '%', 'wp-content', 'elementor', 'preview='];
+
+        $bypass = false;
+
+        foreach($char_blacklist as $char) {
+            if (stripos($matches[1], $char) !== false) {
+                $bypass = true;
+            }
+        }
+
+        if ($title === 'Page not found - Colby News') {
+            $bypass = true;
+        }
+
+        if (!$bypass) {
+            $final_slug = $matches[1];
+        }
+    }
+
+    return $final_slug;
 }
 
 add_filter('template_redirect', 'page_metrics_function');
