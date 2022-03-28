@@ -1009,9 +1009,9 @@ function page_metrics_function() {
 
     $ch = curl_init();
     curl_setopt_array($ch, array(
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_URL => 'https://api.siteimprove.com/v2/sites/28518335051/analytics/content/all_pages?page=1&page_size=1000&period=this_month&search_in=url',
-    CURLOPT_USERPWD => 'gaceto@colby.edu:d7a217c3a21f06ab4f52fb9c69d3ec02'
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_URL => 'https://api.siteimprove.com/v2/sites/28518335051/analytics/content/all_pages?page=1&page_size=1000&period=this_month&search_in=url',
+        CURLOPT_USERPWD => 'gaceto@colby.edu:d7a217c3a21f06ab4f52fb9c69d3ec02'
     ));
 
     $response_json = curl_exec($ch);
@@ -1031,33 +1031,25 @@ function page_metrics_function() {
         $post_title = $post->post_title;
         $post_slug = $post->post_name;
 
-        die(var_dump($response['items']));
+        $filtered_array = array_filter($response['items'], function ($item) use ($post_slug) {
+            $processed_slug = filter_slug($item['url']);
 
-        $filtered_array = array_filter($response['items'], function ($item) {
-            die(var_dump(filter_slug($item['url'])));
-            if ($processed_slug = filter_slug($item['url'])) {
-                // if ($id === 25507) {
-                //     die(var_dump($processed_slug));
-                // }
+            if ($processed_slug) {
                 return $processed_slug === $post_slug;
             } else {
                 return false;
             }
         });
 
-        if ($id === 25507) {
-            die(var_dump($filtered_array));
-        }
 
-        if (empty($filtered_array)) {
+        if ($filtered_array) {
             // we have a match
+            $slug = array_values($filtered_array)[0]['url'];
+            $page_views = array_values($filtered_array)[0]['page_views'];
+            $title = array_values($filtered_array)[0]['title'];
 
-            $slug = $filtered_array['url'];
-            $page_views = $filtered_array['page_views'];
-            $title = $filtered_array['title'];
+            update_post_meta($id, 'siteimprove_page_views', $page_views);
 
-            
-            
         } else {
             // we dont
             update_post_meta($id, 'siteimprove_page_views', 0);
@@ -1066,7 +1058,6 @@ function page_metrics_function() {
 }
 
 function filter_slug ($slug) {
-
     $pattern = '^https://news.colby.edu/story/(.+)/$^';
     $result = preg_match($pattern, $slug, $matches);
 
