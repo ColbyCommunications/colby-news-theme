@@ -30,7 +30,7 @@ if (! is_file(__DIR__ . '/vendor/autoload.php')) {
 require_once(__DIR__ . '/vendor/autoload.php');
 
 global $algolia;
-$algolia = \Algolia\AlgoliaSearch\SearchClient::create("2XJQHYFX2S", "205a0b1532db5cec1206714e5e6b89a8");
+$algolia = \Algolia\AlgoliaSearch\SearchClient::create("2XJQHYFX2S", get_env('algolia_admin_api_key'));
 
 if (is_file(__DIR__ . '/gutenberg-blocks/register-blocks.php')) {
     require_once(__DIR__ . '/gutenberg-blocks/register-blocks.php');
@@ -1011,7 +1011,7 @@ function page_metrics_function() {
     curl_setopt_array($ch, array(
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_URL => 'https://api.siteimprove.com/v2/sites/28518335051/analytics/content/all_pages?page=1&page_size=1000&period=this_month&search_in=url',
-        CURLOPT_USERPWD => 'gaceto@colby.edu:d7a217c3a21f06ab4f52fb9c69d3ec02'
+        CURLOPT_USERPWD => getenv('gaceto_siteimprove_api_creds')
     ));
 
     $response_json = curl_exec($ch);
