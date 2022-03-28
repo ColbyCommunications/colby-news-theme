@@ -30,7 +30,7 @@ if (! is_file(__DIR__ . '/vendor/autoload.php')) {
 require_once(__DIR__ . '/vendor/autoload.php');
 
 global $algolia;
-$algolia = \Algolia\AlgoliaSearch\SearchClient::create("2XJQHYFX2S", get_env('algolia_admin_api_key'));
+$algolia = \Algolia\AlgoliaSearch\SearchClient::create("2XJQHYFX2S", getenv('algolia_admin_api_key'));
 
 if (is_file(__DIR__ . '/gutenberg-blocks/register-blocks.php')) {
     require_once(__DIR__ . '/gutenberg-blocks/register-blocks.php');
