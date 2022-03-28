@@ -1032,7 +1032,7 @@ function page_metrics_function() {
         $post_slug = $post->post_name;
 
         $filtered_array = array_filter($response['items'], function ($item) use ($post_slug) {
-            $processed_slug = filter_slug($item['url']);
+            $processed_slug = filter_slug($item['url'], $item['title']);
 
             if ($processed_slug) {
                 return $processed_slug === $post_slug;
@@ -1057,7 +1057,7 @@ function page_metrics_function() {
     }
 }
 
-function filter_slug ($slug) {
+function filter_slug ($slug, $title) {
     $pattern = '^https://news.colby.edu/story/(.+)/$^';
     $result = preg_match($pattern, $slug, $matches);
 
