@@ -998,12 +998,28 @@ add_filter('algolia_post_images_sizes', function($sizes) {
 add_action( 'page_metrics', 'page_metrics_function' );
 
 function page_metrics_function() {
+
+    $args = array(
+        'numberposts'	=> -1,
+        'post_type'		=> 'post',
+        'post_status'   => 'publish'
+    );
+
+    $all_posts = get_posts($args);
+
+    for ($i = 0; $i <= count($all_posts); $i++) {
+        $index = $all_posts[$i];
+        $id = $index->ID;
+        update_post_meta($id, 'siteimprove_page_views', 0);
+    }
+
     $ch = curl_init();
     curl_setopt_array($ch, array(
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_URL => 'https://api.siteimprove.com/v2/sites/28518335051/analytics/content/all_pages?page=1&page_size=1000&period=this_month&search_in=url',
-        CURLOPT_USERPWD => 'gaceto@colby.edu:d7a217c3a21f06ab4f52fb9c69d3ec02'
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_URL => 'https://api.siteimprove.com/v2/sites/28518335051/analytics/content/all_pages?page=1&page_size=1000&period=this_month&search_in=url',
+    CURLOPT_USERPWD => 'gaceto@colby.edu:d7a217c3a21f06ab4f52fb9c69d3ec02'
     ));
+
     $response_json = curl_exec($ch);
     curl_close($ch);
     $response=json_decode($response_json, true);
