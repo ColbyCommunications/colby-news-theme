@@ -1004,7 +1004,7 @@ function page_metrics_function() {
 
     // global $algolia;
     // $index = $algolia->initIndex('prod_news_stories_publish-date_desc');
-
+    var_dump(getenv('gaceto_siteimprove_api_creds'));
     $ch = curl_init();
     curl_setopt_array($ch, array(
         CURLOPT_RETURNTRANSFER => true,
