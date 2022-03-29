@@ -29,8 +29,8 @@ if (! is_file(__DIR__ . '/vendor/autoload.php')) {
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
-global $algolia;
-$algolia = \Algolia\AlgoliaSearch\SearchClient::create("2XJQHYFX2S", getenv('algolia_admin_api_key'));
+// global $algolia;
+// $algolia = \Algolia\AlgoliaSearch\SearchClient::create("2XJQHYFX2S", getenv('algolia_admin_api_key'));
 
 if (is_file(__DIR__ . '/gutenberg-blocks/register-blocks.php')) {
     require_once(__DIR__ . '/gutenberg-blocks/register-blocks.php');
@@ -1002,8 +1002,8 @@ add_action( 'page_metrics', 'page_metrics_function' );
 
 function page_metrics_function() {
 
-    global $algolia;
-    $index = $algolia->initIndex('prod_news_stories_publish-date_desc');
+    // global $algolia;
+    // $index = $algolia->initIndex('prod_news_stories_publish-date_desc');
 
     $ch = curl_init();
     curl_setopt_array($ch, array(
