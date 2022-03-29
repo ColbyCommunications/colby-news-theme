@@ -1005,7 +1005,7 @@ function page_metrics_function() {
     global $algolia;
     $index = $algolia->initIndex('prod_news_stories_publish-date_desc');
 
-    // die(var_dump($index));
+    die(var_dump($index));
 
     $ch = curl_init();
     curl_setopt_array($ch, array(
@@ -1087,3 +1087,4 @@ function filter_slug ($slug, $title) {
 }
 
 // add_filter('template_redirect', 'page_metrics_function');
+
