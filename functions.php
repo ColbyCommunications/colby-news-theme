@@ -8,6 +8,7 @@
  * @package colby-news-theme
  */
 
+ // define PHP constant for PLATFORM_VARIABLES
 define("PLATFORM_VARIABLES", json_decode(base64_decode(getenv('PLATFORM_VARIABLES')), TRUE));
 
 
@@ -32,6 +33,7 @@ if (! is_file(__DIR__ . '/vendor/autoload.php')) {
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
+// define some global algolia stuff using our environment variables
 global $algolia;
 $algolia = \Algolia\AlgoliaSearch\SearchClient::create("2XJQHYFX2S", PLATFORM_VARIABLES['php:algolia_admin_api_key']);
 
@@ -1005,33 +1007,38 @@ add_action( 'page_metrics', 'page_metrics_function' );
 
 function page_metrics_function() {
 
+    // get index information from algolia PHP client
     global $algolia;
-    $index = $algolia->initIndex('prod_news_stories_publish-date_desc');
+    $index = $algolia->initIndex('prod_news_searchable_posts');
 
+    // get data from SiteImprove API
     $ch = curl_init();
     curl_setopt_array($ch, array(
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_URL => 'https://api.siteimprove.com/v2/sites/28518335051/analytics/content/all_pages?page=1&page_size=1000&period=this_month&search_in=url',
         CURLOPT_USERPWD => PLATFORM_VARIABLES['php:gaceto_siteimprove_api_creds']
     ));
-
     $response_json = curl_exec($ch);
     curl_close($ch);
     $response = json_decode($response_json, true);
 
+    // get all published WP posts
     $args = array(
         'numberposts'	=> -1,
         'post_type'		=> 'post',
         'post_status'   => 'publish'
     );
-
     $all_posts = get_posts($args);
 
+    // iterate over all posts
     foreach ($all_posts as $post) {
+
+        // extract post data
         $id = $post->ID;
         $post_title = $post->post_title;
         $post_slug = $post->post_name;
 
+        // filter SiteImprove data, matching on slug
         $filtered_array = array_filter($response['items'], function ($item) use ($post_slug) {
             $processed_slug = filter_slug($item['url'], $item['title']);
 
@@ -1058,6 +1065,13 @@ function page_metrics_function() {
     }
 }
 
+/**
+ * Filter and return slug from a url. Also filter
+ * out 'page not found'
+ * 
+ * @return false if not successful. String if filtered successfully 
+ * 
+ */
 function filter_slug ($slug, $title) {
     $pattern = '^https://news.colby.edu/story/(.+)/$^';
     $result = preg_match($pattern, $slug, $matches);
@@ -1087,19 +1101,42 @@ function filter_slug ($slug, $title) {
     return $final_slug;
 }
 
-function get_post_page_views( $post_id ) {
-    return (int) get_post_meta( $post_id, 'siteimprove_page_views', true );
-}
-
+// get siteimprove_page_views to send to algolia
 function post_shared_attributes( array $shared_attributes, WP_Post $post) {
-    if ($post->post_type === 'post') {
-        $shared_attributes['siteimprove_page_views'] = get_post_page_views( $post->ID );
+    if($post->post_type === 'post'){
+        $shared_attributes['siteimprove_page_views'] = (int) get_post_meta( $post->ID, 'siteimprove_page_views', true );
     }
 
     return $shared_attributes;
 }
 
-add_filter( 'algolia_post_shared_attributes', 'post_shared_attributes', 10, 2 );
+add_filter( 'algolia_searchable_post_shared_attributes', 'post_shared_attributes', 10, 2 );
 
-// add_filter('template_redirect', 'page_metrics_function');
+/**
+ * Update algolia index settings to use siteimprove_page_views in ranking
+ * make sure siteimprove_page_views is marked as 'unretrievableAttribute' as to not
+ * actually display attribute in search
+ */ 
+function vm_posts_index_settings( array $settings ) {
+    $custom_ranking = $settings['customRanking'];
+    array_unshift( $custom_ranking, 'desc(siteimprove_page_views)' );
+    $settings['customRanking'] = $custom_ranking;
+
+    // Protect our sensitive data.
+    $protected_attributes = array();
+
+    if ( isset( $settings['unretrievableAttributes'] ) ) {
+        // Ensure we merge our values with the existing ones if available.
+        $protected_attributes = $settings['unretrievableAttributes'];
+    }
+
+    $protected_attributes[] = 'siteimprove_page_views';
+    $settings['unretrievableAttributes'] = $protected_attributes;
+
+    return $settings;
+}
+
+add_filter( 'algolia_posts_index_settings', 'vm_posts_index_settings' );
+
+// add_filter('template_redirect', 'post_shared_attributes');
 
