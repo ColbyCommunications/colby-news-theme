@@ -1087,5 +1087,5 @@ function filter_slug ($slug, $title) {
     return $final_slug;
 }
 
-add_filter('template_redirect', 'page_metrics_function');
+// add_filter('template_redirect', 'page_metrics_function');
 
