@@ -31,7 +31,7 @@ const setUpSiteSearch = () => {
   );
 
   const search = instantsearch({
-    indexName: 'prod_news_stories_publish-date_desc', // case-sensitive
+    indexName: 'prod_news_searchable_posts', // case-sensitive
     searchClient,
     searchFunction: (helper) => helper.state.query && helper.search(),
   });

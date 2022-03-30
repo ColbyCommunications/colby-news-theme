@@ -1087,5 +1087,19 @@ function filter_slug ($slug, $title) {
     return $final_slug;
 }
 
+function get_post_page_views( $post_id ) {
+    return (int) get_post_meta( $post_id, 'siteimprove_page_views', true );
+}
+
+function post_shared_attributes( array $shared_attributes, WP_Post $post) {
+    if ($post->post_type === 'post') {
+        $shared_attributes['siteimprove_page_views'] = get_post_page_views( $post->ID );
+    }
+
+    return $shared_attributes;
+}
+
+add_filter( 'algolia_post_shared_attributes', 'post_shared_attributes', 10, 2 );
+
 // add_filter('template_redirect', 'page_metrics_function');
 
