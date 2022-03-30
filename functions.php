@@ -1009,7 +1009,6 @@ function page_metrics_function() {
 
     // get index information from algolia PHP client
     global $algolia;
-    $index = $algolia->initIndex('prod_news_searchable_posts');
 
     // get data from SiteImprove API
     $ch = curl_init();
@@ -1063,6 +1062,7 @@ function page_metrics_function() {
             update_post_meta($id, 'siteimprove_page_views', 0);
         }
     }
+    WP_CLI::runcommand('algolia reindex');
 }
 
 /**
