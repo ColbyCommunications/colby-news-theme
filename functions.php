@@ -8,6 +8,9 @@
  * @package colby-news-theme
  */
 
+define("PLATFORM_VARIABLES", json_decode(base64_decode(getenv('PLATFORM_VARIABLES')), TRUE));
+
+
 function nc_display_post_blocks()
 {
     global $post;
@@ -29,8 +32,8 @@ if (! is_file(__DIR__ . '/vendor/autoload.php')) {
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
-// global $algolia;
-// $algolia = \Algolia\AlgoliaSearch\SearchClient::create("2XJQHYFX2S", getenv('algolia_admin_api_key'));
+global $algolia;
+$algolia = \Algolia\AlgoliaSearch\SearchClient::create("2XJQHYFX2S", PLATFORM_VARIABLES['php:algolia_admin_api_key']);
 
 if (is_file(__DIR__ . '/gutenberg-blocks/register-blocks.php')) {
     require_once(__DIR__ . '/gutenberg-blocks/register-blocks.php');
@@ -1002,14 +1005,14 @@ add_action( 'page_metrics', 'page_metrics_function' );
 
 function page_metrics_function() {
 
-    // global $algolia;
-    // $index = $algolia->initIndex('prod_news_stories_publish-date_desc');
-    var_dump(getenv('gaceto_siteimprove_api_creds'));
+    global $algolia;
+    $index = $algolia->initIndex('prod_news_stories_publish-date_desc');
+
     $ch = curl_init();
     curl_setopt_array($ch, array(
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_URL => 'https://api.siteimprove.com/v2/sites/28518335051/analytics/content/all_pages?page=1&page_size=1000&period=this_month&search_in=url',
-        CURLOPT_USERPWD => getenv('gaceto_siteimprove_api_creds')
+        CURLOPT_USERPWD => PLATFORM_VARIABLES['php:gaceto_siteimprove_api_creds']
     ));
 
     $response_json = curl_exec($ch);
