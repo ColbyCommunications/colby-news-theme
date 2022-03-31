@@ -12,6 +12,7 @@
 define("PLATFORM_VARIABLES", json_decode(base64_decode(getenv('PLATFORM_VARIABLES')), TRUE));
 
 
+
 function nc_display_post_blocks()
 {
     global $post;
@@ -1062,7 +1063,7 @@ function page_metrics_function() {
             update_post_meta($id, 'siteimprove_page_views', 0);
         }
     }
-    WP_CLI::runcommand('algolia reindex');
+    shell_exec('wp algolia reindex searchable_posts');
 }
 
 /**
@@ -1138,5 +1139,5 @@ function vm_posts_index_settings( array $settings ) {
 
 add_filter( 'algolia_posts_index_settings', 'vm_posts_index_settings' );
 
-// add_filter('template_redirect', 'post_shared_attributes');
+// add_filter('template_redirect', 'page_metrics_function');
 
