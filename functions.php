@@ -1062,7 +1062,7 @@ function page_metrics_function() {
             update_post_meta($id, 'siteimprove_page_views', 0);
         }
     }
-    WP_CLI::runcommand('algolia reindex searchable_posts');
+    WP_CLI::runcommand('algolia reindex');
 }
 
 /**
