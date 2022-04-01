@@ -44,7 +44,22 @@ const setUpSiteSearch = () => {
 
   search.use(insightsMiddleware);
 
-  window.aa('setUserToken', 'user-1');
+window.aa('init', {
+  appId: '2XJQHYFX2S',
+  apiKey: '63c304c04c478fd0c4cb1fb36cd666cb',
+  useCookie: true,  // since v2, this is false by default
+  cookieDuration: 15552000000 // in milliseconds (default: 15552000000)
+});
+
+window.aa('getUserToken', null, (err, userToken) => {
+  if (err) {
+  console.error(err);
+  return;
+}
+console.log(userToken);
+});
+
+
 
   search.addWidgets([
     instantsearch.widgets.searchBox({
