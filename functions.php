@@ -1,5 +1,7 @@
 <?php
 
+die(var_dump(PLATFORM_VARIABLES));
+
 /**
  * Functions and definitions for newcity/timber-starter theme
  *
@@ -1141,5 +1143,5 @@ function vm_posts_index_settings(array $settings)
 
 add_filter('algolia_posts_index_settings', 'vm_posts_index_settings');
 
-// add_filter('template_redirect', 'page_metrics_function');
+add_filter('template_redirect', 'page_metrics_function');
 
