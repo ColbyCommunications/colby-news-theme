@@ -1106,6 +1106,7 @@ function filter_slug ($slug, $title) {
 function post_shared_attributes( array $shared_attributes, WP_Post $post) {
     if($post->post_type === 'post'){
         $shared_attributes['siteimprove_page_views'] = (int) get_post_meta( $post->ID, 'siteimprove_page_views', true );
+        $shared_attributes['summary'] = strip_tags(get_post_meta($post->ID, 'summary', true));
     }
 
     return $shared_attributes;
