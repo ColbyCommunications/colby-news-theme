@@ -29,13 +29,6 @@ if (! is_file(__DIR__ . '/vendor/autoload.php')) {
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
-
-// define some global algolia stuff using our environment variables
-global $algolia;
-$algolia = \Algolia\AlgoliaSearch\SearchClient::create("2XJQHYFX2S", PLATFORM_VARIABLES['php:algolia_admin_api_key']);
-
-
-
 if (is_file(__DIR__ . '/gutenberg-blocks/register-blocks.php')) {
     require_once(__DIR__ . '/gutenberg-blocks/register-blocks.php');
 }
@@ -1007,9 +1000,6 @@ add_action('page_metrics', 'page_metrics_function');
 
 function page_metrics_function()
 {
-
-    // get index information from algolia PHP client
-    global $algolia;
 
     // get data from SiteImprove API
     $ch = curl_init();

@@ -51,12 +51,11 @@ const setUpSiteSearch = () => {
     cookieDuration: 15552000000,
   });
 
-  window.aa('getUserToken', null, (err, userToken) => {
+  window.aa('getUserToken', null, (err) => {
     if (err) {
       console.error(err);
       return;
     }
-    console.log(userToken);
   });
 
   search.addWidgets([
