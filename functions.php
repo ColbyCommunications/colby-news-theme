@@ -1,7 +1,5 @@
 <?php
 
-die(var_dump(PLATFORM_VARIABLES));
-
 /**
  * Functions and definitions for newcity/timber-starter theme
  *
