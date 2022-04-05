@@ -997,7 +997,9 @@ add_filter('algolia_post_images_sizes', function ($sizes) {
 });
 
 if (! wp_next_scheduled('page_metrics')) {
-    wp_schedule_event(time(), 'hourly', 'page_metrics');
+    $time = strtotime('today');
+    $time = $time + 72000;
+    wp_schedule_event($time, 'daily', 'page_metrics');
 }
 
 add_action('page_metrics', 'page_metrics_function');
@@ -1135,3 +1137,4 @@ function vm_posts_index_settings(array $settings)
 add_filter('algolia_posts_index_settings', 'vm_posts_index_settings');
 
 // add_filter('template_redirect', 'page_metrics_function');
+
