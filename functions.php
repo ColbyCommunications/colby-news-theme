@@ -997,7 +997,9 @@ add_filter('algolia_post_images_sizes', function ($sizes) {
 });
 
 if (! wp_next_scheduled('page_metrics')) {
-    wp_schedule_event(time(), 'hourly', 'page_metrics');
+    $time = strtotime('today');
+    $time = $time + 79200;
+    wp_schedule_event($time, 'daily', 'page_metrics');
 }
 
 add_action('page_metrics', 'page_metrics_function');
