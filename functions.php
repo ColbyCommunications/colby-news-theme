@@ -998,7 +998,7 @@ add_filter('algolia_post_images_sizes', function ($sizes) {
 
 if (! wp_next_scheduled('page_metrics')) {
     $time = strtotime('today');
-    $time = $time + 79200;
+    $time = $time + 72000;
     wp_schedule_event($time, 'daily', 'page_metrics');
 }
 
