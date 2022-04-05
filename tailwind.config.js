@@ -84,7 +84,7 @@ module.exports = {
   purge: {
     content: [
       './js/*.js',
-      //   './**/components/**/*.twig',
+      // './**/components/**/*.twig',
       './**/components/**/*.js',
       './**/components/**/*.mdx',
       './**/*.php',
