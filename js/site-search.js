@@ -31,7 +31,7 @@ const setUpSiteSearch = () => {
   );
 
   const search = instantsearch({
-    indexName: 'prod_news_searchable_posts', // case-sensitive
+    indexName: 'crawler_colby-news', // case-sensitive
     searchClient,
     searchFunction: (helper) => helper.state.query && helper.search(),
   });
@@ -44,19 +44,7 @@ const setUpSiteSearch = () => {
 
   search.use(insightsMiddleware);
 
-  window.aa('init', {
-    appId: '2XJQHYFX2S',
-    apiKey: '63c304c04c478fd0c4cb1fb36cd666cb',
-    useCookie: true,
-    cookieDuration: 15552000000,
-  });
-
-  window.aa('getUserToken', null, (err) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-  });
+  window.aa('setUserToken', 'user-1');
 
   search.addWidgets([
     instantsearch.widgets.searchBox({
@@ -106,8 +94,7 @@ const setUpSiteSearch = () => {
           https://www.algolia.com/doc/guides/managing-results/refine-results/faceting/how-to/declaring-attributes-for-faceting/
         */
         const finalItems = items.filter(
-          (item) =>
-            item.permalink && item.post_title && item.post_type === 'post'
+          (item) => item.url && item.title && item.type === 'article'
         );
 
         // handle focus (determining what needs it, then apply it)
@@ -151,22 +138,27 @@ const setUpSiteSearch = () => {
         item(item, bindEvent) {
           /* html */
           return `
-          <a href="${item.permalink}" ${bindEvent(
+          <a href="${item.url}" ${bindEvent(
             'click',
             item,
             'Search Result Clicked'
           )} class="group block text-base-minus-2 space-y-1.5">
             ${
-              item.images.thumbnail
+              item.image
                 ? /* html */ `
               <div class="aspect-w-3 aspect-h-2">
-                <img class="object-cover" src="${item.images.teaser_new.url}" alt="" />
+                <img class="object-cover" src="${item.image}" alt="" />
               </div>
             `
                 : ''
             }
+            ${
+              /* no such field yet; should be size-11 uppercase */ item.superhead
+                ? /* html */ `<div>${item.superhead}</div>`
+                : ''
+            }
             <div class="group-hover:text-link-hover transition-colors font-bold text-base-minus-1 sm:text-sm-plus-1">${
-              item.post_title
+              item.title
             } </div>
           </a> 
         `;
