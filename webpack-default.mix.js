@@ -12,6 +12,7 @@ exports.buildPaths = (overrides = {}) => {
     icons: 'icons',
     scss: 'scss',
     js: 'js',
+    vue: 'vue',
   };
 
   const fixedPaths = {
