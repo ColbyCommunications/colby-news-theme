@@ -1011,7 +1011,7 @@ function page_metrics_function()
     curl_setopt_array($ch, array(
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_URL => 'https://api.siteimprove.com/v2/sites/28518335051/analytics/content/all_pages?page=1&page_size=1000&period=this_month&search_in=url',
-        CURLOPT_USERPWD => PLATFORM_VARIABLES['php:gaceto_siteimprove_api_creds']
+        CURLOPT_USERPWD => PLATFORM_VARIABLES['gaceto_siteimprove_api_creds']
     ));
     $response_json = curl_exec($ch);
     curl_close($ch);
