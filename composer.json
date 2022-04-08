@@ -46,7 +46,8 @@
   "require-dev": {
     "squizlabs/php_codesniffer": "*",
     "wp-coding-standards/wpcs": "^2.3",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0"
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+    "symfony/var-dumper": "^5.4"
   },
   "config": {
     "allow-plugins": {

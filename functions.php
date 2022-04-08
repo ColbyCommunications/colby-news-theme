@@ -976,6 +976,27 @@ function yoast_change_opengraph_type($type)
     }
 }
 
+/**
+ * Dump variable.
+ */
+if (! function_exists('d')) {
+    function d()
+    {
+        call_user_func_array('dump', func_get_args());
+    }
+}
+
+/**
+ * Dump variables and die.
+ */
+if (! function_exists('dd')) {
+    function dd()
+    {
+        call_user_func_array('dump', func_get_args());
+        die();
+    }
+}
+
 function exclude_post_types($should_index, WP_Post $post)
 {
     // Add all post types you don't want to make searchable.
@@ -1136,5 +1157,4 @@ function vm_posts_index_settings(array $settings)
 
 add_filter('algolia_posts_index_settings', 'vm_posts_index_settings');
 
-// add_filter('template_redirect', 'page_metrics_function');
 
