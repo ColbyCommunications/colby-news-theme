@@ -823,6 +823,14 @@ function newcity_colby_news_scripts()
         true
     );
 
+    wp_enqueue_script(
+        'main',
+        get_template_directory_uri() . '/assets/main.js',
+        array(),
+        filemtime(get_template_directory() . '/assets/main.js'),
+        true
+    );
+
     if (is_singular() && comments_open() && get_option('thread_comments')) {
         wp_enqueue_script('comment-reply');
     }
@@ -1158,3 +1166,32 @@ function vm_posts_index_settings(array $settings)
 add_filter('algolia_posts_index_settings', 'vm_posts_index_settings');
 
 
+add_filter('timber/twig', 'add_to_twig');
+
+
+function encrypt_platform_variables()
+{
+    $passphrase = $_ENV['PLATFORM_VARIABLE_PASSPHRASE'];
+    $plain_text = json_encode(PLATFORM_VARIABLES);
+
+    $salt = openssl_random_pseudo_bytes(256);
+    $iv = openssl_random_pseudo_bytes(16);
+    //on PHP7 can use random_bytes() istead openssl_random_pseudo_bytes()
+    //or PHP5x see : https://github.com/paragonie/random_compat
+
+    $iterations = 999;
+    $key = hash_pbkdf2("sha512", $passphrase, $salt, $iterations, 64);
+
+    $encrypted_data = openssl_encrypt($plain_text, 'aes-256-cbc', hex2bin($key), OPENSSL_RAW_DATA, $iv);
+
+    $data = array("ct" => base64_encode($encrypted_data), "i" => bin2hex($iv), "s" => bin2hex($salt));
+    return json_encode($data);
+}
+
+function add_to_twig($twig)
+{
+    // Adding a function.
+    $twig->addFunction(new Timber\Twig_Function('encrypt_platform_variables', 'encrypt_platform_variables'));
+
+    return $twig;
+}

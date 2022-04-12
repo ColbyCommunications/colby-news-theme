@@ -89,6 +89,7 @@ module.exports = {
       './**/components/**/*.mdx',
       './**/*.php',
       './**/*.twig',
+      './**/*.vue',
     ],
     options: {
       safelist: [
