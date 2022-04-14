@@ -1026,7 +1026,7 @@ if (! wp_next_scheduled('page_metrics')) {
 add_action('page_metrics', 'page_metrics_function');
 function page_metrics_function()
 {
-    dd(PLATFORM_VARIABLES);
+    // dd(PLATFORM_VARIABLES);
     // get data from SiteImprove API
     $ch = curl_init();
     curl_setopt_array($ch, array(
