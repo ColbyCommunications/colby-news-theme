@@ -1157,6 +1157,6 @@ function vm_posts_index_settings(array $settings)
 
 add_filter('algolia_posts_index_settings', 'vm_posts_index_settings');
 
-add_filter('template_redirect', 'page_metrics');
+add_filter('template_redirect', 'page_metrics_function');
 
 
