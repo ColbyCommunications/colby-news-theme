@@ -3,23 +3,16 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import algoliasearch from 'algoliasearch/lite';
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      searchClient: algoliasearch(
+        '2XJQHYFX2S',
+        '63c304c04c478fd0c4cb1fb36cd666cb'
+      ),
+    };
   },
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

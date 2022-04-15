@@ -49,15 +49,16 @@
   "dependencies": {
     "@tailwindcss/aspect-ratio": "^0.2.0",
     "@tailwindcss/forms": "^0.1.4",
+    "algoliasearch": "^4.13.0",
     "cross-env": "^7.0.3",
-    "crypto-js": "^4.1.1",
     "dotenv": "^16.0.0",
     "object-fit-images": "^3.2.4",
     "stylelint": "^13.12.0",
     "stylelint-config-wordpress": "^17.0.0",
     "stylelint-scss": "^3.19.0",
     "tailwindcss-pseudo-elements": "^1.5.1",
-    "vue": "^3.2.31"
+    "vue": "^3.2.31",
+    "vue-instantsearch": "^4.3.3"
   },
   "devDependencies": {
     "@ayctor/laravel-mix-svg-sprite": "^1.0.0",

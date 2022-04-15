@@ -1165,33 +1165,62 @@ function vm_posts_index_settings(array $settings)
 
 add_filter('algolia_posts_index_settings', 'vm_posts_index_settings');
 
+// generate a public API key that is valid for 1 hour:
+$validUntil = time() + 5;
+$public_key = \Algolia\AlgoliaSearch\SearchClient::generateSecuredApiKey(
+  '63c304c04c478fd0c4cb1fb36cd666cb',
+  [
+    'validUntil' => $validUntil
+  ]
+);
 
-add_filter('timber/twig', 'add_to_twig');
+echo($public_key);
 
 
-function encrypt_platform_variables()
-{
-    $passphrase = $_ENV['PLATFORM_VARIABLE_PASSPHRASE'];
-    $plain_text = json_encode(PLATFORM_VARIABLES);
+// add_filter('timber/twig', 'add_to_twig');
 
-    $salt = openssl_random_pseudo_bytes(256);
-    $iv = openssl_random_pseudo_bytes(16);
-    //on PHP7 can use random_bytes() istead openssl_random_pseudo_bytes()
-    //or PHP5x see : https://github.com/paragonie/random_compat
+// function test_public_key($public_key)
+// {
+//     $data = array($public_key);
+//     return json_encode($data);
+// }
 
-    $iterations = 999;
-    $key = hash_pbkdf2("sha512", $passphrase, $salt, $iterations, 64);
+// function add_to_twig($twig)
+// {
+//     // Adding a function.
+//     $twig->addFunction(new Timber\Twig_Function('test_public_key'));
 
-    $encrypted_data = openssl_encrypt($plain_text, 'aes-256-cbc', hex2bin($key), OPENSSL_RAW_DATA, $iv);
+//     return $twig;
+// }
 
-    $data = array("ct" => base64_encode($encrypted_data), "i" => bin2hex($iv), "s" => bin2hex($salt));
-    return json_encode($data);
-}
 
-function add_to_twig($twig)
-{
-    // Adding a function.
-    $twig->addFunction(new Timber\Twig_Function('encrypt_platform_variables', 'encrypt_platform_variables'));
 
-    return $twig;
-}
+
+// add_filter('timber/twig', 'add_to_twig');
+
+// function encrypt_platform_variables()
+// {
+//     $passphrase = $_ENV['PLATFORM_VARIABLE_PASSPHRASE'];
+//     $plain_text = json_encode(PLATFORM_VARIABLES);
+
+//     $salt = openssl_random_pseudo_bytes(256);
+//     $iv = openssl_random_pseudo_bytes(16);
+//     //on PHP7 can use random_bytes() istead openssl_random_pseudo_bytes()
+//     //or PHP5x see : https://github.com/paragonie/random_compat
+
+//     $iterations = 999;
+//     $key = hash_pbkdf2("sha512", $passphrase, $salt, $iterations, 64);
+
+//     $encrypted_data = openssl_encrypt($plain_text, 'aes-256-cbc', hex2bin($key), OPENSSL_RAW_DATA, $iv);
+
+//     $data = array("ct" => base64_encode($encrypted_data), "i" => bin2hex($iv), "s" => bin2hex($salt));
+//     return json_encode($data);
+// }
+
+// function add_to_twig($twig)
+// {
+//     // Adding a function.
+//     $twig->addFunction(new Timber\Twig_Function('encrypt_platform_variables', 'encrypt_platform_variables'));
+
+//     return $twig;
+// }

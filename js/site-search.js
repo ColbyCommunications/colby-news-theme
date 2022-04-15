@@ -25,10 +25,9 @@ const setUpSiteSearch = () => {
   // just used to compensate for bug causing `transformItems` to run twice: https://github.com/algolia/instantsearch.js/issues/4819
   let bool = true;
 
-  const searchClient = algoliasearch(
-    '2XJQHYFX2S',
-    '31a9a9bb15c777d88d51896a5ba9ecca'
-  );
+  const public_key = window.public_key.sec;
+
+  const searchClient = algoliasearch('2XJQHYFX2S', public_key);
 
   const search = instantsearch({
     indexName: 'prod_news_searchable_posts', // case-sensitive
