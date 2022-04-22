@@ -1,5 +1,4 @@
 #site-search-searchbox {
-
   .ais-SearchBox-form {
     @apply mr-16 flex;
 
@@ -10,18 +9,19 @@
       }
     }
 
+    .ais-SearchBox-reset {
+      @apply hidden;
+    }
+
     .ais-SearchBox-submit {
       @apply text-sm-plus-1 sm:text-base bg-white border-b border-black uppercase;
-
-      .ais-SearchBox-submitIcon {
-        @apply hidden;
-      }
     }
   }
 }
 
 #site-search-hits {
-  .ais-Hits-list, .ais-InfiniteHits-list {
+  .ais-Hits-list,
+  .ais-InfiniteHits-list {
     @apply grid gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5;
   }
 

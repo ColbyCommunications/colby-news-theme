@@ -5,22 +5,35 @@ const setUpSiteSearch = () => {
 
   const siteSearchSearchbox = document.getElementById('site-search-searchbox');
   const siteSearchAnnouncer = document.getElementById('site-search-announcer');
-  const siteSearchHitsHeading = document.getElementById('site-search-hits-heading');
-  const siteSearchHitsContainer = document.getElementById('site-search-hits-container');
+  const siteSearchHitsHeading = document.getElementById(
+    'site-search-hits-heading'
+  );
+  const siteSearchHitsContainer = document.getElementById(
+    'site-search-hits-container'
+  );
 
-  if (!siteSearchSearchbox || !siteSearchAnnouncer || !siteSearchHitsHeading || !siteSearchHitsContainer) return;
+  if (
+    !siteSearchSearchbox ||
+    !siteSearchAnnouncer ||
+    !siteSearchHitsHeading ||
+    !siteSearchHitsContainer
+  )
+    return;
 
   let searchInput, oldSearchTerm;
 
   // just used to compensate for bug causing `transformItems` to run twice: https://github.com/algolia/instantsearch.js/issues/4819
   let bool = true;
 
-  const searchClient = algoliasearch('2XJQHYFX2S', '31a9a9bb15c777d88d51896a5ba9ecca');
+  const searchClient = algoliasearch(
+    '2XJQHYFX2S',
+    '31a9a9bb15c777d88d51896a5ba9ecca'
+  );
 
   const search = instantsearch({
     indexName: 'crawler_colby-news', // case-sensitive
     searchClient,
-    searchFunction: helper => helper.state.query && helper.search()
+    searchFunction: (helper) => helper.state.query && helper.search(),
   });
 
   search.addWidgets([
@@ -31,8 +44,8 @@ const setUpSiteSearch = () => {
       showReset: false,
       showLoadingIndicator: false,
       templates: {
-        submit: 'Search'
-      }
+        submit: 'Search',
+      },
     }),
 
     instantsearch.widgets.infiniteHits({
@@ -48,13 +61,12 @@ const setUpSiteSearch = () => {
           2) siteSearchHitsHeading otherwise (for new search);
         B) we announce the search-results situation to screen-readers.
       */
-      transformItems: items => {
+      transformItems: (items) => {
         // compensate for bug causing this method to run twice every time:
         bool = !bool;
 
         // every other time ("bad" ones), just return the items
         if (bool) return items;
-
 
         // every other time ("good" ones), do everything
 
@@ -62,12 +74,14 @@ const setUpSiteSearch = () => {
           Transform items (`url` and `title` are required, and only show articles).
           Client handling this on server-side anyway, but this is a low-cost a failsafe.
         */
-        const finalItems = items.filter(item => item.url && item.title && (item.type === 'article'));
+        const finalItems = items.filter(
+          (item) => item.url && item.title && item.type === 'article'
+        );
 
         // handle focus (determining what needs it, then apply it)
         searchInput = searchInput || siteSearchSearchbox.querySelector('input');
         const searchTerm = searchInput.value;
-        const isNewSearch = (searchTerm !== oldSearchTerm);
+        const isNewSearch = searchTerm !== oldSearchTerm;
         oldSearchTerm = searchTerm;
 
         const resultsList = siteSearchHitsContainer.querySelector('ol');
@@ -89,10 +103,11 @@ const setUpSiteSearch = () => {
         }
 
         // announce new text (element has `aria-live="polite"`)
-        siteSearchAnnouncer.innerText =
-          finalItems.length
-            ? `Showing ${finalItems.length} new result${finalItems.length > 1 ? 's' : ''} for ${searchTerm}.`
-            : `No results found for ${searchTerm}.`;
+        siteSearchAnnouncer.innerText = finalItems.length
+          ? `Showing ${finalItems.length} new result${
+              finalItems.length > 1 ? 's' : ''
+            } for ${searchTerm}.`
+          : `No results found for ${searchTerm}.`;
 
         // return transformed items
         return finalItems;
@@ -100,20 +115,30 @@ const setUpSiteSearch = () => {
 
       templates: {
         // related to `teaser.twig`;
-        item: item => /* html */ `
+        item: (item) => /* html */ `
           <a href="${item.url}" class="group block text-base-minus-2 space-y-2">
-            ${item.image ? /* html */ `
+            ${
+              item.image
+                ? /* html */ `
               <div class="aspect-w-5 aspect-h-3">
                 <img class="object-cover" src="${item.image}" alt="" />
               </div>
-            ` : ''}
+            `
+                : ''
+            }
             <div class="space-y-[.1rem]">
-              ${item.primaryCategory ? /* html */ `<div class="uppercase text-sm sm:text-xs">${item.primaryCategory}</div>`: ''}
-              <div class="group-hover:text-link-hover transition-colors font-bold text-base-minus-1 sm:text-sm-plus-1">${item.title}</div>
+              ${
+                item.primaryCategory
+                  ? /* html */ `<div class="uppercase text-sm sm:text-xs">${item.primaryCategory}</div>`
+                  : ''
+              }
+              <div class="group-hover:text-link-hover transition-colors font-bold text-base-minus-1 sm:text-sm-plus-1">${
+                item.title
+              }</div>
             </div>
           </a>
-        `
-      }
+        `,
+      },
     }),
   ]);
 
