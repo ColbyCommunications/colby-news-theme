@@ -41,7 +41,7 @@
 /* An accordion item title */
 .c-accordion__title.c-accordion__title {
 
-	@apply relative text-primary bg-white py-4 lg:py-8 px-14 text-lg;
+	@apply relative text-primary bg-white py-4 lg:py-4 px-9 text-lg;
 
 	/* To modify the style when hovering over an accordion item title
        or when an accordion item title currently has broswer focus*/
