@@ -923,7 +923,7 @@ section.wp-block-cover-image > h2 {
 
 .blocks-gallery-grid figcaption,
 .wp-block-gallery figcaption {
-	flex-grow: 1
+	flex: 0 0 100%;
 }
 
 .blocks-gallery-grid.is-cropped .blocks-gallery-image,
