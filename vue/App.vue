@@ -3,6 +3,7 @@
     index-name="prod_news_searchable_posts"
     :search-client="searchClient"
   >
+    <ais-configure :filters="'post_type:post'" :hits-per-page.camel="4" />
     <!-- Widgets -->
     <ais-search-box
       id="site-search-searchbox"
@@ -13,12 +14,30 @@
     </ais-search-box>
     <div id="site-search-hits-container">
       <ais-infinite-hits class="ais-InfiniteHits-loadMore mt-10 sm:mt-16">
-        <template v-slot="{ items }">
-          <ul>
-            <li v-for="item in getPost" :key="item.objectID">
-              <h2>{{ item.post_type }}</h2>
-            </li>
-          </ul>
+        <template v-slot:item="{ item }">
+          <a
+            class="group block text-base-minus-2 space-y-1.5"
+            :href="item.permalink"
+          >
+            <div class="!flex !flex-row">
+              <div class="!w-80 !m-0 !p-0">
+                <img class="!object-cover" :src="item.images.teaser_new.url" />
+              </div>
+              <div class="w-80">
+                <h2
+                  class="group-hover:text-link-hover transition-colors font-bold text-lg mb-6"
+                >
+                  {{ item.post_title }}
+                </h2>
+                <h3>
+                  {{ item.taxonomies.category }}
+                </h3>
+                <p>
+                  {{ item.summary }}
+                </p>
+              </div>
+            </div>
+          </a>
         </template>
       </ais-infinite-hits>
     </div>
@@ -36,11 +55,6 @@ export default {
         '63c304c04c478fd0c4cb1fb36cd666cb'
       ),
     };
-  },
-  computed: {
-    getPost: function (items) {
-      return items.filter((p) => p.post_type === 'post');
-    },
   },
 };
 </script>
