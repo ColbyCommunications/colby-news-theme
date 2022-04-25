@@ -1028,7 +1028,11 @@ section.wp-block-cover-image > h2 {
 
 .blocks-gallery-grid figcaption,
 .wp-block-gallery figcaption {
+<<<<<<< HEAD
   flex-grow: 1;
+=======
+	flex: 0 0 100%;
+>>>>>>> 7c35b70c7e475c9e05cd510e0d40ae18e7e02641
 }
 
 .blocks-gallery-grid.is-cropped .blocks-gallery-image,
