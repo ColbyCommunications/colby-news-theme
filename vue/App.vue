@@ -19,20 +19,20 @@
             class="group block text-base-minus-2 space-y-1.5"
             :href="item.permalink"
           >
-            <div class="!flex !flex-row">
-              <div class="!w-80 !m-0 !p-0">
+            <div class="!flex !flex-row pb-8 mb-12 border-b border-gray-300">
+              <div class="!w-1/4 !m-0 !p-0">
                 <img class="!object-cover" :src="item.images.teaser_new.url" />
               </div>
-              <div class="w-80">
+              <div class="w-3/4 pl-6">
                 <h2
-                  class="group-hover:text-link-hover transition-colors font-bold text-lg mb-6"
+                  class="group-hover:text-link-hover transition-colors font-bold text-xl mb-5"
                 >
                   {{ item.post_title }}
                 </h2>
-                <h3>
+                <h3 class="font-sans text-base">
                   {{ item.taxonomies.category }}
                 </h3>
-                <p>
+                <p class="font-sans text-base">
                   {{ item.summary }}
                 </p>
               </div>
