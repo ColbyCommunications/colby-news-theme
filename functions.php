@@ -1167,27 +1167,27 @@ function vm_posts_index_settings(array $settings)
 add_filter('algolia_posts_index_settings', 'vm_posts_index_settings');
 
 // generate a public API key that is valid for 1 hour:
-$validUntil = time() + 30;
-$GLOBALS['public_key'] = \Algolia\AlgoliaSearch\SearchClient::generateSecuredApiKey(
-  '63c304c04c478fd0c4cb1fb36cd666cb',
-  [
-    'validUntil' => $validUntil
-  ]
-);
+// $validUntil = time() + 30;
+// $GLOBALS['public_key'] = \Algolia\AlgoliaSearch\SearchClient::generateSecuredApiKey(
+//   '63c304c04c478fd0c4cb1fb36cd666cb',
+//   [
+//     'validUntil' => $validUntil
+//   ]
+// );
 
-add_filter('timber/twig', 'add_to_twig');
+// add_filter('timber/twig', 'add_to_twig');
 
-function add_to_twig($twig)
-{
-    // Adding a function.
-    $twig->addFunction(new Timber\Twig_Function('foo', 'foo'));
+// function add_to_twig($twig)
+// {
+//     // Adding a function.
+//     $twig->addFunction(new Timber\Twig_Function('foo', 'foo'));
 
-    return $twig;
-}
+//     return $twig;
+// }
 
-function foo() {
-    return $GLOBALS['public_key'];
-}
+// function foo() {
+//     return $GLOBALS['public_key'];
+// }
 
 // function add_to_twig($twig)
 // {
