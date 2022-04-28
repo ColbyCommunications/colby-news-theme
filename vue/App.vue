@@ -14,7 +14,7 @@
       <template v-slot:submit-icon>SEARCH</template>
     </ais-search-box>
     <div id="site-search-hits-container">
-      <ais-infinite-hits class="ais-InfiniteHits-loadMore mt-10 sm:mt-16">
+      <ais-hits class="ais-InfiniteHits-loadMore mt-10 sm:mt-16">
         <template v-slot="{ items, sendEvent }">
           <ul>
             <li v-for="item in items" :key="item.objectID">
@@ -50,7 +50,48 @@
             </li>
           </ul>
         </template>
-      </ais-infinite-hits>
+      </ais-hits>
+    </div>
+    <div>
+      <ais-pagination>
+        <template
+          v-slot="{
+            currentRefinement,
+            nbPages,
+            pages,
+            isFirstPage,
+            isLastPage,
+            refine,
+            createURL,
+          }"
+        >
+          <ul class="flex flex-row items-center justify-end">
+            <li class="w-32">
+              <p :style="paginationText">
+                {{ `Page ${currentRefinement + 1} of ${nbPages}` }}
+              </p>
+            </li>
+            <li class="relative bottom-1">
+              <a
+                class="text-5xl"
+                :href="createURL(currentRefinement - 1)"
+                @click.prevent="refine(currentRefinement - 1)"
+                :style="{ color: isFirstPage ? '#D8D8D8' : 'black' }"
+              >
+                ‹
+              </a>
+              <a
+                class="text-5xl"
+                :href="createURL(currentRefinement + 1)"
+                @click.prevent="refine(currentRefinement + 1)"
+                :style="{ color: isLastPage ? '#D8D8D8' : 'black' }"
+              >
+                ›
+              </a>
+            </li>
+          </ul>
+        </template>
+      </ais-pagination>
     </div>
   </ais-instant-search>
 </template>
@@ -77,6 +118,9 @@ aa('init', {
 export default {
   data() {
     return {
+      paginationText: {
+        fontSize: '15px',
+      },
       middlewares: [insightsMiddleware],
       searchClient: algoliasearch(
         '2XJQHYFX2S',
