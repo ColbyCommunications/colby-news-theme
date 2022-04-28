@@ -10,11 +10,20 @@
       id="site-search-searchbox"
       placeholder="Start typing to search"
       submit-title="Search"
+      class="mb-28"
     >
       <template v-slot:submit-icon>SEARCH</template>
     </ais-search-box>
-    <div id="site-search-hits-container">
-      <ais-hits class="ais-InfiniteHits-loadMore mt-10 sm:mt-16">
+    <nav class="mb-20 px-8 flex flex-row justify-between">
+      <button @click="changeTabStories" class="text-xl">Stories</button>
+      <button @click="changeTabMedia" class="text-xl">Media Coverage</button>
+      <button @click="changeTabFaculty" class="text-xl">
+        Faculty Accomplishments
+      </button>
+      <button @click="changeTabVideos" class="text-xl">Videos</button>
+    </nav>
+    <div v-if="currentTab === 'stories'" id="site-search-hits-container">
+      <ais-hits class="mt-10 sm:mt-16">
         <template v-slot="{ items, sendEvent }">
           <ul>
             <li v-for="item in items" :key="item.objectID">
@@ -53,7 +62,7 @@
       </ais-hits>
     </div>
     <div>
-      <ais-pagination>
+      <ais-pagination v-if="currentTab === 'stories'">
         <template
           v-slot="{
             currentRefinement,
@@ -107,17 +116,14 @@ const insightsMiddleware = createInsightsMiddleware({
 aa('init', {
   appId: '2XJQHYFX2S',
   apiKey: '63c304c04c478fd0c4cb1fb36cd666cb',
-});
-
-aa('init', {
-  appId: '2XJQHYFX2S',
-  apiKey: '63c304c04c478fd0c4cb1fb36cd666cb',
   useCookie: true,
+  cookieDuration: 15552000000,
 });
 
 export default {
   data() {
     return {
+      currentTab: 'stories',
       paginationText: {
         fontSize: '15px',
       },
@@ -127,6 +133,20 @@ export default {
         '63c304c04c478fd0c4cb1fb36cd666cb'
       ),
     };
+  },
+  methods: {
+    changeTabStories() {
+      this.currentTab = 'stories';
+    },
+    changeTabMedia() {
+      this.currentTab = 'media';
+    },
+    changeTabFaculty() {
+      this.currentTab = 'faculty';
+    },
+    changeTabVideos() {
+      this.currentTab = 'videos';
+    },
   },
 };
 </script>
