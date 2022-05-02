@@ -1,3 +1,9 @@
+@mixin for-tablet {
+  @media (max-width: 1000px) {
+    @content;
+  }
+}
+
 #site-search-searchbox {
   .ais-SearchBox-form {
     @apply mr-16 flex;
@@ -27,5 +33,68 @@
 
   .ais-InfiniteHits-loadMore {
     @apply mt-12 px-10 py-3 rounded-md uppercase text-sm-plus-1 text-white bg-black hover:bg-gray-800 transition-colors disabled:hidden;
+  }
+}
+
+.Tabs {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  margin: 0;
+  padding: 0 2rem 0.5rem 2rem;
+  list-style: none;
+  border-bottom: 1px solid black;
+
+  &__tab {
+    &:first-child.activeTab ~ .Tabs__presentation-slider {
+      transform: translateX(0) scaleX(0.15);
+      @include for-tablet {
+        transform: scaleX(0.16);
+      }
+    }
+    &:nth-child(2).activeTab ~ .Tabs__presentation-slider {
+      transform: translateX(18%) scaleX(0.25);
+      @include for-tablet {
+        transform: translateX(17%) scaleX(0.26);
+      }
+    }
+    &:nth-child(3).activeTab ~ .Tabs__presentation-slider {
+      transform: translateX(46%) scaleX(0.365);
+      @include for-tablet {
+        transform: translateX(44%) scaleX(0.395);
+      }
+    }
+    &:nth-child(4).activeTab ~ .Tabs__presentation-slider {
+      transform: translateX(85%) scaleX(0.15);
+      @include for-tablet {
+        transform: translateX(85%) scaleX(0.15);
+      }
+    }
+  }
+  &__presentation-slider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: black;
+    transform-origin: 0 0;
+    transition: transform 0.25s;
+  }
+}
+
+.Tab {
+  > button {
+    white-space: nowrap;
+    // &.activeTab {
+    //   > button {
+    //     color: black;
+    //   }
+    // }
+    // &:hover {
+    //   > button {
+    //     color: black;
+    //   }
   }
 }

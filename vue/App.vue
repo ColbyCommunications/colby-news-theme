@@ -14,13 +14,38 @@
     >
       <template v-slot:submit-icon>SEARCH</template>
     </ais-search-box>
-    <nav class="mb-20 px-8 flex flex-row justify-between">
-      <button @click="changeTabStories" class="text-xl">Stories</button>
-      <button @click="changeTabMedia" class="text-xl">Media Coverage</button>
-      <button @click="changeTabFaculty" class="text-xl">
-        Faculty Accomplishments
-      </button>
-      <button @click="changeTabVideos" class="text-xl">Videos</button>
+    <nav>
+      <ul class="Tabs">
+        <li
+          @click="changeTab('stories')"
+          class="text-xl Tabs__tab Tab"
+          v-bind:class="{ 'activeTab': currentTab === 'stories' }"
+        >
+          <button>Stories</button>
+        </li>
+        <li
+          @click="changeTab('media')"
+          class="text-xl Tabs__tab Tab"
+          v-bind:class="{ 'activeTab': currentTab === 'media' }"
+        >
+          <button>Media Coverage</button>
+        </li>
+        <li
+          @click="changeTab('faculty')"
+          class="text-xl Tabs__tab Tab"
+          v-bind:class="{ 'activeTab': currentTab === 'faculty' }"
+        >
+          <button>Faculty Accomplishments</button>
+        </li>
+        <li
+          @click="changeTab('videos')"
+          class="text-xl Tabs__tab Tab"
+          v-bind:class="{ 'activeTab': currentTab === 'videos' }"
+        >
+          <button>Videos</button>
+        </li>
+        <li class="Tabs__presentation-slider" role="presentation"></li>
+      </ul>
     </nav>
     <div v-if="currentTab === 'stories'" id="site-search-hits-container">
       <ais-hits class="mt-10 sm:mt-16">
@@ -135,17 +160,8 @@ export default {
     };
   },
   methods: {
-    changeTabStories() {
-      this.currentTab = 'stories';
-    },
-    changeTabMedia() {
-      this.currentTab = 'media';
-    },
-    changeTabFaculty() {
-      this.currentTab = 'faculty';
-    },
-    changeTabVideos() {
-      this.currentTab = 'videos';
+    changeTab(tabName) {
+      this.currentTab = tabName;
     },
   },
 };
