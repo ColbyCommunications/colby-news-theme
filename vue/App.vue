@@ -4,7 +4,7 @@
     :search-client="searchClient"
     :middlewares="middlewares"
   >
-    <ais-configure :filters="'post_type:post'" :hits-per-page.camel="4" />
+    <ais-configure :hits-per-page.camel="1" />
     <!-- Widgets -->
     <ais-search-box
       id="site-search-searchbox"
@@ -47,7 +47,9 @@
         <li class="Tabs__presentation-slider" role="presentation"></li>
       </ul>
     </nav>
+    <!-- tab1 -->
     <div v-if="currentTab === 'stories'" id="site-search-hits-container">
+      <ais-configure :filters="'post_type:post'" :hits-per-page.camel="4" />
       <ais-hits class="mt-10 sm:mt-16">
         <template v-slot="{ items, sendEvent }">
           <ul>
@@ -86,8 +88,42 @@
         </template>
       </ais-hits>
     </div>
+
+    <!-- tab2 -->
+    <div v-if="currentTab === 'media'" id="site-search-hits-container">
+      <ais-configure
+        :filters="'post_type:external_post'"
+        :hits-per-page.camel="4"
+      />
+      <ais-hits class="mt-10 sm:mt-16">
+        <template v-slot="{ items, sendEvent }">
+          <ul>
+            <li v-for="item in items" :key="item.objectID">
+              <a
+                class="group block text-base-minus-2 space-y-1.5"
+                :href="item.permalink"
+                @click="sendEvent('click', item, 'Story Clicked')"
+              >
+                <div
+                  class="!flex !flex-row pb-8 mb-12 border-b border-gray-300"
+                >
+                  <div class="w-3/4 pl-6">
+                    <h2
+                      class="group-hover:text-link-hover transition-colors font-bold text-xl mb-5"
+                    >
+                      {{ item.post_title }}
+                    </h2>
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </template>
+      </ais-hits>
+    </div>
+
     <div>
-      <ais-pagination v-if="currentTab === 'stories'">
+      <ais-pagination>
         <template
           v-slot="{
             currentRefinement,
