@@ -14,6 +14,7 @@
     >
       <template v-slot:submit-icon>SEARCH</template>
     </ais-search-box>
+    <!-- tab navigation -->
     <nav>
       <ul class="Tabs">
         <li
@@ -47,128 +48,26 @@
         <li class="Tabs__presentation-slider" role="presentation"></li>
       </ul>
     </nav>
-    <!-- tab1 -->
-    <div v-if="currentTab === 'stories'" id="site-search-hits-container">
-      <ais-configure :filters="'post_type:post'" :hits-per-page.camel="4" />
-      <ais-hits class="mt-10 sm:mt-16">
-        <template v-slot="{ items, sendEvent }">
-          <ul>
-            <li v-for="item in items" :key="item.objectID">
-              <a
-                class="group block text-base-minus-2 space-y-1.5"
-                :href="item.permalink"
-                @click="sendEvent('click', item, 'Story Clicked')"
-              >
-                <div
-                  class="!flex !flex-row pb-8 mb-12 border-b border-gray-300"
-                >
-                  <div class="!w-1/4 !m-0 !p-0">
-                    <img
-                      class="!object-cover"
-                      :src="item.images.teaser_new.url"
-                    />
-                  </div>
-                  <div class="w-3/4 pl-6">
-                    <h2
-                      class="group-hover:text-link-hover transition-colors font-bold text-xl mb-5"
-                    >
-                      {{ item.post_title }}
-                    </h2>
-                    <h3 class="font-sans text-base">
-                      {{ item.taxonomies.category }}
-                    </h3>
-                    <p class="font-sans text-base">
-                      {{ item.summary }}
-                    </p>
-                  </div>
-                </div>
-              </a>
-            </li>
-          </ul>
-        </template>
-      </ais-hits>
-    </div>
-
-    <!-- tab2 -->
-    <div v-if="currentTab === 'media'" id="site-search-hits-container">
-      <ais-configure
-        :filters="'post_type:external_post'"
-        :hits-per-page.camel="4"
-      />
-      <ais-hits class="mt-10 sm:mt-16">
-        <template v-slot="{ items, sendEvent }">
-          <ul>
-            <li v-for="item in items" :key="item.objectID">
-              <a
-                class="group block text-base-minus-2 space-y-1.5"
-                :href="item.permalink"
-                @click="sendEvent('click', item, 'Story Clicked')"
-              >
-                <div
-                  class="!flex !flex-row pb-8 mb-12 border-b border-gray-300"
-                >
-                  <div class="w-3/4 pl-6">
-                    <h2
-                      class="group-hover:text-link-hover transition-colors font-bold text-xl mb-5"
-                    >
-                      {{ item.post_title }}
-                    </h2>
-                  </div>
-                </div>
-              </a>
-            </li>
-          </ul>
-        </template>
-      </ais-hits>
-    </div>
-
-    <div>
-      <ais-pagination>
-        <template
-          v-slot="{
-            currentRefinement,
-            nbPages,
-            pages,
-            isFirstPage,
-            isLastPage,
-            refine,
-            createURL,
-          }"
-        >
-          <ul class="flex flex-row items-center justify-end">
-            <li class="w-32">
-              <p :style="paginationText">
-                {{ `Page ${currentRefinement + 1} of ${nbPages}` }}
-              </p>
-            </li>
-            <li class="relative bottom-1">
-              <a
-                class="text-5xl"
-                :href="createURL(currentRefinement - 1)"
-                @click.prevent="refine(currentRefinement - 1)"
-                :style="{ color: isFirstPage ? '#D8D8D8' : 'black' }"
-              >
-                ‹
-              </a>
-              <a
-                class="text-5xl"
-                :href="createURL(currentRefinement + 1)"
-                @click.prevent="refine(currentRefinement + 1)"
-                :style="{ color: isLastPage ? '#D8D8D8' : 'black' }"
-              >
-                ›
-              </a>
-            </li>
-          </ul>
-        </template>
-      </ais-pagination>
-    </div>
+    <!-- stories tab -->
+    <stories-tab :currentTab="currentTab"></stories-tab>
+    <!-- media tab-->
+    <media-tab :currentTab="currentTab"></media-tab>
+    <!-- faculty accomplishments tab-->
+    <faculty-accomplishments-tab
+      :currentTab="currentTab"
+    ></faculty-accomplishments-tab>
+    <!-- pagination widget -->
+    <pagination></pagination>
   </ais-instant-search>
 </template>
 
 <script>
 import algoliasearch from 'algoliasearch/lite';
 import { createInsightsMiddleware } from 'instantsearch.js/es/middlewares';
+import StoriesTab from './components/StoriesTab.vue';
+import MediaTab from './components/MediaTab.vue';
+import Pagination from './components/Pagination.vue';
+import FacultyAccomplishmentsTab from './components/FacultyAccomplishmentsTab.vue';
 
 const insightsMiddleware = createInsightsMiddleware({
   insightsClient: aa,
@@ -182,12 +81,10 @@ aa('init', {
 });
 
 export default {
+  components: { StoriesTab, MediaTab, FacultyAccomplishmentsTab, Pagination },
   data() {
     return {
       currentTab: 'stories',
-      paginationText: {
-        fontSize: '15px',
-      },
       middlewares: [insightsMiddleware],
       searchClient: algoliasearch(
         '2XJQHYFX2S',

@@ -847,6 +847,9 @@ add_action('enqueue_block_editor_assets', function () {
     );
 });
 
+wp_register_style( 'material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons+Sharp' );
+wp_enqueue_style( 'material-icons' );
+
 
 /**
  * Fix skip link focus in IE11.
@@ -1031,6 +1034,7 @@ if (! wp_next_scheduled('page_metrics')) {
     wp_schedule_event($time, 'daily', 'page_metrics');
 }
 
+
 add_action('page_metrics', 'page_metrics_function');
 function page_metrics_function()
 {
@@ -1052,6 +1056,7 @@ function page_metrics_function()
         'post_type'     => 'post',
         'post_status'   => 'publish'
     );
+
     $all_posts = get_posts($args);
 
     // iterate over all posts
@@ -1086,6 +1091,7 @@ function page_metrics_function()
         }
     }
     shell_exec('wp algolia reindex searchable_posts');
+
 }
 
 /**
@@ -1134,10 +1140,19 @@ function post_shared_attributes(array $shared_attributes, WP_Post $post)
         $shared_attributes['primary_category'] = yoast_get_primary_term();
     }
 
+    if ($post->post_type === 'external_post') {
+        $image = wp_get_attachment_image_src(get_field('logo', 'media_source_' . get_the_terms($post->ID, 'media_source')[0]->term_id), 'logo')[0];
+        $shared_attributes['external_image'] = $image;
+
+        $shared_attributes['external_url'] = get_post_meta($post->ID, 'external_url', true);
+        $shared_attributes['post_title'] = html_entity_decode(get_the_title($post));
+    }
+
     return $shared_attributes;
 }
 
 add_filter('algolia_searchable_post_shared_attributes', 'post_shared_attributes', 10, 2);
+
 
 /**
  * Update algolia index settings to use siteimprove_page_views in ranking
@@ -1228,3 +1243,37 @@ add_filter('algolia_posts_index_settings', 'vm_posts_index_settings');
 
 //     return $twig;
 // }
+
+// function print_post (WP_Post $post) {
+//     // die(var_dump($post));
+//     dd($post);
+// }
+
+// function test_function() {
+//     $args2 = array(
+//         'numberposts'   => -1,
+//         'post_type'     => 'external_post',
+//         'post_status'   => 'publish',
+//         'tax_query' => array(
+//         // array(
+//         //     'taxonomy' => 'genre',
+//         //     'field'    => 'slug',
+//         //     'terms'    => 'jazz'
+//         // )
+//     )
+//     );
+
+//     $all_external_posts = get_posts($args2);
+
+//     // iterate over all posts
+//     foreach ($all_external_posts as $post) {
+//         // // extract post data
+//         // $id = $post->ID;
+//         // $post_title = $post->post_title;
+//         // $post_slug = $post->post_name;
+
+//         print_post($post);
+//     }
+// }
+
+// test_function();

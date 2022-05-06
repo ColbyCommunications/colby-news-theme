@@ -15,9 +15,9 @@
       }
     }
 
-    .ais-SearchBox-reset {
-      @apply hidden;
-    }
+    // .ais-SearchBox-reset {
+    //   @apply hidden;
+    // }
 
     .ais-SearchBox-submit {
       @apply text-sm-plus-1 sm:text-base bg-white border-b border-black uppercase;
@@ -97,4 +97,19 @@
     //     color: black;
     //   }
   }
+}
+
+.chevron {
+  font-size: 36px;
+}
+
+.text-16 {
+  font-size: 16px;
+}
+
+.external-image {
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+  min-height: 100px;
 }
