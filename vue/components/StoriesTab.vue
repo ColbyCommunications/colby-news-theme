@@ -10,7 +10,7 @@
               :href="item.permalink"
               @click="sendEvent('click', item, 'Story Clicked')"
             >
-              <div class="!flex !flex-row pb-8 mb-12 border-b border-gray-300">
+              <div class="!flex !flex-row pb-8 mb-12 border-b border-gray-700">
                 <div class="!w-1/4 !m-0 !p-0">
                   <img
                     class="!object-cover"
@@ -19,11 +19,11 @@
                 </div>
                 <div class="w-3/4 pl-6">
                   <h2
-                    class="group-hover:text-link-hover transition-colors font-bold text-xl mb-5"
+                    class="group-hover:text-link-hover transition-colors font-bold text-base mb-5"
                   >
                     {{ item.post_title }}
                   </h2>
-                  <h3 class="font-sans text-16 mb-1.5">
+                  <h3 class="font-sans text-xs mb-1.5">
                     {{ item.taxonomies.category.toString().toUpperCase() }}
                   </h3>
                   <p class="font-sans text-base">

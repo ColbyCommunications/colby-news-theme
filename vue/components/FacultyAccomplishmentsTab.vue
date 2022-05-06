@@ -15,10 +15,10 @@
                 sendEvent('click', item, 'Faculty Accomplishment Clicked')
               "
             >
-              <div class="!flex !flex-row pb-8 mb-12 border-b border-gray-300">
+              <div class="!flex !flex-row pb-8 mb-12 border-b border-gray-700">
                 <div class="w-3/4 pl-6">
                   <h2
-                    class="group-hover:text-link-hover transition-colors font-bold text-xl mb-5"
+                    class="group-hover:text-link-hover transition-colors font-bold text-base mb-5"
                     v-html="item.post_title"
                   ></h2>
                   <p class="font-sans text-base">
