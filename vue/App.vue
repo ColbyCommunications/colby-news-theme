@@ -6,16 +6,10 @@
   >
     <ais-configure :hits-per-page.camel="1" />
     <!-- Widgets -->
-    <ais-search-box
-      id="site-search-searchbox"
-      placeholder="Start typing to search"
-      submit-title="Search"
-      class="mb-28"
-    >
-      <template v-slot:submit-icon>SEARCH</template>
-    </ais-search-box>
+    <!-- searchbox widget-->
+    <searchbox></searchbox>
     <!-- tab navigation -->
-    <navigation :currentTab="currentTab" @nav-Click="changeTab"></navigation>
+    <navigation :currentTab="currentTab" @nav-click="changeTab"></navigation>
     <!-- stories tab -->
     <stories-tab :currentTab="currentTab"></stories-tab>
     <!-- media tab-->
@@ -32,6 +26,7 @@
 <script>
 import algoliasearch from 'algoliasearch/lite';
 import { createInsightsMiddleware } from 'instantsearch.js/es/middlewares';
+import Searchbox from './components/Searchbox.vue';
 import Navigation from './components/Navigation.vue';
 import StoriesTab from './components/StoriesTab.vue';
 import MediaTab from './components/MediaTab.vue';
@@ -51,6 +46,7 @@ aa('init', {
 
 export default {
   components: {
+    Searchbox,
     Navigation,
     StoriesTab,
     MediaTab,
