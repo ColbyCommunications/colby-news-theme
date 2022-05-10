@@ -21,13 +21,13 @@
                   <h2
                     class="group-hover:text-link-hover transition-colors font-bold text-base mb-5"
                   >
-                    {{ item.post_title }}
+                    <ais-highlight attribute="post_title" :hit="item" />
                   </h2>
                   <h3 class="font-sans text-xs mb-1.5">
-                    {{ item.taxonomies.category.toString().toUpperCase() }}
+                    {{ item.primary_category }}
                   </h3>
                   <p class="font-sans text-base">
-                    {{ item.summary }}
+                    <ais-snippet attribute="content" :hit="item" />
                   </p>
                 </div>
               </div>

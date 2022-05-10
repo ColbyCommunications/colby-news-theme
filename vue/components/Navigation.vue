@@ -2,28 +2,28 @@
   <nav>
     <ul class="Tabs">
       <li
-        @click="changeTab('stories')"
+        @click="$emit('navClick', 'stories')"
         class="text-xl Tabs__tab Tab"
         v-bind:class="{ 'activeTab': currentTab === 'stories' }"
       >
         <button>Stories</button>
       </li>
       <li
-        @click="changeTab('media')"
+        @click="$emit('navClick', 'media')"
         class="text-xl Tabs__tab Tab"
         v-bind:class="{ 'activeTab': currentTab === 'media' }"
       >
         <button>Media Coverage</button>
       </li>
       <li
-        @click="changeTab('faculty')"
+        @click="$emit('navClick', 'faculty')"
         class="text-xl Tabs__tab Tab"
         v-bind:class="{ 'activeTab': currentTab === 'faculty' }"
       >
         <button>Faculty Accomplishments</button>
       </li>
       <li
-        @click="changeTab('videos')"
+        @click="$emit('navClick', 'videos')"
         class="text-xl Tabs__tab Tab"
         v-bind:class="{ 'activeTab': currentTab === 'videos' }"
       >

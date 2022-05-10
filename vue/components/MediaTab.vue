@@ -19,14 +19,15 @@
                 </div>
                 <div class="w-7/8 pl-6">
                   <h3 class="font-sans text-xs mb-1.5">
-                    {{ item.taxonomies.media_source.toString().toUpperCase() }}
+                    {{ item.media_source }}
                   </h3>
                   <h2
                     class="group-hover:text-link-hover transition-colors font-bold text-base mb-1.5"
-                    v-html="item.post_title"
-                  ></h2>
+                  >
+                    <ais-highlight attribute="post_title" :hit="item" />
+                  </h2>
                   <p class="font-sans text-base">
-                    {{ item.content }}
+                    <ais-snippet attribute="content" :hit="item" />
                   </p>
                 </div>
               </div>

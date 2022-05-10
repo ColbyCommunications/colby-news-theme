@@ -15,39 +15,7 @@
       <template v-slot:submit-icon>SEARCH</template>
     </ais-search-box>
     <!-- tab navigation -->
-    <nav>
-      <ul class="Tabs">
-        <li
-          @click="changeTab('stories')"
-          class="text-xl Tabs__tab Tab"
-          v-bind:class="{ 'activeTab': currentTab === 'stories' }"
-        >
-          <button>Stories</button>
-        </li>
-        <li
-          @click="changeTab('media')"
-          class="text-xl Tabs__tab Tab"
-          v-bind:class="{ 'activeTab': currentTab === 'media' }"
-        >
-          <button>Media Coverage</button>
-        </li>
-        <li
-          @click="changeTab('faculty')"
-          class="text-xl Tabs__tab Tab"
-          v-bind:class="{ 'activeTab': currentTab === 'faculty' }"
-        >
-          <button>Faculty Accomplishments</button>
-        </li>
-        <li
-          @click="changeTab('videos')"
-          class="text-xl Tabs__tab Tab"
-          v-bind:class="{ 'activeTab': currentTab === 'videos' }"
-        >
-          <button>Videos</button>
-        </li>
-        <li class="Tabs__presentation-slider" role="presentation"></li>
-      </ul>
-    </nav>
+    <navigation :currentTab="currentTab" @nav-Click="changeTab"></navigation>
     <!-- stories tab -->
     <stories-tab :currentTab="currentTab"></stories-tab>
     <!-- media tab-->
@@ -64,6 +32,7 @@
 <script>
 import algoliasearch from 'algoliasearch/lite';
 import { createInsightsMiddleware } from 'instantsearch.js/es/middlewares';
+import Navigation from './components/Navigation.vue';
 import StoriesTab from './components/StoriesTab.vue';
 import MediaTab from './components/MediaTab.vue';
 import Pagination from './components/Pagination.vue';
@@ -81,7 +50,13 @@ aa('init', {
 });
 
 export default {
-  components: { StoriesTab, MediaTab, FacultyAccomplishmentsTab, Pagination },
+  components: {
+    Navigation,
+    StoriesTab,
+    MediaTab,
+    FacultyAccomplishmentsTab,
+    Pagination,
+  },
   data() {
     return {
       currentTab: 'stories',

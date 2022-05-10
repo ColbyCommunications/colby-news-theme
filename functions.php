@@ -1019,6 +1019,7 @@ function exclude_post_types($should_index, WP_Post $post)
     return ! in_array($post->post_type, $excluded_post_types, true);
 }
 
+
 // Hook into Algolia to manipulate the post that should be indexed.
 add_filter('algolia_should_index_searchable_post', 'exclude_post_types', 10, 2);
 
@@ -1137,15 +1138,19 @@ function post_shared_attributes(array $shared_attributes, WP_Post $post)
     if ($post->post_type === 'post') {
         $shared_attributes['siteimprove_page_views'] = (int) get_post_meta($post->ID, 'siteimprove_page_views', true);
         $shared_attributes['summary'] = strip_tags(get_post_meta($post->ID, 'summary', true));
-        $shared_attributes['primary_category'] = yoast_get_primary_term();
+        // gets the primary category then sets it to uppercase
+        $primary_term_name = yoast_get_primary_term( 'category', $post->ID );
+        $shared_attributes['primary_category'] = strtoupper($primary_term_name);
+
     }
 
     if ($post->post_type === 'external_post') {
         $image = wp_get_attachment_image_src(get_field('logo', 'media_source_' . get_the_terms($post->ID, 'media_source')[0]->term_id), 'logo')[0];
         $shared_attributes['external_image'] = $image;
-
+        $shared_attributes['media_source'] = strtoupper(get_the_terms($post->ID, 'media_source')[0]->name);
         $shared_attributes['external_url'] = get_post_meta($post->ID, 'external_url', true);
-        $shared_attributes['post_title'] = html_entity_decode(get_the_title($post));
+        // strips html tags and decodes html entities from the post title
+        $shared_attributes['post_title'] = strip_tags(html_entity_decode(get_the_title($post)));
     }
 
     return $shared_attributes;

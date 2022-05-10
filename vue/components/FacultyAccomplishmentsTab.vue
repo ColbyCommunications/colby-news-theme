@@ -19,10 +19,11 @@
                 <div class="w-3/4 pl-6">
                   <h2
                     class="group-hover:text-link-hover transition-colors font-bold text-base mb-5"
-                    v-html="item.post_title"
-                  ></h2>
+                  >
+                    <ais-highlight attribute="post_title" :hit="item" />
+                  </h2>
                   <p class="font-sans text-base">
-                    {{ item.content }}
+                    <ais-snippet attribute="content" :hit="item" />
                   </p>
                 </div>
               </div>
