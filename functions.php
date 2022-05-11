@@ -823,6 +823,14 @@ function newcity_colby_news_scripts()
         true
     );
 
+    wp_enqueue_script(
+        'main',
+        get_template_directory_uri() . '/assets/main.js',
+        array(),
+        filemtime(get_template_directory() . '/assets/main.js'),
+        true
+    );
+
     if (is_singular() && comments_open() && get_option('thread_comments')) {
         wp_enqueue_script('comment-reply');
     }
@@ -838,6 +846,9 @@ add_action('enqueue_block_editor_assets', function () {
         true
     );
 });
+
+wp_register_style( 'material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons+Sharp' );
+wp_enqueue_style( 'material-icons' );
 
 
 /**
@@ -1008,6 +1019,7 @@ function exclude_post_types($should_index, WP_Post $post)
     return ! in_array($post->post_type, $excluded_post_types, true);
 }
 
+
 // Hook into Algolia to manipulate the post that should be indexed.
 add_filter('algolia_should_index_searchable_post', 'exclude_post_types', 10, 2);
 
@@ -1022,6 +1034,7 @@ if (! wp_next_scheduled('page_metrics')) {
     $time = $time + 75600;
     wp_schedule_event($time, 'daily', 'page_metrics');
 }
+
 
 add_action('page_metrics', 'page_metrics_function');
 function page_metrics_function()
@@ -1044,6 +1057,7 @@ function page_metrics_function()
         'post_type'     => 'post',
         'post_status'   => 'publish'
     );
+
     $all_posts = get_posts($args);
 
     // iterate over all posts
@@ -1078,6 +1092,7 @@ function page_metrics_function()
         }
     }
     shell_exec('wp algolia reindex searchable_posts');
+
 }
 
 /**
@@ -1123,12 +1138,26 @@ function post_shared_attributes(array $shared_attributes, WP_Post $post)
     if ($post->post_type === 'post') {
         $shared_attributes['siteimprove_page_views'] = (int) get_post_meta($post->ID, 'siteimprove_page_views', true);
         $shared_attributes['summary'] = strip_tags(get_post_meta($post->ID, 'summary', true));
+        // gets the primary category then sets it to uppercase
+        $primary_term_name = yoast_get_primary_term( 'category', $post->ID );
+        $shared_attributes['primary_category'] = strtoupper($primary_term_name);
+
+    }
+
+    if ($post->post_type === 'external_post') {
+        $image = wp_get_attachment_image_src(get_field('logo', 'media_source_' . get_the_terms($post->ID, 'media_source')[0]->term_id), 'logo')[0];
+        $shared_attributes['external_image'] = $image;
+        $shared_attributes['media_source'] = strtoupper(get_the_terms($post->ID, 'media_source')[0]->name);
+        $shared_attributes['external_url'] = get_post_meta($post->ID, 'external_url', true);
+        // strips html tags and decodes html entities from the post title
+        $shared_attributes['post_title'] = strip_tags(html_entity_decode(get_the_title($post)));
     }
 
     return $shared_attributes;
 }
 
 add_filter('algolia_searchable_post_shared_attributes', 'post_shared_attributes', 10, 2);
+
 
 /**
  * Update algolia index settings to use siteimprove_page_views in ranking
@@ -1157,6 +1186,99 @@ function vm_posts_index_settings(array $settings)
 
 add_filter('algolia_posts_index_settings', 'vm_posts_index_settings');
 
-// add_filter('template_redirect', 'page_metrics_function');
+// generate a public API key that is valid for 1 hour:
+// $validUntil = time() + 30;
+// $GLOBALS['public_key'] = \Algolia\AlgoliaSearch\SearchClient::generateSecuredApiKey(
+//   '63c304c04c478fd0c4cb1fb36cd666cb',
+//   [
+//     'validUntil' => $validUntil
+//   ]
+// );
+
+// add_filter('timber/twig', 'add_to_twig');
+
+// function add_to_twig($twig)
+// {
+//     // Adding a function.
+//     $twig->addFunction(new Timber\Twig_Function('foo', 'foo'));
+
+//     return $twig;
+// }
+
+// function foo() {
+//     return $GLOBALS['public_key'];
+// }
+
+// function add_to_twig($twig)
+// {
+//     // Adding a function.
+//     $twig->addFunction(new Timber\Twig_Function('test_public_key'));
+
+//     return $twig;
+// }
 
 
+
+
+// add_filter('timber/twig', 'add_to_twig');
+
+// function encrypt_platform_variables()
+// {
+//     $passphrase = $_ENV['PLATFORM_VARIABLE_PASSPHRASE'];
+//     $plain_text = json_encode(PLATFORM_VARIABLES);
+
+//     $salt = openssl_random_pseudo_bytes(256);
+//     $iv = openssl_random_pseudo_bytes(16);
+//     //on PHP7 can use random_bytes() istead openssl_random_pseudo_bytes()
+//     //or PHP5x see : https://github.com/paragonie/random_compat
+
+//     $iterations = 999;
+//     $key = hash_pbkdf2("sha512", $passphrase, $salt, $iterations, 64);
+
+//     $encrypted_data = openssl_encrypt($plain_text, 'aes-256-cbc', hex2bin($key), OPENSSL_RAW_DATA, $iv);
+
+//     $data = array("ct" => base64_encode($encrypted_data), "i" => bin2hex($iv), "s" => bin2hex($salt));
+//     return json_encode($data);
+// }
+
+// function add_to_twig($twig)
+// {
+//     // Adding a function.
+//     $twig->addFunction(new Timber\Twig_Function('encrypt_platform_variables', 'encrypt_platform_variables'));
+
+//     return $twig;
+// }
+
+// function print_post (WP_Post $post) {
+//     // die(var_dump($post));
+//     dd($post);
+// }
+
+// function test_function() {
+//     $args2 = array(
+//         'numberposts'   => -1,
+//         'post_type'     => 'external_post',
+//         'post_status'   => 'publish',
+//         'tax_query' => array(
+//         // array(
+//         //     'taxonomy' => 'genre',
+//         //     'field'    => 'slug',
+//         //     'terms'    => 'jazz'
+//         // )
+//     )
+//     );
+
+//     $all_external_posts = get_posts($args2);
+
+//     // iterate over all posts
+//     foreach ($all_external_posts as $post) {
+//         // // extract post data
+//         // $id = $post->ID;
+//         // $post_title = $post->post_title;
+//         // $post_slug = $post->post_name;
+
+//         print_post($post);
+//     }
+// }
+
+// test_function();
