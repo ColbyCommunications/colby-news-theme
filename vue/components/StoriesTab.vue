@@ -1,5 +1,5 @@
 <template>
-  <div v-if="currentTab === 'stories'" id="site-search-hits-container">
+  <div v-if="currentTab === 'Stories'" id="site-search-hits-container">
     <ais-configure :filters="'post_type:post'" :hits-per-page.camel="4" />
     <ais-hits class="mt-10 sm:mt-16">
       <template v-slot="{ items, sendEvent }">
@@ -36,10 +36,15 @@
         </ul>
       </template>
     </ais-hits>
+    <pagination></pagination>
   </div>
 </template>
 <script>
+import Pagination from './Pagination.vue';
 export default {
+  components: {
+    Pagination,
+  },
   props: ['currentTab'],
   data() {
     return {};

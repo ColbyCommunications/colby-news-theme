@@ -1,5 +1,8 @@
 <template>
-  <div v-if="currentTab === 'faculty'" id="site-search-hits-container">
+  <div
+    v-if="currentTab === 'Faculty Accomplishments'"
+    id="site-search-hits-container"
+  >
     <ais-configure
       :filters="'taxonomies.story_type:\'Faculty Accomplishments\''"
       :hits-per-page.camel="4"
@@ -32,10 +35,15 @@
         </ul>
       </template>
     </ais-hits>
+    <pagination></pagination>
   </div>
 </template>
 <script>
+import Pagination from './Pagination.vue';
 export default {
+  components: {
+    Pagination,
+  },
   props: ['currentTab'],
   data() {
     return {};

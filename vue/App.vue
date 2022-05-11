@@ -18,8 +18,6 @@
     <faculty-accomplishments-tab
       :currentTab="currentTab"
     ></faculty-accomplishments-tab>
-    <!-- pagination widget -->
-    <pagination></pagination>
   </ais-instant-search>
 </template>
 
@@ -30,7 +28,6 @@ import Searchbox from './components/Searchbox.vue';
 import Navigation from './components/Navigation.vue';
 import StoriesTab from './components/StoriesTab.vue';
 import MediaTab from './components/MediaTab.vue';
-import Pagination from './components/Pagination.vue';
 import FacultyAccomplishmentsTab from './components/FacultyAccomplishmentsTab.vue';
 
 const insightsMiddleware = createInsightsMiddleware({
@@ -51,11 +48,10 @@ export default {
     StoriesTab,
     MediaTab,
     FacultyAccomplishmentsTab,
-    Pagination,
   },
   data() {
     return {
-      currentTab: 'stories',
+      currentTab: 'Stories',
       middlewares: [insightsMiddleware],
       searchClient: algoliasearch(
         '2XJQHYFX2S',

@@ -2,32 +2,12 @@
   <nav>
     <ul class="Tabs">
       <li
-        @click="$emit('navClick', 'stories')"
+        v-for="tabName in this.tabNames"
+        @click="$emit('navClick', tabName)"
         class="text-xl Tabs__tab Tab"
-        v-bind:class="{ 'activeTab': currentTab === 'stories' }"
+        v-bind:class="{ 'activeTab': currentTab === tabName }"
       >
-        <button>Stories</button>
-      </li>
-      <li
-        @click="$emit('navClick', 'media')"
-        class="text-xl Tabs__tab Tab"
-        v-bind:class="{ 'activeTab': currentTab === 'media' }"
-      >
-        <button>Media Coverage</button>
-      </li>
-      <li
-        @click="$emit('navClick', 'faculty')"
-        class="text-xl Tabs__tab Tab"
-        v-bind:class="{ 'activeTab': currentTab === 'faculty' }"
-      >
-        <button>Faculty Accomplishments</button>
-      </li>
-      <li
-        @click="$emit('navClick', 'videos')"
-        class="text-xl Tabs__tab Tab"
-        v-bind:class="{ 'activeTab': currentTab === 'videos' }"
-      >
-        <button>Videos</button>
+        <button>{{ tabName }}</button>
       </li>
       <li class="Tabs__presentation-slider" role="presentation"></li>
     </ul>
@@ -37,7 +17,17 @@
 export default {
   props: ['currentTab'],
   data() {
-    return {};
+    return {
+      tabNames: [
+        'Stories',
+        'Media Coverage',
+        'Faculty Accomplishments',
+        'Videos',
+      ],
+    };
+  },
+  mounted() {
+    console.log(this.currentTab);
   },
 };
 </script>
