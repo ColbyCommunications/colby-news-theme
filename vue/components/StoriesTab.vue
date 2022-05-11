@@ -18,14 +18,14 @@
                   />
                 </div>
                 <div class="w-3/4 pl-6">
-                  <h2
-                    class="group-hover:text-link-hover transition-colors font-bold text-base mb-5"
-                  >
-                    <ais-highlight attribute="post_title" :hit="item" />
-                  </h2>
                   <h3 class="font-sans text-xs mb-1.5">
                     {{ item.primary_category }}
                   </h3>
+                  <h2
+                    class="group-hover:text-link-hover transition-colors font-bold text-base mb-1.5"
+                  >
+                    <ais-highlight attribute="post_title" :hit="item" />
+                  </h2>
                   <p class="font-sans text-base">
                     <ais-snippet attribute="content" :hit="item" />
                   </p>
