@@ -27,8 +27,5 @@ export default {
       ],
     };
   },
-  mounted() {
-    console.log(this.currentTab);
-  },
 };
 </script>

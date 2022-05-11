@@ -10,6 +10,8 @@
     <searchbox></searchbox>
     <!-- tab navigation -->
     <navigation :currentTab="currentTab" @nav-click="changeTab"></navigation>
+    <!-- settings menu-->
+    <settings></settings>
     <!-- stories tab -->
     <stories-tab :currentTab="currentTab"></stories-tab>
     <!-- media tab-->
@@ -26,6 +28,7 @@ import algoliasearch from 'algoliasearch/lite';
 import { createInsightsMiddleware } from 'instantsearch.js/es/middlewares';
 import Searchbox from './components/Searchbox.vue';
 import Navigation from './components/Navigation.vue';
+import Settings from './components/Settings.vue';
 import StoriesTab from './components/StoriesTab.vue';
 import MediaTab from './components/MediaTab.vue';
 import FacultyAccomplishmentsTab from './components/FacultyAccomplishmentsTab.vue';
@@ -45,6 +48,7 @@ export default {
   components: {
     Searchbox,
     Navigation,
+    Settings,
     StoriesTab,
     MediaTab,
     FacultyAccomplishmentsTab,

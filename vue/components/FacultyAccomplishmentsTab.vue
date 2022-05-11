@@ -7,7 +7,7 @@
       :filters="'taxonomies.story_type:\'Faculty Accomplishments\''"
       :hits-per-page.camel="4"
     />
-    <ais-hits class="mt-10 sm:mt-16">
+    <ais-hits>
       <template v-slot="{ items, sendEvent }">
         <ul>
           <li v-for="item in items" :key="item.objectID">
@@ -19,7 +19,7 @@
               "
             >
               <div class="!flex !flex-row pb-8 mb-12 border-b border-gray-700">
-                <div class="w-3/4 pl-6">
+                <div>
                   <h2
                     class="group-hover:text-link-hover transition-colors font-bold text-base mb-5"
                   >

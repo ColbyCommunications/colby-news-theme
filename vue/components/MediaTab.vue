@@ -4,7 +4,7 @@
       :filters="'taxonomies.story_type:\'Media Coverage\''"
       :hits-per-page.camel="4"
     />
-    <ais-hits class="mt-10 sm:mt-16">
+    <ais-hits>
       <template v-slot="{ items, sendEvent }">
         <ul>
           <li v-for="item in items" :key="item.objectID">
