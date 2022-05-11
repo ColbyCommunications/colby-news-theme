@@ -1,5 +1,6 @@
 <template>
   <ais-instant-search
+    id="modal-top"
     index-name="prod_news_searchable_posts"
     :search-client="searchClient"
     :middlewares="middlewares"

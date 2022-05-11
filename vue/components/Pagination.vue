@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ais-pagination>
+    <ais-pagination @page-change="pageChange">
       <template
         v-slot="{
           currentRefinement,
@@ -47,6 +47,13 @@ export default {
         fontSize: '15px',
       },
     };
+  },
+  methods: {
+    pageChange(...args) {
+      console.log('pageChange', args);
+      let element = document.getElementById('modal-top');
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    },
   },
 };
 </script>
