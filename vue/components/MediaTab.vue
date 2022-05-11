@@ -2,7 +2,7 @@
   <div v-if="currentTab === 'Media Coverage'" id="site-search-hits-container">
     <ais-configure
       :filters="'taxonomies.story_type:\'Media Coverage\''"
-      :hits-per-page.camel="4"
+      :hits-per-page.camel="5"
     />
     <ais-hits>
       <template v-slot="{ items, sendEvent }">

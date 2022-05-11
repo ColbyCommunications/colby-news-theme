@@ -1,6 +1,6 @@
 <template>
   <div v-if="currentTab === 'Stories'" id="site-search-hits-container">
-    <ais-configure :filters="'post_type:post'" :hits-per-page.camel="4" />
+    <ais-configure :filters="'post_type:post'" :hits-per-page.camel="5" />
     <ais-hits>
       <template v-slot="{ items, sendEvent }">
         <ul>

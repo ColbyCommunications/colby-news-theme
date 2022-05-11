@@ -5,7 +5,7 @@
   >
     <ais-configure
       :filters="'taxonomies.story_type:\'Faculty Accomplishments\''"
-      :hits-per-page.camel="4"
+      :hits-per-page.camel="5"
     />
     <ais-hits>
       <template v-slot="{ items, sendEvent }">
