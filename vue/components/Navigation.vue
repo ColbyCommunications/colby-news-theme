@@ -2,7 +2,8 @@
   <nav>
     <ul class="Tabs">
       <li
-        v-for="tabName in this.tabNames"
+        v-for="(tabName, index) in this.tabNames"
+        :key="index"
         @click="$emit('navClick', tabName)"
         class="text-xl Tabs__tab Tab"
         v-bind:class="{ 'activeTab': currentTab === tabName }"
