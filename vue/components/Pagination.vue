@@ -50,7 +50,6 @@ export default {
   },
   methods: {
     pageChange(...args) {
-      console.log('pageChange', args);
       let element = document.getElementById('modal-top');
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     },
