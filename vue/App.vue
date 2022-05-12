@@ -12,7 +12,7 @@
     <!-- tab navigation -->
     <navigation :currentTab="currentTab" @nav-click="changeTab"></navigation>
     <!-- settings menu-->
-    <settings></settings>
+    <settings :currentTab="currentTab"></settings>
     <!-- stories tab -->
     <stories-tab :currentTab="currentTab"></stories-tab>
     <!-- media tab-->
@@ -71,3 +71,4 @@ export default {
   },
 };
 </script>
+<style scoped></style>

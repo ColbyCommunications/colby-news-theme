@@ -59,6 +59,7 @@
     "stylelint-scss": "^3.19.0",
     "tailwindcss-pseudo-elements": "^1.5.1",
     "vue": "^3.2.31",
+    "vue-autosuggest": "^2.2.0",
     "vue-instantsearch": "^4.3.3"
   },
   "devDependencies": {
