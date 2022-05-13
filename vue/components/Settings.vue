@@ -15,7 +15,6 @@
       <ais-refinement-list
         attribute="primary_category"
         :sort-by="['name:desc']"
-        show-more
       />
     </div>
   </div>
