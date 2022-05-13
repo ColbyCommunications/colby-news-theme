@@ -9,7 +9,8 @@
         tune
       </span>
     </div>
-    <div v-if="checkTabStories" class="bg-gray-200 px-8 py-8">
+    <!-- filter modal for stories -->
+    <div v-show="checkTabStories" class="bg-gray-200 px-8 py-8">
       <h2 class="text-2xl">Category</h2>
       <ais-refinement-list
         attribute="primary_category"

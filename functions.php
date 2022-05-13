@@ -1138,9 +1138,9 @@ function post_shared_attributes(array $shared_attributes, WP_Post $post)
     if ($post->post_type === 'post') {
         $shared_attributes['siteimprove_page_views'] = (int) get_post_meta($post->ID, 'siteimprove_page_views', true);
         $shared_attributes['summary'] = strip_tags(get_post_meta($post->ID, 'summary', true));
-        // gets the primary category then sets it to uppercase
+        // gets the primary category
         $primary_term_name = yoast_get_primary_term( 'category', $post->ID );
-        $shared_attributes['primary_category'] = strtoupper($primary_term_name);
+        $shared_attributes['primary_category'] = $primary_term_name;
 
     }
 
