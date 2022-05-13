@@ -42,6 +42,6 @@ export default {
 </script>
 <style scoped>
 .filters-icon {
-  font-size: 44px;
+  font-size: 28px;
 }
 </style>

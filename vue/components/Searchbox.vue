@@ -3,7 +3,7 @@
     id="site-search-searchbox"
     placeholder="Start typing to search"
     submit-title="Search"
-    class="mb-28"
+    class="mb-5"
   >
     <template v-slot:submit-icon>SEARCH</template>
   </ais-search-box>

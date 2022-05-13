@@ -4,11 +4,32 @@
     index-name="prod_news_searchable_posts"
     :search-client="searchClient"
     :middlewares="middlewares"
+    ref="aisIS"
   >
     <ais-configure :hits-per-page.camel="1" />
     <!-- Widgets -->
     <!-- searchbox widget-->
     <searchbox></searchbox>
+    <!-- query suggestions -->
+    <div class="qs mb-12">
+      <ais-index
+        index-name="prod_news_searchable_posts_query_suggestions"
+        index-id="news-qs"
+        ref="searchBox"
+      >
+        <ais-configure :hits-per-page.camel="4" />
+        <ais-hits>
+          <template v-slot:item="{ item }">
+            <ais-highlight
+              :hit="item"
+              attribute="query"
+              @click="search(item.query)"
+            />
+          </template>
+        </ais-hits>
+      </ais-index>
+    </div>
+
     <!-- tab navigation -->
     <navigation :currentTab="currentTab" @nav-click="changeTab"></navigation>
     <!-- settings menu-->
@@ -68,7 +89,28 @@ export default {
     changeTab(tabName) {
       this.currentTab = tabName;
     },
+    search(query) {
+      this.$refs.searchBox.value = query;
+      this.$refs.aisIS.instantSearchInstance.helper.setQuery(query).search();
+    },
   },
 };
 </script>
-<style scoped></style>
+<style>
+.qs ol {
+  display: flex;
+  flex-direction: row;
+}
+
+.qs ol li.ais-Hits-item {
+  margin-right: 12px;
+  padding: 0.5rem;
+  cursor: pointer;
+  background-color: rgb(229 231 235);
+  border-radius: 0.375rem;
+}
+
+.qs ol li.ais-Hits-item:last-child {
+  margin: 0;
+}
+</style>
