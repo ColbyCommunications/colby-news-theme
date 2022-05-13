@@ -66,12 +66,9 @@ export default {
   border: 1px solid rgb(107 114 128);
 }
 
-.ais-RefinementList-labelText {
-  font-size: 1rem;
-  padding-left: 0.5rem;
-}
-
+.ais-RefinementList-labelText,
 .ais-RefinementList-count {
+  font-size: 1rem;
   padding-left: 0.5rem;
 }
 </style>
