@@ -15,7 +15,6 @@
       <ais-refinement-list
         attribute="primary_category"
         :sort-by="['name:desc']"
-        :transform-items="transformItems"
         show-more
       />
     </div>
@@ -38,12 +37,12 @@ export default {
     toggleFilters() {
       this.isOpen = !this.isOpen;
     },
-    transformItems(items) {
-      return items.map((item) => ({
-        ...item,
-        count: `(${item.count})`,
-      }));
-    },
+    // transformItems(items) {
+    //   return items.map((item) => ({
+    //     ...item,
+    //     count: `(${item.count})`,
+    //   }));
+    // },
   },
 };
 </script>
@@ -64,11 +63,15 @@ export default {
 .ais-RefinementList-checkbox {
   transform: scale(1.3);
   border: 1px solid rgb(107 114 128);
+  border-radius: unset;
 }
 
-.ais-RefinementList-labelText,
-.ais-RefinementList-count {
+.ais-RefinementList-labelText {
   font-size: 1rem;
   padding-left: 0.5rem;
+}
+
+.ais-RefinementList-count {
+  display: none;
 }
 </style>
