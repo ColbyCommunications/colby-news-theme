@@ -89,10 +89,12 @@ export default {
       this.currentTab = tabName;
     },
     search(query) {
+      // queries the query suggestion (this runs when clicking on the QS)
       this.$refs.searchBox.value = query;
       this.$refs.aisIS.instantSearchInstance.helper.setQuery(query).search();
     },
     removeExactQueryQuerySuggestion(items) {
+      // checks if input matches query suggestion exactly and removes it from QS if it does
       const currentQuery =
         this.$refs.aisIS.instantSearchInstance.helper.state.query.toLowerCase();
       return items.filter((item) => item.query.toLowerCase() !== currentQuery);
@@ -112,6 +114,7 @@ export default {
   cursor: pointer;
   background-color: rgb(229 231 235);
   border-radius: 0.375rem;
+  font-size: 0.875rem;
 }
 
 .qs ol li.ais-Hits-item:last-child {

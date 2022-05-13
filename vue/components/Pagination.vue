@@ -50,8 +50,8 @@ export default {
   },
   methods: {
     pageChange(...args) {
-      let element = document.getElementById('modal-top');
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const element = document.getElementById('site-search-searchbox');
+      element.scrollIntoView({ behavior: 'smooth', block: 'end' });
     },
   },
 };

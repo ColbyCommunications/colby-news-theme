@@ -4,7 +4,7 @@
       <li
         v-for="(tabName, index) in this.tabNames"
         :key="index"
-        class="text-xl Tabs__tab Tab"
+        class="text-lg Tabs__tab Tab"
         :class="{ 'activeTab': currentTab === tabName }"
       >
         <button @click="$emit('nav-click', tabName)">{{ tabName }}</button>
