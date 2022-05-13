@@ -21,7 +21,7 @@
                     />
                   </div>
                   <div class="w-3/4 pl-6">
-                    <h3 class="font-sans text-xs mb-1.5">
+                    <h3 class="font-sans text-xs mb-1.5 uppercase">
                       {{ item.primary_category }}
                     </h3>
                     <h2

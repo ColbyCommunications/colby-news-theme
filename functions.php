@@ -1147,7 +1147,7 @@ function post_shared_attributes(array $shared_attributes, WP_Post $post)
     if ($post->post_type === 'external_post') {
         $image = wp_get_attachment_image_src(get_field('logo', 'media_source_' . get_the_terms($post->ID, 'media_source')[0]->term_id), 'logo')[0];
         $shared_attributes['external_image'] = $image;
-        $shared_attributes['media_source'] = strtoupper(get_the_terms($post->ID, 'media_source')[0]->name);
+        $shared_attributes['media_source'] = get_the_terms($post->ID, 'media_source')[0]->name;
         $shared_attributes['external_url'] = get_post_meta($post->ID, 'external_url', true);
         // strips html tags and decodes html entities from the post title
         $shared_attributes['post_title'] = strip_tags(html_entity_decode(get_the_title($post)));
