@@ -16,7 +16,7 @@
         index-name="prod_news_searchable_posts_query_suggestions"
         index-id="news-qs"
       >
-        <ais-configure :hits-per-page.camel="4" />
+        <ais-configure :hits-per-page.camel="8" />
         <ais-hits :transform-items="removeExactQueryQuerySuggestion">
           <template v-slot:item="{ item }">
             <ais-highlight
