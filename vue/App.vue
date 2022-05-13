@@ -9,16 +9,15 @@
     <ais-configure :hits-per-page.camel="1" />
     <!-- Widgets -->
     <!-- searchbox widget-->
-    <searchbox></searchbox>
+    <searchbox ref="searchBox"></searchbox>
     <!-- query suggestions -->
     <div class="qs mb-12">
       <ais-index
         index-name="prod_news_searchable_posts_query_suggestions"
         index-id="news-qs"
-        ref="searchBox"
       >
         <ais-configure :hits-per-page.camel="4" />
-        <ais-hits>
+        <ais-hits :transform-items="removeExactQueryQuerySuggestion">
           <template v-slot:item="{ item }">
             <ais-highlight
               :hit="item"
@@ -92,6 +91,11 @@ export default {
     search(query) {
       this.$refs.searchBox.value = query;
       this.$refs.aisIS.instantSearchInstance.helper.setQuery(query).search();
+    },
+    removeExactQueryQuerySuggestion(items) {
+      const currentQuery =
+        this.$refs.aisIS.instantSearchInstance.helper.state.query.toLowerCase();
+      return items.filter((item) => item.query.toLowerCase() !== currentQuery);
     },
   },
 };
