@@ -21,7 +21,7 @@
                     <img class="external-image" :src="item.external_image" />
                   </div>
                   <div class="w-7/8 pl-6">
-                    <h3 class="font-sans text-xs mb-1.5">
+                    <h3 class="font-sans text-xs mb-1.5 uppercase">
                       {{ item.media_source }}
                     </h3>
                     <h2
