@@ -67,6 +67,11 @@ export default {
   border-radius: unset;
 }
 
+.ais-RefinementList-labelText,
+.ais-RefinementList-checkbox:hover {
+  cursor: pointer;
+}
+
 .ais-RefinementList-labelText {
   font-size: 1rem;
   padding-left: 0.5rem;
