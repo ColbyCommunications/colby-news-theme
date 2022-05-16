@@ -19,10 +19,10 @@
       <div
         :class="{ 'mb-12': this.isOpen }"
         v-show="checkTabStories"
-        class="bg-gray-200 px-8 py-8"
+        class="bg-gray-200 px-8 filters-modal"
       >
-        <h2 class="text-lg mb-4">Category</h2>
-        <ais-refinement-list attribute="primary_category" />
+        <h2 class="text-lg my-4">Category</h2>
+        <ais-refinement-list attribute="primary_category" class="mb-14" />
       </div>
     </Transition>
   </div>
@@ -75,13 +75,17 @@ export default {
 .ais-RefinementList-count {
   display: none;
 }
+
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.5s ease;
+  max-height: 40rem;
+  transition: max-height 0.5s linear;
+  overflow: hidden;
 }
 
 .v-enter-from,
 .v-leave-to {
-  opacity: 0;
+  max-height: 0;
+  transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
 }
 </style>
