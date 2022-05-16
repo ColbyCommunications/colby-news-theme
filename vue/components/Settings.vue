@@ -1,22 +1,30 @@
 <template>
-  <div class="flex flex-col" :class="{ 'mb-12': this.isOpen }">
-    <div class="flex justify-end items-center pt-4 pb-3">
-      <span
-        class="material-icons-sharp filters-icon cursor-pointer"
-        :class="{ 'bg-gray-200 rounded-md': this.isOpen }"
-        @click="toggleFilters()"
-      >
-        tune
-      </span>
+  <div class="flex flex-col">
+    <div class="flex flex-row justify-end">
+      <ais-current-refinements />
+      <div>
+        <div class="flex items-center pt-4 pb-3">
+          <span
+            class="material-icons-sharp filters-icon cursor-pointer"
+            :class="{ 'bg-gray-200 rounded-md': this.isOpen }"
+            @click="toggleFilters()"
+          >
+            tune
+          </span>
+        </div>
+      </div>
     </div>
     <!-- filter modal for stories -->
-    <div v-show="checkTabStories" class="bg-gray-200 px-8 py-8">
-      <h2 class="text-lg mb-4">Category</h2>
-      <ais-refinement-list
-        attribute="primary_category"
-        :sort-by="['name:desc']"
-      />
-    </div>
+    <Transition>
+      <div
+        :class="{ 'mb-12': this.isOpen }"
+        v-show="checkTabStories"
+        class="bg-gray-200 px-8 py-8"
+      >
+        <h2 class="text-lg mb-4">Category</h2>
+        <ais-refinement-list attribute="primary_category" />
+      </div>
+    </Transition>
   </div>
 </template>
 <script>
@@ -36,12 +44,6 @@ export default {
     toggleFilters() {
       this.isOpen = !this.isOpen;
     },
-    // transformItems(items) {
-    //   return items.map((item) => ({
-    //     ...item,
-    //     count: `(${item.count})`,
-    //   }));
-    // },
   },
 };
 </script>
@@ -72,5 +74,14 @@ export default {
 
 .ais-RefinementList-count {
   display: none;
+}
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

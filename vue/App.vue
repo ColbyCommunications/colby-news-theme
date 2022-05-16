@@ -31,8 +31,6 @@
 
     <!-- tab navigation -->
     <navigation :currentTab="currentTab" @nav-click="changeTab"></navigation>
-    <!-- settings menu-->
-    <settings :currentTab="currentTab"></settings>
     <!-- stories tab -->
     <stories-tab :currentTab="currentTab"></stories-tab>
     <!-- media tab-->
@@ -49,27 +47,22 @@ import algoliasearch from 'algoliasearch/lite';
 import { createInsightsMiddleware } from 'instantsearch.js/es/middlewares';
 import Searchbox from './components/Searchbox.vue';
 import Navigation from './components/Navigation.vue';
-import Settings from './components/Settings.vue';
 import StoriesTab from './components/StoriesTab.vue';
 import MediaTab from './components/MediaTab.vue';
 import FacultyAccomplishmentsTab from './components/FacultyAccomplishmentsTab.vue';
-
 const insightsMiddleware = createInsightsMiddleware({
   insightsClient: aa,
 });
-
 aa('init', {
   appId: '2XJQHYFX2S',
   apiKey: '63c304c04c478fd0c4cb1fb36cd666cb',
   useCookie: true,
   cookieDuration: 15552000000,
 });
-
 export default {
   components: {
     Searchbox,
     Navigation,
-    Settings,
     StoriesTab,
     MediaTab,
     FacultyAccomplishmentsTab,
@@ -107,7 +100,6 @@ export default {
   display: flex;
   flex-direction: row;
 }
-
 .qs ol li.ais-Hits-item {
   margin-right: 12px;
   padding: 0.5rem;
@@ -116,7 +108,6 @@ export default {
   border-radius: 0.375rem;
   font-size: 0.875rem;
 }
-
 .qs ol li.ais-Hits-item:last-child {
   margin: 0;
 }

@@ -5,7 +5,6 @@
         v-slot="{
           currentRefinement,
           nbPages,
-          pages,
           isFirstPage,
           isLastPage,
           refine,

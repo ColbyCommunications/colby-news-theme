@@ -2,6 +2,7 @@
   <div v-show="currentTab === 'Stories'" id="site-search-hits-container">
     <ais-index index-name="prod_news_searchable_posts" index-id="stories">
       <ais-configure :filters="'post_type:post'" :hits-per-page.camel="5" />
+      <settings :currentTab="currentTab"></settings>
       <ais-hits>
         <template v-slot="{ items, sendEvent }">
           <ul>
@@ -45,9 +46,11 @@
 </template>
 <script>
 import Pagination from './Pagination.vue';
+import Settings from './Settings.vue';
 export default {
   components: {
     Pagination,
+    Settings,
   },
   props: ['currentTab'],
   data() {
