@@ -29,6 +29,19 @@
                     </button>
                     <div>{{ refinement.label }}</div>
                   </li>
+                  <li class="flex justify-center items-center">
+                    <ais-clear-refinements>
+                      <template v-slot="{ canRefine, refine, createURL }">
+                        <a
+                          :href="createURL()"
+                          @click.prevent="refine"
+                          v-if="canRefine"
+                        >
+                          <i class="text-sm">Clear Filters</i>
+                        </a>
+                      </template>
+                    </ais-clear-refinements>
+                  </li>
                 </ul>
               </li>
             </ul>
