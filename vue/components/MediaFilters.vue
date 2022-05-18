@@ -16,15 +16,20 @@
         </div>
       </div>
     </div>
-    <!-- filter modal for stories -->
+    <!-- filter modal for media -->
     <Transition>
       <div
         :class="{ 'mb-12': this.isOpen }"
-        v-show="checkTabStories"
+        v-show="checkTabMedia"
         class="bg-gray-200 px-8 filters-modal"
       >
-        <h2 class="text-lg my-4">Category</h2>
-        <ais-refinement-list attribute="primary_category" class="mb-10" />
+        <h2 class="text-lg my-4">Media Source</h2>
+        <ais-refinement-list
+          class="mb-10"
+          attribute="media_source"
+          :searchable="true"
+          :show-more="true"
+        />
       </div>
     </Transition>
   </div>
@@ -35,7 +40,7 @@ export default {
   components: {
     CurrentRefinements,
   },
-  props: ['currentTab', 'isOpen', 'toggleFilters', 'checkTabStories'],
+  props: ['currentTab', 'isOpen', 'toggleFilters', 'checkTabMedia'],
   data() {
     return {};
   },

@@ -5,6 +5,12 @@
         :filters="'taxonomies.story_type:\'Media Coverage\''"
         :hits-per-page.camel="5"
       />
+      <media-filters
+        :currentTab="currentTab"
+        :isOpen="isOpen"
+        :toggleFilters="toggleFilters"
+        :checkTabMedia="checkTabMedia"
+      ></media-filters>
       <ais-hits>
         <template v-slot="{ items, sendEvent }">
           <ul>
@@ -45,11 +51,13 @@
 </template>
 <script>
 import Pagination from './Pagination.vue';
+import MediaFilters from './MediaFilters.vue';
 export default {
   components: {
     Pagination,
+    MediaFilters,
   },
-  props: ['currentTab'],
+  props: ['currentTab', 'isOpen', 'toggleFilters', 'checkTabMedia'],
   data() {
     return {};
   },

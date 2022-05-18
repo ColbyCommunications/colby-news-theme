@@ -32,9 +32,19 @@
     <!-- tab navigation -->
     <navigation :currentTab="currentTab" @nav-click="changeTab"></navigation>
     <!-- stories tab -->
-    <stories-tab :currentTab="currentTab"></stories-tab>
+    <stories-tab
+      :currentTab="currentTab"
+      :isOpen="isOpen"
+      :toggleFilters="toggleFilters"
+      :checkTabStories="checkTabStories"
+    ></stories-tab>
     <!-- media tab-->
-    <media-tab :currentTab="currentTab"></media-tab>
+    <media-tab
+      :currentTab="currentTab"
+      :isOpen="isOpen"
+      :toggleFilters="toggleFilters"
+      :checkTabMedia="checkTabMedia"
+    ></media-tab>
     <!-- faculty accomplishments tab-->
     <faculty-accomplishments-tab
       :currentTab="currentTab"
@@ -75,11 +85,27 @@ export default {
         '2XJQHYFX2S',
         '63c304c04c478fd0c4cb1fb36cd666cb'
       ),
+      isOpen: false,
     };
+  },
+  computed: {
+    checkTabStories() {
+      return this.isOpen && this.currentTab === 'Stories';
+    },
+    checkTabMedia() {
+      return this.isOpen && this.currentTab === 'Media Coverage';
+    },
   },
   methods: {
     changeTab(tabName) {
-      this.currentTab = tabName;
+      if (this.isOpen) {
+        this.isOpen = false;
+        setTimeout(() => {
+          this.currentTab = tabName;
+        }, 400);
+      } else {
+        this.currentTab = tabName;
+      }
     },
     search(query) {
       // queries the query suggestion (this runs when clicking on the QS)
@@ -91,6 +117,9 @@ export default {
       const currentQuery =
         this.$refs.aisIS.instantSearchInstance.helper.state.query.toLowerCase();
       return items.filter((item) => item.query.toLowerCase() !== currentQuery);
+    },
+    toggleFilters() {
+      this.isOpen = !this.isOpen;
     },
   },
 };
