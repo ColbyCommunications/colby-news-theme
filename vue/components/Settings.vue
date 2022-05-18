@@ -56,12 +56,7 @@
         class="bg-gray-200 px-8 filters-modal"
       >
         <h2 class="text-lg my-4">Category</h2>
-        <ais-refinement-list attribute="primary_category" class="mb-4" />
-        <ais-clear-refinements
-          class="flex justify-center mb-10 w-52 px-10 py-2 text-sm text-white uppercase transition-colors bg-black rounded-lg hover:bg-gray-800"
-        >
-          <template v-slot:resetLabel>CLEAR FILTERS</template>
-        </ais-clear-refinements>
+        <ais-refinement-list attribute="primary_category" class="mb-10" />
       </div>
     </Transition>
   </div>
@@ -111,11 +106,6 @@ export default {
   cursor: pointer;
 }
 
-.ais-CurrentRefinements-item {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .ais-RefinementList-labelText {
   font-size: 1rem;
   padding-left: 0.5rem;
@@ -125,23 +115,6 @@ export default {
 .ais-CurrentRefinements-label {
   display: none;
 }
-
-.ais-CurrentRefinements-category {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-  margin-right: 12px;
-  background-color: #e5e7eb;
-}
-
-.ais-CurrentRefinements-delete {
-  margin-right: 3px;
-  border-right: 1px solid rgb(156 163 175);
-}
-
-/* .ais-CurrentRefinements-categoryLabel {
-  margin-right: 5px;
-} */
 
 .v-enter-active,
 .v-leave-active {
