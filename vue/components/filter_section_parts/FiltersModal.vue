@@ -1,41 +1,42 @@
 <template>
-  <div class="flex flex-col">
-    <div class="flex flex-row justify-between">
-      <!-- current refinements -->
-      <current-refinements></current-refinements>
-      <!-- filters button -->
-      <div>
-        <div class="flex items-center pt-4 pb-3">
-          <span
-            class="material-icons-sharp filters-icon cursor-pointer"
-            :class="{ 'bg-gray-200 rounded-md': this.isOpen }"
-            @click="toggleFilters()"
-          >
-            tune
-          </span>
-        </div>
-      </div>
-    </div>
-    <!-- filter modal for stories -->
+  <div>
+    <!-- filters modal -->
     <Transition>
       <div
-        :class="{ 'mb-12': this.isOpen }"
         v-show="checkTabStories"
+        :class="{ 'mb-12': this.isOpen }"
         class="bg-gray-200 px-8 filters-modal"
       >
-        <h2 class="text-lg my-4">Category</h2>
-        <ais-refinement-list attribute="primary_category" class="mb-10" />
+        <h2 class="text-lg py-4">Category</h2>
+        <ais-refinement-list attribute="primary_category" class="pb-10" />
+      </div>
+    </Transition>
+    <Transition>
+      <div
+        v-show="checkTabMedia"
+        :class="{ 'mb-12': this.isOpen }"
+        class="bg-gray-200 px-8 filters-modal"
+      >
+        <h2 class="text-lg py-4">Media Source</h2>
+        <ais-refinement-list
+          class="pb-10"
+          attribute="media_source"
+          :searchable="true"
+          :show-more="true"
+        />
       </div>
     </Transition>
   </div>
 </template>
 <script>
 import CurrentRefinements from './CurrentRefinements.vue';
+import FiltersButton from './FiltersButton.vue';
 export default {
   components: {
     CurrentRefinements,
+    FiltersButton,
   },
-  props: ['currentTab', 'isOpen', 'toggleFilters', 'checkTabStories'],
+  props: ['isOpen', 'checkTabStories', 'checkTabMedia'],
   data() {
     return {};
   },
@@ -44,10 +45,6 @@ export default {
 };
 </script>
 <style>
-.filters-icon {
-  font-size: 28px;
-}
-
 .ais-RefinementList-list {
   margin-bottom: 1rem;
 }
