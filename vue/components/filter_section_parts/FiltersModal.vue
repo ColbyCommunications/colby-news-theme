@@ -8,7 +8,11 @@
         class="bg-gray-200 px-8 filters-modal"
       >
         <h2 class="text-lg py-4">Category</h2>
-        <ais-refinement-list attribute="primary_category" class="pb-10" />
+        <ais-refinement-list
+          attribute="primary_category"
+          :limit="12"
+          class="pb-8"
+        />
       </div>
     </Transition>
     <Transition>

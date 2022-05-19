@@ -6,21 +6,17 @@
 
 #site-search-searchbox {
   .ais-SearchBox-form {
-    @apply mr-16 flex;
+    @apply flex;
 
     .ais-SearchBox-input {
-      @apply border-l-0 border-r-0 border-t-0 border-b border-black rounded-none focus:ring-0 pl-0 max-w-full w-full sm:w-3/4 placeholder:text-tertiary placeholder:text-sm-plus-1 sm:placeholder:text-lg sm:text-lg;
+      @apply border-l-0 border-r-0 border-t-0 border-b-0 focus:ring-0 pl-0 max-w-full w-full sm:w-full placeholder:text-tertiary placeholder:text-sm-plus-1 sm:placeholder:text-lg sm:text-lg;
       &::-webkit-search-cancel-button {
         @apply hidden;
       }
     }
 
-    // .ais-SearchBox-reset {
-    //   @apply hidden;
-    // }
-
     .ais-SearchBox-submit {
-      @apply text-sm-plus-1 sm:text-base bg-white border-b border-black uppercase;
+      @apply hidden;
     }
   }
 }
