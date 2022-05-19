@@ -2,6 +2,7 @@
   <div
     v-show="currentTab === 'Faculty Accomplishments'"
     id="site-search-hits-container"
+    :class="{ 'pt-10': currentTab === 'Faculty Accomplishments' }"
   >
     <ais-index index-name="prod_news_searchable_posts" index-id="faculty">
       <ais-configure
