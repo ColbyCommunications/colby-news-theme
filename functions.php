@@ -1131,6 +1131,11 @@ function filter_slug($slug, $title)
 
     return $final_slug;
 }
+// get total of unique media publications (ie Boston Globe, WSJ, CNBC)
+function get_total_pubs () {
+    $terms = get_terms(array('taxonomy' => 'media_source'));
+    return count($terms);
+};
 
 // get siteimprove_page_views to send to algolia
 function post_shared_attributes(array $shared_attributes, WP_Post $post)
@@ -1147,10 +1152,13 @@ function post_shared_attributes(array $shared_attributes, WP_Post $post)
     if ($post->post_type === 'external_post') {
         $image = wp_get_attachment_image_src(get_field('logo', 'media_source_' . get_the_terms($post->ID, 'media_source')[0]->term_id), 'logo')[0];
         $shared_attributes['external_image'] = $image;
-        $shared_attributes['media_source'] = get_the_terms($post->ID, 'media_source')[0]->name;
         $shared_attributes['external_url'] = get_post_meta($post->ID, 'external_url', true);
         // strips html tags and decodes html entities from the post title
         $shared_attributes['post_title'] = strip_tags(html_entity_decode(get_the_title($post)));
+        $media_source = get_the_terms($post->ID, 'media_source')[0]->name;
+        if (!empty($media_source)) {
+            $shared_attributes['media_source'] = $media_source;
+        }
     }
 
     return $shared_attributes;
@@ -1195,20 +1203,15 @@ add_filter('algolia_posts_index_settings', 'vm_posts_index_settings');
 //   ]
 // );
 
-// add_filter('timber/twig', 'add_to_twig');
+add_filter('timber/twig', 'add_to_twig');
 
-// function add_to_twig($twig)
-// {
-//     // Adding a function.
-//     $twig->addFunction(new Timber\Twig_Function('foo', 'foo'));
+function add_to_twig($twig)
+{
+    // Adding a function.
+    $twig->addFunction(new Timber\Twig_Function('get_total_pubs', 'get_total_pubs'));
 
-//     return $twig;
-// }
-
-// function foo() {
-//     return $GLOBALS['public_key'];
-// }
-
+    return $twig;
+}
 // function add_to_twig($twig)
 // {
 //     // Adding a function.

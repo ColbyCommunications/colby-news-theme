@@ -6,3 +6,9 @@
     <link rel="profile" href="http://gmpg.org/xfn/11">
 
     {{ function('wp_head') }}
+
+<script>
+    window.colbyNews = {
+        totalPubs: {{ get_total_pubs() }},
+    }
+</script>

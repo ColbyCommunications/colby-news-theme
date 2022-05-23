@@ -23,11 +23,16 @@
       >
         <h2 class="text-lg py-4">Media Source</h2>
         <ais-refinement-list
-          class="pb-10"
+          class="pb-2"
           attribute="media_source"
           :searchable="true"
-          :show-more="true"
+          :show-more="false"
+          :limit="10"
+          :searchable-placeholder="`Search...`"
         />
+        <p class="text-sm pb-8">
+          {{ `Displaying 10 out of ${totalPubs} publications` }}
+        </p>
       </div>
     </Transition>
   </div>
@@ -42,7 +47,9 @@ export default {
   },
   props: ['isOpen', 'checkTabStories', 'checkTabMedia'],
   data() {
-    return {};
+    return {
+      totalPubs: window.colbyNews.totalPubs,
+    };
   },
   computed: {},
   methods: {},
@@ -84,5 +91,18 @@ export default {
 .v-leave-to {
   max-height: 0;
   transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+}
+
+.ais-SearchBox-submitIcon {
+  display: none;
+}
+
+.filters-modal .ais-RefinementList-list {
+  padding-top: 1rem;
+}
+
+.filters-modal .ais-SearchBox-input {
+  width: 30%;
+  min-width: 300px;
 }
 </style>
