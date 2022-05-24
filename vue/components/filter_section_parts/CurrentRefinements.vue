@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center">
+  <div>
     <ais-current-refinements>
       <template v-slot="{ items, refine }">
         <ul>

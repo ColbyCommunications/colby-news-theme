@@ -1,10 +1,10 @@
 <template>
-  <div v-show="this.currentTab === 'Stories'" class="flex flex-col">
+  <div v-show="this.currentTab === 'Media Coverage'" class="flex flex-col">
     <div class="flex flex-row justify-between">
       <!-- current refinements -->
 
       <div>
-        <ais-current-refinements :included-attributes="['primary_category']">
+        <ais-current-refinements :included-attributes="['media_source']">
           <template v-slot="{ items, refine }">
             <ul>
               <li v-for="item in items" :key="item.attribute">
@@ -33,7 +33,7 @@
                   </li>
                   <li class="flex justify-center items-center">
                     <ais-clear-refinements
-                      :included-attributes="['primary_category']"
+                      :included-attributes="['media_source']"
                     >
                       <template v-slot="{ canRefine, refine, createURL }">
                         <a
