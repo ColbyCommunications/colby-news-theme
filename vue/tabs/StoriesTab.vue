@@ -2,12 +2,12 @@
   <div v-show="currentTab === 'Stories'" id="site-search-hits-container">
     <ais-index index-name="prod_news_searchable_posts" index-id="stories">
       <ais-configure :filters="'post_type:post'" :hits-per-page.camel="5" />
-      <filter-section
+      <stories-filter-section
         :currentTab="currentTab"
         :isOpen="isOpen"
         :toggleFilters="toggleFilters"
         :checkTabStories="checkTabStories"
-      ></filter-section>
+      ></stories-filter-section>
       <ais-hits>
         <template v-slot="{ items, sendEvent }">
           <ul>
@@ -51,11 +51,11 @@
 </template>
 <script>
 import Pagination from '../components/Pagination.vue';
-import FilterSection from '../components/FilterSection.vue';
+import StoriesFilterSection from '../components/StoriesFilterSection.vue';
 export default {
   components: {
     Pagination,
-    FilterSection,
+    StoriesFilterSection,
   },
   props: ['currentTab', 'isOpen', 'toggleFilters', 'checkTabStories'],
   data() {
