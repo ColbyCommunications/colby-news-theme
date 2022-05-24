@@ -23,16 +23,13 @@
       >
         <h2 class="text-lg py-4">Media Source</h2>
         <ais-refinement-list
-          class="pb-2"
+          class="pb-10"
           attribute="media_source"
           :searchable="true"
           :show-more="false"
           :limit="10"
-          :searchable-placeholder="`Search...`"
+          :searchable-placeholder="`Search among ${totalPubs} publications...`"
         />
-        <p class="text-sm pb-8">
-          {{ `Displaying 10 out of ${totalPubs} publications` }}
-        </p>
       </div>
     </Transition>
   </div>
