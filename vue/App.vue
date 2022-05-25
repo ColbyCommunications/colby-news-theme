@@ -60,6 +60,7 @@ import Navigation from './components/Navigation.vue';
 import StoriesTab from './tabs/StoriesTab.vue';
 import MediaTab from './tabs/MediaTab.vue';
 import FacultyAccomplishmentsTab from './tabs/FacultyAccomplishmentsTab.vue';
+import AllResults from './components/AllResults.vue';
 const insightsMiddleware = createInsightsMiddleware({
   insightsClient: aa,
 });
@@ -76,6 +77,7 @@ export default {
     StoriesTab,
     MediaTab,
     FacultyAccomplishmentsTab,
+    AllResuts,
   },
   data() {
     return {
