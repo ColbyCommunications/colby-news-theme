@@ -32,23 +32,25 @@
     <!-- tab navigation -->
     <navigation :currentTab="currentTab" @nav-click="changeTab"></navigation>
     <!-- stories tab -->
-    <stories-tab
-      :currentTab="currentTab"
-      :isOpen="isOpen"
-      :toggleFilters="toggleFilters"
-      :checkTabStories="checkTabStories"
-    ></stories-tab>
-    <!-- media tab-->
-    <media-tab
-      :currentTab="currentTab"
-      :isOpen="isOpen"
-      :toggleFilters="toggleFilters"
-      :checkTabMedia="checkTabMedia"
-    ></media-tab>
-    <!-- faculty accomplishments tab-->
-    <faculty-accomplishments-tab
-      :currentTab="currentTab"
-    ></faculty-accomplishments-tab>
+    <all-results>
+      <stories-tab
+        :currentTab="currentTab"
+        :isOpen="isOpen"
+        :toggleFilters="toggleFilters"
+        :checkTabStories="checkTabStories"
+      ></stories-tab>
+      <!-- media tab-->
+      <media-tab
+        :currentTab="currentTab"
+        :isOpen="isOpen"
+        :toggleFilters="toggleFilters"
+        :checkTabMedia="checkTabMedia"
+      ></media-tab>
+      <!-- faculty accomplishments tab-->
+      <faculty-accomplishments-tab
+        :currentTab="currentTab"
+      ></faculty-accomplishments-tab>
+    </all-results>
   </ais-instant-search>
 </template>
 
@@ -77,7 +79,7 @@ export default {
     StoriesTab,
     MediaTab,
     FacultyAccomplishmentsTab,
-    AllResuts,
+    AllResults,
   },
   data() {
     return {
