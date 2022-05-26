@@ -39,6 +39,7 @@
         :toggleFilters="toggleFilters"
         :checkTabStories="checkTabStories"
       ></stories-tab>
+
       <!-- media tab-->
       <media-tab
         :currentTab="currentTab"
