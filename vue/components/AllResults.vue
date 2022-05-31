@@ -46,8 +46,8 @@
               <ais-hits :transform-items="getTeaserSlider">
                 <template v-slot="{ items }">
                   <div class="">
-                    <div class="">
-                      <div class="">
+                    <div class="space-y-2 sm:space-y-4">
+                      <div class="relative sliding-teasers-container">
                         <div class="-mx-container-gutter" style="">
                           <ul
                             class="flex space-x-8 overflow-x-auto sliding-teasers pl-container-gutter"
@@ -88,6 +88,39 @@
                             </li>
                           </ul>
                         </div>
+                        <button
+                          aria-hidden="true"
+                          class="sliding-teasers-prev absolute rounded-full p-1.5 border bg-white hover:bg-gray-300 transition-colors top-16 left-0 2xl:-left-10"
+                        >
+                          <svg
+                            class="w-4 h-4 transform -translate-x-px"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                          >
+                            <path
+                              d="M20 .755l-14.374 11.245 14.374 11.219-.619.781-15.381-12 15.391-12 .609.755z"
+                            />
+                          </svg>
+                        </button>
+
+                        <button
+                          aria-hidden="true"
+                          class="sliding-teasers-next absolute rounded-full p-1.5 border bg-white hover:bg-gray-300 transition-colors top-16 right-0 2xl:-right-10"
+                        >
+                          <svg
+                            class="w-4 h-4 transform translate-x-px"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                          >
+                            <path
+                              d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z"
+                            />
+                          </svg>
+                        </button>
                       </div>
                     </div>
                   </div>
