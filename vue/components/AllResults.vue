@@ -31,7 +31,13 @@
                           </div>
                         </div>
                         <div class="pt-1 text-sm uppercase">
-                          <a>{{ item.primary_category }}</a>
+                          <a
+                            :href="`https://news.colby.edu/story/category/${item.primary_category.replace(
+                              /\s+/g,
+                              '-'
+                            )}`"
+                            >{{ item.primary_category }}</a
+                          >
                         </div>
 
                         <h3 class="font-bold">
@@ -80,7 +86,13 @@
                                 </div>
                               </div>
                               <div class="pt-1 text-sm uppercase">
-                                {{ item.primary_category }}
+                                <a
+                                  :href="`https://news.colby.edu/story/category/${item.primary_category.replace(
+                                    /\s+/g,
+                                    '-'
+                                  )}`"
+                                  >{{ item.primary_category }}</a
+                                >
                               </div>
                               <h3 class="font-bold">
                                 <a :href="item.permalink">{{
