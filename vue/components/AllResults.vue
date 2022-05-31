@@ -50,7 +50,7 @@
                       <div class="relative sliding-teasers-container">
                         <div class="-mx-container-gutter" style="">
                           <ul
-                            class="flex space-x-8 overflow-x-auto sliding-teasers pl-container-gutter"
+                            class="teststyle flex space-x-8 overflow-x-auto sliding-teasers pl-container-gutter"
                             style="
                               scroll-snap-type: x mandatory;
                               scroll-behavior: smooth;
@@ -61,6 +61,7 @@
                               v-for="item in items"
                               :key="item.objectID"
                               class="sliding-teaser min-h-[6.5rem] min-w-[16rem] max-w-[16rem]"
+                              style="scroll-snap-align: center"
                             >
                               <div class="cursor-pointer">
                                 <div class="relative group">
