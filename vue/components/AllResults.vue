@@ -41,7 +41,7 @@
                         </div>
 
                         <h3 class="font-bold">
-                          <a>{{ item.post_title }}</a>
+                          <a :href="item.permalink">{{ item.post_title }}</a>
                         </h3>
                       </div>
                     </div>
