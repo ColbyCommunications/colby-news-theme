@@ -10,7 +10,7 @@
       <ais-index index-name="prod_news_searchable_posts" index-id="noresult">
         <ais-configure
           :filters="'post_type:post'"
-          :hits-per-page.camel="12"
+          :hits-per-page.camel="10"
           query=""
         />
         <div class="wp-block">
@@ -50,7 +50,8 @@
                       <div class="relative sliding-teasers-container">
                         <div class="-mx-container-gutter" style="">
                           <ul
-                            class="teststyle flex space-x-8 overflow-x-auto sliding-teasers pl-container-gutter"
+                            ref="slidingTeasers"
+                            class="flex space-x-8 overflow-x-auto sliding-teasers pl-container-gutter"
                             style="
                               scroll-snap-type: x mandatory;
                               scroll-behavior: smooth;
@@ -92,6 +93,7 @@
                         <button
                           aria-hidden="true"
                           class="sliding-teasers-prev absolute rounded-full p-1.5 border bg-white hover:bg-gray-300 transition-colors top-16 left-0 2xl:-left-10"
+                          @click="slidePrev"
                         >
                           <svg
                             class="w-4 h-4 transform -translate-x-px"
@@ -109,6 +111,7 @@
                         <button
                           aria-hidden="true"
                           class="sliding-teasers-next absolute rounded-full p-1.5 border bg-white hover:bg-gray-300 transition-colors top-16 right-0 2xl:-right-10"
+                          @click="slideNext"
                         >
                           <svg
                             class="w-4 h-4 transform translate-x-px"
@@ -137,12 +140,6 @@
 
 <script>
 import { createWidgetMixin } from 'vue-instantsearch/vue3/es';
-import { provide, computed, ref } from 'vue';
-
-/*
-        <div v-show="state.hasResult"><slot></slot></div>
-        <div v-show="!state.hasResult">Oups</div>
-*/
 
 const connector =
   (renderFn, unmountFn) =>
@@ -184,6 +181,20 @@ export default {
     },
     getTeaserSlider(items) {
       return items.slice(2, items.length + 1);
+    },
+    slidePrev() {
+      const slidingTeasers = this.$refs.slidingTeasers;
+      const slidingTeasersWidth = this.$refs.slidingTeasers.scrollWidth;
+      const teasersLength = this.$refs.slidingTeasers.children.length;
+      const x = slidingTeasersWidth / teasersLength;
+      slidingTeasers.scrollLeft -= x;
+    },
+    slideNext() {
+      const slidingTeasers = this.$refs.slidingTeasers;
+      const slidingTeasersWidth = this.$refs.slidingTeasers.scrollWidth;
+      const teasersLength = this.$refs.slidingTeasers.children.length;
+      const x = slidingTeasersWidth / teasersLength;
+      slidingTeasers.scrollLeft += x;
     },
   },
 
