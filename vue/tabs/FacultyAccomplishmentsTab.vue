@@ -14,7 +14,7 @@
           <ul>
             <li v-for="item in items" :key="item.objectID">
               <a
-                class="group block text-base-minus-2 space-y-1.5"
+                class="group block text-base-minus-2 space-y-1.5 hover:text-link-hover"
                 :href="item.external_url"
                 @click="
                   sendEvent('click', item, 'Faculty Accomplishment Clicked')
@@ -24,9 +24,7 @@
                   class="!flex !flex-row pb-8 mb-12 border-b border-gray-700"
                 >
                   <div>
-                    <h2
-                      class="group-hover:text-link-hover transition-colors font-bold text-base mb-5"
-                    >
+                    <h2 class="font-bold text-base mb-5">
                       <ais-highlight attribute="post_title" :hit="item" />
                     </h2>
                     <p class="font-sans text-base">
