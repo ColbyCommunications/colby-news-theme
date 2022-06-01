@@ -12,35 +12,50 @@
         <template v-slot="{ items, sendEvent }">
           <ul>
             <li v-for="item in items" :key="item.objectID">
-              <a
-                class="group block text-base-minus-2 space-y-1.5"
-                :href="item.permalink"
-                @click="sendEvent('click', item, 'Story Clicked')"
-              >
+              <div class="!flex !flex-row pb-8 mb-12 border-b border-gray-700">
                 <div
-                  class="!flex !flex-row pb-8 mb-12 border-b border-gray-700"
+                  class="!w-1/4 !m-0 !p-0 transition ease-in-out duration-300"
+                  :class="{
+                    'brightness-90': this.hover === item.objectID,
+                  }"
                 >
-                  <div class="!w-1/4 !m-0 !p-0">
+                  <a :href="item.permalink">
                     <img
                       class="!object-cover"
                       :src="item.images.teaser_new.url"
+                      @mouseover="hover = item.objectID"
+                      @mouseleave="hover = null"
+                      :alt="item.post_title"
                     />
-                  </div>
-                  <div class="w-3/4 pl-6">
-                    <h3 class="font-sans text-xs mb-1.5 uppercase">
-                      {{ item.primary_category }}
-                    </h3>
-                    <h2
-                      class="group-hover:text-link-hover transition-colors font-bold text-base mb-1.5"
-                    >
+                  </a>
+                </div>
+                <div class="w-3/4">
+                  <a
+                    class="pl-6 font-sans text-xs mb-1.5 uppercase hover:text-link-hover"
+                    :href="`https://news.colby.edu/story/category/${item.primary_category.replace(
+                      /\s+/g,
+                      '-'
+                    )}`"
+                    >{{ item.primary_category }}</a
+                  >
+                  <a
+                    :href="item.permalink"
+                    :class="{
+                      'text-link-hover': this.hover === item.objectID,
+                    }"
+                    @mouseover="hover = item.objectID"
+                    @mouseleave="hover = null"
+                    @click="sendEvent('click', item, 'Story Clicked')"
+                  >
+                    <h2 class="pl-6 font-bold text-base mb-1.5">
                       <ais-highlight attribute="post_title" :hit="item" />
                     </h2>
-                    <p class="font-sans text-base">
+                    <p class="pl-6 font-sans text-base">
                       <ais-snippet attribute="content" :hit="item" />
                     </p>
-                  </div>
+                  </a>
                 </div>
-              </a>
+              </div>
             </li>
           </ul>
         </template>
@@ -59,7 +74,9 @@ export default {
   },
   props: ['currentTab', 'isOpen', 'toggleFilters', 'checkTabStories'],
   data() {
-    return {};
+    return {
+      hover: null,
+    };
   },
 };
 </script>
