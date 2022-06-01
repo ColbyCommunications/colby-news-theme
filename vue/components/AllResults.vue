@@ -23,11 +23,12 @@
                       <div class="flex flex-col space-y-1 text-base-minus-2">
                         <div class="cursor-pointer">
                           <div class="relative group">
-                            <div
-                              class="after:content-empty after:absolute after:inset-0 after:bg-black after:bg-opacity-0 group-hover:after:bg-opacity-10 after:transition-colors"
-                            >
-                              <img :src="item.images.teaser_new.url" />
-                            </div>
+                            <a :href="item.permalink">
+                              <img
+                                :src="item.images.teaser_new.url"
+                                class="hover:brightness-90 transition ease-in-out duration-300"
+                              />
+                            </a>
                           </div>
                         </div>
                         <div class="pt-1 text-sm uppercase">
@@ -72,17 +73,15 @@
                             >
                               <div class="cursor-pointer">
                                 <div class="relative group">
-                                  <div
-                                    class="after:content-empty after:absolute after:inset-0 after:bg-black after:bg-opacity-0 group-hover:after:bg-opacity-10 after:transition-colors"
-                                  >
+                                  <a :href="item.permalink">
                                     <img
                                       width="1080"
                                       height="720"
                                       :src="item.images.teaser_new.url"
-                                      class="attachment-teaser_new size-teaser_new"
+                                      class="attachment-teaser_new size-teaser_new hover:brightness-90 transition ease-in-out duration-300"
                                       sizes="(max-width: 1080px) 100vw, 1080px"
                                     />
-                                  </div>
+                                  </a>
                                 </div>
                               </div>
                               <div class="pt-1 text-sm uppercase">
