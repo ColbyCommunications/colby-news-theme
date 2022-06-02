@@ -32,26 +32,24 @@
     <!-- tab navigation -->
     <navigation :currentTab="currentTab" @nav-click="changeTab"></navigation>
     <!-- stories tab -->
-    <all-results>
-      <stories-tab
-        :currentTab="currentTab"
-        :isOpen="isOpen"
-        :toggleFilters="toggleFilters"
-        :checkTabStories="checkTabStories"
-      ></stories-tab>
+    <stories-tab
+      :currentTab="currentTab"
+      :isOpen="isOpen"
+      :toggleFilters="toggleFilters"
+      :checkTabStories="checkTabStories"
+    ></stories-tab>
 
-      <!-- media tab-->
-      <media-tab
-        :currentTab="currentTab"
-        :isOpen="isOpen"
-        :toggleFilters="toggleFilters"
-        :checkTabMedia="checkTabMedia"
-      ></media-tab>
-      <!-- faculty accomplishments tab-->
-      <faculty-accomplishments-tab
-        :currentTab="currentTab"
-      ></faculty-accomplishments-tab>
-    </all-results>
+    <!-- media tab-->
+    <media-tab
+      :currentTab="currentTab"
+      :isOpen="isOpen"
+      :toggleFilters="toggleFilters"
+      :checkTabMedia="checkTabMedia"
+    ></media-tab>
+    <!-- faculty accomplishments tab-->
+    <faculty-accomplishments-tab
+      :currentTab="currentTab"
+    ></faculty-accomplishments-tab>
   </ais-instant-search>
 </template>
 
@@ -63,7 +61,6 @@ import Navigation from './components/Navigation.vue';
 import StoriesTab from './tabs/StoriesTab.vue';
 import MediaTab from './tabs/MediaTab.vue';
 import FacultyAccomplishmentsTab from './tabs/FacultyAccomplishmentsTab.vue';
-import AllResults from './components/AllResults.vue';
 const insightsMiddleware = createInsightsMiddleware({
   insightsClient: aa,
 });
@@ -80,7 +77,6 @@ export default {
     StoriesTab,
     MediaTab,
     FacultyAccomplishmentsTab,
-    AllResults,
   },
   data() {
     return {
