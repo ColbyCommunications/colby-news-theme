@@ -52,17 +52,16 @@ export default {
   methods: {
     getStaticValues: (items) => {
       const staticValues = [
-        'Announcements',
+        'Access and Opportunity',
         'Alumni',
-        'Campus and Community',
-        'Social Sciences',
+        'Announcements',
+        'Artificial Intelligence',
+        'Arts,Campus and Community',
         'Environment and Climate',
         'Humanities',
-        'Access and Opportunity',
-        'Natural Sciences',
-        'Arts',
-        'Artificial Intelligence',
         'Interdisciplinary Studies',
+        'Natural Sciences',
+        'Social Sciences',
       ];
       return staticValues.map((value) => {
         const item = items.find((item) => item.label === value);
