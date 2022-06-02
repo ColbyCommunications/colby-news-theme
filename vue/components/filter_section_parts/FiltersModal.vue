@@ -10,7 +10,7 @@
         <h2 class="text-lg py-4">Category</h2>
         <ais-refinement-list
           attribute="primary_category"
-          :limit="12"
+          :transformItems="getStaticValues"
           class="pb-8"
         />
       </div>
@@ -49,7 +49,35 @@ export default {
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    getStaticValues: (items) => {
+      const staticValues = [
+        'Announcements',
+        'Alumni',
+        'Campus and Community',
+        'Social Sciences',
+        'Environment and Climate',
+        'Humanities',
+        'Access and Opportunity',
+        'Natural Sciences',
+        'Arts',
+        'Artificial Intelligence',
+        'Interdisciplinary Studies',
+      ];
+      return staticValues.map((value) => {
+        const item = items.find((item) => item.label === value);
+        return (
+          item || {
+            label: value,
+            value,
+            count: 0,
+            isRefined: false,
+            highlighted: value,
+          }
+        );
+      });
+    },
+  },
 };
 </script>
 <style>
