@@ -51,19 +51,7 @@ export default {
   computed: {},
   methods: {
     getStaticValues: (items) => {
-      const staticValues = [
-        'Access and Opportunity',
-        'Alumni',
-        'Announcements',
-        'Artificial Intelligence',
-        'Arts',
-        'Campus and Community',
-        'Environment and Climate',
-        'Humanities',
-        'Interdisciplinary Studies',
-        'Natural Sciences',
-        'Social Sciences',
-      ];
+      const staticValues = window.colbyNews.allCategories;
       return staticValues.map((value) => {
         const item = items.find((item) => item.label === value);
         return (

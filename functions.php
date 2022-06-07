@@ -1,5 +1,7 @@
 <?php
 
+use function NC_Blocks\get_primary_category;
+
 /**
  * Functions and definitions for newcity/timber-starter theme
  *
@@ -1137,6 +1139,19 @@ function get_total_pubs () {
     return count($terms);
 };
 
+function get_all_categories() {
+    $categories = get_categories();
+    $primary_category_array = [];
+    foreach($categories as $category) {
+        array_push($primary_category_array, $category->name);
+    };
+    $key = array_search("Uncategorized", $primary_category_array);
+    if ($key !== false) {
+    unset($primary_category_array[$key]);
+    return json_encode($primary_category_array);
+    }
+}
+
 // get siteimprove_page_views to send to algolia
 function post_shared_attributes(array $shared_attributes, WP_Post $post)
 {
@@ -1209,9 +1224,10 @@ function add_to_twig($twig)
 {
     // Adding a function.
     $twig->addFunction(new Timber\Twig_Function('get_total_pubs', 'get_total_pubs'));
-
+    $twig->addFunction(new Timber\Twig_Function('get_all_categories', 'get_all_categories'));
     return $twig;
 }
+
 // function add_to_twig($twig)
 // {
 //     // Adding a function.
