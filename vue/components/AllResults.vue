@@ -5,7 +5,7 @@
     </h2>
     <h2 class="pb-8">Recommended for you</h2>
 
-    <ais-index index-name="prod_news_searchable_posts" index-id="noresult">
+    <ais-index index-name="prod_news_searchable_posts" index-id="stories">
       <ais-configure
         :filters="'post_type:post'"
         :hits-per-page.camel="10"

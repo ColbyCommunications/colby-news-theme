@@ -10,7 +10,7 @@
       ></stories-filter-section>
       <ais-hits>
         <template v-slot="{ items, sendEvent }">
-          <ul>
+          <ul v-if="items.length > 0">
             <li v-for="item in items" :key="item.objectID">
               <div class="!flex !flex-row pb-8 mb-12 border-b border-gray-700">
                 <div
@@ -59,10 +59,10 @@
             </li>
           </ul>
           <!-- no results -->
-          <ais-state-results>
-            <template v-slot="{ results: { hits, query } }">
-              <ais-hits v-if="hits.length > 0" />
-              <div v-else>
+          <ais-state-results v-else>
+            <template v-slot="{ results: { query } }">
+              <ais-hits />
+              <div>
                 <h2 class="pb-8 text-lg">
                   <b>No results found for "{{ query }}".</b>
                 </h2>
