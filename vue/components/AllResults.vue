@@ -53,10 +53,10 @@
                 <div class="">
                   <div class="space-y-2 sm:space-y-4">
                     <div class="relative sliding-teasers-container">
-                      <div class="-mx-container-gutter" style="">
+                      <div>
                         <ul
                           ref="slidingTeasers"
-                          class="flex space-x-8 overflow-x-auto sliding-teasers pl-container-gutter"
+                          class="flex space-x-8 overflow-x-auto sliding-teasers"
                           style="
                             scroll-snap-type: x mandatory;
                             scroll-behavior: smooth;

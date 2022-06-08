@@ -1,56 +1,71 @@
 <template>
-  <ais-instant-search
-    id="modal-top"
-    index-name="prod_news_searchable_posts"
-    :search-client="searchClient"
-    :middlewares="middlewares"
-    ref="aisIS"
-  >
-    <ais-configure :hits-per-page.camel="1" />
-    <!-- Widgets -->
-    <!-- searchbox widget-->
-    <searchbox ref="searchBox"></searchbox>
-    <!-- query suggestions -->
-    <div class="qs mb-12">
-      <ais-index
-        index-name="prod_news_searchable_posts_query_suggestions"
-        index-id="news-qs"
+  <div class="relative z-0 w-full overflow-hidden site-main print:static">
+    <div
+      style="
+        margin-left: auto;
+        margin-right: auto;
+        max-width: calc(var(--max-content-width) + var(--page-padding));
+        padding-right: var(--page-padding);
+        padding-left: var(--page-padding);
+      "
+    >
+      <ais-instant-search
+        id="modal-top"
+        index-name="prod_news_searchable_posts"
+        :search-client="searchClient"
+        :middlewares="middlewares"
+        ref="aisIS"
       >
-        <ais-configure :hits-per-page.camel="8" />
-        <ais-hits :transform-items="removeExactQueryQuerySuggestion">
-          <template v-slot:item="{ item }">
-            <ais-highlight
-              :hit="item"
-              attribute="query"
-              @click="search(item.query)"
-            />
-          </template>
-        </ais-hits>
-      </ais-index>
+        <ais-configure :hits-per-page.camel="1" />
+        <!-- Widgets -->
+        <!-- searchbox widget-->
+        <searchbox ref="searchBox"></searchbox>
+        <!-- query suggestions -->
+        <div class="qs mb-12">
+          <ais-index
+            index-name="prod_news_searchable_posts_query_suggestions"
+            index-id="news-qs"
+          >
+            <ais-configure :hits-per-page.camel="8" />
+            <ais-hits :transform-items="removeExactQueryQuerySuggestion">
+              <template v-slot:item="{ item }">
+                <ais-highlight
+                  :hit="item"
+                  attribute="query"
+                  @click="search(item.query)"
+                />
+              </template>
+            </ais-hits>
+          </ais-index>
+        </div>
+
+        <!-- tab navigation -->
+        <navigation
+          :currentTab="currentTab"
+          @nav-click="changeTab"
+        ></navigation>
+        <!-- stories tab -->
+        <stories-tab
+          :currentTab="currentTab"
+          :isOpen="isOpen"
+          :toggleFilters="toggleFilters"
+          :checkTabStories="checkTabStories"
+        ></stories-tab>
+
+        <!-- media tab-->
+        <media-tab
+          :currentTab="currentTab"
+          :isOpen="isOpen"
+          :toggleFilters="toggleFilters"
+          :checkTabMedia="checkTabMedia"
+        ></media-tab>
+        <!-- faculty accomplishments tab-->
+        <faculty-accomplishments-tab
+          :currentTab="currentTab"
+        ></faculty-accomplishments-tab>
+      </ais-instant-search>
     </div>
-
-    <!-- tab navigation -->
-    <navigation :currentTab="currentTab" @nav-click="changeTab"></navigation>
-    <!-- stories tab -->
-    <stories-tab
-      :currentTab="currentTab"
-      :isOpen="isOpen"
-      :toggleFilters="toggleFilters"
-      :checkTabStories="checkTabStories"
-    ></stories-tab>
-
-    <!-- media tab-->
-    <media-tab
-      :currentTab="currentTab"
-      :isOpen="isOpen"
-      :toggleFilters="toggleFilters"
-      :checkTabMedia="checkTabMedia"
-    ></media-tab>
-    <!-- faculty accomplishments tab-->
-    <faculty-accomplishments-tab
-      :currentTab="currentTab"
-    ></faculty-accomplishments-tab>
-  </ais-instant-search>
+  </div>
 </template>
 
 <script>
