@@ -63,6 +63,8 @@
         <faculty-accomplishments-tab
           :currentTab="currentTab"
         ></faculty-accomplishments-tab>
+        <!-- videos tab-->
+        <videos-tab :currentTab="currentTab"></videos-tab>
       </ais-instant-search>
     </div>
   </div>
@@ -76,6 +78,7 @@ import Navigation from './components/Navigation.vue';
 import StoriesTab from './tabs/StoriesTab.vue';
 import MediaTab from './tabs/MediaTab.vue';
 import FacultyAccomplishmentsTab from './tabs/FacultyAccomplishmentsTab.vue';
+import VideosTab from './tabs/VideosTab.vue';
 const insightsMiddleware = createInsightsMiddleware({
   insightsClient: aa,
 });
@@ -92,6 +95,7 @@ export default {
     StoriesTab,
     MediaTab,
     FacultyAccomplishmentsTab,
+    VideosTab,
   },
   data() {
     return {

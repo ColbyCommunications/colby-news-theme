@@ -849,8 +849,8 @@ add_action('enqueue_block_editor_assets', function () {
     );
 });
 
-wp_register_style( 'material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons+Sharp' );
-wp_enqueue_style( 'material-icons' );
+wp_register_style('material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons+Sharp');
+wp_enqueue_style('material-icons');
 
 
 /**
@@ -1094,7 +1094,6 @@ function page_metrics_function()
         }
     }
     shell_exec('wp algolia reindex searchable_posts');
-
 }
 
 /**
@@ -1134,7 +1133,8 @@ function filter_slug($slug, $title)
     return $final_slug;
 }
 // get total of unique media publications (ie Boston Globe, WSJ, CNBC)
-function get_total_pubs () {
+function get_total_pubs()
+{
     $terms = get_terms(array('taxonomy' => 'media_source'));
     return count($terms);
 };
@@ -1159,9 +1159,8 @@ function post_shared_attributes(array $shared_attributes, WP_Post $post)
         $shared_attributes['siteimprove_page_views'] = (int) get_post_meta($post->ID, 'siteimprove_page_views', true);
         $shared_attributes['summary'] = strip_tags(get_post_meta($post->ID, 'summary', true));
         // gets the primary category
-        $primary_term_name = yoast_get_primary_term( 'category', $post->ID );
+        $primary_term_name = yoast_get_primary_term('category', $post->ID);
         $shared_attributes['primary_category'] = $primary_term_name;
-
     }
 
     if ($post->post_type === 'external_post') {
