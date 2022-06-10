@@ -4,87 +4,126 @@
     id="site-search-hits-container"
     class="pt-10"
   >
-    <ais-index index-name="prod_news_videos" index-id="videos">
-      <ais-configure :hits-per-page.camel="5" />
-      <ais-hits>
-        <template v-slot="{ items, sendEvent }">
-          <ul v-if="items.length > 0">
-            <li v-for="item in items" :key="item.objectID">
-              <div class="!flex !flex-row pb-8 mb-12 border-b border-gray-700">
-                <div
-                  class="!w-1/4 !m-0 !p-0 transition ease-in-out duration-300"
-                  :class="{
-                    'brightness-90': this.hover === item.objectID,
-                  }"
-                  v-if="item.thumbnail"
-                >
-                  <a
-                    :href="`https://www.youtube.com/watch?v=${item.objectID}`"
-                    :target="'_blank'"
+    <div v-if="state">
+      <div v-show="state.hasResult">
+        <ais-index index-name="prod_news_videos" index-id="videos">
+          <ais-configure :hits-per-page.camel="5" />
+          <ais-hits>
+            <template v-slot="{ items, sendEvent }">
+              <ul>
+                <li v-for="item in items" :key="item.objectID">
+                  <div
+                    class="!flex !flex-row pb-8 mb-12 border-b border-gray-700"
                   >
-                    <img
-                      class="!object-cover"
-                      :src="item.thumbnail.url"
-                      @mouseover="hover = item.objectID"
-                      @mouseleave="hover = null"
-                      :alt="item.title"
-                    />
-                  </a>
-                </div>
-                <div class="w-3/4">
-                  <a
-                    :href="`https://www.youtube.com/watch?v=${item.objectID}`"
-                    :class="{
-                      'text-link-hover': this.hover === item.objectID,
-                    }"
-                    @mouseover="hover = item.objectID"
-                    @mouseleave="hover = null"
-                    @click="sendEvent('click', item, 'Story Clicked')"
-                    :target="'_blank'"
-                  >
-                    <h2
-                      :class="[
-                        'thumbnail' in item ? 'pl-6' : 'pl-0',
-                        'font-bold',
-                        'text-base',
-                        'mb-1.5',
-                      ]"
+                    <div
+                      class="!w-1/4 !m-0 !p-0 transition ease-in-out duration-300"
+                      :class="{
+                        'brightness-90': this.hover === item.objectID,
+                      }"
                     >
-                      <ais-highlight attribute="title" :hit="item" />
-                    </h2>
-                  </a>
-                  <p
-                    :class="[
-                      'thumbnail' in item ? 'pl-6' : 'pl-0',
-                      'font-sans',
-                      'text-base',
-                    ]"
-                  >
-                    <ais-snippet attribute="description" :hit="item" />
-                  </p>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </template>
-      </ais-hits>
-      <pagination></pagination>
-    </ais-index>
+                      <a
+                        :href="`https://www.youtube.com/watch?v=${item.objectID}`"
+                        :target="'_blank'"
+                      >
+                        <img
+                          class="!object-cover"
+                          :src="item.thumbnail.url"
+                          @mouseover="hover = item.objectID"
+                          @mouseleave="hover = null"
+                          :alt="item.title"
+                        />
+                      </a>
+                    </div>
+                    <div class="w-3/4">
+                      <a
+                        :href="`https://www.youtube.com/watch?v=${item.objectID}`"
+                        :class="{
+                          'text-link-hover': this.hover === item.objectID,
+                        }"
+                        @mouseover="hover = item.objectID"
+                        @mouseleave="hover = null"
+                        @click="sendEvent('click', item, 'Story Clicked')"
+                        :target="'_blank'"
+                      >
+                        <h2
+                          :class="[
+                            'thumbnail' in item ? 'pl-6' : 'pl-0',
+                            'font-bold',
+                            'text-base',
+                            'mb-1.5',
+                          ]"
+                        >
+                          <ais-highlight attribute="title" :hit="item" />
+                        </h2>
+
+                        <p
+                          :class="[
+                            'thumbnail' in item ? 'pl-6' : 'pl-0',
+                            'font-sans',
+                            'text-base',
+                          ]"
+                        >
+                          <ais-snippet attribute="description" :hit="item" /></p
+                      ></a>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </template>
+          </ais-hits>
+          <pagination></pagination>
+        </ais-index>
+      </div>
+      <div v-show="!state.hasResult && state.query">
+        <NoResults :query="state.query" />
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import Pagination from '../components/Pagination.vue';
-import StoriesFilterSection from '../components/StoriesFilterSection.vue';
+import NoResults from '../components/NoResults.vue';
+import { createWidgetMixin } from 'vue-instantsearch/vue3/es';
+
+const connector =
+  (renderFn, unmountFn) =>
+  (widgetParams = {}) => ({
+    init({}) {
+      renderFn({ hasResult: true }, true);
+    },
+
+    render({ scopedResults, helper }) {
+      const hasResult =
+        scopedResults &&
+        scopedResults.find(
+          (indexResult) =>
+            indexResult.indexId === 'videos' && indexResult.results.nbHits > 0
+        );
+
+      renderFn(
+        {
+          hasResult,
+          query: helper.state.query,
+        },
+        false
+      );
+    },
+
+    dispose() {
+      unmountFn();
+    },
+  });
 export default {
   components: {
     Pagination,
-    StoriesFilterSection,
+    NoResults,
   },
-  props: ['currentTab', 'isOpen', 'toggleFilters', 'checkTabStories'],
+  props: ['currentTab'],
   data() {
     return {
       hover: null,
     };
   },
+  mixins: [createWidgetMixin({ connector })],
 };
 </script>
