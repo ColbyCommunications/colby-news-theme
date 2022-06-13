@@ -51,7 +51,7 @@
           </template>
         </ais-current-refinements>
       </div>
-      <div v-if="this.hasResult">
+      <div v-show="this.hasResult">
         <!-- filters button -->
         <filters-button
           :isOpen="isOpen"
@@ -61,6 +61,7 @@
     </div>
     <!-- filters modal -->
     <filters-modal
+      v-show="this.hasResult"
       :isOpen="isOpen"
       :checkTabStories="checkTabStories"
       :checkTabMedia="checkTabMedia"

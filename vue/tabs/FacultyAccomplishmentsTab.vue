@@ -41,9 +41,8 @@
         </ais-hits>
       </ais-index>
       <!-- no results -->
-      <ais-state-results v-show="!state.hasResult">
+      <ais-state-results v-if="!state.hasResult">
         <template v-slot="{ results: { query } }">
-          <ais-hits />
           <div>
             <h2 class="pb-8 text-lg">
               <b>No results found for "{{ query }}".</b>
