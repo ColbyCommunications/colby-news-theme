@@ -2,8 +2,7 @@
   <div v-show="this.currentTab === 'Stories'" class="flex flex-col">
     <div class="flex flex-row justify-between">
       <!-- current refinements -->
-
-      <div>
+      <div class="flex items-center">
         <ais-current-refinements :included-attributes="['primary_category']">
           <template v-slot="{ items, refine }">
             <ul>
@@ -59,13 +58,13 @@
           :toggleFilters="toggleFilters"
         ></filters-button>
       </div>
-      <!-- filters modal -->
-      <filters-modal
-        :isOpen="isOpen"
-        :checkTabStories="checkTabStories"
-        :checkTabMedia="checkTabMedia"
-      ></filters-modal>
     </div>
+    <!-- filters modal -->
+    <filters-modal
+      :isOpen="isOpen"
+      :checkTabStories="checkTabStories"
+      :checkTabMedia="checkTabMedia"
+    ></filters-modal>
   </div>
 </template>
 <script>
