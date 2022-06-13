@@ -42,6 +42,7 @@
                   </div>
                 </a>
               </li>
+              <pagination></pagination>
             </ul>
             <!-- no results -->
             <ais-state-results v-show="!state.hasResult">
@@ -210,7 +211,6 @@
             </ais-state-results>
           </template>
         </ais-hits>
-        <pagination></pagination>
       </ais-index>
     </div>
   </div>
