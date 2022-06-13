@@ -7,7 +7,7 @@ const setUpSocialSharing = () => {
       userToken: window.colbyNews.algoliaUserToken,
       index: 'prod_news_searchable_posts',
       eventName: 'Article Conversion: Social',
-      objectIDs: [postId],
+      objectIDs: [postId+'-0'],
     });
   };
 
