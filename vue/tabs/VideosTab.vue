@@ -25,6 +25,7 @@
                       <a
                         :href="`https://www.youtube.com/watch?v=${item.objectID}`"
                         :target="'_blank'"
+                        @click="sendEvent('click', item, 'Video Clicked')"
                       >
                         <img
                           class="!object-cover"
