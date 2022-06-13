@@ -52,19 +52,20 @@
           </template>
         </ais-current-refinements>
       </div>
-
-      <!-- filters button -->
-      <filters-button
+      <div v-if="this.hasResult">
+        <!-- filters button -->
+        <filters-button
+          :isOpen="isOpen"
+          :toggleFilters="toggleFilters"
+        ></filters-button>
+      </div>
+      <!-- filters modal -->
+      <filters-modal
         :isOpen="isOpen"
-        :toggleFilters="toggleFilters"
-      ></filters-button>
+        :checkTabStories="checkTabStories"
+        :checkTabMedia="checkTabMedia"
+      ></filters-modal>
     </div>
-    <!-- filters modal -->
-    <filters-modal
-      :isOpen="isOpen"
-      :checkTabStories="checkTabStories"
-      :checkTabMedia="checkTabMedia"
-    ></filters-modal>
   </div>
 </template>
 <script>
@@ -81,6 +82,7 @@ export default {
     'toggleFilters',
     'checkTabStories',
     'checkTabMedia',
+    'hasResult',
   ],
   data() {
     return {};
