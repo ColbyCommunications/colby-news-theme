@@ -12,5 +12,20 @@
         totalPubs: {{ get_total_pubs() }},
         allCategories: {{ get_all_categories() }},
     }
+
+    window.aa('init', {
+        appId: '2XJQHYFX2S',
+        apiKey: '63c304c04c478fd0c4cb1fb36cd666cb',
+        useCookie: true,
+        cookieDuration: 15552000000,
+    });
+
+    aa('getUserToken', null, (err, newUserToken) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        window.colbyNews.algoliaUserToken = newUserToken;
+    });
         
 </script>
