@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center pt-4 pb-3">
+    <div class="flex items-center">
       <span
         class="material-icons-sharp filters-icon cursor-pointer"
         :class="{ 'bg-gray-200 rounded-md': this.isOpen }"

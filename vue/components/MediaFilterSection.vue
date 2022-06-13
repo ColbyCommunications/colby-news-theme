@@ -1,9 +1,8 @@
 <template>
   <div v-show="this.currentTab === 'Media Coverage'" class="flex flex-col">
-    <div class="flex flex-row justify-between">
+    <div class="flex flex-row justify-between pt-4 pb-3">
       <!-- current refinements -->
-
-      <div>
+      <div class="flex items-center">
         <ais-current-refinements :included-attributes="['media_source']">
           <template v-slot="{ items, refine }">
             <ul>
@@ -52,12 +51,13 @@
           </template>
         </ais-current-refinements>
       </div>
-
-      <!-- filters button -->
-      <filters-button
-        :isOpen="isOpen"
-        :toggleFilters="toggleFilters"
-      ></filters-button>
+      <div v-if="this.hasResult">
+        <!-- filters button -->
+        <filters-button
+          :isOpen="isOpen"
+          :toggleFilters="toggleFilters"
+        ></filters-button>
+      </div>
     </div>
     <!-- filters modal -->
     <filters-modal
@@ -81,6 +81,7 @@ export default {
     'toggleFilters',
     'checkTabStories',
     'checkTabMedia',
+    'hasResult',
   ],
   data() {
     return {};

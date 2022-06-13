@@ -1,6 +1,6 @@
 <template>
   <div v-show="this.currentTab === 'Stories'" class="flex flex-col">
-    <div class="flex flex-row justify-between">
+    <div class="flex flex-row justify-between pt-4 pb-3">
       <!-- current refinements -->
       <div class="flex items-center">
         <ais-current-refinements :included-attributes="['primary_category']">
