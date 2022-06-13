@@ -20,6 +20,7 @@
                       :class="{
                         'brightness-90': this.hover === item.objectID,
                       }"
+                      v-if="item.thumbnail"
                     >
                       <a
                         :href="`https://www.youtube.com/watch?v=${item.objectID}`"
@@ -42,7 +43,7 @@
                         }"
                         @mouseover="hover = item.objectID"
                         @mouseleave="hover = null"
-                        @click="sendEvent('click', item, 'Story Clicked')"
+                        @click="sendEvent('click', item, 'Video Clicked')"
                         :target="'_blank'"
                       >
                         <h2
