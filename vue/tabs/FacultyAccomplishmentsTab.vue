@@ -215,7 +215,7 @@ const connector =
         scopedResults &&
         scopedResults.find(
           (indexResult) =>
-            indexResult.indexId === 'media' && indexResult.results.nbHits > 0
+            indexResult.indexId === 'faculty' && indexResult.results.nbHits > 0
         );
 
       renderFn(
