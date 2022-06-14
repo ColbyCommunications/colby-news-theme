@@ -16,7 +16,7 @@
     "stylelint": "npm run stylelint-theme && npm run stylelint-library",
     "stylelint-report": "npm run stylelint-theme-report && npm run stylelint-library-report",
     "stylelint-theme": "npx stylelint './**/*.css' --fix",
-    "stylelint-theme-report": "npx stylelint --custom-formatter 'node_modules/stylelint-junit-formatter' './**/*.css' --fix  > stylelint-theme-results.xml",
+    "stylelint-theme-report": "npx stylelint --custom-formatter 'node_modules/stylelint-junit-formatter' './**/*.css' --fix > stylelint-theme-results.xml",
     "stylelint-library": "npx stylelint 'pattern-library/**/*.scss' --config pattern-library/src/scss/stylelint.config.js --fix",
     "stylelint-library-report": "npx stylelint --custom-formatter 'node_modules/stylelint-junit-formatter' 'pattern-library/**/*.scss' --config pattern-library/src/scss/stylelint.config.js --fix > stylelint-library-results.xml",
     "eslint-theme": "npx eslint './js/*.js' --fix -f junit -o eslint-theme-results.xml",
