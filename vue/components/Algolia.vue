@@ -73,12 +73,12 @@
 <script>
 import algoliasearch from 'algoliasearch/lite';
 import { createInsightsMiddleware } from 'instantsearch.js/es/middlewares';
-import Searchbox from './components/Searchbox.vue';
-import Navigation from './components/Navigation.vue';
-import StoriesTab from './tabs/StoriesTab.vue';
-import MediaTab from './tabs/MediaTab.vue';
-import FacultyAccomplishmentsTab from './tabs/FacultyAccomplishmentsTab.vue';
-import VideosTab from './tabs/VideosTab.vue';
+import Searchbox from './Searchbox.vue';
+import Navigation from './Navigation.vue';
+import StoriesTab from '../tabs/StoriesTab.vue';
+import MediaTab from '../tabs/MediaTab.vue';
+import FacultyAccomplishmentsTab from '../tabs/FacultyAccomplishmentsTab.vue';
+import VideosTab from '../tabs/VideosTab.vue';
 const insightsMiddleware = createInsightsMiddleware({
   insightsClient: aa,
 });
@@ -148,6 +148,7 @@ export default {
 .qs ol {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 .qs ol li.ais-Hits-item {
   margin-right: 12px;
@@ -156,8 +157,6 @@ export default {
   background-color: rgb(229 231 235);
   border-radius: 0.375rem;
   font-size: 0.875rem;
-}
-.qs ol li.ais-Hits-item:last-child {
-  margin: 0;
+  margin-bottom: 5px;
 }
 </style>

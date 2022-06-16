@@ -1204,3 +1204,8 @@ function breaker_feature($block, $content = '', $is_preview = false, $post_id = 
             . "</div></div>";
     }
 }
+
+function algolia_personalized($block)
+{
+    return '<div id="vue-mount"></div>';
+}
