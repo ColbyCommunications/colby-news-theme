@@ -1,15 +1,12 @@
 <template>
   <div>
-    <h2 class="pb-8 text-lg">
-      <b>No results found for "{{ query }}".</b>
-    </h2>
     <h2 class="pb-8">Recommended for you</h2>
     <ais-index
       index-name="prod_news_searchable_posts"
       index-id="noresult-videos"
     >
       <ais-configure
-        :hits-per-page.camel="12"
+        :hits-per-page.camel="10"
         query=""
         :filters="'post_type:post'"
       />
@@ -19,31 +16,9 @@
             <template v-slot="{ items, sendEvent }">
               <div class="mb-10">
                 <div class="grid md:grid-cols-2 gap-8">
-                  <div v-for="item in items.slice(0, 2)" :key="item.objectID">
+                  <div v-for="item in items" :key="item.objectID">
                     <div class="flex flex-col space-y-1 text-base-minus-2">
-                      <div class="cursor-pointer">
-                        <div class="relative group">
-                          <a :href="item.permalink">
-                            <img
-                              :src="item.images.teaser_new.url"
-                              class="hover:brightness-90 transition ease-in-out duration-300"
-                            />
-                          </a>
-                        </div>
-                      </div>
-                      <div class="pt-1 text-sm uppercase">
-                        <a
-                          :href="`https://news.colby.edu/story/category/${item.primary_category.replace(
-                            /\s+/g,
-                            '-'
-                          )}`"
-                          >{{ item.primary_category }}</a
-                        >
-                      </div>
-
-                      <h3 class="font-bold">
-                        <a :href="item.permalink">{{ item.post_title }}</a>
-                      </h3>
+                      <div class="cursor-pointer"></div>
                     </div>
                   </div>
                 </div>
@@ -64,7 +39,7 @@
                       >
                         <!-- teaser -->
                         <li
-                          v-for="item in items.slice(2, items.length)"
+                          v-for="item in items"
                           :key="item.objectID"
                           class="sliding-teaser min-h-[6.5rem] min-w-[16rem] max-w-[16rem]"
                           style="scroll-snap-align: center"
@@ -142,35 +117,31 @@
     </ais-index>
   </div>
 </template>
-
 <script>
+import algoliasearch from 'algoliasearch/lite';
+import { createInsightsMiddleware } from 'instantsearch.js/es/middlewares';
+const insightsMiddleware = createInsightsMiddleware({
+  insightsClient: aa,
+});
+aa('init', {
+  appId: '2XJQHYFX2S',
+  apiKey: '63c304c04c478fd0c4cb1fb36cd666cb',
+  useCookie: true,
+  cookieDuration: 15552000000,
+});
 export default {
-  props: {
-    query: String,
+  components: {},
+  data() {
+    return {
+      middlewares: [insightsMiddleware],
+      searchClient: algoliasearch(
+        '2XJQHYFX2S',
+        '63c304c04c478fd0c4cb1fb36cd666cb'
+      ),
+    };
   },
-  methods: {
-    getTeaserPair(items) {
-      return items.slice(0, 2);
-    },
-    getTeaserSlider(items) {
-      return items.slice(2, items.length + 1);
-    },
-    slidePrev() {
-      const slidingTeasers = this.$refs.slidingTeasers;
-      const slidingTeasersWidth = this.$refs.slidingTeasers.scrollWidth;
-      const teasersLength = this.$refs.slidingTeasers.children.length;
-      const x = slidingTeasersWidth / teasersLength;
-      slidingTeasers.scrollLeft -= x;
-    },
-    slideNext() {
-      const slidingTeasers = this.$refs.slidingTeasers;
-      const slidingTeasersWidth = this.$refs.slidingTeasers.scrollWidth;
-      const teasersLength = this.$refs.slidingTeasers.children.length;
-      const x = slidingTeasersWidth / teasersLength;
-      slidingTeasers.scrollLeft += x;
-    },
-  },
+  computed: {},
+  methods: {},
 };
 </script>
-
 <style></style>

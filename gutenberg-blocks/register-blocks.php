@@ -205,6 +205,19 @@ add_action('acf/init', function () {
             ]);
 
             acf_register_block_type([
+                'name' => 'algolia-personalized-results',
+                'title' => __('Algolia Personalized Results', 'colby-news-theme'),
+                'description' => __(
+                    'Personalized feed of stories using Algolia',
+                    'colby-news-theme'
+                ),
+                'category' => 'colby-news',
+                'icon' => '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0Z" transform="rotate(90 12 12)"/><g transform="translate(0 2.189)"><g><path d="M19.991 10.333h-7V3.31h7v7.01Z" transform="rotate(90 16.491 6.824)"/><path d="M10 16.296h4v-4h-4v4Z" transform="rotate(90 12 14.295)"/><path d="M4 16.296h4v-4H4v4Z" transform="rotate(90 6 14.295)"/><path d="M16 16.296h4v-4h-4v4Z" transform="rotate(90 18 14.296)"/><path d="M11.008 10.332H4V3.31h7v7.01Z" transform="rotate(90 7.508 6.824)"/></g></g></svg>',
+                'render_callback' => 'NC_Blocks\algolia_personalized_results_block',
+                'supports' => ['align' => false, 'multiple' => true],
+            ]);
+
+            acf_register_block_type([
                 'name' => 'nc-video-slider',
                 'title' => __('YouTube Video Slider', 'colby-news-theme'),
                 'description' => __(
