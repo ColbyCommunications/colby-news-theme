@@ -1,31 +1,24 @@
 <template>
   <div>
-    <h2 class="pb-8">Recommended for you</h2>
-    <ais-index
+    <ais-instant-search
       index-name="prod_news_searchable_posts"
-      index-id="noresult-videos"
+      :search-client="searchClient"
     >
-      <ais-configure
-        :hits-per-page.camel="10"
-        query=""
-        :filters="'post_type:post'"
-      />
+      <h2 class="text-h2-prose">Recommended for you</h2>
       <div class="wp-block">
-        <div class="wp-block nc-slider-with-teaser-pair">
+        <ais-index
+          index-name="prod_news_searchable_posts"
+          index-id="noresult-videos"
+        >
+          <ais-configure
+            :hits-per-page.camel="10"
+            query=""
+            :filters="'post_type:post'"
+          />
           <ais-hits>
             <template v-slot="{ items, sendEvent }">
-              <div class="mb-10">
-                <div class="grid md:grid-cols-2 gap-8">
-                  <div v-for="item in items" :key="item.objectID">
-                    <div class="flex flex-col space-y-1 text-base-minus-2">
-                      <div class="cursor-pointer"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <!-- slider -->
-
-              <div class="">
+              <div class="wp-block">
                 <div class="space-y-2 sm:space-y-4">
                   <div class="relative sliding-teasers-container">
                     <div class="-mx-container-gutter" style="">
@@ -112,9 +105,9 @@
               </div>
             </template>
           </ais-hits>
-        </div>
+        </ais-index>
       </div>
-    </ais-index>
+    </ais-instant-search>
   </div>
 </template>
 <script>
@@ -141,7 +134,22 @@ export default {
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    slidePrev() {
+      const slidingTeasers = this.$refs.slidingTeasers;
+      const slidingTeasersWidth = this.$refs.slidingTeasers.scrollWidth;
+      const teasersLength = this.$refs.slidingTeasers.children.length;
+      const x = slidingTeasersWidth / teasersLength;
+      slidingTeasers.scrollLeft -= x;
+    },
+    slideNext() {
+      const slidingTeasers = this.$refs.slidingTeasers;
+      const slidingTeasersWidth = this.$refs.slidingTeasers.scrollWidth;
+      const teasersLength = this.$refs.slidingTeasers.children.length;
+      const x = slidingTeasersWidth / teasersLength;
+      slidingTeasers.scrollLeft += x;
+    },
+  },
 };
 </script>
 <style></style>
