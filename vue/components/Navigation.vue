@@ -17,8 +17,10 @@
             class="material-icons-sharp text-base align-middle"
             :style="{
               transform: this.dropdownOpen ? 'rotate(90deg)' : 'rotate(0deg)',
-              transitionProperty: 'transform',
+              transitionProperty: 'transform, top',
               transitionDuration: '0.2s',
+              position: 'relative',
+              top: this.dropdownOpen ? '0px' : '0px',
             }"
             >pending</span
           >
@@ -51,7 +53,8 @@
 </template>
 <script>
 import _debounce from 'lodash/debounce';
-import _remove from 'lodash/remove';
+
+import { fillTabs } from '../helpers/_helpers';
 
 export default {
   props: ['currentTab'],
@@ -85,49 +88,25 @@ export default {
     calculateTabs() {
       this.$refs.items.forEach((item, i) => {
         this.tabs.push({
-          [this.tabNames[i]]: item.getBoundingClientRect(),
+          [this.tabNames[i]]: {
+            rect: item.getBoundingClientRect(),
+            order: i,
+          },
         });
       });
+
+      console.log(this.tabs);
     },
     responsiveTabs(e) {
-      let newTabs = [];
+      let tabs = fillTabs(
+        window.innerWidth,
+        this.tabNames,
+        this.dropdownTabs,
+        this.tabs
+      );
 
-      // if window smaller than width of ul on desktop
-      if (window.innerWidth < 1066) {
-        this.tabs.forEach((item, i) => {
-          // current tab name
-          let label = Object.keys(item)[0];
-
-          // width of responsive dynamic dropdown
-          let amt = 106;
-
-          if (i === 0) {
-            amt = 0;
-          }
-
-          // if window is smaller than the right edge of the tab
-          if (window.innerWidth - amt < item[label].right) {
-            if (!this.dropdownTabs.includes(label)) {
-              this.dropdownTabs.push(label);
-              _remove(this.tabNames, (tabname) => tabname === label);
-            }
-          } else {
-            newTabs.push(label);
-            _remove(this.dropdownTabs, (tabname) => tabname === label);
-          }
-
-          this.tabNames = newTabs;
-        });
-      } else {
-        // reset default tab state
-        this.tabNames = [
-          'Stories',
-          'Media Coverage',
-          'Faculty Accomplishments',
-          'Videos',
-        ];
-        this.dropdownTabs = [];
-      }
+      this.tabNames = tabs.tabNames;
+      this.dropdownTabs = tabs.dropdownTabs;
     },
   },
 };

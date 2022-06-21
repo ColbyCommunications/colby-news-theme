@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    'jest/globals': true,
   },
   extends: [
     'eslint:recommended',
@@ -45,5 +46,5 @@ module.exports = {
     'import/no-absolute-path': 0,
     'quote-props': ['error', 'as-needed'],
   },
-  plugins: ['prettier', 'react', 'import', 'jsx-a11y', 'react-hooks'],
+  plugins: ['prettier', 'react', 'import', 'jsx-a11y', 'react-hooks', 'jest'],
 };
