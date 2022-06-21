@@ -4,7 +4,7 @@
       index-name="prod_news_searchable_posts"
       :search-client="searchClient"
     >
-      <h2 class="text-h2-prose">Recommended for you</h2>
+      <h2 class="text-h2-prose mb-5">Recommended for you</h2>
       <div class="wp-block">
         <ais-index
           index-name="prod_news_searchable_posts"
