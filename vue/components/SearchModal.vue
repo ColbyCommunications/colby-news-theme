@@ -70,6 +70,7 @@
                 <button
                   class="open-menu bg-white p-2 rounded-lg group transition-colors selected:bg-black selected:bg-opacity-[7%] disabled:pointer-events-none"
                   aria-label="Open menu (modal)"
+                  @click="openMenu"
                 >
                   <svg
                     class="w-6 h-6 group-hover:scale-125 transform transition-transform"
@@ -87,7 +88,7 @@
                 <button
                   class="open-search bg-white p-2 rounded-lg group transition-colors selected:bg-black selected:bg-opacity-[7%] disabled:pointer-events-none selected"
                   aria-label="Open search (modal)"
-                  disabled=""
+                  @click="closeSearch"
                 >
                   <svg
                     class="w-6 h-6 group-hover:scale-125 transform transition-transform"
@@ -152,6 +153,10 @@ export default {
   methods: {
     closeSearch() {
       this.store.closeSearch();
+    },
+    openMenu() {
+      this.store.closeSearch();
+      this.store.openMenu();
     },
   },
   components: {
