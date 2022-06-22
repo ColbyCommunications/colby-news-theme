@@ -59,6 +59,7 @@ export default {
   props: ['currentTab'],
   data() {
     return {
+      windowPreviousWidth: 0,
       tabNames: [
         'Stories',
         'Media Coverage',
@@ -77,6 +78,7 @@ export default {
     window.removeEventListener('resize', _debounce(this.responsiveTabs, 100));
   },
   mounted() {
+    this.windowPreviousWidth = window.innerWidth;
     this.calculateTabs();
     this.responsiveTabs();
   },
@@ -100,15 +102,20 @@ export default {
         this.tabs.forEach((item, i) => {
           // current tab name
           let label = Object.keys(item)[0];
+
           // width of responsive dynamic dropdown
           let amt = 106;
           if (i === 0) {
             amt = 0;
           }
           // if window is smaller than the right edge of the tab
-          if (window.innerWidth - amt < item[label].right) {
-            if (!this.dropdownTabs.includes(label) && i !== 0) {
-              this.dropdownTabs.push(label);
+          if (window.innerWidth - amt < item[label].right && i !== 0) {
+            if (!this.dropdownTabs.includes(label)) {
+              if (window.innerWidth < this.windowPreviousWidth) {
+                this.dropdownTabs.unshift(label);
+              } else {
+                this.dropdownTabs.push(label);
+              }
               _remove(this.tabNames, (tabname) => tabname === label);
             }
           } else {
@@ -127,6 +134,8 @@ export default {
         ];
         this.dropdownTabs = [];
       }
+
+      this.windowPreviousWidth = window.innerWidth;
     },
   },
 };
