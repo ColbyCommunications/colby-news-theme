@@ -15,10 +15,10 @@
             <ul v-show="state.hasResult">
               <li v-for="item in items" :key="item.objectID">
                 <div
-                  class="!flex !flex-row pb-8 mb-12 border-b border-gray-700"
+                  class="flex flex-col md:flex-row pb-8 mb-12 border-b border-gray-700"
                 >
                   <div
-                    class="!w-1/4 !m-0 !p-0 transition ease-in-out duration-300"
+                    class="w-full md:w-1/4 !m-0 !p-0 transition ease-in-out duration-300"
                     :class="{
                       'brightness-90': this.hover === item.objectID,
                     }"
@@ -33,9 +33,9 @@
                       />
                     </a>
                   </div>
-                  <div class="w-3/4">
+                  <div class="w-full md:w-3/4 md:ml-4">
                     <a
-                      class="pl-6 font-sans text-xs mb-1.5 uppercase hover:text-link-hover"
+                      class="font-sans text-xs mb-1.5 uppercase hover:text-link-hover"
                       :href="`https://news.colby.edu/story/category/${item.primary_category.replace(
                         /\s+/g,
                         '-'
@@ -51,10 +51,10 @@
                       @mouseleave="hover = null"
                       @click="sendEvent('click', item, 'Story Clicked')"
                     >
-                      <h2 class="pl-6 font-bold text-base mb-1.5">
+                      <h2 class="font-bold text-base mb-1.5">
                         <ais-highlight attribute="post_title" :hit="item" />
                       </h2>
-                      <p class="pl-6 font-sans text-base">
+                      <p class="font-sans text-base">
                         <ais-snippet attribute="content" :hit="item" />
                       </p>
                     </a>

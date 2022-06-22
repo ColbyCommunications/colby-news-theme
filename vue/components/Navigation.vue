@@ -55,8 +55,6 @@
 import _debounce from 'lodash/debounce';
 import _remove from 'lodash/remove';
 
-import { fillTabs } from '../helpers/_helpers';
-
 export default {
   props: ['currentTab'],
   data() {

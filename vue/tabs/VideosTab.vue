@@ -13,10 +13,10 @@
               <ul>
                 <li v-for="item in items" :key="item.objectID">
                   <div
-                    class="!flex !flex-row pb-8 mb-12 border-b border-gray-700"
+                    class="flex flex-col md:flex-row pb-8 mb-12 border-b border-gray-700"
                   >
                     <div
-                      class="!w-1/4 !m-0 !p-0 transition ease-in-out duration-300"
+                      class="w-full mt-4 md:w-1/4 !m-0 !p-0 transition ease-in-out duration-300"
                       :class="{
                         'brightness-90': this.hover === item.objectID,
                       }"
@@ -36,7 +36,7 @@
                         />
                       </a>
                     </div>
-                    <div class="w-3/4">
+                    <div class="w-full md:w-3/4 md:ml-4">
                       <a
                         :href="`https://www.youtube.com/watch?v=${item.objectID}`"
                         :class="{
@@ -49,7 +49,7 @@
                       >
                         <h2
                           :class="[
-                            'thumbnail' in item ? 'pl-6' : 'pl-0',
+                            'thumbnail' in item ? 'pl-0 md:pl-6' : 'pl-0',
                             'font-bold',
                             'text-base',
                             'mb-1.5',
@@ -60,7 +60,7 @@
 
                         <p
                           :class="[
-                            'thumbnail' in item ? 'pl-6' : 'pl-0',
+                            'thumbnail' in item ? 'pl-0 md:pl-6' : 'pl-0',
                             'font-sans',
                             'text-base',
                           ]"
