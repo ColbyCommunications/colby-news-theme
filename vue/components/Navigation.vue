@@ -92,8 +92,6 @@ export default {
           [this.tabNames[i]]: item.getBoundingClientRect(),
         });
       });
-
-      console.log(this.tabs);
     },
     responsiveTabs(e) {
       let newTabs = [];

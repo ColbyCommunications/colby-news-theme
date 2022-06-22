@@ -151,7 +151,6 @@ export default {
   },
   methods: {
     closeSearch() {
-      console.log(this.store);
       this.store.closeSearch();
     },
   },

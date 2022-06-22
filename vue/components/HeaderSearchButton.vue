@@ -28,7 +28,6 @@ export default {
   },
   methods: {
     openSearch() {
-      console.log(this.store);
       this.store.openSearch();
     },
   },
