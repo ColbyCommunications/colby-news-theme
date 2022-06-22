@@ -61,7 +61,7 @@
                 <button
                   class="open-menu bg-white p-2 rounded-lg group transition-colors selected:bg-black selected:bg-opacity-[7%] disabled:pointer-events-none selected"
                   aria-label="Open menu (modal)"
-                  disabled=""
+                  @click="closeMenu"
                 >
                   <svg
                     class="w-6 h-6 group-hover:scale-125 transform transition-transform"
