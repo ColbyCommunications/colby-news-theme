@@ -52,7 +52,6 @@
   </nav>
 </template>
 <script>
-import _debounce from 'lodash/debounce';
 import _remove from 'lodash/remove';
 
 export default {
@@ -72,10 +71,10 @@ export default {
     };
   },
   created() {
-    window.addEventListener('resize', _debounce(this.responsiveTabs, 100));
+    window.addEventListener('resize', this.responsiveTabs);
   },
   destroyed() {
-    window.removeEventListener('resize', _debounce(this.responsiveTabs, 100));
+    window.removeEventListener('resize', this.responsiveTabs);
   },
   mounted() {
     this.windowPreviousWidth = window.innerWidth;
