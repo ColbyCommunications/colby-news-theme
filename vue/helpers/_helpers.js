@@ -20,7 +20,9 @@ export const fillTabs = (
       amt = 0;
     }
     // if window is smaller than the right edge of the tab
-    if (currentWindowWidth - amt < item[label].right && i !== 0) {
+    // the 100 is an arbitrary number hack to get the tabs to sqiush a little before populating the dropdown
+    // and to have some breathing room between Videos and Faculty Accomplishments
+    if (currentWindowWidth - amt < item[label].right - 100 && i !== 0) {
       if (!dropdownTabs.includes(label)) {
         if (currentWindowWidth < windowPreviousWidth) {
           dropdownTabs.unshift(label);
