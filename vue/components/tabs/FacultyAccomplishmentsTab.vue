@@ -48,8 +48,8 @@
   </div>
 </template>
 <script>
-import Pagination from '../components/Pagination.vue';
-import NoResults from '../components/NoResults.vue';
+import Pagination from '../Pagination.vue';
+import NoResults from '../NoResults.vue';
 import { createWidgetMixin } from 'vue-instantsearch/vue3/es';
 const connector =
   (renderFn, unmountFn) =>

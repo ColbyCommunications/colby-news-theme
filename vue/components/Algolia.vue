@@ -75,10 +75,10 @@ import algoliasearch from 'algoliasearch/lite';
 import { createInsightsMiddleware } from 'instantsearch.js/es/middlewares';
 import Searchbox from './Searchbox.vue';
 import Navigation from './Navigation.vue';
-import StoriesTab from '../tabs/StoriesTab.vue';
-import MediaTab from '../tabs/MediaTab.vue';
-import FacultyAccomplishmentsTab from '../tabs/FacultyAccomplishmentsTab.vue';
-import VideosTab from '../tabs/VideosTab.vue';
+import StoriesTab from '../components/tabs/StoriesTab.vue';
+import MediaTab from '../components/tabs/MediaTab.vue';
+import FacultyAccomplishmentsTab from '../components/tabs/FacultyAccomplishmentsTab.vue';
+import VideosTab from '../components/tabs/VideosTab.vue';
 const insightsMiddleware = createInsightsMiddleware({
   insightsClient: aa,
 });

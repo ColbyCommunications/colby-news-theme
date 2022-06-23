@@ -32,6 +32,7 @@
             'border',
             'bg-white',
             'dynamic-responsive-dropdown',
+            'z-10',
           ]"
           style="padding: 10px; top: 39px; right: 0"
         >
@@ -53,6 +54,7 @@
 </template>
 <script>
 import _remove from 'lodash/remove';
+import { fillTabs } from '../helpers/_helpers.js';
 
 export default {
   props: ['currentTab'],
@@ -93,34 +95,20 @@ export default {
       });
     },
     responsiveTabs(e) {
-      let newTabs = [];
+      // let newTabs = [];
+
       // if window smaller than width of ul on desktop
       if (window.innerWidth < 1066) {
-        this.tabs.forEach((item, i) => {
-          // current tab name
-          let label = Object.keys(item)[0];
+        let tabs = fillTabs(
+          window.innerWidth,
+          this.tabs,
+          this.tabNames,
+          this.dropdownTabs,
+          this.windowPreviousWidth
+        );
 
-          // width of responsive dynamic dropdown
-          let amt = 106;
-          if (i === 0) {
-            amt = 0;
-          }
-          // if window is smaller than the right edge of the tab
-          if (window.innerWidth - amt < item[label].right && i !== 0) {
-            if (!this.dropdownTabs.includes(label)) {
-              if (window.innerWidth < this.windowPreviousWidth) {
-                this.dropdownTabs.unshift(label);
-              } else {
-                this.dropdownTabs.push(label);
-              }
-              _remove(this.tabNames, (tabname) => tabname === label);
-            }
-          } else {
-            newTabs.push(label);
-            _remove(this.dropdownTabs, (tabname) => tabname === label);
-          }
-          this.tabNames = newTabs;
-        });
+        this.tabNames = tabs.tabNames;
+        this.dropdownTabs.tabs.dropdownTabs;
       } else {
         // reset default tab state
         this.tabNames = [

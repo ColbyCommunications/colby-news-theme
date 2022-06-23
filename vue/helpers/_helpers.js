@@ -1,49 +1,42 @@
 /* eslint-disable import/prefer-default-export */
 import _remove from 'lodash/remove';
 
-export const fillTabs = (width, currentTabs, currentDropDowntabs, tabDefs) => {
-  let tabNames = currentTabs;
-  let dropdownTabs = currentDropDowntabs;
+export const fillTabs = (
+  currentWindowWidth,
+  tabDefs,
+  currentTabs,
+  dropdownTabs,
+  windowPreviousWidth
+) => {
+  let newTabs = [];
 
-  // if window smaller than width of ul on desktop
-  if (width < 1066) {
-    tabDefs.forEach((item, i) => {
-      // current tab name
-      let label = Object.keys(item)[0];
+  tabDefs.forEach((item, i) => {
+    // current tab name
+    let label = Object.keys(item)[0];
 
-      // width of responsive dynamic dropdown
-      let amt = 106;
-
-      if (i === 0) {
-        amt = 0;
-      }
-
-      // if window is smaller than the right edge of the tab
-      if (width - amt < item[label].rect.right) {
-        if (!dropdownTabs.includes(label) && tabNames.length !== 1) {
-          dropdownTabs.splice(item.order, 0, label);
-          _remove(tabNames, (tabname) => tabname === label);
+    // width of responsive dynamic dropdown
+    let amt = 106;
+    if (i === 0) {
+      amt = 0;
+    }
+    // if window is smaller than the right edge of the tab
+    if (currentWindowWidth - amt < item[label].right && i !== 0) {
+      if (!dropdownTabs.includes(label)) {
+        if (currentWindowWidth < windowPreviousWidth) {
+          dropdownTabs.unshift(label);
+        } else {
+          dropdownTabs.push(label);
         }
-      } else {
-        if (!tabNames.includes(label)) {
-          tabNames.push(label);
-        }
-        _remove(dropdownTabs, (tabname) => tabname === label);
+        _remove(currentTabs, (tabname) => tabname === label);
       }
-    });
-  } else {
-    // reset default tab state
-    tabNames = [
-      'Stories',
-      'Media Coverage',
-      'Faculty Accomplishments',
-      'Videos',
-    ];
-    dropdownTabs = [];
-  }
+    } else {
+      newTabs.push(label);
+      _remove(dropdownTabs, (tabname) => tabname === label);
+    }
+  });
 
   return {
-    tabNames,
+    tabNames: newTabs,
     dropdownTabs,
   };
 };

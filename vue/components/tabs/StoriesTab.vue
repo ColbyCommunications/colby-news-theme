@@ -74,9 +74,9 @@
   </div>
 </template>
 <script>
-import Pagination from '../components/Pagination.vue';
-import StoriesFilterSection from '../components/StoriesFilterSection.vue';
-import NoResults from '../components/NoResults.vue';
+import Pagination from '../Pagination.vue';
+import StoriesFilterSection from '../StoriesFilterSection.vue';
+import NoResults from '../NoResults.vue';
 import { createWidgetMixin } from 'vue-instantsearch/vue3/es';
 
 const connector =
