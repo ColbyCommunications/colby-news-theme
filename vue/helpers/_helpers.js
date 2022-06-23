@@ -19,10 +19,15 @@ export const fillTabs = (
     if (i === 0) {
       amt = 0;
     }
+
+    let squish = 100;
+    if (i === 3) {
+      squish = 0;
+    }
     // if window is smaller than the right edge of the tab
-    // the 100 is an arbitrary number hack to get the tabs to sqiush a little before populating the dropdown
+    // the squish = 100 is an arbitrary number hack to get the tabs to sqiush a little before populating the dropdown
     // and to have some breathing room between Videos and Faculty Accomplishments
-    if (currentWindowWidth - amt < item[label].right - 100 && i !== 0) {
+    if (currentWindowWidth - amt < item[label].right - squish && i !== 0) {
       if (!dropdownTabs.includes(label)) {
         if (currentWindowWidth < windowPreviousWidth) {
           dropdownTabs.unshift(label);
