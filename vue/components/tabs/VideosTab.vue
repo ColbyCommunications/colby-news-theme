@@ -36,7 +36,7 @@
                         />
                       </a>
                     </div>
-                    <div class="w-full md:w-3/4 md:ml-4">
+                    <div class="w-full mt-4 md:mt-0 md:w-3/4 md:ml-4">
                       <a
                         :href="`https://www.youtube.com/watch?v=${item.objectID}`"
                         :class="{
