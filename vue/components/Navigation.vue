@@ -108,7 +108,7 @@ export default {
         );
 
         this.tabNames = tabs.tabNames;
-        this.dropdownTabs.tabs.dropdownTabs;
+        this.dropdownTabs = tabs.dropdownTabs;
       } else {
         // reset default tab state
         this.tabNames = [
