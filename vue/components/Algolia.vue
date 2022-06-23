@@ -1,5 +1,5 @@
 <template>
-  <div class="relative z-0 w-full overflow-hidden site-main print:static">
+  <div class="relative z-0 w-full site-main print:static">
     <div
       style="
         margin-left: auto;
