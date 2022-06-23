@@ -1,9 +1,7 @@
 <template>
   <div>
-    <h2 class="pb-8 text-lg">
-      <b>No results found for "{{ query }}".</b>
-    </h2>
-    <h2 class="pb-8">Recommended for you</h2>
+    <p class="pb-8">No results found for "{{ query }}".</p>
+    <h2 class="pb-8 text-lg"><b>Recommended for you</b></h2>
     <ais-index
       index-name="prod_news_searchable_posts"
       index-id="noresult-videos"
