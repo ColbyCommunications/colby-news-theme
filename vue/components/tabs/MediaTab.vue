@@ -1,3 +1,79 @@
+<script>
+/* eslint-disable vuejs-accessibility/anchor-has-content */
+/* eslint-disable vuejs-accessibility/heading-has-content */
+import Pagination from '../Pagination.vue';
+import MediaFilterSection from '../MediaFilterSection.vue';
+import NoResults from '../NoResults.vue';
+import { createWidgetMixin } from 'vue-instantsearch/vue3/es';
+
+const connector = (renderFn, unmountFn) => () => ({
+  init() {
+    renderFn({ hasResult: true }, true);
+  },
+
+  render({ scopedResults, helper }) {
+    const hasResult =
+      scopedResults &&
+      scopedResults.find(
+        (indexResult) =>
+          indexResult.indexId === 'media' && indexResult.results.nbHits > 0
+      );
+
+    renderFn(
+      {
+        hasResult,
+        query: helper.state.query,
+      },
+      false
+    );
+  },
+
+  dispose() {
+    unmountFn();
+  },
+});
+export default {
+  components: {
+    Pagination,
+    MediaFilterSection,
+    NoResults,
+  },
+  mixins: [createWidgetMixin({ connector })],
+  props: {
+    currentTab: { type: String, required: true },
+    isOpen: { type: Boolean, required: true },
+    toggleFilters: { type: Function, required: true },
+    checkTabMedia: { type: Function, required: true },
+  },
+  data() {
+    return {
+      hover: null,
+    };
+  },
+  methods: {
+    getTeaserPair(items) {
+      return items.slice(0, 2);
+    },
+    getTeaserSlider(items) {
+      return items.slice(2, items.length + 1);
+    },
+    slidePrev() {
+      const slidingTeasers = this.$refs.slidingTeasers;
+      const slidingTeasersWidth = this.$refs.slidingTeasers.scrollWidth;
+      const teasersLength = this.$refs.slidingTeasers.children.length;
+      const x = slidingTeasersWidth / teasersLength;
+      slidingTeasers.scrollLeft -= x;
+    },
+    slideNext() {
+      const slidingTeasers = this.$refs.slidingTeasers;
+      const slidingTeasersWidth = this.$refs.slidingTeasers.scrollWidth;
+      const teasersLength = this.$refs.slidingTeasers.children.length;
+      const x = slidingTeasersWidth / teasersLength;
+      slidingTeasers.scrollLeft += x;
+    },
+  },
+};
+</script>
 <template>
   <div v-show="currentTab === 'Media Coverage'" id="site-search-hits-container">
     <div v-if="state">
@@ -51,7 +127,7 @@
                           </div>
                         </div>
                         <div class="space-y-1 title-wrapper lg:space-y-2">
-                          <h3 class="leading-tight">
+                          <h3 class="leading-tight font-bold text-base mb-1.5">
                             <ais-highlight attribute="post_title" :hit="item" />
                           </h3>
                         </div>
@@ -68,7 +144,9 @@
             </ul>
           </template>
         </ais-hits>
-        <pagination></pagination>
+        <div v-show="state.hasResult">
+          <pagination></pagination>
+        </div>
       </ais-index>
       <!-- no results -->
       <div v-show="!state.hasResult && state.query">
@@ -77,73 +155,3 @@
     </div>
   </div>
 </template>
-<script>
-import Pagination from '../Pagination.vue';
-import MediaFilterSection from '../MediaFilterSection.vue';
-import NoResults from '../NoResults.vue';
-import { createWidgetMixin } from 'vue-instantsearch/vue3/es';
-const connector =
-  (renderFn, unmountFn) =>
-  (widgetParams = {}) => ({
-    init({}) {
-      renderFn({ hasResult: true }, true);
-    },
-
-    render({ scopedResults, helper }) {
-      const hasResult =
-        scopedResults &&
-        scopedResults.find(
-          (indexResult) =>
-            indexResult.indexId === 'media' && indexResult.results.nbHits > 0
-        );
-
-      renderFn(
-        {
-          hasResult,
-          query: helper.state.query,
-        },
-        false
-      );
-    },
-
-    dispose() {
-      unmountFn();
-    },
-  });
-export default {
-  components: {
-    Pagination,
-    MediaFilterSection,
-    NoResults,
-  },
-  props: ['currentTab', 'isOpen', 'toggleFilters', 'checkTabMedia'],
-  data() {
-    return {
-      hover: null,
-    };
-  },
-  methods: {
-    getTeaserPair(items) {
-      return items.slice(0, 2);
-    },
-    getTeaserSlider(items) {
-      return items.slice(2, items.length + 1);
-    },
-    slidePrev() {
-      const slidingTeasers = this.$refs.slidingTeasers;
-      const slidingTeasersWidth = this.$refs.slidingTeasers.scrollWidth;
-      const teasersLength = this.$refs.slidingTeasers.children.length;
-      const x = slidingTeasersWidth / teasersLength;
-      slidingTeasers.scrollLeft -= x;
-    },
-    slideNext() {
-      const slidingTeasers = this.$refs.slidingTeasers;
-      const slidingTeasersWidth = this.$refs.slidingTeasers.scrollWidth;
-      const teasersLength = this.$refs.slidingTeasers.children.length;
-      const x = slidingTeasersWidth / teasersLength;
-      slidingTeasers.scrollLeft += x;
-    },
-  },
-  mixins: [createWidgetMixin({ connector })],
-};
-</script>

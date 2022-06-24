@@ -18,7 +18,7 @@
           <div>
             <div class="wp-block nc-slider-with-teaser-pair">
               <ais-hits>
-                <template v-slot="{ items, sendEvent }">
+                <template #default="{ items }">
                   <div class="mb-10">
                     <div class="grid md:grid-cols-2 gap-8">
                       <div
@@ -32,6 +32,7 @@
                                 <img
                                   :src="item.images.teaser_new.url"
                                   class="hover:brightness-90 transition ease-in-out duration-300"
+                                  :alt="`${item.post_title}: ${item.summary}`"
                                 />
                               </a>
                             </div>
@@ -83,6 +84,7 @@
                                       :src="item.images.teaser_new.url"
                                       class="attachment-teaser_new size-teaser_new hover:brightness-90 transition ease-in-out duration-300"
                                       sizes="(max-width: 1080px) 100vw, 1080px"
+                                      :alt="`${item.post_title}: ${item.summary}`"
                                     />
                                   </a>
                                 </div>
@@ -155,8 +157,10 @@
 import algoliasearch from 'algoliasearch/lite';
 import { createInsightsMiddleware } from 'instantsearch.js/es/middlewares';
 const insightsMiddleware = createInsightsMiddleware({
+  // eslint-disable-next-line no-undef
   insightsClient: aa,
 });
+// eslint-disable-next-line no-undef
 aa('init', {
   appId: '2XJQHYFX2S',
   apiKey: '63c304c04c478fd0c4cb1fb36cd666cb',

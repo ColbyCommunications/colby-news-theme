@@ -2,32 +2,32 @@
   <nav>
     <ul class="Tabs">
       <li
-        v-for="(tabName, index) in this.tabNames"
+        v-for="(tabName, index) in tabNames"
+        ref="items"
         :key="index"
         class="text-lg Tabs__tab Tab py-1 px-10"
         :class="{ 'activeTab': currentTab === tabName }"
-        ref="items"
       >
         <button @click="$emit('nav-click', tabName)">{{ tabName }}</button>
       </li>
-      <li v-if="this.dropdownTabs.length" class="px-5">
-        <button @click="toggleDropdown" class="whitespace-nowrap">
+      <li v-if="dropdownTabs.length" class="px-5">
+        <button class="whitespace-nowrap" @click="toggleDropdown">
           More
           <span
             class="material-icons-sharp text-base align-middle"
             :style="{
-              transform: this.dropdownOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+              transform: dropdownOpen ? 'rotate(90deg)' : 'rotate(0deg)',
               transitionProperty: 'transform, top',
               transitionDuration: '0.2s',
               position: 'relative',
-              top: this.dropdownOpen ? '0px' : '0px',
+              top: dropdownOpen ? '0px' : '0px',
             }"
             >pending</span
           >
         </button>
         <ul
           :class="[
-            this.dropdownOpen ? 'block' : 'hidden',
+            dropdownOpen ? 'block' : 'hidden',
             'absolute',
             'border',
             'bg-white',
@@ -42,8 +42,9 @@
             :class="{ 'active': currentTab === dropdownTab }"
           >
             <a
-              @click="$emit('nav-click', dropdownTab)"
               class="cursor-pointer inline-block w-full"
+              @keyup.enter="$emit('nav-click', dropdownTab)"
+              @click="$emit('nav-click', dropdownTab)"
               >{{ dropdownTab }}</a
             >
           </li>
@@ -53,11 +54,12 @@
   </nav>
 </template>
 <script>
-import _remove from 'lodash/remove';
 import { fillTabs } from '../helpers/_helpers.js';
 
 export default {
-  props: ['currentTab'],
+  props: {
+    currentTab: { type: String, required: true },
+  },
   data() {
     return {
       windowPreviousWidth: 0,
@@ -75,7 +77,7 @@ export default {
   created() {
     window.addEventListener('resize', this.responsiveTabs);
   },
-  destroyed() {
+  unmounted() {
     window.removeEventListener('resize', this.responsiveTabs);
   },
   mounted() {
@@ -94,7 +96,7 @@ export default {
         });
       });
     },
-    responsiveTabs(e) {
+    responsiveTabs() {
       // let newTabs = [];
 
       // if window smaller than width of ul on desktop

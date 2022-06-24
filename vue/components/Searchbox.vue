@@ -9,9 +9,7 @@
       submit-title="Search"
       class="w-full"
     >
-      <template v-slot:reset-icon
-        ><i class="whitespace-nowrap">Clear</i></template
-      >
+      <template #reset-icon><i class="whitespace-nowrap">Clear</i></template>
     </ais-search-box>
   </div>
 </template>

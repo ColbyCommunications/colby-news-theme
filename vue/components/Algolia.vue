@@ -11,10 +11,10 @@
     >
       <ais-instant-search
         id="modal-top"
+        ref="aisIS"
         index-name="prod_news_searchable_posts"
         :search-client="searchClient"
         :middlewares="middlewares"
-        ref="aisIS"
       >
         <ais-configure :hits-per-page.camel="1" />
         <!-- Widgets -->
@@ -28,7 +28,7 @@
           >
             <ais-configure :hits-per-page.camel="8" />
             <ais-hits :transform-items="removeExactQueryQuerySuggestion">
-              <template v-slot:item="{ item }">
+              <template #item="{ item }">
                 <ais-highlight
                   :hit="item"
                   attribute="query"
@@ -80,8 +80,11 @@ import MediaTab from '../components/tabs/MediaTab.vue';
 import FacultyAccomplishmentsTab from '../components/tabs/FacultyAccomplishmentsTab.vue';
 import VideosTab from '../components/tabs/VideosTab.vue';
 const insightsMiddleware = createInsightsMiddleware({
+  // eslint-disable-next-line no-undef
   insightsClient: aa,
 });
+
+// eslint-disable-next-line no-undef
 aa('init', {
   appId: '2XJQHYFX2S',
   apiKey: '63c304c04c478fd0c4cb1fb36cd666cb',

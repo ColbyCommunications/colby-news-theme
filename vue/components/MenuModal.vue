@@ -411,10 +411,10 @@
 </template>
 <script>
 import { useMainStore } from '../stores/main';
-import Algolia from './Algolia.vue';
 
 export default {
   setup() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const store = useMainStore();
     return {
       store,
@@ -428,9 +428,6 @@ export default {
       this.store.closeMenu();
       this.store.openSearch();
     },
-  },
-  components: {
-    Algolia,
   },
 };
 </script>

@@ -43,6 +43,7 @@ import { useMainStore } from '../stores/main';
 
 export default {
   setup() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const store = useMainStore();
     return {
       store,

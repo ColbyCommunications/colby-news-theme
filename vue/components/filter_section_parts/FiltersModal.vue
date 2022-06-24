@@ -4,7 +4,7 @@
     <Transition>
       <div
         v-show="checkTabStories"
-        :class="{ 'mb-12': this.isOpen }"
+        :class="{ 'mb-12': isOpen }"
         class="bg-gray-200 px-8 filters-modal"
       >
         <h2 class="text-lg py-4">Category</h2>
@@ -18,7 +18,7 @@
     <Transition>
       <div
         v-show="checkTabMedia"
-        :class="{ 'mb-12': this.isOpen }"
+        :class="{ 'mb-12': isOpen }"
         class="bg-gray-200 px-8 filters-modal"
       >
         <h2 class="text-lg py-4">Media Source</h2>
@@ -35,14 +35,12 @@
   </div>
 </template>
 <script>
-import CurrentRefinements from './CurrentRefinements.vue';
-import FiltersButton from './FiltersButton.vue';
 export default {
-  components: {
-    CurrentRefinements,
-    FiltersButton,
+  props: {
+    isOpen: { type: Boolean, required: true },
+    checkTabStories: { type: Function, required: true },
+    checkTabMedia: { type: Function, required: true },
   },
-  props: ['isOpen', 'checkTabStories', 'checkTabMedia'],
   data() {
     return {
       totalPubs: window.colbyNews.totalPubs,

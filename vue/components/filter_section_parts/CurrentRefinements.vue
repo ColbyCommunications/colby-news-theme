@@ -1,12 +1,11 @@
 <template>
   <div>
     <ais-current-refinements>
-      <template v-slot="{ items, refine }">
+      <template #default="{ items, refine }">
         <ul>
           <li v-for="item in items" :key="item.attribute">
             <ul class="flex flex-wrap">
               <li
-                class="flex items-center p-0.5 pr-2 bg-gray-200 mr-4 my-1 text-base"
                 v-for="refinement in item.refinements"
                 :key="
                   [
@@ -16,6 +15,7 @@
                     refinement.operator,
                   ].join(':')
                 "
+                class="flex items-center p-0.5 pr-2 bg-gray-200 mr-4 my-1 text-base"
               >
                 <button
                   class="cursor-pointer flex items-center border-r border-gray-400 mr-1.5 h-5/6"
@@ -29,11 +29,11 @@
               </li>
               <li class="flex justify-center items-center">
                 <ais-clear-refinements>
-                  <template v-slot="{ canRefine, refine, createURL }">
+                  <template #default="{ canRefine, refine, createURL }">
                     <a
+                      v-if="canRefine"
                       :href="createURL()"
                       @click.prevent="refine"
-                      v-if="canRefine"
                     >
                       <i class="text-sm">Clear Filters</i>
                     </a>
@@ -49,7 +49,9 @@
 </template>
 <script>
 export default {
-  props: ['currentTab'],
+  props: {
+    currentTab: { type: String, required: true },
+  },
   data() {
     return {};
   },

@@ -2,7 +2,7 @@
   <div>
     <ais-pagination @page-change="pageChange">
       <template
-        v-slot="{
+        #default="{
           currentRefinement,
           nbPages,
           isFirstPage,
@@ -20,10 +20,10 @@
           <li class="flex justify-center items-center">
             <a
               :href="createURL(currentRefinement - 1)"
-              @click.prevent="refine(currentRefinement - 1)"
               :disabled="isFirstPage ? true : false"
               :class="[isFirstPage ? 'pointer-events-none' : '', 'mr-2']"
               :style="{ color: isFirstPage ? '#8b8b8b' : 'black' }"
+              @click.prevent="refine(currentRefinement - 1)"
             >
               <span
                 :class="[
@@ -38,10 +38,10 @@
             </a>
             <a
               :href="createURL(currentRefinement + 1)"
-              @click.prevent="refine(currentRefinement + 1)"
               :disabled="isLastPage ? true : false"
               :class="[isLastPage ? 'pointer-events-none' : '']"
               :style="{ color: isLastPage ? '#8b8b8b' : 'black' }"
+              @click.prevent="refine(currentRefinement + 1)"
             >
               <span
                 :class="[
@@ -70,7 +70,7 @@ export default {
     };
   },
   methods: {
-    pageChange(...args) {
+    pageChange() {
       const element = document.getElementById('site-search-searchbox');
       element.scrollIntoView({ behavior: 'smooth', block: 'end' });
     },

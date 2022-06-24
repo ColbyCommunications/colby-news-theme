@@ -1,15 +1,14 @@
 <template>
-  <div v-show="this.currentTab === 'Media Coverage'" class="flex flex-col">
+  <div v-show="currentTab === 'Media Coverage'" class="flex flex-col">
     <div class="flex flex-row justify-between pt-4 pb-3">
       <!-- current refinements -->
       <div class="flex items-center">
         <ais-current-refinements :included-attributes="['media_source']">
-          <template v-slot="{ items, refine }">
+          <template #default="{ items, refine }">
             <ul>
               <li v-for="item in items" :key="item.attribute">
                 <ul class="flex flex-wrap">
                   <li
-                    class="flex items-center p-0.5 pr-2 bg-gray-200 mr-4 my-1 text-base"
                     v-for="refinement in item.refinements"
                     :key="
                       [
@@ -19,6 +18,7 @@
                         refinement.operator,
                       ].join(':')
                     "
+                    class="flex items-center p-0.5 pr-2 bg-gray-200 mr-4 my-1 text-base"
                   >
                     <button
                       class="cursor-pointer flex items-center border-r border-gray-400 mr-1.5 h-5/6"
@@ -34,11 +34,11 @@
                     <ais-clear-refinements
                       :included-attributes="['media_source']"
                     >
-                      <template v-slot="{ canRefine, refine, createURL }">
+                      <template #default="{ canRefine, refine, createURL }">
                         <a
+                          v-if="canRefine"
                           :href="createURL()"
                           @click.prevent="refine"
-                          v-if="canRefine"
                         >
                           <i class="text-sm">Clear Filters</i>
                         </a>
@@ -51,7 +51,7 @@
           </template>
         </ais-current-refinements>
       </div>
-      <div v-show="this.hasResult">
+      <div v-show="hasResult">
         <!-- filters button -->
         <filters-button
           :isOpen="isOpen"
@@ -61,7 +61,7 @@
     </div>
     <!-- filters modal -->
     <filters-modal
-      v-show="this.hasResult"
+      v-show="hasResult"
       :isOpen="isOpen"
       :checkTabStories="checkTabStories"
       :checkTabMedia="checkTabMedia"
@@ -76,14 +76,14 @@ export default {
     FiltersButton,
     FiltersModal,
   },
-  props: [
-    'currentTab',
-    'isOpen',
-    'toggleFilters',
-    'checkTabStories',
-    'checkTabMedia',
-    'hasResult',
-  ],
+  props: {
+    currentTab: { type: String, required: true },
+    isOpen: { type: Boolean, required: true },
+    toggleFilters: { type: Function, required: true },
+    checkTabMedia: { type: Function, required: true },
+    checkTabStories: { type: Function, required: true },
+    hasResult: { type: Boolean, required: true },
+  },
   data() {
     return {};
   },

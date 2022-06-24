@@ -1,90 +1,45 @@
-<template>
-  <div
-    v-show="currentTab === 'Faculty Accomplishments'"
-    id="site-search-hits-container"
-    :class="{ 'pt-10': currentTab === 'Faculty Accomplishments' }"
-  >
-    <div v-if="state">
-      <ais-index index-name="prod_news_searchable_posts" index-id="faculty">
-        <ais-configure
-          :filters="'taxonomies.story_type:\'Faculty Accomplishments\''"
-          :hits-per-page.camel="5"
-        />
-        <ais-hits>
-          <template v-slot="{ items, sendEvent }">
-            <ul v-show="state.hasResult">
-              <li v-for="item in items" :key="item.objectID">
-                <a
-                  class="group block text-base-minus-2 space-y-1.5 hover:text-link-hover"
-                  :href="item.external_url"
-                  @click="
-                    sendEvent('click', item, 'Faculty Accomplishment Clicked')
-                  "
-                >
-                  <div
-                    class="!flex !flex-row pb-8 mb-12 border-b border-gray-700"
-                  >
-                    <div>
-                      <h2 class="font-bold text-base mb-5">
-                        <ais-highlight attribute="post_title" :hit="item" />
-                      </h2>
-                      <p class="font-sans text-base">
-                        <ais-snippet attribute="content" :hit="item" />
-                      </p>
-                    </div>
-                  </div>
-                </a>
-              </li>
-            </ul>
-          </template>
-        </ais-hits>
-        <pagination></pagination>
-      </ais-index>
-      <!-- no results -->
-      <div v-show="!state.hasResult && state.query">
-        <NoResults :query="state.query" />
-      </div>
-    </div>
-  </div>
-</template>
 <script>
+/* eslint-disable vuejs-accessibility/anchor-has-content */
+/* eslint-disable vuejs-accessibility/heading-has-content */
+
 import Pagination from '../Pagination.vue';
 import NoResults from '../NoResults.vue';
 import { createWidgetMixin } from 'vue-instantsearch/vue3/es';
-const connector =
-  (renderFn, unmountFn) =>
-  (widgetParams = {}) => ({
-    init({}) {
-      renderFn({ hasResult: true }, true);
-    },
+const connector = (renderFn, unmountFn) => () => ({
+  init() {
+    renderFn({ hasResult: true }, true);
+  },
 
-    render({ scopedResults, helper }) {
-      const hasResult =
-        scopedResults &&
-        scopedResults.find(
-          (indexResult) =>
-            indexResult.indexId === 'faculty' && indexResult.results.nbHits > 0
-        );
-
-      renderFn(
-        {
-          hasResult,
-          query: helper.state.query,
-        },
-        false
+  render({ scopedResults, helper }) {
+    const hasResult =
+      scopedResults &&
+      scopedResults.find(
+        (indexResult) =>
+          indexResult.indexId === 'faculty' && indexResult.results.nbHits > 0
       );
-    },
 
-    dispose() {
-      unmountFn();
-    },
-  });
+    renderFn(
+      {
+        hasResult,
+        query: helper.state.query,
+      },
+      false
+    );
+  },
+
+  dispose() {
+    unmountFn();
+  },
+});
 export default {
   components: {
     Pagination,
     NoResults,
   },
-  props: ['currentTab'],
+  mixins: [createWidgetMixin({ connector })],
+  props: {
+    currentTab: { type: String, required: true },
+  },
   data() {
     return {
       hover: null,
@@ -112,6 +67,56 @@ export default {
       slidingTeasers.scrollLeft += x;
     },
   },
-  mixins: [createWidgetMixin({ connector })],
 };
 </script>
+<template>
+  <div
+    v-show="currentTab === 'Faculty Accomplishments'"
+    id="site-search-hits-container"
+    :class="{ 'pt-10': currentTab === 'Faculty Accomplishments' }"
+  >
+    <div v-if="state">
+      <ais-index index-name="prod_news_searchable_posts" index-id="faculty">
+        <ais-configure
+          :filters="'taxonomies.story_type:\'Faculty Accomplishments\''"
+          :hits-per-page.camel="5"
+        />
+        <ais-hits>
+          <template #default="{ items, sendEvent }">
+            <ul v-show="state.hasResult">
+              <li v-for="item in items" :key="item.objectID">
+                <a
+                  class="group block text-base-minus-2 space-y-1.5 hover:text-link-hover"
+                  :href="item.external_url"
+                  @click="
+                    sendEvent('click', item, 'Faculty Accomplishment Clicked')
+                  "
+                >
+                  <div
+                    class="!flex !flex-row pb-8 mb-12 border-b border-gray-700"
+                  >
+                    <div>
+                      <h2 class="font-bold text-base mb-5">
+                        <ais-highlight attribute="post_title" :hit="item" />
+                      </h2>
+                      <p class="font-sans text-base">
+                        <ais-snippet attribute="content" :hit="item" />
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </template>
+        </ais-hits>
+        <div v-show="state.hasResult">
+          <pagination></pagination>
+        </div>
+      </ais-index>
+      <!-- no results -->
+      <div v-show="!state.hasResult && state.query">
+        <NoResults :query="state.query" />
+      </div>
+    </div>
+  </div>
+</template>

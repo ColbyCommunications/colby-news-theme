@@ -14,7 +14,7 @@
       <div class="wp-block">
         <div class="wp-block nc-slider-with-teaser-pair">
           <ais-hits>
-            <template v-slot="{ items, sendEvent }">
+            <template v-slot="{ items }">
               <div class="mb-10">
                 <div class="grid md:grid-cols-2 gap-8">
                   <div v-for="item in items.slice(0, 2)" :key="item.objectID">
@@ -25,6 +25,7 @@
                             <img
                               :src="item.images.teaser_new.url"
                               class="hover:brightness-90 transition ease-in-out duration-300"
+                              alt="`${item.post_title}: ${item.summary}`"
                             />
                           </a>
                         </div>
@@ -76,6 +77,7 @@
                                   :src="item.images.teaser_new.url"
                                   class="attachment-teaser_new size-teaser_new hover:brightness-90 transition ease-in-out duration-300"
                                   sizes="(max-width: 1080px) 100vw, 1080px"
+                                  :alt="`${item.post_title}: ${item.summary}`"
                                 />
                               </a>
                             </div>
@@ -144,7 +146,11 @@
 <script>
 export default {
   props: {
-    query: String,
+    query: {
+      type: String,
+      default: '',
+      required: true,
+    },
   },
   methods: {
     getTeaserPair(items) {
