@@ -15,37 +15,60 @@
         ></media-filter-section>
         <ais-hits>
           <template v-slot="{ items, sendEvent }">
-            <ul v-show="state.hasResult">
-              <li v-for="item in items" :key="item.objectID">
+            <ul v-show="state.hasResult" class="pb-10">
+              <li v-for="(item, index) in items" :key="item.objectID">
                 <a
                   class="group block text-base-minus-2 space-y-1.5 hover:text-link-hover"
                   :href="item.external_url"
                   @click="sendEvent('click', item, 'External Media Clicked')"
                 >
                   <div
-                    class="!flex !flex-row pb-16 mb-12 border-b border-gray-700"
+                    :class="[
+                      'post-list-item',
+                      'border-b',
+                      'border-gray-700',
+                      index !== 0 ? 'py-8' : 'pt-0 pb-8',
+                    ]"
                   >
-                    <div class="!w-1/8 !m-0 !p-0 flex justify-center">
-                      <img class="external-image" :src="item.external_image" />
-                    </div>
-                    <div class="w-7/8">
-                      <h3 class="pl-6 font-sans text-xs mb-1.5 uppercase">
-                        {{ item.media_source }}
-                      </h3>
-                      <h2 class="pl-6 font-bold text-base mb-1.5">
-                        <ais-highlight attribute="post_title" :hit="item" />
-                      </h2>
-                      <p class="pl-6 font-sans text-base">
-                        <ais-snippet attribute="content" :hit="item" />
-                      </p>
+                    <div class="space-y-2">
+                      <div
+                        class="grid gap-x-4 gap-y-2 media-coverage-item-grid--standard"
+                      >
+                        <div class="lg:self-center lg:mx-auto logo-wrapper">
+                          <div class="lg:w-24">
+                            <div>
+                              <img
+                                class=""
+                                :src="item.external_image"
+                                :alt="item.media_source"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="superhead-wrapper">
+                          <div class="text-xs uppercase">
+                            {{ item.media_source }}
+                          </div>
+                        </div>
+                        <div class="space-y-1 title-wrapper lg:space-y-2">
+                          <h3 class="leading-tight">
+                            <ais-highlight attribute="post_title" :hit="item" />
+                          </h3>
+                        </div>
+                        <div class="blurb-wrapper">
+                          <div class="text-base-minus-2 lg:text-base">
+                            <ais-snippet attribute="content" :hit="item" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </a>
               </li>
-              <pagination></pagination>
             </ul>
           </template>
         </ais-hits>
+        <pagination></pagination>
       </ais-index>
       <!-- no results -->
       <div v-show="!state.hasResult && state.query">

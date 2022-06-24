@@ -29,7 +29,7 @@
                         :src="item.images.teaser_new.url"
                         @mouseover="hover = item.objectID"
                         @mouseleave="hover = null"
-                        :alt="item.post_title"
+                        :alt="`${item.post_title}: ${item.summary}`"
                       />
                     </a>
                   </div>
@@ -61,10 +61,10 @@
                   </div>
                 </div>
               </li>
-              <pagination></pagination>
             </ul>
           </template>
         </ais-hits>
+        <pagination></pagination>
       </ais-index>
       <!-- no results -->
       <div v-show="!state.hasResult && state.query">

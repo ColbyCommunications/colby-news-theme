@@ -35,10 +35,10 @@
                   </div>
                 </a>
               </li>
-              <pagination></pagination>
             </ul>
           </template>
         </ais-hits>
+        <pagination></pagination>
       </ais-index>
       <!-- no results -->
       <div v-show="!state.hasResult && state.query">

@@ -21,16 +21,38 @@
             <a
               :href="createURL(currentRefinement - 1)"
               @click.prevent="refine(currentRefinement - 1)"
-              :style="{ color: isFirstPage ? '#D8D8D8' : 'black' }"
+              :disabled="isFirstPage ? true : false"
+              :class="[isFirstPage ? 'pointer-events-none' : '', 'mr-2']"
+              :style="{ color: isFirstPage ? '#8b8b8b' : 'black' }"
             >
-              <span class="material-icons-sharp chevron"> chevron_left </span>
+              <span
+                :class="[
+                  'material-icons-sharp',
+                  isFirstPage
+                    ? 'text-black text-xl leading-none border border-black rounded'
+                    : 'text-white text-xl leading-none border border-black rounded bg-black hover:text-black hover:bg-white',
+                ]"
+              >
+                chevron_left
+              </span>
             </a>
             <a
               :href="createURL(currentRefinement + 1)"
               @click.prevent="refine(currentRefinement + 1)"
-              :style="{ color: isLastPage ? '#D8D8D8' : 'black' }"
+              :disabled="isLastPage ? true : false"
+              :class="[isLastPage ? 'pointer-events-none' : '']"
+              :style="{ color: isLastPage ? '#8b8b8b' : 'black' }"
             >
-              <span class="material-icons-sharp chevron"> chevron_right </span>
+              <span
+                :class="[
+                  'material-icons-sharp',
+                  isLastPage
+                    ? 'text-black text-xl leading-none border border-black rounded'
+                    : 'text-white text-xl leading-none border border-black rounded bg-black hover:text-black hover:bg-white',
+                ]"
+              >
+                chevron_right
+              </span>
             </a>
           </li>
         </ul>
