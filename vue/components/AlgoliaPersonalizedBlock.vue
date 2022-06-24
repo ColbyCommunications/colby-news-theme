@@ -5,7 +5,7 @@
       :search-client="searchClient"
     >
       <h2 class="text-h2-prose mb-5">Recommended for You</h2>
-      <div class="wp-block">
+      <div>
         <ais-index
           index-name="prod_news_searchable_posts"
           index-id="noresult-videos"
@@ -15,7 +15,7 @@
             query=""
             :filters="'post_type:post'"
           />
-          <div class="wp-block">
+          <div>
             <div class="wp-block nc-slider-with-teaser-pair">
               <ais-hits>
                 <template v-slot="{ items, sendEvent }">
