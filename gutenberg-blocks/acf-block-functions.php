@@ -785,7 +785,11 @@ function algolia_personalized_results_block($block, $content = '', $is_preview =
         $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
         $query_args = query_from_fields($fields_from_block, false, $post_id);
 
+<<<<<<< HEAD
         echo '<div class="vue-block"></div>';
+=======
+        echo '<div id="vue-block" class="wp-block"></div>';
+>>>>>>> 6b912f5db52725b3e4041439533762d9b43e78a7
     }
 }
 
@@ -1204,8 +1208,11 @@ function breaker_feature($block, $content = '', $is_preview = false, $post_id = 
             . "</div></div>";
     }
 }
+<<<<<<< HEAD
 
 function algolia_personalized($block)
 {
     return '<div class="vue-mount"></div>';
 }
+=======
+>>>>>>> 6b912f5db52725b3e4041439533762d9b43e78a7

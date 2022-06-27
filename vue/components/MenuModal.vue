@@ -1,23 +1,14 @@
 <template>
   <div
-    v-if="store.searchOpen"
-    id="site-search"
+    v-if="store.menuOpen"
+    id="main-menu"
     aria-hidden="false"
-    :class="[
-      'fixed',
-      'inset-0',
-      'z-50',
-      'overflow-y-auto',
-      'bg-white',
-      'animate-opacity-in',
-      'aria-hidden:animate-opacity-out',
-      '!block',
-    ]"
+    class="fixed inset-0 z-50 hidden overflow-y-auto bg-white animate-opacity-in aria-hidden:animate-opacity-out !block"
   >
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Site Search"
+      aria-label="Main Menu"
       style="position: relative"
     >
       <div
@@ -68,9 +59,9 @@
             <div class="space-x-1 js-focus-visible">
               <div class="inline-block cursor-pointer open-menu-wrapper">
                 <button
-                  class="open-menu bg-white p-2 rounded-lg group transition-colors selected:bg-black selected:bg-opacity-[7%] disabled:pointer-events-none"
+                  class="open-menu bg-white p-2 rounded-lg group transition-colors selected:bg-black selected:bg-opacity-[7%] disabled:pointer-events-none selected"
                   aria-label="Open menu (modal)"
-                  @click="openMenu"
+                  @click="closeMenu"
                 >
                   <svg
                     class="w-6 h-6 group-hover:scale-125 transform transition-transform"
@@ -86,9 +77,9 @@
               </div>
               <div class="inline-block cursor-pointer open-search-wrapper">
                 <button
-                  class="open-search bg-white p-2 rounded-lg group transition-colors selected:bg-black selected:bg-opacity-[7%] disabled:pointer-events-none selected"
+                  class="open-search bg-white p-2 rounded-lg group transition-colors selected:bg-black selected:bg-opacity-[7%]"
                   aria-label="Open search (modal)"
-                  @click="closeSearch"
+                  @click="openSearch"
                 >
                   <svg
                     class="w-6 h-6 group-hover:scale-125 transform transition-transform"
@@ -113,10 +104,10 @@
         >
           <div class="container text-right">
             <button
-              class="p-2 transition-colors bg-white rounded-lg pointer-events-auto close-modal bg-opacity-90 hover:bg-opacity-100 group"
-              id="close-search"
+              class="p-2 transition-colors bg-white rounded-lg pointer-events-auto close-modal bg-opacity-90 hover:bg-opacity-100 group disabled:pointer-events-none"
+              id="close-menu"
               aria-label="Close modal"
-              @click="closeSearch"
+              @click="closeMenu"
             >
               <svg
                 class="w-6 h-6 transition-transform transform group-hover:scale-125"
@@ -131,14 +122,121 @@
             </button>
           </div>
         </div>
-
         <div
           class="flex flex-col justify-between"
           style="min-height: calc(100vh - var(--header-height))"
         >
           <div class="pt-2 md:pt-12">
             <div class="container">
-              <Algolia />
+              <div class="grid gap-10 md:grid-cols-2">
+                <ol class="space-y-1 text-base sm:text-xl">
+                  <li>
+                    <a
+                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/access-and-opportunity/"
+                      >Access and Opportunity</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/alumni/"
+                      >Alumni</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/announcements/"
+                      >Announcements</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/artificial-intelligence/"
+                      >Artificial Intelligence</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/arts/"
+                      >Arts</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/campus-and-community/"
+                      >Campus and Community</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/environment-and-climate/"
+                      >Environment and Climate</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/humanities/"
+                      >Humanities</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/interdisciplinary-studies/"
+                      >Interdisciplinary Studies</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/natural-sciences/"
+                      >Natural Sciences</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/social-sciences/"
+                      >Social Sciences</a
+                    >
+                  </li>
+                </ol>
+                <div
+                  class="contents md:flex md:flex-col md:space-y-10 md:justify-between"
+                >
+                  <ol class="space-y-1 text-sm-plus-1 sm:text-lg">
+                    <li>
+                      <a href="https://colbyathletics.com/">Athletics News</a>
+                    </li>
+                    <li><a href="/colby-magazine/">Colby Magazine</a></li>
+                    <li><a href="/contact/">Contact</a></li>
+                    <li><a href="https://events.colby.edu/">Events</a></li>
+                    <li>
+                      <a href="/external/faculty-accomplishments/"
+                        >Faculty Accomplishments</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/resources-for-the-media/"
+                        >Resources for the Media</a
+                      >
+                    </li>
+                  </ol>
+                  <div class="site-header-widgets">
+                    <div>
+                      <p>
+                        Sign up for weekly emails to get the latest from Colby
+                        Magazine
+                      </p>
+                    </div>
+                    <div>
+                      <div class="wp-container-1 wp-block-buttons">
+                        <div class="wp-block-button">
+                          <a class="wp-block-button__link" href="/newsletter"
+                            >Subscribe</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div>
@@ -167,7 +265,7 @@
                   <div class="p-1 -m-1 overflow-hidden">
                     <div>
                       <ul
-                        class="wp-container-3 wp-block-social-links is-style-logos-only"
+                        class="wp-container-2 wp-block-social-links is-style-logos-only"
                       >
                         <li
                           class="wp-social-link wp-social-link-facebook wp-block-social-link"
@@ -192,6 +290,7 @@
                               ></path></svg
                           ></a>
                         </li>
+
                         <li
                           class="wp-social-link wp-social-link-instagram wp-block-social-link"
                         >
@@ -215,6 +314,7 @@
                               ></path></svg
                           ></a>
                         </li>
+
                         <li
                           class="wp-social-link wp-social-link-twitter wp-block-social-link"
                         >
@@ -238,6 +338,7 @@
                               ></path></svg
                           ></a>
                         </li>
+
                         <li
                           class="wp-social-link wp-social-link-linkedin wp-block-social-link"
                         >
@@ -261,6 +362,7 @@
                               ></path></svg
                           ></a>
                         </li>
+
                         <li
                           class="wp-social-link wp-social-link-youtube wp-block-social-link"
                         >
@@ -293,17 +395,24 @@
           </div>
         </div>
       </div>
+      <div
+        class="sticky-events--sentinel sticky-events--sentinel-bottom"
+        style="
+          left: 0px;
+          position: absolute;
+          right: 0px;
+          visibility: hidden;
+          bottom: 0px;
+          height: 0px;
+        "
+      ></div>
     </div>
   </div>
 </template>
 <script>
 import { useMainStore } from '../stores/main';
-import Algolia from './Algolia.vue';
 
 export default {
-  components: {
-    Algolia,
-  },
   setup() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const store = useMainStore();
@@ -312,12 +421,12 @@ export default {
     };
   },
   methods: {
-    closeSearch() {
-      this.store.closeSearch();
+    closeMenu() {
+      this.store.closeMenu();
     },
-    openMenu() {
-      this.store.closeSearch();
-      this.store.openMenu();
+    openSearch() {
+      this.store.closeMenu();
+      this.store.openSearch();
     },
   },
 };

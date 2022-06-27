@@ -3,8 +3,9 @@
     <div class="flex items-center">
       <span
         class="material-icons-sharp filters-icon cursor-pointer"
-        :class="{ 'bg-gray-200 rounded-md': this.isOpen }"
+        :class="{ 'bg-gray-200 rounded-md': isOpen }"
         @click="toggleFilters()"
+        @keyup.enter="toggleFilters()"
       >
         tune
       </span>
@@ -12,11 +13,7 @@
   </div>
 </template>
 <script>
-import CurrentRefinements from './CurrentRefinements.vue';
 export default {
-  components: {
-    CurrentRefinements,
-  },
   props: [
     'currentTab',
     'isOpen',
@@ -27,8 +24,6 @@ export default {
   data() {
     return {};
   },
-  computed: {},
-  methods: {},
 };
 </script>
 <style>
