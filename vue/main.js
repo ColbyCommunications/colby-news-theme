@@ -19,4 +19,4 @@ modal.mount('#vue-search-modal');
 
 const algoliaPersonalizedBlock = createApp(AlgoliaPersonalizedBlock);
 algoliaPersonalizedBlock.use(InstantSearch);
-algoliaPersonalizedBlock.mount('#vue-block');
+algoliaPersonalizedBlock.mount('.vue-block');
