@@ -113,8 +113,8 @@
         >
           <div class="container text-right">
             <button
-              class="p-2 transition-colors bg-white rounded-lg pointer-events-auto close-modal bg-opacity-90 hover:bg-opacity-100 group"
               id="close-search"
+              class="p-2 transition-colors bg-white rounded-lg pointer-events-auto close-modal bg-opacity-90 hover:bg-opacity-100 group"
               aria-label="Close modal"
               @click="closeSearch"
             >

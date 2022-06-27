@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center">
+    <button class="flex items-center">
       <span
         class="material-icons-sharp filters-icon cursor-pointer"
         :class="{ 'bg-gray-200 rounded-md': isOpen }"
@@ -9,18 +9,18 @@
       >
         tune
       </span>
-    </div>
+    </button>
   </div>
 </template>
 <script>
 export default {
-  props: [
-    'currentTab',
-    'isOpen',
-    'toggleFilters',
-    'checkTabStories',
-    'checkTabMedia',
-  ],
+  props: {
+    currentTab: { type: String, required: true },
+    isOpen: { type: Boolean, required: true },
+    toggleFilters: { type: Function, required: true },
+    checkTabMedia: { type: Function, required: true },
+    checkTabStories: { type: Function, required: true },
+  },
   data() {
     return {};
   },

@@ -104,8 +104,8 @@
         >
           <div class="container text-right">
             <button
-              class="p-2 transition-colors bg-white rounded-lg pointer-events-auto close-modal bg-opacity-90 hover:bg-opacity-100 group disabled:pointer-events-none"
               id="close-menu"
+              class="p-2 transition-colors bg-white rounded-lg pointer-events-auto close-modal bg-opacity-90 hover:bg-opacity-100 group disabled:pointer-events-none"
               aria-label="Close modal"
               @click="closeMenu"
             >

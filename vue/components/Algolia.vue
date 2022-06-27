@@ -29,11 +29,9 @@
             <ais-configure :hits-per-page.camel="8" />
             <ais-hits :transform-items="removeExactQueryQuerySuggestion">
               <template #item="{ item }">
-                <ais-highlight
-                  :hit="item"
-                  attribute="query"
-                  @click="search(item.query)"
-                />
+                <button @click="search(item.query)">
+                  <ais-highlight :hit="item" attribute="query" />
+                </button>
               </template>
             </ais-hits>
           </ais-index>
@@ -153,7 +151,7 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
 }
-.qs ol li.ais-Hits-item {
+.qs ol li.ais-Hits-item button {
   margin-right: 12px;
   padding: 0.5rem;
   cursor: pointer;
