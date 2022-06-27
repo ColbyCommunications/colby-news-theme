@@ -113,7 +113,20 @@ export default {
 }
 
 .filters-modal .ais-SearchBox-input {
-  width: 30%;
   min-width: 300px;
+}
+
+@media only screen and (max-width: 450px) {
+  .filters-modal .ais-SearchBox-input {
+    min-width: 200px;
+    max-width: 200px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .filters-modal .ais-SearchBox-input {
+    min-width: 100px;
+    max-width: 100px;
+  }
 }
 </style>
