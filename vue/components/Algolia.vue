@@ -19,7 +19,7 @@
         <ais-configure :hits-per-page.camel="1" />
         <!-- Widgets -->
         <!-- searchbox widget-->
-        <searchbox ref="searchBox"></searchbox>
+        <searchbox ref="customSearchBox"></searchbox>
         <!-- query suggestions -->
         <div class="qs mb-12">
           <ais-index
@@ -130,8 +130,7 @@ export default {
     },
     search(query) {
       // queries the query suggestion (this runs when clicking on the QS)
-      this.$refs.searchBox.value = query;
-      this.$refs.aisIS.instantSearchInstance.helper.setQuery(query).search();
+      this.$refs.customSearchBox.currentRefinement = query;
     },
     removeExactQueryQuerySuggestion(items) {
       // checks if input matches query suggestion exactly and removes it from QS if it does
