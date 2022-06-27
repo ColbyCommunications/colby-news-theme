@@ -43,7 +43,7 @@ export default {
     currentTab: { type: String, required: true },
     isOpen: { type: Boolean, required: true },
     toggleFilters: { type: Function, required: true },
-    checkTabStories: { type: Function, required: true },
+    checkTabStories: { type: Boolean, required: true },
   },
   data() {
     return {
@@ -84,7 +84,7 @@ export default {
           :isOpen="isOpen"
           :toggleFilters="toggleFilters"
           :checkTabStories="checkTabStories"
-          :hasResult="state.hasResult"
+          :hasResult="state.hasResult ? state.hasResult : true"
         ></stories-filter-section>
         <ais-hits>
           <template #default="{ items, sendEvent }">

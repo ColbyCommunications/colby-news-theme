@@ -1,11 +1,9 @@
 <template>
   <div>
-    <button class="flex items-center">
+    <button class="flex items-center" @click="toggleFilters">
       <span
         class="material-icons-sharp filters-icon cursor-pointer"
         :class="{ 'bg-gray-200 rounded-md': isOpen }"
-        @click="toggleFilters()"
-        @keyup.enter="toggleFilters()"
       >
         tune
       </span>
@@ -15,11 +13,8 @@
 <script>
 export default {
   props: {
-    currentTab: { type: String, required: true },
     isOpen: { type: Boolean, required: true },
     toggleFilters: { type: Function, required: true },
-    checkTabMedia: { type: Function, required: true },
-    checkTabStories: { type: Function, required: true },
   },
   data() {
     return {};

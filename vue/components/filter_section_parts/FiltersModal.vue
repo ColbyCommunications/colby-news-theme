@@ -38,8 +38,8 @@
 export default {
   props: {
     isOpen: { type: Boolean, required: true },
-    checkTabStories: { type: Function, required: true },
-    checkTabMedia: { type: Function, required: true },
+    checkTabStories: { type: Boolean, required: true },
+    checkTabMedia: { type: Boolean, required: true },
   },
   data() {
     return {

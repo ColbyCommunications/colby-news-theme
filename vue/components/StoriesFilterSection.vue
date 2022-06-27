@@ -1,10 +1,10 @@
 <template>
-  <div v-show="this.currentTab === 'Stories'" class="flex flex-col">
+  <div v-show="currentTab === 'Stories'" class="flex flex-col">
     <div class="flex flex-row justify-between pt-4 pb-3">
       <!-- current refinements -->
       <div class="flex items-center">
         <ais-current-refinements :included-attributes="['primary_category']">
-          <template v-slot="{ items, refine }">
+          <template #default="{ items, refine }">
             <ul>
               <li v-for="item in items" :key="item.attribute">
                 <ul class="flex flex-wrap">
@@ -51,7 +51,7 @@
           </template>
         </ais-current-refinements>
       </div>
-      <div v-show="this.hasResult">
+      <div v-show="hasResult">
         <!-- filters button -->
         <filters-button
           :isOpen="isOpen"
@@ -61,7 +61,7 @@
     </div>
     <!-- filters modal -->
     <filters-modal
-      v-show="this.hasResult"
+      v-show="hasResult"
       :isOpen="isOpen"
       :checkTabStories="checkTabStories"
       :checkTabMedia="checkTabMedia"
@@ -76,14 +76,15 @@ export default {
     FiltersButton,
     FiltersModal,
   },
-  props: [
-    'currentTab',
-    'isOpen',
-    'toggleFilters',
-    'checkTabStories',
-    'checkTabMedia',
-    'hasResult',
-  ],
+
+  props: {
+    isOpen: { type: Boolean, required: true },
+    checkTabStories: { type: Boolean, required: true },
+    checkTabMedia: { type: Boolean },
+    toggleFilters: { type: Function, required: true },
+    hasResult: { type: [Boolean, Object], required: true },
+    currentTab: { type: String, required: true },
+  },
   data() {
     return {};
   },

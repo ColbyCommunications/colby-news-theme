@@ -80,9 +80,9 @@ export default {
     currentTab: { type: String, required: true },
     isOpen: { type: Boolean, required: true },
     toggleFilters: { type: Function, required: true },
-    checkTabMedia: { type: Function, required: true },
-    checkTabStories: { type: Function, required: true },
-    hasResult: { type: Boolean, required: true },
+    checkTabMedia: { type: Boolean, required: true },
+    checkTabStories: { type: Boolean },
+    hasResult: { type: [Boolean, Object], required: true },
   },
   data() {
     return {};

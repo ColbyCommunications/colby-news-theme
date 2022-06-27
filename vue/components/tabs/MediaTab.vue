@@ -43,7 +43,7 @@ export default {
     currentTab: { type: String, required: true },
     isOpen: { type: Boolean, required: true },
     toggleFilters: { type: Function, required: true },
-    checkTabMedia: { type: Function, required: true },
+    checkTabMedia: { type: Boolean, required: true },
   },
   data() {
     return {
@@ -87,7 +87,7 @@ export default {
           :isOpen="isOpen"
           :toggleFilters="toggleFilters"
           :checkTabMedia="checkTabMedia"
-          :hasResult="state.hasResult"
+          :hasResult="state.hasResult ? state.hasResult : true"
         ></media-filter-section>
         <ais-hits>
           <template v-slot="{ items, sendEvent }">
