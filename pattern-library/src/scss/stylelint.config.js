@@ -51,6 +51,7 @@ module.exports = {
   ignoreFiles: [
     '**/node_modules/*',
     '**/vendor/*',
+    '**/vue/*',
     '**/assets/**/*.css',
     '**/wp-includes/**/*.css',
   ],
