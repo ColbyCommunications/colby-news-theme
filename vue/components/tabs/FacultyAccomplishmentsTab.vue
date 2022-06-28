@@ -72,7 +72,7 @@ export default {
 <template>
   <div
     v-show="currentTab === 'Faculty Accomplishments'"
-    id="site-search-hits-container"
+    id="faculty-accomplishments-hits-container"
     :class="{ 'pt-10': currentTab === 'Faculty Accomplishments' }"
   >
     <div v-if="state">

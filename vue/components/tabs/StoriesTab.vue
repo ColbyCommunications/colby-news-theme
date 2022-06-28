@@ -75,7 +75,7 @@ export default {
 };
 </script>
 <template>
-  <div v-show="currentTab === 'Stories'" id="site-search-hits-container">
+  <div v-show="currentTab === 'Stories'" id="stories-hits-container">
     <div v-if="state">
       <ais-index index-name="prod_news_searchable_posts" index-id="stories">
         <ais-configure :filters="'post_type:post'" :hits-per-page.camel="5" />
@@ -84,7 +84,7 @@ export default {
           :isOpen="isOpen"
           :toggleFilters="toggleFilters"
           :checkTabStories="checkTabStories"
-          :hasResult="state.hasResult ? state.hasResult : true"
+          :hasResult="state.hasResult ? state.hasResult : false"
         ></stories-filter-section>
         <ais-hits>
           <template #default="{ items, sendEvent }">

@@ -50,7 +50,7 @@ export default {
 <template>
   <div
     v-show="currentTab === 'Videos'"
-    id="site-search-hits-container"
+    id="videos-hits-container"
     class="pt-10"
   >
     <div v-if="state">

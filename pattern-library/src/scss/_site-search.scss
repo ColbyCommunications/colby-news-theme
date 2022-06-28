@@ -30,6 +30,22 @@
   }
 }
 
+#media-coverage-hits-container {
+  .ais-SearchBox-form {
+    position: relative;
+
+    .ais-SearchBox-reset {
+      font-size: 14px;
+      position: absolute;
+      right: 11px;
+      top: 15px;
+    }
+  }
+  .ais-RefinementList-noResults {
+    margin-top: 10px;
+  }
+}
+
 .Tabs {
   position: relative;
   display: flex;

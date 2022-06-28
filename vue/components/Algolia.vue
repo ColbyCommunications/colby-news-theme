@@ -21,7 +21,7 @@
         <!-- searchbox widget-->
         <searchbox ref="customSearchBox"></searchbox>
         <!-- query suggestions -->
-        <div class="qs mb-12">
+        <div class="qs mb-12" role="region" aria-label="Query Suggestions`">
           <ais-index
             index-name="prod_news_searchable_posts_query_suggestions"
             index-id="news-qs"
@@ -29,7 +29,7 @@
             <ais-configure :hits-per-page.camel="8" />
             <ais-hits :transform-items="removeExactQueryQuerySuggestion">
               <template #item="{ item }">
-                <button @click="search(item.query)">
+                <button aria-label="item.query" @click="search(item.query)">
                   <ais-highlight :hit="item" attribute="query" />
                 </button>
               </template>

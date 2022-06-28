@@ -75,7 +75,10 @@ export default {
 };
 </script>
 <template>
-  <div v-show="currentTab === 'Media Coverage'" id="site-search-hits-container">
+  <div
+    v-show="currentTab === 'Media Coverage'"
+    id="media-coverage-hits-container"
+  >
     <div v-if="state">
       <ais-index index-name="prod_news_searchable_posts" index-id="media">
         <ais-configure
@@ -87,7 +90,7 @@ export default {
           :isOpen="isOpen"
           :toggleFilters="toggleFilters"
           :checkTabMedia="checkTabMedia"
-          :hasResult="state.hasResult ? state.hasResult : true"
+          :hasResult="state.hasResult ? state.hasResult : false"
         ></media-filter-section>
         <ais-hits>
           <template v-slot="{ items, sendEvent }">

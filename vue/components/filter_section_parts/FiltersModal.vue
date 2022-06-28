@@ -114,6 +114,8 @@ export default {
 
 .filters-modal .ais-SearchBox-input {
   min-width: 300px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 @media only screen and (max-width: 450px) {
