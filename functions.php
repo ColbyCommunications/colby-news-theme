@@ -1041,7 +1041,6 @@ if (! wp_next_scheduled('page_metrics')) {
 add_action('page_metrics', 'page_metrics_function');
 function page_metrics_function()
 {
-    // dd(PLATFORM_VARIABLES);
     // get data from SiteImprove API
     $ch = curl_init();
     curl_setopt_array($ch, array(
@@ -1132,29 +1131,32 @@ function filter_slug($slug, $title)
 
     return $final_slug;
 }
-// get total of unique media publications (ie Boston Globe, WSJ, CNBC)
+
 function get_total_pubs()
 {
+    // get total of unique media publications (ie Boston Globe, WSJ, CNBC)
     $terms = get_terms(array('taxonomy' => 'media_source'));
     return count($terms);
-};
+}
 
-function get_all_categories() {
+function get_all_categories()
+{
     $categories = get_categories();
     $primary_category_array = [];
-    foreach($categories as $category) {
+    foreach ($categories as $category) {
         array_push($primary_category_array, $category->name);
     };
     $key = array_search("Uncategorized", $primary_category_array);
     if ($key !== false) {
-    unset($primary_category_array[$key]);
-    return json_encode($primary_category_array);
+        unset($primary_category_array[$key]);
+        return json_encode($primary_category_array);
     }
 }
 
-// get siteimprove_page_views to send to algolia
+
 function post_shared_attributes(array $shared_attributes, WP_Post $post)
 {
+    // get siteimprove_page_views to send to algolia
     if ($post->post_type === 'post') {
         $shared_attributes['siteimprove_page_views'] = (int) get_post_meta($post->ID, 'siteimprove_page_views', true);
         $shared_attributes['summary'] = strip_tags(get_post_meta($post->ID, 'summary', true));
@@ -1180,43 +1182,6 @@ function post_shared_attributes(array $shared_attributes, WP_Post $post)
 
 add_filter('algolia_searchable_post_shared_attributes', 'post_shared_attributes', 10, 2);
 
-
-/**
- * Update algolia index settings to use siteimprove_page_views in ranking
- * make sure siteimprove_page_views is marked as 'unretrievableAttribute' as to not
- * actually display attribute in search
- */
-function vm_posts_index_settings(array $settings)
-{
-    $custom_ranking = $settings['customRanking'];
-    array_unshift($custom_ranking, 'desc(siteimprove_page_views)');
-    $settings['customRanking'] = $custom_ranking;
-
-    // Protect our sensitive data.
-    $protected_attributes = array();
-
-    if (isset($settings['unretrievableAttributes'])) {
-        // Ensure we merge our values with the existing ones if available.
-        $protected_attributes = $settings['unretrievableAttributes'];
-    }
-
-    $protected_attributes[] = 'siteimprove_page_views';
-    $settings['unretrievableAttributes'] = $protected_attributes;
-
-    return $settings;
-}
-
-add_filter('algolia_posts_index_settings', 'vm_posts_index_settings');
-
-// generate a public API key that is valid for 1 hour:
-// $validUntil = time() + 30;
-// $GLOBALS['public_key'] = \Algolia\AlgoliaSearch\SearchClient::generateSecuredApiKey(
-//   '63c304c04c478fd0c4cb1fb36cd666cb',
-//   [
-//     'validUntil' => $validUntil
-//   ]
-// );
-
 add_filter('timber/twig', 'add_to_twig');
 
 function add_to_twig($twig)
@@ -1226,77 +1191,3 @@ function add_to_twig($twig)
     $twig->addFunction(new Timber\Twig_Function('get_all_categories', 'get_all_categories'));
     return $twig;
 }
-
-// function add_to_twig($twig)
-// {
-//     // Adding a function.
-//     $twig->addFunction(new Timber\Twig_Function('test_public_key'));
-
-//     return $twig;
-// }
-
-
-
-
-// add_filter('timber/twig', 'add_to_twig');
-
-// function encrypt_platform_variables()
-// {
-//     $passphrase = $_ENV['PLATFORM_VARIABLE_PASSPHRASE'];
-//     $plain_text = json_encode(PLATFORM_VARIABLES);
-
-//     $salt = openssl_random_pseudo_bytes(256);
-//     $iv = openssl_random_pseudo_bytes(16);
-//     //on PHP7 can use random_bytes() istead openssl_random_pseudo_bytes()
-//     //or PHP5x see : https://github.com/paragonie/random_compat
-
-//     $iterations = 999;
-//     $key = hash_pbkdf2("sha512", $passphrase, $salt, $iterations, 64);
-
-//     $encrypted_data = openssl_encrypt($plain_text, 'aes-256-cbc', hex2bin($key), OPENSSL_RAW_DATA, $iv);
-
-//     $data = array("ct" => base64_encode($encrypted_data), "i" => bin2hex($iv), "s" => bin2hex($salt));
-//     return json_encode($data);
-// }
-
-// function add_to_twig($twig)
-// {
-//     // Adding a function.
-//     $twig->addFunction(new Timber\Twig_Function('encrypt_platform_variables', 'encrypt_platform_variables'));
-
-//     return $twig;
-// }
-
-// function print_post (WP_Post $post) {
-//     // die(var_dump($post));
-//     dd($post);
-// }
-
-// function test_function() {
-//     $args2 = array(
-//         'numberposts'   => -1,
-//         'post_type'     => 'external_post',
-//         'post_status'   => 'publish',
-//         'tax_query' => array(
-//         // array(
-//         //     'taxonomy' => 'genre',
-//         //     'field'    => 'slug',
-//         //     'terms'    => 'jazz'
-//         // )
-//     )
-//     );
-
-//     $all_external_posts = get_posts($args2);
-
-//     // iterate over all posts
-//     foreach ($all_external_posts as $post) {
-//         // // extract post data
-//         // $id = $post->ID;
-//         // $post_title = $post->post_title;
-//         // $post_slug = $post->post_name;
-
-//         print_post($post);
-//     }
-// }
-
-// test_function();
