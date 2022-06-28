@@ -23,7 +23,7 @@ jobs:
 
       - name: Run ESLint
         run: |
-          npm run stylelint-theme-report
+          npm run stylelint-report
         
 
   job2:
