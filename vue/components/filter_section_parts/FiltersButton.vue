@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div role="region" aria-label="Filter Button">
     <button class="flex items-center" @click="toggleFilters">
       <span
         class="material-icons-sharp filters-icon cursor-pointer"

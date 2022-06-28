@@ -92,6 +92,8 @@ export default {
               <li v-for="item in items" :key="item.objectID">
                 <div
                   class="flex flex-col md:flex-row pb-8 mb-12 border-b border-gray-700"
+                  role="region"
+                  aria-label="Search Result"
                 >
                   <div
                     class="w-full md:w-1/4 !m-0 !p-0 transition ease-in-out duration-300"

@@ -5,7 +5,7 @@
       <div class="flex items-center">
         <ais-current-refinements :included-attributes="['media_source']">
           <template #default="{ items, refine }">
-            <ul>
+            <ul v-show="items.length">
               <li v-for="item in items" :key="item.attribute">
                 <ul class="flex flex-wrap">
                   <li

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div role="region" aria-label="Search Filters">
     <!-- filters modal -->
     <Transition>
       <div

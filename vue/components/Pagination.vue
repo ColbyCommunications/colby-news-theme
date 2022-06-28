@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div role="region" aria-label="Pagination">
     <ais-pagination @page-change="pageChange">
       <template
         #default="{
@@ -65,7 +65,7 @@ export default {
   data() {
     return {
       paginationText: {
-        fontSize: '15px',
+        fontSize: '0.9rem',
       },
     };
   },

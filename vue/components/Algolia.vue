@@ -29,7 +29,7 @@
             <ais-configure :hits-per-page.camel="8" />
             <ais-hits :transform-items="removeExactQueryQuerySuggestion">
               <template #item="{ item }">
-                <button aria-label="item.query" @click="search(item.query)">
+                <button :aria-label="item.query" @click="search(item.query)">
                   <ais-highlight :hit="item" attribute="query" />
                 </button>
               </template>
