@@ -14,39 +14,35 @@
   }
 }
 
-/*#site-search-hits {
+#site-search-hits {
+  .ais-Hits-list,
+  .ais-InfiniteHits-list {
+    @apply grid gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5;
+  }
 
-	.ais-Hits-list,
-	.ais-InfiniteHits-list {
-
-		@apply grid gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5;
-	}
-
-	.ais-InfiniteHits-loadMore {
-
-		@apply mt-12 px-10 py-3 rounded-md uppercase text-sm-plus-1 text-white bg-black hover:bg-gray-800 transition-colors disabled:hidden;
-	}
+  .ais-InfiniteHits-loadMore {
+    @apply mt-12 px-10 py-3 rounded-md uppercase text-sm-plus-1 text-white bg-black hover:bg-gray-800 transition-colors disabled:hidden;
+  }
 }
 
 #media-coverage-hits-container {
+  .ais-SearchBox-form {
+    position: relative;
 
-	.ais-SearchBox-form {
-		position: relative;
+    .ais-SearchBox-reset {
+      font-size: 14px;
+      position: absolute;
+      right: 11px;
+      top: 15px;
+    }
+  }
 
-		.ais-SearchBox-reset {
-			font-size: 14px;
-			position: absolute;
-			right: 11px;
-			top: 15px;
-		}
-	}
-
-	.ais-RefinementList-noResults {
-		margin-top: 10px;
-	}
+  .ais-RefinementList-noResults {
+    margin-top: 10px;
+  }
 }
 
-.Tabs {
+/*.Tabs {
 	position: relative;
 	display: flex;
 	justify-content: space-between;
