@@ -46,7 +46,7 @@
           style="padding: 10px; top: 39px; right: 0"
         >
           <li
-            v-for="(dropdownTab, indexDropdown) in this.dropdownTabs"
+            v-for="(dropdownTab, indexDropdown) in dropdownTabs"
             :key="indexDropdown"
             :class="{ 'active': currentTab === dropdownTab }"
           >

@@ -10,6 +10,7 @@
     <!-- :value/@input allows us to pass v-model to the component in v2 -->
     <!-- :modelValue/@update:modelValue allows us to pass v-model to the component in v3 -->
     <input
+      ref="input"
       type="search"
       autocorrect="off"
       autocapitalize="off"
@@ -27,7 +28,6 @@
         $emit('input', $event.target.value);
         $emit('update:modelValue', $event.target.value);
       "
-      ref="input"
     />
     <button
       type="submit"
