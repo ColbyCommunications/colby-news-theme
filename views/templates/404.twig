@@ -1,0 +1,22 @@
+{% extends 'template-parts/base.twig' %}
+
+{% block content %}
+    <section class="container mx-auto error-404 not-found archive-wrapper px-container">
+        <header class="mt-12 mb-8 page-header">
+                <h1 class="mb-6 font-sans text-3xl font-bold sm:text-4xl md:text-6xl">
+                    {{ __('Page Not Found') }}
+                </h1>
+        </header><!-- .page-header -->
+        <div class="pt-6 page-content">
+            <div class="mb-6 prose">
+                <p>
+                    Our previous Colby News and Colby Magazine sites have a new home at news.colby.edu.
+                    The page you're looking for may have a new address or no longer exist.
+                </p>
+
+                <p>Visit the <a href="/">new home for Colby News</a>, or search for what you're looking for by clicking the magnifying glass icon above.</p>
+            </div>
+
+        </div><!-- .page-content -->
+    </section><!-- .error-404 -->
+{% endblock %}

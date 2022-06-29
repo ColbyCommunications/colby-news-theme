@@ -1,0 +1,33 @@
+{% set outerHTag = 'h' ~ hLevel|default(2) %}
+{% set innerHTag = 'h' ~ (hLevel|default(2) + 1) %}
+
+<section class="space-y-2 {{ float ? 'md:max-w-sm' : 'max-w-4xl'}}">
+    <{{ outerHTag }} class="uppercase text-xs-plus-1 {{ not float ? 'sm:text-xl' }}">{{ headline|default('Related') }}</{{ outerHTag }}>
+    <ul>
+        {% for item in items %}
+            <li>
+                <a class="
+                    grid {{ float ? 'grid-related-post--small' : 'grid-cols-3' }} gap-y-2 gap-x-7 hover:bg-gray-100
+                    py-3.5 {{ not float ? 'sm:py-5' }}
+                    border-b border-solid border-gray-700
+                    {{ loop.first ? 'border-t' }}
+                    {{ loop.first and (not float) ? 'sm:border-t-0' }}
+                    {{ loop.last and (not float) ? 'sm:border-b-0' }}
+                " href="{{ item.url }}">
+                    <div class="order-last  {{ not float ? 'sm:order-none' }}">
+                        {# image gets "cropped" to a square on mobile w/ the padding-bottom trick #}
+                        <div class="
+                            relative after:block after:pb-[100%] after:content-empty
+                            descendant-img:absolute descendant-img:w-full descendant-img:h-full descendant-img:object-cover
+                            {{ not float ? 'sm:after:hidden sm:descendant-img:static' }}
+                        ">{{ item.image }}</div>
+                    </div>
+                    <div class="contents {{ not float ? 'sm:block sm:col-span-2 sm:space-y-2 lg:pt-6' }}">
+                        <{{ innerHTag }} class="col-span-3 sm:col-span-2 text-sm-plus-1 font-bold {{ not float ? 'sm:text-xl' }}">{{ item.title }}</{{ innerHTag }}>
+                        <p class="col-span-2 text-xs-plus-1 {{ not float ? 'sm:text-base' }}">{{ item.description }}</p>
+                    </div>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</section>

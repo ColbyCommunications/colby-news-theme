@@ -1,120 +1,129 @@
-# [Sage](https://roots.io/sage/)
-[![Packagist](https://img.shields.io/packagist/vpre/roots/sage.svg?style=flat-square)](https://packagist.org/packages/roots/sage)
-[![devDependency Status](https://img.shields.io/david/dev/roots/sage.svg?style=flat-square)](https://david-dm.org/roots/sage#info=devDependencies)
-[![Build Status](https://img.shields.io/travis/roots/sage.svg?style=flat-square)](https://travis-ci.org/roots/sage)
+# Colby News Research Wordpress Theme Development
 
-Sage is a WordPress starter theme with a modern development workflow.
+- [Colby News Research Wordpress Theme Development](#colby-news-research-wordpress-theme-development)
+  - [Development Requirements](#development-requirements)
+  - [Storybook Component Library Development](#storybook-component-library-development)
+    - [First Time Storybook Setup](#first-time-storybook-setup)
+    - [Important Storybook Notes](#important-storybook-notes)
+    - [Storybook CLI Commands](#storybook-cli-commands)
+  - [WordPress Theme Development](#wordpress-theme-development)
+    - [First Time WordPress Setup](#first-time-wordpress-setup)
+    - [Important WordPress Notes](#important-wordpress-notes)
+    - [Lando commands](#lando-commands)
+  - [Troubleshooting](#troubleshooting)
 
-## Features
+## Development Requirements
 
-* Sass for stylesheets
-* Modern JavaScript
-* [Webpack](https://webpack.github.io/) for compiling assets, optimizing images, and concatenating and minifying files
-* [Browsersync](http://www.browsersync.io/) for synchronized browser testing
-* [Blade](https://laravel.com/docs/5.6/blade) as a templating engine
-* [Controller](https://github.com/soberwp/controller) for passing data to Blade templates
-* CSS framework (optional): [Bootstrap 4](https://getbootstrap.com/), [Bulma](https://bulma.io/), [Foundation](https://foundation.zurb.com/), [Tachyons](http://tachyons.io/), [Tailwind](https://tailwindcss.com/)
+- Node/NPM
+- Lando (https://lando.dev/download/)
+- Docker Desktop (included with Lando)
 
-See a working example at [roots-example-project.com](https://roots-example-project.com/).
+## Storybook Component Library Development
 
-## Requirements
+### First Time Storybook Setup
 
-Make sure all dependencies have been installed before moving on:
+1. Run `npm install` to set up linting tools – primarily ESLint and
+   specific configurations for it.
+2. `npm start` - spins up the builder, storybook, and tailwind viewer containers.
+3. When the log stops scrolling (probably with a `webpack built` message), visit
+   `http://localhost:3000` to view the Storybook site.
+4. When you are finished, use `npm stop`
 
-* [WordPress](https://wordpress.org/) >= 4.7
-* [PHP](https://secure.php.net/manual/en/install.php) >= 7.1.3 (with [`php-mbstring`](https://secure.php.net/manual/en/book.mbstring.php) enabled)
-* [Composer](https://getcomposer.org/download/)
-* [Node.js](http://nodejs.org/) >= 8.0.0
-* [Yarn](https://yarnpkg.com/en/docs/install)
+### Important Storybook Notes
 
-## Theme installation
+- Logs will begin displaying automatically when you use `npm start` or `npm restart`.
+  To stop displaying the logs, use `ctl+c` in your terminal. This will not kill
+  the running containers. You can bring them back up using `npm run logs`.
 
-Install Sage using Composer from your WordPress themes directory (replace `your-theme-name` below with the name of your theme):
+- Changes to the TailwindCSS config file (`./pattern-library/.builder-config/tailwind.config.js`)
+  do not trigger a Storybook rebuild. Use `npm restart` after making changes to this file.
 
-```shell
-# @ app/themes/ or wp-content/themes/
-$ composer create-project roots/sage your-theme-name
-```
+### Storybook CLI Commands
 
-To install the latest development version of Sage, add `dev-master` to the end of the command:
+- `npm start`: start all containers for this project
+- `npm stop`: stop all running containers for this project
+- `npm restart`: stops and starts all containers
+- `npm test`: Runs eslint and stylelint to check and fix formatting errors
+- `npm run logs`: display running logs for all containers if you have
+  manually stopped displaying them
+- `npm run logs-storybook` / `npm run logs-builder`: displays running logs for
+  only one of the running containers
+- `npm run storybook-init`: run only the builder container
 
-```shell
-$ composer create-project roots/sage your-theme-name dev-master
-```
+If you want to run `docker-compose` commands directly, you must pass the name of
+the correct composer config file:
 
-During theme installation you will have options to update `style.css` theme headers, select a CSS framework, and configure Browsersync.
+- `docker-compose --file storybook-compose.yml` followed by your normal arguments  
+  For example, to start only the Storybook container, you could use  
+  `docker-compose --file storybook-compose.yml start storybook`
 
-## Theme structure
+## WordPress Theme Development
 
-```shell
-themes/your-theme-name/   # → Root of your Sage based theme
-├── app/                  # → Theme PHP
-│   ├── Controllers/      # → Controller files
-│   ├── admin.php         # → Theme customizer setup
-│   ├── filters.php       # → Theme filters
-│   ├── helpers.php       # → Helper functions
-│   └── setup.php         # → Theme setup
-├── composer.json         # → Autoloading for `app/` files
-├── composer.lock         # → Composer lock file (never edit)
-├── dist/                 # → Built theme assets (never edit)
-├── node_modules/         # → Node.js packages (never edit)
-├── package.json          # → Node.js dependencies and scripts
-├── resources/            # → Theme assets and templates
-│   ├── assets/           # → Front-end assets
-│   │   ├── config.json   # → Settings for compiled assets
-│   │   ├── build/        # → Webpack and ESLint config
-│   │   ├── fonts/        # → Theme fonts
-│   │   ├── images/       # → Theme images
-│   │   ├── scripts/      # → Theme JS
-│   │   └── styles/       # → Theme stylesheets
-│   ├── functions.php     # → Composer autoloader, theme includes
-│   ├── index.php         # → Never manually edit
-│   ├── screenshot.png    # → Theme screenshot for WP admin
-│   ├── style.css         # → Theme meta information
-│   └── views/            # → Theme templates
-│       ├── layouts/      # → Base templates
-│       └── partials/     # → Partial templates
-└── vendor/               # → Composer packages (never edit)
-```
+### First Time WordPress Setup
 
-## Theme setup
+1. `lando rebuild`: This installs a local copy of WordPress and sets up a database with sample content.  
+   The default admin user's login credentials are `admin / password`. You don't need to change these if
+   you don't want to — this site only runs on your own computer.
+2. The url for the local dev site will be https://colby-news.lndo.site. Note the `HTTPS`; this makes testing
+   easier by eliminating warnings about insecure content, since the production site will be hosted with HTTPS.
+3. To stop working with this site, use `lando stop`.
+4. If you are done working with Lando altogether for a while, you can shut down its persistent network container
+   using `lando poweroff`.
 
-Edit `app/setup.php` to enable or disable theme features, setup navigation menus, post thumbnail sizes, and sidebars.
+### Important WordPress Notes
 
-## Theme development
+- All of the custom stylesheets, scripts, images, and icons are generated by the Storybook builder.
+  Until you have run `npm start` at least once, your WordPress site will look broken.
+- Related: do not edit files in the theme's `assets` directory. They are generated outside of the
+  theme by the Storybook builder and will be overwritten the next time the builder runs. They will
+  also not be committed to the repository.
+- Rebuilding the Lando project will wipe out any changes you have made to the local database unless
+  you have updated the database backup file. If you think your changes should be part of the new default
+  configuration, back them up using `lando db-default-rewrite`. If you want to store a snapshot specific
+  to your machine that is not part of the repository, back it up using `lando db-backup` and restore
+  it using `lando db-backup-restore` after rebuilding.
 
-* Run `yarn` from the theme directory to install dependencies
-* Update `resources/assets/config.json` settings:
-  * `devUrl` should reflect your local development hostname
-  * `publicPath` should reflect your WordPress folder structure (`/wp-content/themes/sage` for non-[Bedrock](https://roots.io/bedrock/) installs)
+### Lando commands
 
-### Build commands
+To see a complete list of Lando commands for this project, run `lando` with no arguments.
 
-* `yarn start` — Compile assets when file changes are made, start Browsersync session
-* `yarn build` — Compile and optimize the files in your assets directory
-* `yarn build:production` — Compile assets for production
+The following commands are specific to this project or are likely to be used during development:
 
-## Documentation
+- `lando start`/`lando restart`: Starts up the local WordPress site without installing or updating anything.
+- `lando stop`: Stops the running Lando containers for this project only, leaving container state intact.
+- `lando rebuild`: Stops **and removes** any existing Lando containers for this project, then runs all of the
+  initialization scripts (see "First Time WordPress Setup"). Data stored in volumes will not be deleted, but
+  the database will be overwritten from the default backup in `wp-setup`.
+- `lando destroy`: Resets the entire project, including all saved data. Use only if you are having problems,
+  then follow it with `lando rebuild`.
+- `lando db-default`: Replaces the current database with the default database.
+- `lando db-rewrite`: Replaces the default database with the current database. Changes to the default database
+  **will** be committed to the repository.
+- `lando db-backup`: Saves the current database to a local file that is not part of the repository.
+- `lando db-backup-restore`: Replaces the current database with the latest version backed up using `lando db-backup`
+- `lando composer`/`lando composer-theme`: Pass-through commands to run composer in the project root or the
+  theme directory, respectively.
+- `lando pull-`
+  - `db-prod` Pulls the database from the production site and imports it into your local database
+  - `files` Syncs the local `uploads` directory with the remote `uploads` directory
+  - `plugins` Syncs the local `plugins` directory with the remote `plugins` directory
+- **Linting / Code Formatting commands:** There are a number of utilities for testing code quality, some of
+  which are run during the deployment process. These can be run by prepending them with `lando`, and include:
+  - `eslint`
+  - `stylelint`
+  - `phpcs`
+  - `phpcbf`
+- **General CLI utilities**: These passthrough commands will run in the root of the project:
+  - `composer`
+  - `npm`
+  - `npx`
+  - `rsync`
+  - `scp`
+  - `wget`
 
-* [Sage documentation](https://roots.io/sage/docs/)
-* [Controller documentation](https://github.com/soberwp/controller#usage)
+## Troubleshooting
 
-## Contributing
-
-Contributions are welcome from everyone. We have [contributing guidelines](https://github.com/roots/guidelines/blob/master/CONTRIBUTING.md) to help you get started.
-
-## Sage sponsors
-
-Help support our open-source development efforts by [becoming a patron](https://www.patreon.com/rootsdev).
-
-<a href="https://kinsta.com/?kaid=OFDHAJIXUDIV"><img src="https://cdn.roots.io/app/uploads/kinsta.svg" alt="Kinsta" width="200" height="150"></a> <a href="https://k-m.com/"><img src="https://cdn.roots.io/app/uploads/km-digital.svg" alt="KM Digital" width="200" height="150"></a> <a href="https://www.itineris.co.uk/"><img src="https://cdn.roots.io/app/uploads/itineris.svg" alt="itineris" width="200" height="150"></a> <a href="http://www.hbgdesignlab.se/"><img src="https://cdn.roots.io/app/uploads/helsingborgdesignlab.png" alt="Helsingborg Design LAB" with="200" height="150">
-
-## Community
-
-Keep track of development and community news.
-
-* Participate on the [Roots Discourse](https://discourse.roots.io/)
-* Follow [@rootswp on Twitter](https://twitter.com/rootswp)
-* Read and subscribe to the [Roots Blog](https://roots.io/blog/)
-* Subscribe to the [Roots Newsletter](https://roots.io/subscribe/)
-* Listen to the [Roots Radio podcast](https://roots.io/podcast/)
+If you are running into problems with containers crashing or failing to start up, or with
+composer or npm installs not finishing, you can often resolve them by restarting
+Docker Desktop. This will stop ALL running Docker containers, whether they belong to this
+project or not, but should not affect your Docker volumes.

@@ -1,0 +1,14 @@
+<div class="billboard-text {{ align }} {{className}} {{ textColorScheme == 'light' ? 'theme-dark' : 'theme-light' }}">
+    <{{ HeadingElement }} class="billboard-text__heading {{ hrSpacing.top|default('mb-5') }}  max-w-screen-lg leading-xtight {{ align == 'text-center' ? 'mx-auto' : '' }} {{fontSize}} {{ headingColor|default('text-heading') }} {{headingFont}} {{headingClasses}}">
+        {{ title }}
+    </{{ HeadingElement }}>
+
+    {% if showHR != false %}
+    <hr class="border-t-2 {{ align == 'text-center' ? 'mx-auto' : '' }} {{ hrSpacing.bottom|default('mb-5') }} {{ hrColor|default('border-heading') }}" />
+    {% endif %}
+
+    <div class="max-w-screen-lg {{ align == 'text-center' ? 'mx-auto' : '' }} {{ linkGroup ? 'mb-8' : '' }} text-base-plus-1 billboard-text__body prose">
+        {{body}}
+    </div>
+    {{linkGroup}}
+</div>

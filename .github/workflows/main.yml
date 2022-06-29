@@ -1,0 +1,105 @@
+name: Github Actions
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!newcity'
+env:
+  WEBMASTER_GITHUB_ACTIONS_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}
+jobs:
+  job1:
+    name: Lint JavaScript
+    runs-on: macos-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+      - run: npm install --save-dev
+
+      - name: Run ESLint
+        run: |
+          npm run stylelint-report
+          npm run eslint
+
+  job2:
+    name: Lint PHP
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set Up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          tools: phpcbf
+
+      - name: Install composer
+        uses: ramsey/composer-install@v2
+
+      - name: Run PHPCBF
+        run: |
+          composer update
+          composer run-script phpcbf-prod
+
+  job3:
+    name: Assets
+    needs: [job1, job2]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Assets
+        run: docker-compose --file storybook-build-compose.yml --project-directory . --verbose run builder
+      - name: Check running containers
+        run: docker ps -a
+      - name: Start docker again
+        run: docker start $(docker ps -a -q --filter "status=exited")
+      - name: See Contents
+        run: |
+          docker exec $(docker ps -a -q) ls -la wp-components
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist
+
+  job4:
+    name: Build Storybook
+    needs: job3
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download dist
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: ./dist
+      - name: Build Storybook
+        run: |
+          pwd
+          ls -la
+          docker-compose --file storybook-build-compose.yml --project-directory . run storybook
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: storybook-static
+          path: ./storybook-static
+      - name: Prepare Pages
+        run: |
+          cp -rf storybook-static public
+          cp -rf dist public/dist
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: ghpages
+          build_dir: public
+        env:
+          GITHUB_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}

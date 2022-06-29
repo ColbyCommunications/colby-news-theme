@@ -1,0 +1,609 @@
+@mixin proseVariant(
+  $selectors,
+  $modifier: '',
+  $gutenberg: true,
+  $custom-classes: false
+) {
+  @each $selector in $selectors {
+    .prose #{$modifier} #{$selector},
+    .prose-#{$selector},
+    .wp-block-cover__inner-container > #{$selector},
+    .wp-block-column > #{$selector},
+    .wp-block-column > #{$selector},
+    [class*='prose-'] #{$selector} {
+      @content;
+    }
+
+    @if ($gutenberg) {
+      /* Apply styles when selector is inserted directly with Gutenberg */
+      article.page > #{$selector},
+      article.post > #{$selector},
+      .block-editor-block-list__layout > #{$selector},
+      .rich-text-inner > #{$selector},
+      .background-wrapper-inner > #{$selector} {
+        @content;
+      }
+    }
+  }
+
+  @if $custom-classes {
+    @each $custom-class in $custom-classes {
+      #{$custom-class} {
+        @content;
+      }
+    }
+  }
+}
+
+:root {
+  --prose-vertical-space: 1.25rem;
+}
+
+.prose,
+*[class*='prose-'],
+article.page,
+article.post,
+.rich-text-inner,
+.editor-styles-wrapper,
+.background-wrapper-inner {
+  --link-underline-width: 2px;
+  --link-underline-width-hover: var(--link-underline-width);
+  --link-underline-color: var(--color-link-hover);
+  --link-underline-color-hover: var(--color-link-hover);
+  --link-underline-style: dotted;
+  --link-underline-style-hover: solid;
+}
+
+.prose {
+  color: var(--color-text);
+
+  [class~='lead'] {
+    color: #f2f2f2;
+    font-size: 1.25em;
+    line-height: 1.6;
+    margin-top: 1.2em;
+    margin-bottom: 1.2em;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child:not([class*='mb-']) {
+    margin-bottom: 0;
+  }
+
+  &.text-center.billboard-text__body {
+    > * {
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+
+  &,
+  & .block-editor-block-list__layout {
+    > p,
+    > blockquote,
+    > ul,
+    > ol,
+    > h3,
+    > h4 {
+      max-width: var(--max-prose-width);
+    }
+  }
+
+  .block-editor-block-list__layout {
+    .wp-block {
+      margin-left: 0;
+    }
+  }
+}
+
+@include proseVariant(('.alert-banner')) {
+  background-color: var(--color-gray-lighter);
+  margin: 2rem 0;
+  padding: 1rem 1.5rem;
+}
+
+@include proseVariant((figure img)) {
+  img {
+    background-color: var(--color-gray-lighter);
+  }
+}
+
+@include proseVariant((hr)) {
+  background-color: var(--color-hr);
+  height: 1px;
+
+  // + * {
+  // 	margin-top: 0;
+  // }
+}
+
+@include proseVariant((blockquote)) {
+  padding-left: 1rem;
+  border-left: solid 3px var(--color-tertiary);
+  margin-top: calc(var(--prose-vertical-space) + 0.5rem);
+  margin-bottom: calc(var(--prose-vertical-space) + 0.5rem);
+  margin-right: 1rem;
+  margin-left: 1rem;
+
+  // font-weight: 500;
+  // font-style: inherit;
+  // background-color: #eaeaea;
+  // color: #3e3e3e;
+  // max-width: 39.625rem;
+  // margin: 1rem 2.6rem 2.1rem;
+  // padding: 2.625rem 3.875rem;
+  // position: relative;
+  // border-left: 0;
+
+  > p,
+  > .rich-text > p {
+    &:not(:last-child) {
+      margin-bottom: var(--prose-vertical-space);
+    }
+  }
+
+  > cite {
+    margin-top: var(--prose-vertical-space);
+    font-style: italic;
+    font-size: var(--text-base);
+  }
+}
+
+@include proseVariant((h1)) {
+  color: var(--color-heading);
+  font-weight: 800;
+  font-size: 3em;
+  margin-top: 0;
+  margin-bottom: 0.8888889em;
+  line-height: 1.1111111;
+}
+
+.prose {
+  + *:not(hr) {
+    margin-top: 0;
+  }
+}
+
+@include proseVariant((h2, h3, h4, h5)) {
+  margin-top: 0;
+  margin-bottom: var(--prose-vertical-space);
+  color: var(--color-heading);
+  line-height: 1;
+  font-family: var(--font-display);
+
+  & + .nc-routing-columns,
+  & + .wp-block-pb-accordion-item {
+    margin-top: 1rem;
+  }
+}
+
+@include proseVariant((h2), $custom-classes: '.text-h2-prose') {
+  font-size: var(--text-heading-lg);
+  font-size: var(--text-heading-h2-prose);
+  line-height: var(--leading-2xl);
+
+  code {
+    font-size: 0.875em;
+  }
+}
+
+@include proseVariant((h3)) {
+  font-size: var(--text-heading-md);
+  font-size: var(--text-heading-h3-prose);
+  line-height: var(--leading-2xl);
+
+  code {
+    font-size: 0.9em;
+  }
+}
+
+@include proseVariant((h4)) {
+  font-size: var(--text-heading-sm);
+  font-size: var(--text-heading-h4-prose);
+
+  font-weight: 600;
+}
+
+@include proseVariant((h5)) {
+  font-size: var(--text-heading-xs);
+  font-size: var(--text-heading-h5-prose);
+
+  font-weight: 600;
+
+  line-height: 1.33;
+  margin-bottom: 1.55rem;
+}
+
+@include proseVariant((h6)) {
+  color: #000;
+  color: var(--color-heading);
+  font-size: var(--text-heading-xxs);
+
+  font-weight: 600;
+
+  line-height: 1.33;
+  margin-top: 0;
+  margin-bottom: 1.55rem;
+}
+
+/* @include proseVariant((figure)) {
+
+	figcaption {
+		color: #f0f0f0;
+		font-size: 0.875em;
+		line-height: 1.4285714;
+		margin-top: 0.8571429em;
+	}
+} */
+
+@include proseVariant((figcaption)) {
+  @apply text-sm;
+
+  /* is there a better alternative to these !important rules? */
+  a {
+    color: var(--color-secondary-light) !important;
+    text-decoration-line: underline;
+    text-decoration-style: dashed;
+
+    &:hover {
+      color: var(--color-secondary) !important;
+      text-decoration-style: solid;
+    }
+  }
+}
+
+@include proseVariant((code)) {
+  color: #090b13;
+  font-weight: 600;
+  font-size: 0.875em;
+
+  &::before {
+    content: '`';
+  }
+
+  &::after {
+    content: '`';
+  }
+}
+
+.prose,
+*[class*='prose-'],
+article.page,
+article.post,
+.rich-text-inner,
+.rich-text,
+.editor-styles-wrapper,
+.background-wrapper-inner,
+.blurb-wrapper {
+  &,
+  > p,
+  figcaption,
+  code {
+    &,
+    i,
+    em,
+    b,
+    strong,
+    code,
+    s {
+      > a {
+        @include link-hover();
+      }
+    }
+  }
+}
+
+.blurb-wrapper {
+  a {
+    @include link-hover();
+  }
+}
+
+@include proseVariant((a)) {
+  code {
+    color: #090b13;
+  }
+}
+
+@include proseVariant((pre)) {
+  color: #ececec;
+  background-color: #646464;
+  overflow-x: auto;
+  font-size: 0.875em;
+  line-height: 1.7142857;
+  margin-bottom: 1.7142857em;
+  border-radius: 0.375rem;
+  padding-top: 0.8571429em;
+  padding-right: 1.1428571em;
+  padding-bottom: 0.8571429em;
+  padding-left: 1.1428571em;
+
+  code {
+    background-color: transparent;
+    border-width: 0;
+    border-radius: 0;
+    padding: 0;
+    font-weight: 400;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: inherit;
+
+    ::before {
+      content: none;
+    }
+
+    ::after {
+      content: none;
+    }
+  }
+}
+
+@include proseVariant((thead)) {
+  color: #090b13;
+  font-weight: 600;
+  border-bottom-width: 1px;
+  border-bottom-color: #d8d8d8;
+
+  th {
+    vertical-align: bottom;
+    padding-bottom: 0.5714286em;
+
+    :not(:first-child):not(:last-child) {
+      padding-right: 0.5714286em;
+      padding-left: 0.5714286em;
+    }
+  }
+}
+
+@include proseVariant((tbody, tfoot)) {
+  tr {
+    border-bottom-width: 1px;
+    border-bottom-color: #ececec;
+
+    :last-child {
+      border-bottom-width: 0;
+    }
+  }
+
+  td {
+    vertical-align: top;
+    padding-top: 0.5714286em;
+    padding-bottom: 0.5714286em;
+
+    :not(:first-child):not(:last-child) {
+      padding-right: 0.5714286em;
+      padding-left: 0.5714286em;
+    }
+  }
+}
+
+@include proseVariant((p)) {
+  --wp--preset--font-size--medium: 0.925rem;
+  margin-bottom: var(--prose-vertical-space);
+}
+
+@include proseVariant((figure)) {
+  // margin-bottom: 2.5rem;
+
+  > * {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+@include proseVariant((ol)) {
+  [type='A'] {
+    --list-counter-style: upper-alpha;
+  }
+
+  [type='a'] {
+    --list-counter-style: lower-alpha;
+  }
+
+  [type='A s'] {
+    --list-counter-style: upper-alpha;
+  }
+
+  [type='a s'] {
+    --list-counter-style: lower-alpha;
+  }
+
+  [type='I'] {
+    --list-counter-style: upper-roman;
+  }
+
+  [type='i'] {
+    --list-counter-style: lower-roman;
+  }
+
+  [type='I s'] {
+    --list-counter-style: upper-roman;
+  }
+
+  [type='i s'] {
+    --list-counter-style: lower-roman;
+  }
+
+  [type='1'] {
+    --list-counter-style: decimal;
+  }
+
+  > li {
+    position: relative;
+    padding-left: 1.75em;
+  }
+
+  > li::before {
+    content: counter(list-item, decimal) '.';
+    content: counter(list-item, var(--list-counter-style, decimal)) '.';
+    position: absolute;
+    font-weight: 400;
+    color: currentColor;
+    left: 0;
+  }
+
+  > li {
+    > ol {
+      > li::before {
+        content: counter(list-item, lower-alpha) '.';
+        padding-right: 0.5rem;
+      }
+    }
+  }
+}
+
+.prose ul,
+.prose-ul,
+[class*='prose-'] ul,
+article.page > ul:not([class]),
+article.post > ul:not([class]),
+.block-editor-block-list__layout > ul.wp-block-list,
+.rich-text-inner > ul.wp-block-list,
+.background-wrapper-inner > ul.wp-block-list {
+  > li {
+    position: relative;
+    padding-left: 1em;
+  }
+
+  > li::before {
+    content: '';
+    position: absolute;
+    background-color: currentColor;
+    border-radius: 50%;
+    width: 0.25em;
+    height: 0.25em;
+    top: calc(0.75em - 0.125em);
+    left: 0.25em;
+  }
+}
+
+ul {
+  @at-root .prose &,
+    .prose-#{&},
+    [class*='prose-'] #{&},
+    article.page > #{&}:not([class]),
+    article.post > #{&}:not([class]),
+    .block-editor-block-list__layout > &.wp-block-list,
+    .rich-text-inner > &.wp-block-list,
+    .background-wrapper-inner > &.wp-block-list,
+    #{&} > #{&}:not(.list-none) {
+    padding-left: 1rem;
+    margin-bottom: 1.55rem;
+
+    ol,
+    ul {
+      margin-top: 0.75em;
+      margin-bottom: 0.75em;
+    }
+
+    li {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
+
+    > li {
+      > :first-child {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+ol {
+  @at-root .prose &,
+    .prose-#{&},
+    [class*='prose-'] #{&},
+    article.page > #{&}:not([class]),
+    article.post > #{&}:not([class]),
+    .block-editor-block-list__layout > &.wp-block-list,
+    .rich-text-inner > &.wp-block-list,
+    .background-wrapper-inner > &.wp-block-list,
+    #{&} > #{&}:not(.list-none) {
+    padding-left: 1rem;
+    margin-bottom: 1.55rem;
+
+    ol,
+    ul {
+      margin-top: 0.75em;
+      margin-bottom: 0.75em;
+    }
+
+    li {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
+
+    > li {
+      > :first-child {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+@include proseVariant((ul), '>') {
+  > li > ul {
+    list-style-type: circle;
+  }
+
+  // &:not(.list-none) {
+  // 	list-style-type: disc;
+  // }
+}
+
+@include proseVariant((ol, ul), '>') {
+  overflow: hidden;
+
+  > li {
+    p {
+      margin-bottom: 0.75em;
+    }
+
+    > ul:last-child,
+    > ol:last-child,
+    > p:last-child {
+      margin-bottom: 1.25em;
+    }
+  }
+}
+
+@include proseVariant((dl)) {
+  margin-bottom: 0.75rem;
+  margin-left: 1.75em;
+
+  dt {
+    font-weight: bold;
+  }
+
+  dd {
+    padding-left: 0.5rem;
+    border-left: solid 3px var(--color-tertiary);
+  }
+
+  dt,
+  dd {
+    &:not(:first-child) {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+
+      + dt {
+        margin-top: 1rem;
+      }
+    }
+  }
+
+  > dt,
+  > dd {
+    > :first-child {
+      margin-top: 0;
+    }
+  }
+}

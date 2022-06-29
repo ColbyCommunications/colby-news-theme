@@ -1,0 +1,39 @@
+{% if function('is_singular') and is_archive is not same as(true) %}
+    <article id="post-{{ post.id }}" {{ function('post_class', ['mb-10']) }}>
+
+        {{ postHeader }}
+        
+        {{ post.content }}
+        <!-- .entry-content -->
+        
+    </article><!-- #post-<?php the_ID(); ?> -->
+
+{% else %}
+    {% if featuredStory is empty and loop is not empty %}
+        {% if first_page and loop.first %}
+            {% set featuredStory = true %}
+        {% else %}
+            {% set featuredStory = false %}
+        {% endif %}
+    {% else %}
+        {% set featuredStory = featuredStory|default(false) %}
+    {% endif %}
+    <div id="post-{{ post.id }}" class="post-list-item">
+    <a class="grid grid-cols-3 gap-y-2 gap-x-7 hover:bg-gray-100 py-3.5 sm:py-5" href="{{ post.link }}">
+        <div class="">
+            {# image gets "cropped" to a square on mobile w/ the padding-bottom trick #}
+            {# <div class="relative after:block after:pb-[100%] after:content-empty sm:after:hidden descendant-img:absolute sm:descendant-img:static descendant-img:w-full descendant-img:h-full descendant-img:object-cover"> #}
+            <div class="">
+                {{ post.thumbnail }}
+            </div>
+        </div>
+        <div class="block col-span-2 space-y-2 lg:pt-6">
+            {% if post.primary_category %}
+            <div class="text-sm uppercase">{{ post.primary_category.title }}</div>
+            {% endif %}
+            <h3 class="col-span-2 text-sm font-bold sm:text-xl">{{ post.title }}</h3>
+            <p class="col-span-2 text-xs sm:text-base">{{ post.description }}</p>
+        </div>
+    </a>
+    </div>
+{% endif %}

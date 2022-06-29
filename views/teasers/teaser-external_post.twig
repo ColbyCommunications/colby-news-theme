@@ -1,0 +1,134 @@
+{% if variant is empty %}
+    {% if featuredStory is empty %}
+        {% if first_page %}
+            {% if loop.first %}
+                {% set variant = 'featured' %}
+            {% elseif loop.index == 2 or loop.index == 3 %}
+                {% set variant = 'split' %}
+            {% endif %}
+        {% endif %}
+    {% else %}
+        {% set variant = featuredStory ? 'featured' : false %}
+    {% endif %}
+{% endif %}
+
+{% if variant == 'featured' %}
+
+    <div class="grid gap-4 media-coverage-item-grid lg:gap-x-9">
+        <div class="media-coverage-item__image">
+            {% if post.image %}
+                <div class="lg:w-24">
+                    {% include './linkify.twig' with {
+                        url: post.imageUrl ? post.imageUrl : post.link.url,
+                        component: post.image
+                    } only %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="space-y-1 lg:space-y-2 lg:row-span-2">
+            {% if post.source %}
+                <div class="text-xs uppercase">{{ post.source }}</div>
+            {% endif %}
+
+            {% set hTag = 'h' ~ post.hLevel|default(3) %}
+            <{{ hTag }} class="text-xl lg:text-3xl-minus-2">
+                <a href="{{ post.link.url }}" class="font-bold">{{ post.link.title }}</a>
+            </{{ hTag }}>
+        </div>
+
+        {% if post.blurb %}
+            <div class="col-span-2 text-base-minus-2 lg:text-xl">{{ post.blurb }}</div>
+        {% endif %}
+    </div>
+
+{% elseif variant == 'split' %}
+
+    <div class="grid gap-4 media-coverage-item-grid lg:gap-x-9">
+        <div class="contents">
+            <div class="media-coverage-item__image">
+                {% if post.image %}
+                    <div class="lg:w-24">
+                        {% include './linkify.twig' with {
+                            url: post.imageUrl ? post.imageUrl : post.link.url,
+                            component: post.image
+                        } only %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="space-y-1 lg:space-y-2">
+                {% if post.source %}
+                    <div class="text-xs uppercase">{{ post.source }}</div>
+                {% endif %}
+
+                {% set hTag = 'h' ~ post.hLevel|default(3) %}
+                <{{ hTag }} class="text-xl lg:text-3xl-minus-2">
+                    <a href="{{ post.link.url }}" class="font-bold">{{ post.link.title }}</a>
+                </{{ hTag }}>
+            </div>
+        </div>                
+
+        {% if post.blurb %}
+            <div class="col-span-2 lg:col-span-1 lg:col-start-2 text-base-minus-2 lg:text-base">{{ post.blurb }}</div>
+        {% endif %}
+    </div>
+
+{% elseif variant == 'basic' %}
+
+    <div class="space-y-2">
+        <div class="grid gap-x-4 gap-y-2">
+                <div class="space-y-1 title-wrapper lg:space-y-2">
+
+                    {% set hTag = 'h' ~ post.hLevel|default(3) %}
+                    <{{ hTag }} class="leading-tight">
+                        <a href="{{ post.link.url }}" class="font-bold">{{ post.link.title }}</a>
+                    </{{ hTag }}>
+                </div>
+
+                <div class="blurb-wrapper">
+                {% if post.blurb %}
+                        <div class=" text-base-minus-2 lg:text-base">{{ post.blurb }}</div>
+                {% endif %}
+                </div>
+        </div>
+    </div>
+{% else %}{# 'plain' #}
+
+    <div class="space-y-2">
+        <div class="grid gap-x-4 gap-y-2 media-coverage-item-grid--standard">
+            <div class="lg:self-center lg:mx-auto logo-wrapper">
+                {% if post.image %}
+                    <div class="lg:w-24">
+                        {% include './linkify.twig' with {
+                            url: post.imageUrl ? post.imageUrl : post.link.url,
+                            component: post.image
+                        } only %}
+                    </div>
+                {% endif %}
+            </div>
+
+            {# <div class="contents lg:block lg:col-span-3 lg:space-y-1.5"> #}
+                <div class="superhead-wrapper">
+                    {% if post.source %}
+                        <div class="text-xs uppercase">{{ post.source }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="space-y-1 title-wrapper lg:space-y-2">
+
+                    {% set hTag = 'h' ~ post.hLevel|default(3) %}
+                    <{{ hTag }} class="leading-tight">
+                        <a href="{{ post.link.url }}" class="font-bold">{{ post.link.title }}</a>
+                    </{{ hTag }}>
+                </div>
+
+                <div class="blurb-wrapper">
+                {% if post.blurb %}
+                        <div class=" text-base-minus-2 lg:text-base">{{ post.blurb }}</div>
+                {% endif %}
+                </div>
+            {# </div> #}
+        </div>
+    </div>
+
+{% endif %}

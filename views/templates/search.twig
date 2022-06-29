@@ -1,0 +1,35 @@
+{% extends 'template-parts/base.twig' %}
+
+{% block content %}
+
+    {% if posts|length > 0 %}
+        <div class="container-grid">
+            <header class="mt-8 mb-4 px-container page-header lg:mt-12">
+                <div class="pb-4 border-b lg:pb-8 border-hr">
+                    <h1 class="font-serif text-3xl font-semibold leading-none md:text-4xl xl:text-5xl page-title md:leading-none xl:leading-none">{{ archive.title }}</h1>
+                    {# <h1 class="page-title">{{ post.title|default(archive.title) }}</h1> #}
+                    {% if archive.description %}
+                        <div class="px-container archive-description">{{ archive.description }}</div>
+                    {% endif %} {# archive.description #}
+                </div>
+            </header><!-- .page-header -->
+        </div>
+
+        <div class="mb-12 container-grid">
+            <div class="container-narrow">
+                {% for listed_post in posts %}
+                    {% include ['teasers/search-result-'~listed_post.post_type~'.twig', 'teasers/search-result.twig'] with {
+                        post: listed_post
+                    }%}
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if pagination %}<div class="py-8 lg:py-10 px-container container-grid">{{ pagination }}</div>{% endif %}
+    {% else %}
+        {% include 'content/no-entries.twig' %}
+    {% endif %} {# posts|length > 0 #}
+
+    
+
+{% endblock %}

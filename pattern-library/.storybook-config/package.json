@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "html-escaper": "^3.0.3",
+    "jquery": "^3.5.1",
+    "slick-carousel": "^1.8.1",
+    "dateformat": "^4.5.1"
+  }
+}

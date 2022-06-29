@@ -1,0 +1,29 @@
+{% extends 'template-parts/base.twig' %}
+
+{% if pagination is empty %}
+    {% set pagination = posts.pagination %}
+{% endif %}
+
+{% block content %}
+    <div class="container mx-auto archive-wrapper px-container">
+
+        {% if header_content %}
+            {{ header_content }}
+        {% else %}
+            <header class="mt-12 mb-8 page-header">
+                <h1 class="mb-6 font-sans text-3xl font-bold sm:text-4xl md:text-6xl">
+                    {{ archive.title }}
+                </h1>
+            </header><!-- .page-header -->
+        {% endif %}
+
+        <div class="max-w-[56.25rem] mr-auto">
+            {% if postList %}
+                {{ postList }}
+            {% else %}
+                {% include 'content/no-entries.twig' %}
+            {% endif %} {# posts|length > 0 #}
+        </div>
+    </div>
+
+{% endblock %}

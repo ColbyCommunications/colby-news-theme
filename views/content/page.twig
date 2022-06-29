@@ -1,0 +1,22 @@
+<article id="post-{{ post.id }}" class="{{ post.post_class }} {% if sidebar %}sidebar-layout{% endif %} mb-6">
+
+        {{ post.content }}
+
+        {% if sidebar_nav or sidebar_blocks %}
+            <section class="mb-6 sidebar-layout__sidebar">
+                {{ sidebar_nav }}
+
+                {% for block in sidebar_blocks %}
+                    <aside class="border border-[#a7a7a7] p-4 mb-6 {{ block.className }}">
+                        <header class="mb-3 text-lg font-display">{{ block.title }}</header>
+                        {% if block.body %}<div class="mb-3">{{ block.body }}</div>{% endif %}
+
+                        {% if block.links %}
+                            {{ block.links }}
+                        {% endif %}
+                    </aside>
+                {% endfor %}
+            </section>
+        {% endif %}
+
+</article><!-- #post-{{ post.id }} -->

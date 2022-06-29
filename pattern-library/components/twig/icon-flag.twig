@@ -1,0 +1,11 @@
+<{{ element|default('div') }} class="icon-flag {{ className }}">
+    <div class='{{ "icon-flag__icon " ~ (iconClasses ? iconClasses : '') }}'>
+        {{icon}}
+    </div>
+    <div class='{{ 'icon-flag__title ' ~ (titleClasses ? titleClasses : '') }}'>
+        {{title}}
+    </div>
+    <div class='{{ 'icon-flag__content ' ~ (contentClasses ? contentClasses : '') }}'>
+        {{content}}
+    </div>
+</{{ element|default('div') }}>

@@ -1,0 +1,33 @@
+<div class="{{ wrapperClasses }} relative">
+    
+    <div class="{{ containerClasses }}">
+        <div class="{% if gridClasses %}{{ gridClasses }}{% else %}lg:grid-cols-2{% endif %} relative z-20 grid {{ inset ? '' : gapAmount|default('gap-x-8') }} mx-auto">
+            <div class="media-row__content flex flex-col {{ contentClasses }} {{ contentAlignVertical|default('justify-center') }}
+                        {{ inset ?
+                                'bg-white p-8 md:p-9 xl:p-12 2xl:p-22 border border-b-0 lg:border-b border-gray-light'
+                                : 'lg:py-0 lg:px-0 lg:px-0'
+                        }}
+                        {% if inset and mediaSide == 'left' %}
+                            lg:border-l-0
+                        {% else %}
+                            lg:border-r-0
+                        {% endif %}
+        
+                        ">
+                {{ textContent }}
+            </div>
+            {% if media is not empty %}
+                <div class="media {{ mediaClasses }} {{ inset ? 'bg-white ' : '' }}
+                    {% if mediaSide == 'left' %}
+                        lg:col-start-1 lg:row-start-1
+                    {% endif %} {# mediaSide == 'left' #}
+                ">
+                    {{ media }}
+                </div>
+            {% endif %} {# media is not empty #}
+        </div>
+    </div>
+
+    {{ backgroundImage }}
+    {{ backgroundDecoration }}
+</div>

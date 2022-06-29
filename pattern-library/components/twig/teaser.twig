@@ -1,0 +1,46 @@
+{# required params are `image`, `url`, and `title` #}
+<div class="flex flex-col space-y-2 text-base-minus-2">
+    {% set clickableImage %}
+        <div class="relative group">
+            <div class="after:content-empty after:absolute after:inset-0 after:bg-black after:bg-opacity-30 group-hover:after:bg-opacity-10 after:transition-colors">
+                {{ image }}
+            </div>
+{#
+    removed at client's request, but let's keep the markup just in case they change their mind
+            {% if withVideoLogo %}
+                <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-full">
+                    <svg class="fill-current text-white w-12 h-12 transform translate-x-[.125rem] scale-[85%]" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><g><path d="M128,96v320l256-160L128,96L128,96z"/></g></svg>
+                </div>
+            {% endif %}
+#}
+        </div>
+    {% endset %}
+
+    {% include './linkify.twig' with {
+        component: clickableImage,
+        url: url
+    } only %}
+
+    <div class="space-y-1">
+        {#
+            There are some font-size inconsistencies in the comps, but they look
+            unintentional, so keeping this one-size-fits-all unless instructed otherwise.
+        #}
+        {% if superhead %}
+            <div class="text-sm uppercase">
+                {% if superhead.url %}
+                    <a href="{{ superhead.url }}">{{ superhead.title }}</a>
+                {% else %}
+                    {{ superhead.title }}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% set hTag = 'h' ~ hLevel|default(3) %}
+        <{{ hTag }} class="font-bold"><a href="{{ url }}">{{ title }}</a></{{ hTag }}>
+
+        {% if description %}
+            <p>{{ description }}</p>
+        {% endif %}
+    </div>
+</div>

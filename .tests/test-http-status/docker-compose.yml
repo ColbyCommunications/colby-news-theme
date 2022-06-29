@@ -1,0 +1,19 @@
+version: '2.2'
+
+services:
+  chromedriver:
+    image: newcity/chromedriver:1.1
+    environment:
+      - VNC_ENABLED=true
+      - EXPOSE_X11=true
+    ports:
+      - 5900:5900
+
+  nightwatch:
+    image: newcity/nightwatch-runner
+    depends_on:
+      - chromedriver
+    environment:
+      - WAIT_FOR_HOSTS=chromedriver:4444 chromedriver:6060
+    volumes: 
+      - ./.tests/test-http-status:/test

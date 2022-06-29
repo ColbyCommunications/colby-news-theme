@@ -1,0 +1,16 @@
+{
+  "name": "test-accessibility",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node ./pa11y-test.js"
+  },
+  "author": "",
+  "license": "None",
+  "dependencies": {
+    "pa11y": "^6.0.1",
+    "pa11y-reporter-junit": "^1.1.0"
+  }
+}

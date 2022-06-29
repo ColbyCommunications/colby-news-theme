@@ -1,0 +1,23 @@
+<div class="space-y-6 sm:space-y-8">
+    {% if headline %}
+        {% set hTag = 'h' ~ hLevel|default(2) %}
+        <{{ hTag }} class="text-2xl">{{ headline }}</{{ hTag }}>
+    {% endif %}
+
+    {% if items %}
+        <ul class="space-y-6">
+            {% for item in items %}
+                {# the conditional `descendant-a:` mechanism isn't great here but it works #}
+                <li class="block {{ loop.first ? 'descendant-a:text-base sm:descendant-a:text-lg' : 'descendant-a:text-base-minus-2' }}">{{ item }}</li>
+            {% endfor %}
+        </ul>
+    {% elseif injectedMarkup  %}
+        <div>{{ injectedMarkup }}</div>
+    {% endif %}
+
+    {% if link %}
+        <div>
+            <a href="{{ link.url }}" class="uppercase text-base-minus-2 hover:text-link-hover">{{ link.title }}</a>
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,84 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+// import WPCSS from '../components/content/WPThemeCSS';
+import IconFlag from '../components/IconFlag';
+import IconLink from '../components/IconLink';
+import IconList from '../components/IconList';
+
+<Meta title="Component Demos/Icon Flags" />
+
+<Canvas>
+    <Story name='Icon Links'>
+       <div class="flex flex-col gap-4">
+            <IconLink
+                title=""
+                content={"Standard Icon Link"}
+                className="text-link"
+                href="#"
+            ></IconLink>
+            <IconLink
+                title=""
+                content={"Icon link with larger text"}
+                className="text-link text-xl"
+                href="#"
+            ></IconLink>
+            <IconLink
+                title=""
+                content={"Link with normal text and a larger icon"}
+                className="text-link icon-flag--xl"
+                href="#"
+            ></IconLink>
+            <IconLink
+                title=""
+                content={"Link with a lot of text that wraps. Lorem ipsum dolor sit amet consectetur!"}
+                className="text-link max-w-xs"
+            ></IconLink>
+        </div>
+    </Story>
+    <Story name='Text Block with Icon'>
+        <div class="flex flex-col gap-4">
+        <IconFlag
+            title=""
+            content={"Basic text with an icon"}
+            className=""
+        ></IconFlag>
+        <IconFlag
+            title=""
+            content={"Larger text with an icon"}
+            className=" text-xl"
+        ></IconFlag>
+        <IconFlag
+            title=""
+            content={"Basic text with a larger icon"}
+            className=" icon-flag--xl"
+        ></IconFlag>
+        <IconFlag
+            title=""
+            content={"A lot of wrapping text with an icon. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi ratione quibusdam saepe sunt magnam quam necessitatibus doloribus consequuntur tempore veniam nam hic voluptatibus, laudantium natus asperiores nesciunt ullam corrupti. Rerum!"}
+            className=" max-w-xs"
+        ></IconFlag>
+        <IconFlag
+            title="Text with an icon, a title, and a description"
+            content={"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi ratione quibusdam saepe sunt magnam quam necessitatibus doloribus consequuntur tempore veniam nam hic voluptatibus, laudantium natus asperiores nesciunt ullam corrupti. Rerum!"}
+            className=" max-w-xs title-xl"
+        ></IconFlag>
+        </div>
+    </Story>
+    <Story name='Icon Lists'>
+        <IconList itemClasses="title-xl" items={[
+            {
+                title: 'Title',
+                content: 'Content goes here'
+            },
+            {
+                title: 'Another item with a title',
+                content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque commodi saepe cum accusantium voluptates tempora rem, necessitatibus accusamus consectetur ipsa tempore corrupti eos vero ipsum pariatur, obcaecati ex, dignissimos minima.`
+            },
+            {
+                title: 'This item has a title but no content',
+            },
+            {
+                content: `This item has content without a title. Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque commodi saepe cum accusantium voluptates tempora rem, necessitatibus accusamus consectetur ipsa tempore corrupti eos vero ipsum pariatur, obcaecati ex, dignissimos minima.`
+            },
+        ]}></IconList>
+    </Story>
+</Canvas>

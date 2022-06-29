@@ -1,0 +1,133 @@
+.slick-carousel {
+
+	&.slick-slider {
+		display: grid;
+		row-gap: 1rem;
+		grid-template-columns: 4rem 1fr 4rem;
+
+		@screen md {
+			grid-template-columns: 6rem 1fr 6rem;
+		}
+	}
+
+	> .slide-container {
+
+		@apply mb-6;
+	}
+
+	.slick-track {
+		display: grid;
+	}
+
+	.slick-list {
+
+		@apply col-start-2 py-2;
+	}
+
+	.slick-slide {
+
+		@apply sm:px-4;
+		grid-row-start: 1;
+	}
+
+	.slick-arrow {
+
+		display: block;
+	}
+
+	.slick-prev {
+
+		@apply pr-4;
+		text-align: end;
+	}
+
+	.slick-next {
+
+		@apply pl-4;
+		text-align: start;
+	}
+
+	.slick-dots {
+
+		@apply mt-4 flex space-x-4 justify-center items-center col-span-3;
+	}
+
+	.slick-active button {
+
+		@apply bg-blue-200;
+	}
+
+	/* Apply margin only if carousel script is not loaded */
+	> .slide-container {
+
+		@apply mb-6;
+	}
+
+	figcaption {
+
+		@apply duration-75 ease-in-out;
+
+		transition-property: font-size;
+
+		$minFont: 0.875rem;
+		$maxFont: 22;
+
+		font-size: clamp(#{$minFont}, #{$maxFont * 100 / 512}vw, #{rem($maxFont)});
+
+		@screen sm {
+			font-size: clamp(#{$minFont}, #{$maxFont * 100 / 980}vw, #{rem($maxFont)});
+		}
+
+		@media (min-width: 980px) {
+			font-size: clamp(#{$minFont}, #{$maxFont * 100 / 1230}vw, #{rem($maxFont)});
+		}
+
+		@media (min-width: 1230px) {
+			font-size: clamp(#{$minFont}, #{$maxFont * 100 / 1490}vw, #{rem($maxFont)});
+		}
+	}
+}
+
+.slick-carousel:not(.slick-carousel-multi) {
+
+	/* Apply margin only if carousel script is not loaded */
+}
+
+.routing-card {
+	display: grid;
+	position: relative;
+	grid-template-columns: 100%;
+	grid-template-rows: 1fr auto 2.25rem;
+
+	> .image,
+	> figcaption {
+		display: block;
+		grid-column-start: 1;
+	}
+
+	> .image {
+		grid-row: 1 / 4;
+		position: relative;
+
+	}
+
+	&::after {
+
+		@apply absolute inset-0 opacity-0 transition-opacity;
+		content: "";
+		box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.75);
+	}
+
+	figcaption {
+		grid-row: 2;
+	}
+
+	&:hover,
+	&:focus {
+
+		&::after {
+
+			@apply opacity-100;
+		}
+	}
+}
