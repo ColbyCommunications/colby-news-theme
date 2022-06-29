@@ -48,22 +48,22 @@ jobs:
           composer update
           composer run-script phpcbf-prod
     
-    job3:
-      name: Test JavaScript
-      runs-on: macos-latest
+  job3:
+    name: Test JavaScript
+    runs-on: macos-latest
 
-      steps:
-        - name: Check out Git repository
-          uses: actions/checkout@v2
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
 
-        - name: Set up Node.js
-          uses: actions/setup-node@v2
-          
-        - run: npm install --save-dev
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        
+      - run: npm install --save-dev
 
-        - name: Run Jest
-          run: |
-            npm run jest
+      - name: Run Jest
+        run: |
+          npm run jest
 
   job4:
     name: Assets
