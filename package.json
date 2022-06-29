@@ -24,7 +24,7 @@
     "eslint-library": "npx eslint './pattern-library/src/*.js' --fix -f junit -o eslint-library-results.xml",
     "eslint-vue": "npx eslint './vue/**/*.vue'",
     "eslint-components": "npx eslint './pattern-library/components/**/*.js' --fix -f junit -o eslint-components-results.xml",
-    "eslint": "npm run eslint-theme && npm run eslint-library && npm run eslint-components",
+    "eslint": "npm run eslint-theme && npm run eslint-library && npm run eslint-components && npm run eslint-vue",
     "builder-up": "docker-compose --file storybook-compose.yml up -d builder",
     "builder-restart": "docker-compose --file storybook-compose.yml rm -s builder && npm run builder-up",
     "storybook-init": "npm run build",
