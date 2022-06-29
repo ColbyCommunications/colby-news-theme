@@ -131,68 +131,49 @@
               <div class="grid gap-10 md:grid-cols-2">
                 <ol class="space-y-1 text-base sm:text-xl">
                   <li>
-                    <a
-                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/access-and-opportunity/"
+                    <a href="/story/category/access-and-opportunity/"
                       >Access and Opportunity</a
                     >
                   </li>
                   <li>
-                    <a
-                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/alumni/"
-                      >Alumni</a
-                    >
+                    <a href="/story/category/alumni/">Alumni</a>
                   </li>
                   <li>
-                    <a
-                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/announcements/"
-                      >Announcements</a
-                    >
+                    <a href="/story/category/announcements/">Announcements</a>
                   </li>
                   <li>
-                    <a
-                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/artificial-intelligence/"
+                    <a href="/story/category/artificial-intelligence/"
                       >Artificial Intelligence</a
                     >
                   </li>
                   <li>
-                    <a
-                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/arts/"
-                      >Arts</a
-                    >
+                    <a href="/story/category/arts/">Arts</a>
                   </li>
                   <li>
-                    <a
-                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/campus-and-community/"
+                    <a href="/story/category/campus-and-community/"
                       >Campus and Community</a
                     >
                   </li>
                   <li>
-                    <a
-                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/environment-and-climate/"
+                    <a href="/story/category/environment-and-climate/"
                       >Environment and Climate</a
                     >
                   </li>
                   <li>
-                    <a
-                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/humanities/"
-                      >Humanities</a
-                    >
+                    <a href="/story/category/humanities/">Humanities</a>
                   </li>
                   <li>
-                    <a
-                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/interdisciplinary-studies/"
+                    <a href="/story/category/interdisciplinary-studies/"
                       >Interdisciplinary Studies</a
                     >
                   </li>
                   <li>
-                    <a
-                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/natural-sciences/"
+                    <a href="/story/category/natural-sciences/"
                       >Natural Sciences</a
                     >
                   </li>
                   <li>
-                    <a
-                      href="https://news-2-0-l5zba3i-4nvswumupeimi.us-4.platformsh.site/story/category/social-sciences/"
+                    <a href="/story/category/social-sciences/"
                       >Social Sciences</a
                     >
                   </li>
