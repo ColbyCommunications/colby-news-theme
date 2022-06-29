@@ -47,10 +47,27 @@ jobs:
         run: |
           composer update
           composer run-script phpcbf-prod
+    
+    job3:
+      name: Test JavaScript
+      runs-on: macos-latest
 
-  job3:
+      steps:
+        - name: Check out Git repository
+          uses: actions/checkout@v2
+
+        - name: Set up Node.js
+          uses: actions/setup-node@v2
+          
+        - run: npm install --save-dev
+
+        - name: Run Jest
+          run: |
+            npm run jest
+
+  job4:
     name: Assets
-    needs: [job1, job2]
+    needs: [job1, job2, job3]
     runs-on: ubuntu-latest
 
     steps:
@@ -70,9 +87,9 @@ jobs:
           name: dist
           path: dist
 
-  job4:
+  job5:
     name: Build Storybook
-    needs: job3
+    needs: job4
     runs-on: ubuntu-latest
 
     steps:
