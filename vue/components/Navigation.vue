@@ -1,14 +1,23 @@
 <template>
   <nav>
-    <ul class="Tabs">
+    <ul
+      class="Tabs flex relative justify-between bg-white m-0 list-none border-b border-black border-solid"
+    >
       <li
         v-for="(tabName, index) in tabNames"
         ref="items"
         :key="index"
-        class="text-lg Tabs__tab Tab py-1 px-10"
-        :class="{ 'activeTab': currentTab === tabName }"
+        :class="[
+          currentTab === tabName ? 'border-b-2 border-black' : '',
+          'text-lg',
+          'py-1',
+          'px-10',
+        ]"
+        style="padding: 0 2rem 0.5rem 2rem"
       >
-        <button @click="$emit('nav-click', tabName)">{{ tabName }}</button>
+        <button class="whitespace-nowrap" @click="$emit('nav-click', tabName)">
+          {{ tabName }}
+        </button>
       </li>
       <li v-if="dropdownTabs.length" class="px-5">
         <button class="whitespace-nowrap" @click="toggleDropdown">
