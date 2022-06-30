@@ -1,173 +1,182 @@
-const setUpSiteSearch = () => {
-  const { algoliasearch, instantsearch } = window;
+// const setUpSiteSearch = () => {
+//   const { algoliasearch, instantsearch } = window;
 
-  if (!algoliasearch || !instantsearch) return;
+//   if (!algoliasearch || !instantsearch) return;
 
-  const siteSearchSearchbox = document.getElementById('site-search-searchbox');
-  const siteSearchAnnouncer = document.getElementById('site-search-announcer');
-  const siteSearchHitsHeading = document.getElementById(
-    'site-search-hits-heading'
-  );
-  const siteSearchHitsContainer = document.getElementById(
-    'site-search-hits-container'
-  );
+//   const siteSearchSearchbox = document.getElementById('site-search-searchbox');
+//   const siteSearchAnnouncer = document.getElementById('site-search-announcer');
+//   const siteSearchHitsHeading = document.getElementById(
+//     'site-search-hits-heading'
+//   );
+//   const siteSearchHitsContainer = document.getElementById(
+//     'site-search-hits-container'
+//   );
 
-  if (
-    !siteSearchSearchbox ||
-    !siteSearchAnnouncer ||
-    !siteSearchHitsHeading ||
-    !siteSearchHitsContainer
-  )
-    return;
+//   if (
+//     !siteSearchSearchbox ||
+//     !siteSearchAnnouncer ||
+//     !siteSearchHitsHeading ||
+//     !siteSearchHitsContainer
+//   )
+//     return;
 
-  let searchInput, oldSearchTerm;
+//   let searchInput, oldSearchTerm;
 
-  // just used to compensate for bug causing `transformItems` to run twice: https://github.com/algolia/instantsearch.js/issues/4819
-  let bool = true;
+//   // just used to compensate for bug causing `transformItems` to run twice: https://github.com/algolia/instantsearch.js/issues/4819
+//   let bool = true;
 
-  const searchClient = algoliasearch(
-    '2XJQHYFX2S',
-    '31a9a9bb15c777d88d51896a5ba9ecca'
-  );
+//   // const publicKey = window.publicKey;
+//   const publicKey = window.colbyNews.public_key;
+//   console.log(publicKey);
+//   // const publicKey = window.colbyNews
 
-  const search = instantsearch({
-    indexName: 'crawler_colby-news', // case-sensitive
-    searchClient,
-    searchFunction: (helper) => helper.state.query && helper.search(),
-  });
+//   const searchClient = algoliasearch('2XJQHYFX2S', publicKey);
 
-  const insightsMiddleware = instantsearch.middlewares.createInsightsMiddleware(
-    {
-      insightsClient: window.aa,
-    }
-  );
+//   const search = instantsearch({
+//     indexName: 'prod_news_searchable_posts', // case-sensitive
+//     searchClient,
+//     searchFunction: (helper) => helper.state.query && helper.search(),
+//   });
 
-  search.use(insightsMiddleware);
+//   const insightsMiddleware = instantsearch.middlewares.createInsightsMiddleware(
+//     {
+//       insightsClient: window.aa,
+//     }
+//   );
 
-  window.aa('setUserToken', 'user-1');
+//   search.use(insightsMiddleware);
 
-  search.addWidgets([
-    instantsearch.widgets.searchBox({
-      container: '#site-search-searchbox',
-      searchAsYouType: false,
-      placeholder: 'Start typing to search',
-      showReset: false,
-      showLoadingIndicator: false,
-      templates: {
-        submit: 'Search',
-      },
-    }),
+//   window.aa('init', {
+//     appId: '2XJQHYFX2S',
+//     apiKey: '63c304c04c478fd0c4cb1fb36cd666cb',
+//     useCookie: true,
+//     cookieDuration: 15552000000,
+//   });
 
-    instantsearch.widgets.infiniteHits({
-      container: '#site-search-hits',
+//   window.aa('getUserToken', null, (err) => {
+//     if (err) {
+//       console.error(err);
+//       return;
+//     }
+//   });
 
-      /*
-        This method should really "just" be for transforming the search-results array
-        before displaying them, but we also use this as a "hook" to run some code
-        that makes the search more accessible:
+//   search.addWidgets([
+//     instantsearch.widgets.searchBox({
+//       container: '#site-search-searchbox',
+//       searchAsYouType: false,
+//       placeholder: 'Start typing to search',
+//       showReset: false,
+//       showLoadingIndicator: false,
+//       templates: {
+//         submit: 'Search',
+//       },
+//     }),
 
-        A) we move focus to:
-          1) the last old search-result if there is one
-          2) siteSearchHitsHeading otherwise (for new search);
-        B) we announce the search-results situation to screen-readers.
-      */
-      transformItems: (items) => {
-        // compensate for bug causing this method to run twice every time:
-        bool = !bool;
+//     instantsearch.widgets.infiniteHits({
+//       container: '#site-search-hits',
 
-        // every other time ("bad" ones), just return the items
-        if (bool) return items;
+//       /*
+//         This method should really "just" be for transforming the search-results array
+//         before displaying them, but we also use this as a "hook" to run some code
+//         that makes the search more accessible:
+//         A) we move focus to:
+//           1) the last old search-result if there is one
+//           2) siteSearchHitsHeading otherwise (for new search);
+//         B) we announce the search-results situation to screen-readers.
+//       */
+//       transformItems: (items) => {
+//         // compensate for bug causing this method to run twice every time:
+//         bool = !bool;
 
-        // every other time ("good" ones), do everything
+//         // every other time ("bad" ones), just return the items
+//         if (bool) return items;
 
-        /*
-          Transform items (`url` and `title` are required, and only show articles).
-          This would really be better handled at the search stage (I think with the
-          `configure` widget), so that the number of returned results is consistent,
-          but I believe that will require some back-end work in Algolia. Probably
-          not a big deal (since ~zero results will be missing a title or url, and
-          almost all will be articles anyway), but worth discussing with the client.
-          See:
-          https://www.algolia.com/doc/api-reference/widgets/configure/js/#options
-          https://www.algolia.com/doc/api-reference/search-api-parameters/
-          https://www.algolia.com/doc/api-reference/api-parameters/filters/
-          https://www.algolia.com/doc/guides/managing-results/refine-results/faceting/how-to/declaring-attributes-for-faceting/
-        */
-        const finalItems = items.filter(
-          (item) => item.url && item.title && item.type === 'article'
-        );
+//         // every other time ("good" ones), do everything
 
-        // handle focus (determining what needs it, then apply it)
-        searchInput = searchInput || siteSearchSearchbox.querySelector('input');
-        const searchTerm = searchInput.value;
-        const isNewSearch = searchTerm !== oldSearchTerm;
-        oldSearchTerm = searchTerm;
+//         /*
+//           Transform items (`url` and `title` are required, and only show articles).
+//           This would really be better handled at the search stage (I think with the
+//           `configure` widget), so that the number of returned results is consistent,
+//           but I believe that will require some back-end work in Algolia. Probably
+//           not a big deal (since ~zero results will be missing a title or url, and
+//           almost all will be articles anyway), but worth discussing with the client.
+//           See:
+//           https://www.algolia.com/doc/api-reference/widgets/configure/js/#options
+//           https://www.algolia.com/doc/api-reference/search-api-parameters/
+//           https://www.algolia.com/doc/api-reference/api-parameters/filters/
+//           https://www.algolia.com/doc/guides/managing-results/refine-results/faceting/how-to/declaring-attributes-for-faceting/
+//         */
+//         const finalItems = items.filter(
+//           (item) =>
+//             item.permalink && item.post_title && item.post_type === 'post'
+//         );
 
-        const resultsList = siteSearchHitsContainer.querySelector('ol');
+//         // handle focus (determining what needs it, then apply it)
+//         searchInput = searchInput || siteSearchSearchbox.querySelector('input');
+//         const searchTerm = searchInput.value;
+//         const isNewSearch = searchTerm !== oldSearchTerm;
+//         oldSearchTerm = searchTerm;
 
-        let lastOldResultLink;
+//         const resultsList = siteSearchHitsContainer.querySelector('ol');
 
-        if (!isNewSearch && resultsList) {
-          const lastOldResult = resultsList.lastChild;
-          if (lastOldResult) {
-            const a = lastOldResult.querySelector('a');
-            if (a) lastOldResultLink = a;
-          }
-        }
+//         let lastOldResultLink;
 
-        if (lastOldResultLink) {
-          lastOldResultLink.focus();
-        } else {
-          siteSearchHitsHeading.focus();
-        }
+//         if (!isNewSearch && resultsList) {
+//           const lastOldResult = resultsList.lastChild;
+//           if (lastOldResult) {
+//             const a = lastOldResult.querySelector('a');
+//             if (a) lastOldResultLink = a;
+//           }
+//         }
 
-        // announce new text (element has `aria-live="polite"`)
-        siteSearchAnnouncer.innerText = finalItems.length
-          ? `Showing ${finalItems.length} new result${
-              finalItems.length > 1 ? 's' : ''
-            } for ${searchTerm}.`
-          : `No results found for ${searchTerm}.`;
+//         if (lastOldResultLink) {
+//           lastOldResultLink.focus();
+//         } else {
+//           siteSearchHitsHeading.focus();
+//         }
 
-        // return transformed items
-        return finalItems;
-      },
+//         // announce new text (element has `aria-live="polite"`)
+//         siteSearchAnnouncer.innerText = finalItems.length
+//           ? `Showing ${finalItems.length} new result${
+//               finalItems.length > 1 ? 's' : ''
+//             } for ${searchTerm}.`
+//           : `No results found for ${searchTerm}.`;
 
-      templates: {
-        // related to `teaser.twig`;
-        // note: there's no provided alt-text for the images, so using `alt=""` for now
-        item(item, bindEvent) {
-          /* html */
-          return `
-          <a href="${item.url}" ${bindEvent(
-            'click',
-            item,
-            'Search Result Clicked'
-          )} class="group block text-base-minus-2 space-y-1.5">
-            ${
-              item.image
-                ? /* html */ `
-              <div class="aspect-w-3 aspect-h-2">
-                <img class="object-cover" src="${item.image}" alt="" />
-              </div>
-            `
-                : ''
-            }
-            ${
-              /* no such field yet; should be size-11 uppercase */ item.superhead
-                ? /* html */ `<div>${item.superhead}</div>`
-                : ''
-            }
-            <div class="group-hover:text-link-hover transition-colors font-bold text-base-minus-1 sm:text-sm-plus-1">${
-              item.title
-            } </div>
-          </a> 
-        `;
-        },
-      },
-    }),
-  ]);
+//         // return transformed items
+//         return finalItems;
+//       },
 
-  search.start();
-};
+//       templates: {
+//         // related to `teaser.twig`;
+//         // note: there's no provided alt-text for the images, so using `alt=""` for now
+//         item(item, bindEvent) {
+//           /* html */
+//           return `
+//           <a href="${item.permalink}" ${bindEvent(
+//             'click',
+//             item,
+//             'Search Result Clicked'
+//           )} class="group block text-base-minus-2 space-y-1.5">
+//             ${
+//               item.images.thumbnail
+//                 ? /* html */ `
+//               <div class="aspect-w-3 aspect-h-2">
+//                 <img class="object-cover" src="${item.images.teaser_new.url}" alt="" />
+//               </div>
+//             `
+//                 : ''
+//             }
+//             <div class="group-hover:text-link-hover transition-colors font-bold text-base-minus-1 sm:text-sm-plus-1">${
+//               item.post_title
+//             } </div>
+//           </a>
+//         `;
+//         },
+//       },
+//     }),
+//   ]);
 
-setUpSiteSearch();
+//   search.start();
+// };
+
+// setUpSiteSearch();

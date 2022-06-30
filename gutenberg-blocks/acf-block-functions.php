@@ -770,6 +770,25 @@ function slider_with_teaser_pair(array $posts, $is_preview = false)
     </div>";
 }
 
+// Algolia personalized results
+function algolia_personalized_results_block($block, $content = '', $is_preview = false, $post_id = 0)
+{
+    if (is_admin()) {
+        echo 'Algolia Personalized Section';
+    }
+
+    if (function_exists('get_fields')) {
+        $fields_from_block = get_fields();
+        if (!$fields_from_block) {
+            $fields_from_block = $block['data'];
+        }
+        $fields_from_block = is_array($fields_from_block) ? $fields_from_block : [];
+        $query_args = query_from_fields($fields_from_block, false, $post_id);
+
+        echo '<div class="vue-block"></div>';
+    }
+}
+
 // Begin render callback functions
 function post_list_slider_block($block, $content = '', $is_preview = false, $post_id = 0)
 {
@@ -1184,4 +1203,9 @@ function breaker_feature($block, $content = '', $is_preview = false, $post_id = 
             . Timber::compile(get_blocks_twig_directory('/breaker-feature.twig'), $args)
             . "</div></div>";
     }
+}
+
+function algolia_personalized($block)
+{
+    return '<div class="vue-mount"></div>';
 }

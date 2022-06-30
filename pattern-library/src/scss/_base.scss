@@ -72,7 +72,8 @@ blockquote {
 .site,
 .sb-show-main,
 .docs-story,
-.is-root-container {
+.is-root-container,
+#vue-menu-modal {
   a:not([class*='text']):not(.btn):not(.wp-block-button__link):not(.social-link):not(.wp-block-social-link-anchor):not(.acf-button) {
     color: var(--color-link);
 

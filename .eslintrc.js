@@ -2,13 +2,17 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    'jest/globals': true,
   },
   extends: [
     'eslint:recommended',
+    'plugin:vue/vue3-recommended',
     'plugin:import/errors',
     'plugin:react/recommended',
     'plugin:jsx-a11y/recommended',
     'prettier',
+    'plugin:vuejs-accessibility/recommended',
+    'plugin:jest/recommended',
   ],
   globals: {
     wp: true,
@@ -45,5 +49,13 @@ module.exports = {
     'import/no-absolute-path': 0,
     'quote-props': ['error', 'as-needed'],
   },
-  plugins: ['prettier', 'react', 'import', 'jsx-a11y', 'react-hooks'],
+  plugins: [
+    'prettier',
+    'react',
+    'import',
+    'jsx-a11y',
+    'react-hooks',
+    'jest',
+    'vuejs-accessibility',
+  ],
 };

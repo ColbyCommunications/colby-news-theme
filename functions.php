@@ -1,5 +1,7 @@
 <?php
 
+use function NC_Blocks\get_primary_category;
+
 /**
  * Functions and definitions for newcity/timber-starter theme
  *
@@ -823,6 +825,14 @@ function newcity_colby_news_scripts()
         true
     );
 
+    wp_enqueue_script(
+        'main',
+        get_template_directory_uri() . '/assets/main.js',
+        array(),
+        filemtime(get_template_directory() . '/assets/main.js'),
+        true
+    );
+
     if (is_singular() && comments_open() && get_option('thread_comments')) {
         wp_enqueue_script('comment-reply');
     }
@@ -838,6 +848,9 @@ add_action('enqueue_block_editor_assets', function () {
         true
     );
 });
+
+wp_register_style('material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons+Sharp');
+wp_enqueue_style('material-icons');
 
 
 /**
@@ -964,13 +977,217 @@ function nc_opengraph_image($url)
     return $url . '?v=' . filemtime($file);
 }
 
-add_filter( 'wpseo_opengraph_type', 'yoast_change_opengraph_type', 10, 1 );
+add_filter('wpseo_opengraph_type', 'yoast_change_opengraph_type', 10, 1);
 
-function yoast_change_opengraph_type( $type ) {
+function yoast_change_opengraph_type($type)
+{
 
-    if ( is_archive() ) {
+    if (is_archive()) {
         return 'website';
     } else {
         return $type;
     }
+}
+
+/**
+ * Dump variable.
+ */
+if (! function_exists('d')) {
+    function d()
+    {
+        call_user_func_array('dump', func_get_args());
+    }
+}
+
+/**
+ * Dump variables and die.
+ */
+if (! function_exists('dd')) {
+    function dd()
+    {
+        call_user_func_array('dump', func_get_args());
+        die();
+    }
+}
+
+function exclude_post_types($should_index, WP_Post $post)
+{
+    // Add all post types you don't want to make searchable.
+    $excluded_post_types = array( 'page' );
+    if (false === $should_index) {
+        return false;
+    }
+
+    return ! in_array($post->post_type, $excluded_post_types, true);
+}
+
+
+// Hook into Algolia to manipulate the post that should be indexed.
+add_filter('algolia_should_index_searchable_post', 'exclude_post_types', 10, 2);
+
+add_filter('algolia_post_images_sizes', function ($sizes) {
+    $sizes[] = 'teaser_new';
+
+    return $sizes;
+});
+
+if (! wp_next_scheduled('page_metrics')) {
+    $time = strtotime('today');
+    $time = $time + 75600;
+    wp_schedule_event($time, 'daily', 'page_metrics');
+}
+
+
+add_action('page_metrics', 'page_metrics_function');
+function page_metrics_function()
+{
+    // get data from SiteImprove API
+    $ch = curl_init();
+    curl_setopt_array($ch, array(
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_URL => 'https://api.siteimprove.com/v2/sites/28518335051/analytics/content/all_pages?page=1&page_size=1000&period=this_month&search_in=url',
+        CURLOPT_USERPWD => PLATFORM_VARIABLES['gaceto_siteimprove_api_creds']
+    ));
+    $response_json = curl_exec($ch);
+    curl_close($ch);
+    $response = json_decode($response_json, true);
+
+    // get all published WP posts
+    $args = array(
+        'numberposts'   => -1,
+        'post_type'     => 'post',
+        'post_status'   => 'publish'
+    );
+
+    $all_posts = get_posts($args);
+
+    // iterate over all posts
+    foreach ($all_posts as $post) {
+        // extract post data
+        $id = $post->ID;
+        $post_title = $post->post_title;
+        $post_slug = $post->post_name;
+
+        // filter SiteImprove data, matching on slug
+        $filtered_array = array_filter($response['items'], function ($item) use ($post_slug) {
+            $processed_slug = filter_slug($item['url'], $item['title']);
+
+            if ($processed_slug) {
+                return $processed_slug === $post_slug;
+            } else {
+                return false;
+            }
+        });
+
+
+        if ($filtered_array) {
+            // we have a match
+            $slug = array_values($filtered_array)[0]['url'];
+            $page_views = array_values($filtered_array)[0]['page_views'];
+            $title = array_values($filtered_array)[0]['title'];
+
+            update_post_meta($id, 'siteimprove_page_views', $page_views);
+        } else {
+            // we dont
+            update_post_meta($id, 'siteimprove_page_views', 0);
+        }
+    }
+    shell_exec('wp algolia reindex searchable_posts');
+}
+
+/**
+ * Filter and return slug from a url. Also filter
+ * out 'page not found'
+ *
+ * @return false if not successful. String if filtered successfully
+ *
+ */
+function filter_slug($slug, $title)
+{
+    $pattern = '^https://news.colby.edu/story/(.+)/$^';
+    $result = preg_match($pattern, $slug, $matches);
+
+    $final_slug = false;
+
+    if (false !== $result && $matches) {
+        $char_blacklist = ['/', '%', 'wp-content', 'elementor', 'preview='];
+
+        $bypass = false;
+
+        foreach ($char_blacklist as $char) {
+            if (stripos($matches[1], $char) !== false) {
+                $bypass = true;
+            }
+        }
+
+        if ($title === 'Page not found - Colby News') {
+            $bypass = true;
+        }
+
+        if (!$bypass) {
+            $final_slug = $matches[1];
+        }
+    }
+
+    return $final_slug;
+}
+
+function get_total_pubs()
+{
+    // get total of unique media publications (ie Boston Globe, WSJ, CNBC)
+    $terms = get_terms(array('taxonomy' => 'media_source'));
+    return count($terms);
+}
+
+function get_all_categories()
+{
+    $categories = get_categories();
+    $primary_category_array = [];
+    foreach ($categories as $category) {
+        array_push($primary_category_array, $category->name);
+    };
+    $key = array_search("Uncategorized", $primary_category_array);
+    if ($key !== false) {
+        unset($primary_category_array[$key]);
+        return json_encode($primary_category_array);
+    }
+}
+
+
+function post_shared_attributes(array $shared_attributes, WP_Post $post)
+{
+    // get siteimprove_page_views to send to algolia
+    if ($post->post_type === 'post') {
+        $shared_attributes['siteimprove_page_views'] = (int) get_post_meta($post->ID, 'siteimprove_page_views', true);
+        $shared_attributes['summary'] = strip_tags(get_post_meta($post->ID, 'summary', true));
+        // gets the primary category
+        $primary_term_name = yoast_get_primary_term('category', $post->ID);
+        $shared_attributes['primary_category'] = $primary_term_name;
+    }
+
+    if ($post->post_type === 'external_post') {
+        $image = wp_get_attachment_image_src(get_field('logo', 'media_source_' . get_the_terms($post->ID, 'media_source')[0]->term_id), 'logo')[0];
+        $shared_attributes['external_image'] = $image;
+        $shared_attributes['external_url'] = get_post_meta($post->ID, 'external_url', true);
+        // strips html tags and decodes html entities from the post title
+        $shared_attributes['post_title'] = strip_tags(html_entity_decode(get_the_title($post)));
+        $media_source = get_the_terms($post->ID, 'media_source')[0]->name;
+        if (!empty($media_source)) {
+            $shared_attributes['media_source'] = $media_source;
+        }
+    }
+
+    return $shared_attributes;
+}
+
+add_filter('algolia_searchable_post_shared_attributes', 'post_shared_attributes', 10, 2);
+
+add_filter('timber/twig', 'add_to_twig');
+
+function add_to_twig($twig)
+{
+    // Adding a function.
+    $twig->addFunction(new Timber\Twig_Function('get_total_pubs', 'get_total_pubs'));
+    $twig->addFunction(new Timber\Twig_Function('get_all_categories', 'get_all_categories'));
+    return $twig;
 }
