@@ -1166,15 +1166,30 @@ function post_shared_attributes(array $shared_attributes, WP_Post $post)
     }
 
     if ($post->post_type === 'external_post') {
-        $image = wp_get_attachment_image_src(get_field('logo', 'media_source_' . get_the_terms($post->ID, 'media_source')[0]->term_id), 'logo')[0];
-        $shared_attributes['external_image'] = $image;
-        $shared_attributes['external_url'] = get_post_meta($post->ID, 'external_url', true);
+        // if we have a media_source
+        if (get_the_terms($post->ID, 'media_source')) {
+            $media_source = get_the_terms($post->ID, 'media_source')[0];
+            $media_source_term_id = get_the_terms($post->ID, 'media_source')[0]->term_id;
+            $media_source_logo = get_field('logo', 'media_source_' . $media_source_term_id);
+
+            // if there's a media source tag and a logo for that media source
+            if ($media_source_logo && wp_get_attachment_image_src($media_source_logo, 'logo')) {
+                $image = wp_get_attachment_image_src($media_source_logo, 'logo')[0];
+                $shared_attributes['external_image'] = $image;
+            }
+
+            $media_source_name = $media_source->name;
+            if (!empty($media_source)) {
+                $shared_attributes['media_source'] = $media_source_name;
+            }
+        }
+
+        if (get_post_meta($post->ID, 'external_url', true)) {
+            $shared_attributes['external_url'] = get_post_meta($post->ID, 'external_url', true);
+        }
+
         // strips html tags and decodes html entities from the post title
         $shared_attributes['post_title'] = strip_tags(html_entity_decode(get_the_title($post)));
-        $media_source = get_the_terms($post->ID, 'media_source')[0]->name;
-        if (!empty($media_source)) {
-            $shared_attributes['media_source'] = $media_source;
-        }
     }
 
     return $shared_attributes;
