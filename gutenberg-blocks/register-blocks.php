@@ -56,13 +56,13 @@ add_filter('acf/pre_save_block', 'NC_Blocks\filter_acf_blocks');
 
 function nc_replace_block_library()
 {
-    wp_dequeue_style('wp-block-library');
-    wp_enqueue_style(
-        'nc-block-library',
-        get_template_directory_uri() . '/css/blocks.css',
-        [],
-        filemtime(get_template_directory() . '/css/blocks.css')
-    );
+    // wp_dequeue_style('wp-block-library');
+    // wp_enqueue_style(
+    //     'nc-block-library',
+    //     get_template_directory_uri() . '/css/blocks.css',
+    //     [],
+    //     filemtime(get_template_directory() . '/css/blocks.css')
+    // );
 }
 
 /**
