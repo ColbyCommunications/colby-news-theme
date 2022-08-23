@@ -1050,7 +1050,7 @@ function create_api_posts_meta_field() {
 }
  
 function get_post_meta_for_api( $object ) {
-    //get the id of the post object array
+    // get the id of the post object array
     $post_id = $object['id'];
     //return the post meta
     $primary_term_name = yoast_get_primary_term('category', $post_id);
