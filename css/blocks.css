@@ -1319,7 +1319,7 @@ h6.has-background {
   max-width: calc(var(--max-content-width) + var(--page-padding));
   margin-right: auto;
   margin-left: auto;
-  padding-left: var(--page-padding);
+  /* padding-left: var(--page-padding); */
   padding-right: var(--page-padding);
 }
 
