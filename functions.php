@@ -1037,6 +1037,25 @@ if (! wp_next_scheduled('page_metrics')) {
     wp_schedule_event($time, 'daily', 'page_metrics');
 }
 
+add_action( 'rest_api_init', 'create_api_posts_meta_field' );
+ 
+function create_api_posts_meta_field() {
+ 
+    // register_rest_field ( 'name-of-post-type', 'name-of-field-to-return', array-of-callbacks-and-schema() )
+    register_rest_field( 'post', 'post-meta-fields', array(
+           'get_callback'    => 'get_post_meta_for_api',
+           'schema'          => null,
+        )
+    );
+}
+ 
+function get_post_meta_for_api( $object ) {
+    // get the id of the post object array
+    $post_id = $object['id'];
+    //return the post meta
+    $primary_term_name = yoast_get_primary_term('category', $post_id);
+    return array_merge(['primary_category' => $primary_term_name], get_post_meta( $post_id ));
+}
 
 add_action('page_metrics', 'page_metrics_function');
 function page_metrics_function()
