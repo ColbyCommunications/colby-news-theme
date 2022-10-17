@@ -1047,6 +1047,20 @@ function create_api_posts_meta_field() {
            'schema'          => null,
         )
     );
+    
+    register_rest_field( 'external_post', 'external_url', array(
+           'get_callback'    => 'get_external_post_meta_for_api',
+           'schema'          => null,
+        )
+    );
+}
+
+function get_external_post_meta_for_api( $object ) {
+    // get the id of the post object array
+    $post_id = $object['id'];
+    //return the post meta
+    $external_url = get_field('external_url', $post_id);
+    return $external_url;
 }
  
 function get_post_meta_for_api( $object ) {
