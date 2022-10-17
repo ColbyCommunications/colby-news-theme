@@ -20,6 +20,7 @@ function nc_register_external_posts()
         'publicly_queryable' => true,
         'show_ui'            => true,
         'show_in_menu'       => true,
+        'show_in_rest'       => true,
         'show_in_graphql'    => true,         
         'show_in_nav_menus'  => false,
         'query_var'          => true,
