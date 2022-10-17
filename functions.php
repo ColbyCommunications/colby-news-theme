@@ -1057,6 +1057,22 @@ function get_post_meta_for_api( $object ) {
     return array_merge(['primary_category' => $primary_term_name], get_post_meta( $post_id ));
 }
 
+function filter_rest_external_post_query( $args, $request ) { 
+    $params = $request->get_params(); 
+    if(isset($params['story_type_slug'])){
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'story_type',
+                'field' => 'slug',
+                'terms' => $params['story_type_slug']
+            )
+        );
+    }
+    return $args; 
+}   
+// add the filter 
+add_filter( "rest_external_post_query", 'filter_rest_external_post_query', 10, 2 ); 
+
 add_action('page_metrics', 'page_metrics_function');
 function page_metrics_function()
 {
