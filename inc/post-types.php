@@ -84,6 +84,7 @@ function nc_register_story_types()
         'description'       => _x('Type of external post, used for category-based archives', 'colby-news'),
         'hierarchical'      => false,
         'show_ui'           => true,
+        'show_in_rest'      => true,
         'show_admin_column' => true,
         'query_var'         => true,
         // 'rewrite'           => array( 'slug' => 'story_type' ),
