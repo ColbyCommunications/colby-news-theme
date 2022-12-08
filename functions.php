@@ -1038,24 +1038,59 @@ if (! wp_next_scheduled('page_metrics')) {
 }
 
 add_action( 'rest_api_init', 'create_api_posts_meta_field' );
- 
+
 function create_api_posts_meta_field() {
- 
-    // register_rest_field ( 'name-of-post-type', 'name-of-field-to-return', array-of-callbacks-and-schema() )
-    register_rest_field( 'post', 'post-meta-fields', array(
-           'get_callback'    => 'get_post_meta_for_api',
-           'schema'          => null,
-        )
-    );
+	// register_rest_field ( 'name-of-post-type', 'name-of-field-to-return', array-of-callbacks-and-schema() )
+	register_rest_field(
+		'post',
+		'post-meta-fields',
+		array(
+			'get_callback' => 'get_post_meta_for_api',
+			'schema'       => null,
+		)
+	);
+
+	register_rest_field(
+		'external_post',
+		'external_url',
+		array(
+			'get_callback' => 'get_external_post_meta_for_api',
+			'schema'       => null,
+		)
+	);
 }
- 
+
+function get_external_post_meta_for_api( $object ) {
+	// get the id of the post object array
+	$post_id = $object['id'];
+	// return the post meta
+	$external_url = get_field( 'external_url', $post_id );
+	return $external_url;
+}
+
 function get_post_meta_for_api( $object ) {
-    // get the id of the post object array
-    $post_id = $object['id'];
-    //return the post meta
-    $primary_term_name = yoast_get_primary_term('category', $post_id);
-    return array_merge(['primary_category' => $primary_term_name], get_post_meta( $post_id ));
+	// get the id of the post object array
+	$post_id = $object['id'];
+	// return the post meta
+	$primary_term_name = yoast_get_primary_term( 'category', $post_id );
+	return array_merge( array( 'primary_category' => $primary_term_name ), get_post_meta( $post_id ) );
 }
+
+function filter_rest_external_post_query( $args, $request ) {
+	$params = $request->get_params();
+	if ( isset( $params['story_type_slug'] ) ) {
+		$args['tax_query'] = array(
+			array(
+				'taxonomy' => 'story_type',
+				'field'    => 'slug',
+				'terms'    => $params['story_type_slug'],
+			),
+		);
+	}
+	return $args;
+}
+// add the filter
+add_filter( 'rest_external_post_query', 'filter_rest_external_post_query', 10, 2 );
 
 add_action('page_metrics', 'page_metrics_function');
 function page_metrics_function()
