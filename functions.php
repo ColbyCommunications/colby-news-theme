@@ -1054,7 +1054,7 @@ function create_api_posts_meta_field() {
 function get_external_post_meta_for_api( $object ) {
 	// get the id of the post object array
 	$post_id = $object['id'];
-	//return the post meta
+	// return the post meta
 	$external_url = get_field( 'external_url', $post_id );
 	return $external_url;
 }
@@ -1062,7 +1062,7 @@ function get_external_post_meta_for_api( $object ) {
 function get_post_meta_for_api( $object ) {
 	// get the id of the post object array
 	$post_id = $object['id'];
-	//return the post meta
+	// return the post meta
 	$primary_term_name = yoast_get_primary_term( 'category', $post_id );
 	return array_merge( array( 'primary_category' => $primary_term_name ), get_post_meta( $post_id ) );
 }
