@@ -77,7 +77,7 @@ export default {
 <template>
   <div v-show="currentTab === 'Stories'" id="stories-hits-container">
     <div v-if="state">
-      <ais-index index-name="dev_news_searchable_posts" index-id="stories">
+      <ais-index index-name="prod_news_searchable_posts" index-id="stories">
         <ais-configure :filters="'post_type:post'" :hits-per-page.camel="5" />
         <stories-filter-section
           :currentTab="currentTab"
