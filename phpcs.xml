@@ -12,6 +12,7 @@
 <exclude-pattern>wp-content/themes/twentytwenty/*</exclude-pattern>
 <exclude-pattern>wp-content/plugins/*</exclude-pattern>
 <exclude-pattern>*/vendor/*</exclude-pattern>
+<exclude-pattern>*/node_modules/*</exclude-pattern>
 <exclude-pattern>*/acfe-php/*</exclude-pattern>
 
 <!-- ignore warnings and display ERRORS only -->
