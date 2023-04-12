@@ -1251,3 +1251,11 @@ function add_to_twig( $twig ) {
 	$twig->addFunction( new Timber\Twig_Function( 'get_all_categories', 'get_all_categories' ) );
 	return $twig;
 }
+
+add_action(
+	'rest_api_init',
+	function() {
+		header( 'Access-Control-Allow-Origin: *' );
+		header( 'Access-Control-Allow-Methods: GET' );
+	}
+);
