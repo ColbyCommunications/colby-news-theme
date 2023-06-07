@@ -959,7 +959,7 @@ if ( file_exists( get_template_directory() . '/inc/rest-api.php' ) ) {
 /**
  * Customized favicon
  */
-require get_template_directory() . '/inc/favicon.php';
+// require get_template_directory() . '/inc/favicon.php';
 
 /** Modify OpenGraph tags to add a version */
 add_filter( 'wpseo_opengraph_image', 'nc_opengraph_image' );
