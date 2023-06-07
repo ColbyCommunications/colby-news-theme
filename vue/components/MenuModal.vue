@@ -209,7 +209,7 @@
                     <div>
                       <div class="wp-container-1 wp-block-buttons">
                         <div class="wp-block-button">
-                          <a class="wp-block-button__link" href="/newsletter"
+                          <a class="wp-block-button__link" href="/newsletter/"
                             >Subscribe</a
                           >
                         </div>
