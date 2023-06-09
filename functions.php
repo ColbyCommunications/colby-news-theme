@@ -1252,10 +1252,11 @@ function add_to_twig( $twig ) {
 	return $twig;
 }
 
-add_action(
-	'rest_api_init',
-	function() {
-		header( 'Access-Control-Allow-Origin: *' );
-		header( 'Access-Control-Allow-Methods: GET' );
-	}
-);
+// TODO: this was producing warnings on the backend of wp
+// add_action(
+// 	'rest_api_init',
+// 	function() {
+// 		header( 'Access-Control-Allow-Origin: *' );
+// 		header( 'Access-Control-Allow-Methods: GET' );
+// 	}
+// );
