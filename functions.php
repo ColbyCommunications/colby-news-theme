@@ -959,7 +959,7 @@ if ( file_exists( get_template_directory() . '/inc/rest-api.php' ) ) {
 /**
  * Customized favicon
  */
-require get_template_directory() . '/inc/favicon.php';
+// require get_template_directory() . '/inc/favicon.php';
 
 /** Modify OpenGraph tags to add a version */
 add_filter( 'wpseo_opengraph_image', 'nc_opengraph_image' );
@@ -1252,16 +1252,6 @@ function add_to_twig( $twig ) {
 	return $twig;
 }
 
-add_action(
-	'rest_api_init',
-	function() {
-		header( 'Access-Control-Allow-Origin: *' );
-		header( 'Access-Control-Allow-Methods: GET' );
-	}
-);
-
-
-
 function custom_api_get_external_posts_with_media_source() {
     $args = array(
         'post_type' => 'external_post',
@@ -1319,3 +1309,19 @@ function register_custom_api_routes() {
 }
 
 add_action('rest_api_init', 'register_custom_api_routes');
+
+add_action(
+	'rest_api_init',
+	function() {
+		header( 'Access-Control-Allow-Origin: *' );
+		header( 'Access-Control-Allow-Methods: GET' );
+	}
+);
+// TODO: this was producing warnings on the backend of wp
+// add_action(
+// 	'rest_api_init',
+// 	function() {
+// 		header( 'Access-Control-Allow-Origin: *' );
+// 		header( 'Access-Control-Allow-Methods: GET' );
+// 	}
+// );

@@ -42,7 +42,7 @@
                               :href="`https://news.colby.edu/story/category/${item.primary_category.replace(
                                 /\s+/g,
                                 '-'
-                              )}`"
+                              )}/`"
                               >{{ item.primary_category }}</a
                             >
                           </div>
@@ -94,7 +94,7 @@
                                   :href="`https://news.colby.edu/story/category/${item.primary_category.replace(
                                     /\s+/g,
                                     '-'
-                                  )}`"
+                                  )}/`"
                                   >{{ item.primary_category }}</a
                                 >
                               </div>
