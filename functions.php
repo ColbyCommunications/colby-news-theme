@@ -1252,6 +1252,64 @@ function add_to_twig( $twig ) {
 	return $twig;
 }
 
+function custom_api_get_external_posts_with_media_source() {
+    $args = array(
+        'post_type' => 'external_post',
+        'posts_per_page' => -1,
+        'status' => 'publish',
+    );
+
+    $query = new WP_Query($args);
+    $posts = $query->get_posts();
+
+    $formatted_posts = array_map(function ($post) {
+        $image = '';
+        $tags = array();
+
+        $post_tags = get_the_tags($post);
+        if ($post_tags) {
+            foreach ($post_tags as $tag) {
+                $tags[] = array('name' => $tag->slug);
+            }
+        }
+
+        if (isset(get_the_terms($post->ID, 'media_source')[0]->term_id)) {
+            $media_source_term_id = get_the_terms($post->ID, 'media_source')[0]->term_id;
+            $media_source_logo = get_field('logo', 'media_source_' . $media_source_term_id);
+            
+            if ($media_source_logo && wp_get_attachment_image_src($media_source_logo, 'logo')) {
+                $image = wp_get_attachment_image_src($media_source_logo, 'logo')[0];
+            }
+        }
+
+        return array(
+            'id' => $post->ID,
+            'post_status' => $post->post_status,
+            'post_author' => $post->post_author,
+            'post_date' => $post->post_date,
+            'post_type' => $post->post_type,
+            'title' => array('rendered' => $post->post_title),
+            'story_type' => get_the_terms($post, 'story_type'),
+            'content' => array('rendered' => $post->post_content),
+            'external_url' => $post->external_url,
+            'taxonomy' => get_the_terms($post, 'media_source'),
+            'image' => $image,
+            'tags' => $tags
+        );
+    }, $posts);
+
+    return rest_ensure_response($formatted_posts);
+}
+
+function register_custom_api_routes() {
+    register_rest_route('custom/v1', '/external-posts', array(
+        'methods' => 'GET',
+        'callback' => 'custom_api_get_external_posts_with_media_source',
+    ));
+}
+
+add_action('rest_api_init', 'register_custom_api_routes');
+
 // TODO: this was producing warnings on the backend of wp
 // add_action(
 // 	'rest_api_init',
