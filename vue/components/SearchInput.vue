@@ -149,6 +149,9 @@ export default {
       query: '',
     };
   },
+  mounted() {
+    this.$refs.input.focus();
+  },
   methods: {
     onFormSubmit() {
       const input = this.$refs.input;

@@ -343,7 +343,7 @@ class TemplatePart
         $is_revision = wp_is_post_revision($post);
 
         if (function_exists('get_field')) {
-            $defaultArgs['lengthOfRead'] = get_post_field('lengthOfRead', $post->ID);
+            $defaultArgs['lengthOfRead'] = get_post_meta($post->ID, '_yoast_wpseo_estimated-reading-time-minutes')[0] . strtoupper(' min read');
             $defaultArgs['summary'] = get_post_field('summary', $post->ID);
             $defaultArgs['author'] = get_post_field('author', $post->ID);
             $defaultArgs['photoCredit'] = get_post_field('photoCredit', $post->ID);
