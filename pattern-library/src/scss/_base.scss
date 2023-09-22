@@ -240,7 +240,8 @@ article.post {
     .wp-block[data-align='left']:not(.wp-block-embed .wp-block),
     .alignleft:not(.wp-block-embed .alignleft),
     .wp-block[data-align='right']:not(.wp-block-embed .wp-block),
-    .alignright:not(.wp-block-embed .alignright) {
+    .alignright:not(.wp-block-embed .alignright),
+    .aligncenter:not(.wp-block-embed .aligncenter) {
       @apply lg:mb-8 xl:mb-12;
 
       figure {
@@ -258,6 +259,11 @@ article.post {
     .wp-block[data-align='right'],
     .alignright {
       @apply ml-6 lg:ml-10 xl:ml-20 float-right;
+    }
+
+    .wp-block[data-align='center'],
+    .aligncenter {
+      @apply ml-6 lg:mx-auto xl:mx-auto;
     }
   }
 
