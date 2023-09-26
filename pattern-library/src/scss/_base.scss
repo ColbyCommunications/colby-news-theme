@@ -263,7 +263,7 @@ article.post {
 
     .wp-block[data-align='center'],
     .aligncenter {
-      @apply lg:mx-auto xl:mx-auto;
+      @apply mx-auto lg:mx-auto xl:mx-auto;
     }
   }
 
