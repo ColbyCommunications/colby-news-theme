@@ -246,6 +246,8 @@ article.post {
       figure {
         width: 100%;
       }
+
+      // width: clamp(6.25rem, 50%, 22.5rem);
     }
 
     .wp-block[data-align='left'],
@@ -299,11 +301,6 @@ div[data-type='acf/nc-table'] {
     padding: 0 var(--page-padding);
     max-width: calc(var(--max-content-width) + var(--page-padding));
   }
-}
-
-figure.wp-block-image.aligncenter {
-  display: flex;
-  justify-content: center;
 }
 
 .nc-rich-text {

@@ -1,7 +1,6 @@
 const tailwindcss = require('tailwindcss');
 const postcssPresetEnv = require('postcss-preset-env');
 
-
 const nodeEnv = process.env.NODE_ENV;
 /**
  * Default paths, relative to /app/src:
@@ -38,10 +37,7 @@ mix
   )
   .options({
     processCssUrls: false,
-    postCss: [
-      tailwindcss('./tailwind.config.js'),
-      postcssPresetEnv()
-    ],
+    postCss: [tailwindcss('./tailwind.config.js'), postcssPresetEnv()],
   })
   // .js(`${assetPaths.srcRoot}/index.js`, `${assetPaths.dist}/`)
   .svgSprite(`${assetPaths.srcRoot}/${assetPaths.icons}/**/*.svg`, {

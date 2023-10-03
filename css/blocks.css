@@ -1269,7 +1269,66 @@ h6.has-background {
 }
 
 .wp-block-image.aligncenter {
+  margin: 6rem auto;
   text-align: center;
+  display: table;
+}
+
+.wp-block-image.aligncenter img {
+  display: inline;
+}
+
+.wp-block-image.aligncenter figcaption {
+  display: table-caption;
+  caption-side: bottom;
+}
+
+.wp-block-image.alignleft {
+  display: table;
+  float: left;
+}
+
+.wp-block-image.alignleft img {
+  display: inline;
+}
+
+.wp-block-image.alignleft figcaption {
+  display: table-caption;
+  caption-side: bottom;
+}
+
+.wp-block-image.alignright {
+  display: table;
+  float: right;
+}
+
+.wp-block-image.alignright img {
+  display: inline;
+}
+
+.wp-block-image.alignright figcaption {
+  display: table-caption;
+  caption-side: bottom;
+}
+
+.wp-block-image.alignright + p {
+  clear: left;
+}
+
+.wp-block-image.alignleft + p {
+  clear: right;
+}
+
+@media (max-width: 750px) {
+  .wp-block-image.alignleft,
+  .wp-block-image.alignright {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .wp-block-image.alignfull img,
