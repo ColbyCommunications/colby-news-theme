@@ -220,7 +220,7 @@
                         >
                           <a
                             href="https://x.com/colbycollege"
-                            aria-label="Twitter: https://x.com/colbycollege"
+                            aria-label="X: https://x.com/colbycollege"
                             class="wp-block-social-link-anchor"
                           >
                             <svg
