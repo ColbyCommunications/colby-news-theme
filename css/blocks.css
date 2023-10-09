@@ -1324,6 +1324,8 @@ h6.has-background {
   .wp-block-image.alignright {
     margin-left: auto !important;
     margin-right: auto !important;
+    float: none;
+    width: 100%;
   }
 
   .wp-block-image.aligncenter {
