@@ -1322,12 +1322,8 @@ h6.has-background {
 @media (max-width: 44rem) {
   .wp-block-image.alignleft,
   .wp-block-image.alignright {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   .wp-block-image.aligncenter {
