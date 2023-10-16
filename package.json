@@ -42,14 +42,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh@gitlab.com:newcity/colby-news-website.git"
+    "url": "https://github.com/ColbyCommunications/colby-news-theme.git"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://gitlab.com/newcity/colby-news/issues"
-  },
-  "homepage": "https://gitlab.com/newcity/colby-news#readme",
+  "homepage": "https://github.com/ColbyCommunications/colby-news-theme",
   "dependencies": {
     "@tailwindcss/aspect-ratio": "^0.2.0",
     "@tailwindcss/forms": "^0.1.4",

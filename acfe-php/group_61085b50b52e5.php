@@ -7,25 +7,6 @@ acf_add_local_field_group(array(
 	'title' => 'Story Metadata',
 	'fields' => array(
 		array(
-			'key' => 'field_61085b858a3ab',
-			'label' => 'Length of Read',
-			'name' => 'lengthOfRead',
-			'type' => 'text',
-			'instructions' => 'Include units as you want them to be displayed, e.g. "5 MIN. READ"',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'default_value' => '',
-			'placeholder' => '',
-			'prepend' => '',
-			'append' => '',
-			'maxlength' => '',
-		),
-		array(
 			'key' => 'field_61085c6165741',
 			'label' => 'Summary',
 			'name' => 'summary',
