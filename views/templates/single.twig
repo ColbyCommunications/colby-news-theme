@@ -9,4 +9,17 @@
         post: post,
         postHeader: postHeader
     } %}
+
+    {# Related block #}
+    {% include 'template-parts/related.twig' with {items} %}
+
+    {# Subscribe block #}
+    {{ include('template-parts/subscribe.twig') }}
+
+    {# Highlights block #}
+    {% include 'template-parts/highlights.twig' with {highlights} %}
+
+    {# Subscribe block #}
+    {{ include('template-parts/separator.twig') }}
+
 {% endblock %}

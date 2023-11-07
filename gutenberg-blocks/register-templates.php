@@ -49,22 +49,22 @@ function nc_register_templates()
     $post_type_object = get_post_type_object('post');
     $post_type_object->template = array(
         ['core/paragraph'],
-        ['acf/nc-related-posts'],
-        ['core/block', [
-            'ref' => 11949
-        ],
-        ],
-        ['core/heading', [
-            'content' => __('Highlights', 'colby-news'),
-            'className' => 'is-style-large-heading'
-        ]],
-        ['acf/nc-teaser-pair', [
-            'data' => [
-                'tags' => [92],
-                'posts_per_page' => 2
-            ],
-        ]],
-        ['core/separator'],
+        // ['acf/nc-related-posts'],
+        // ['core/block', [
+        //     'ref' => 11949
+        // ],
+        // ],
+        // ['core/heading', [
+        //     'content' => __('Highlights', 'colby-news'),
+        //     'className' => 'is-style-large-heading'
+        // ]],
+        // ['acf/nc-teaser-pair', [
+        //     'data' => [
+        //         'tags' => [92],
+        //         'posts_per_page' => 2
+        //     ],
+        // ]],
+        // ['core/separator'],
     );
 }
 add_action('init', 'NC_Blocks\nc_register_templates');

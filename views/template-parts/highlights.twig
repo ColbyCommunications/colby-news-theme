@@ -1,0 +1,22 @@
+{# required params are `image`, `url`, and `title` #}
+<section class="highlightsSection">
+<h2 class="mb-4 wp-block-heading is-style-large-heading" id="h-highlights">Highlights</h2>
+  <div class="grid md:grid-cols-2 gap-8">
+      {% for highlight in highlights %}
+        <div class="flex flex-col space-y-1 text-base-minus-2">
+                <div class="relative group">
+                    <a href="/story/{{highlight.slug}}/" class="after:content-empty after:absolute after:inset-0 after:bg-black after:bg-opacity-0 group-hover:after:bg-opacity-10 after:transition-colors">
+                        {{ highlight.featured_image }}
+                    {% if highlight.withVideoLogo %}
+                        <div class="absolute transform -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-full left-1/2 top-1/2">
+                            <svg class="fill-current text-white w-12 h-12 transform translate-x-[.125rem] scale-[85%]" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><g><path d="M128,96v320l256-160L128,96L128,96z"/></g></svg>
+                        </div>
+                    {% endif %}
+                    </a>
+                </div>
+            {% set hTag = 'h' ~ hLevel|default(3) %}
+            <{{ hTag }} class="font-bold"><a href="/story/{{ highlight.slug }}/">{{ highlight.post_title }}</a></{{ hTag }}>
+        </div>
+      {% endfor %}
+  </div>
+</section>

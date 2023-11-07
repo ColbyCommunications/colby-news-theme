@@ -223,7 +223,11 @@ blockquote {
 
 .container,
 article.page,
-article.post {
+article.post,
+.relatedSection,
+.subscribeSection,
+.highlightsSection,
+.separator {
   @apply mx-auto;
   max-width: calc(var(--max-content-width) + var(--page-padding));
   padding-right: var(--page-padding);
