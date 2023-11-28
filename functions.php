@@ -29,6 +29,7 @@ if ( ! is_file( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/wp-cli-commands.php';
 
 if ( is_file( __DIR__ . '/gutenberg-blocks/register-blocks.php' ) ) {
 	require_once __DIR__ . '/gutenberg-blocks/register-blocks.php';
