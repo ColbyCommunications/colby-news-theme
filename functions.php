@@ -1,5 +1,6 @@
 <?php
 
+ini_set('max_execution_time', 300);
 /**
  * Functions and definitions for newcity/timber-starter theme
  *
@@ -1318,3 +1319,50 @@ add_action('rest_api_init', 'register_custom_api_routes');
 // 		header( 'Access-Control-Allow-Methods: GET' );
 // 	}
 // );
+
+function removeBlocks() {
+    $blocks_to_remove = ['acf/nc-related-posts', 'acf/nc-teaser-pair'];
+    $separator_block = 'core/separator';
+
+    $args = array(
+        'post_type'      => 'post',
+        'posts_per_page' => -1,
+    );
+
+    $posts = new WP_Query($args);
+
+    if ($posts->have_posts()) {
+        while ($posts->have_posts()) {
+            $posts->the_post();
+
+            $post_id      = get_the_ID();
+            $post_content = get_post_field('post_content', $post_id);
+
+            // Remove h2 elements with id "h-highlights"
+            $post_content = preg_replace('/<h2[^>]+id="h-highlights"[^>]*>.*?<\/h2>/', '', $post_content);
+
+            $blocks = parse_blocks($post_content);
+						die(dump($blocks));
+
+            // Check if the last block is core/separator
+            $last_block = end($blocks);
+            if ($last_block['blockName'] === $separator_block) {
+                array_pop($blocks); // Remove the last block
+            }
+
+            // Filter out specific blocks
+            $filtered_blocks = array_filter($blocks, function ($block) use ($blocks_to_remove) {
+                return !in_array($block['blockName'], $blocks_to_remove);
+            });
+
+            // Update the post content
+            $post_data = array(
+                'ID'           => $post_id,
+                'post_content' => serialize_blocks($filtered_blocks),
+            );
+            wp_update_post($post_data);
+        }
+    }
+}
+
+// removeBlocks();
