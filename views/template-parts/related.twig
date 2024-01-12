@@ -1,0 +1,30 @@
+{% set outerHTag = 'h' ~ hLevel|default(2) %}
+{% set innerHTag = 'h' ~ (hLevel|default(2) + 1) %}
+
+<section class="relatedSection space-y-2 max-w-4xl">
+    <{{ outerHTag }} class="uppercase text-xs-plus-1 sm:text-xl">related</{{ outerHTag }}>
+    <ul>
+        {% for item in items %}
+            <li>
+                <a class="
+                    grid grid-cols-3 gap-y-2 gap-x-7 hover:bg-gray-100 py-3.5 sm:py-5 border-b border-solid border-gray-700 {{ loop.first ? 'border-t' }}
+                    {{ loop.first ? 'sm:border-t-0' }}
+                    {{ loop.last ? 'sm:border-b-0' }}"
+                    href="/story/{{ item.slug }}/">
+                    <div class="order-last sm:order-none">
+                        {# image gets "cropped" to a square on mobile w/ the padding-bottom trick #}
+                        <div class="
+                            relative after:block after:pb-[100%] after:content-empty
+                            descendant-img:absolute descendant-img:w-full descendant-img:h-full descendant-img:object-cover
+                            sm:after:hidden sm:descendant-img:static
+                        ">{{ item.featured_image }}</div>
+                    </div>
+                    <div class="contents sm:block sm:col-span-2 sm:space-y-2 lg:pt-6">
+                        <{{ innerHTag }} class="col-span-3 sm:col-span-2 text-sm-plus-1 font-bold sm:text-xl">{{ item.post_title }}</{{ innerHTag }}>
+                        <p class="col-span-2 text-xs-plus-1 sm:text-base">{{ item.summary }}</p>
+                    </div>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</section>

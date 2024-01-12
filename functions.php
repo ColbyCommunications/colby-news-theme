@@ -1,6 +1,7 @@
 <?php
 
-ini_set('max_execution_time', 300);
+ini_set('max_execution_time', 600);
+
 /**
  * Functions and definitions for newcity/timber-starter theme
  *
@@ -886,7 +887,7 @@ function newcity_colby_news_enqueue_resource_hints( $urls, $relation_type ) {
 add_filter( 'wp_resource_hints', 'newcity_colby_news_enqueue_resource_hints', 10, 2 );
 
 add_theme_support( 'responsive-embeds' );
-add_theme_support( 'editor-styles' );
+// add_theme_support( 'editor-styles' );
 
 function newcity_colby_news_add_editor_style() {
 	add_editor_style(
@@ -898,8 +899,8 @@ function newcity_colby_news_add_editor_style() {
 	);
 }
 
-add_action( 'after_setup_theme', 'newcity_colby_news_add_editor_style' );
-add_action( 'pre_get_posts', 'newcity_colby_news_add_editor_style' );
+// add_action( 'after_setup_theme', 'newcity_colby_news_add_editor_style' );
+// add_action( 'pre_get_posts', 'newcity_colby_news_add_editor_style' );
 
 function newcity_colby_news_add_editor_scripts() {
 	wp_enqueue_script(
@@ -1311,19 +1312,7 @@ function register_custom_api_routes() {
 
 add_action('rest_api_init', 'register_custom_api_routes');
 
-// TODO: this was producing warnings on the backend of wp
-// add_action(
-// 	'rest_api_init',
-// 	function() {
-// 		header( 'Access-Control-Allow-Origin: *' );
-// 		header( 'Access-Control-Allow-Methods: GET' );
-// 	}
-// );
-
 function removeBlocks() {
-    $blocks_to_remove = ['acf/nc-related-posts', 'acf/nc-teaser-pair'];
-    $separator_block = 'core/separator';
-
     $args = array(
         'post_type'      => 'post',
         'posts_per_page' => -1,
@@ -1338,31 +1327,66 @@ function removeBlocks() {
             $post_id      = get_the_ID();
             $post_content = get_post_field('post_content', $post_id);
 
-            // Remove h2 elements with id "h-highlights"
-            $post_content = preg_replace('/<h2[^>]+id="h-highlights"[^>]*>.*?<\/h2>/', '', $post_content);
+            $blocks_to_remove = ['acf/nc-related-posts', 'acf/nc-teaser-pair'];
 
+            // Parse the blocks in the post content
             $blocks = parse_blocks($post_content);
-						die(dump($blocks));
 
-            // Check if the last block is core/separator
+						// Check if the last block is 'core/separator'
             $last_block = end($blocks);
-            if ($last_block['blockName'] === $separator_block) {
-                array_pop($blocks); // Remove the last block
+            if ($last_block && $last_block['blockName'] === 'core/separator') {
+                array_pop($blocks); // Remove the last 'core/separator' block
             }
 
-            // Filter out specific blocks
-            $filtered_blocks = array_filter($blocks, function ($block) use ($blocks_to_remove) {
-                return !in_array($block['blockName'], $blocks_to_remove);
+						$filteredArray = array_map(function ($block) {
+							// Convert 'core/paragraph' blocks to 'acf/paragraph'
+							if ($block['blockName'] === 'core/paragraph') {
+									$block['blockName'] = 'acf/paragraph';
+							}
+
+							return $block;
+						}, $blocks);
+
+            $filteredArray = array_filter($blocks, function ($block) use ($blocks_to_remove) {
+                if (in_array($block['blockName'], $blocks_to_remove)) {
+                    return false;
+                }
+
+								// Check for subscribe block
+                if ($block['blockName'] === 'core/block' && isset($block['attrs']['ref']) && ($block['attrs']['ref'] === 11949) !== false) {
+                    return false;
+                }
+
+                // Check for "core/heading" blocks with specific innerHTML
+                if ($block['blockName'] === 'core/heading' && isset($block['innerHTML']) && strpos($block['innerHTML'], '<h2 class="wp-block-heading is-style-large-heading" id="h-highlights">Highlights</h2>') !== false) {
+                    return false;
+                }
+
+                return true;
             });
 
-            // Update the post content
-            $post_data = array(
-                'ID'           => $post_id,
-                'post_content' => serialize_blocks($filtered_blocks),
-            );
-            wp_update_post($post_data);
+            // Convert the modified blocks back to content
+            $new_post_content = '';
+
+            foreach ($filteredArray as $block) {
+                $new_post_content .= serialize_block($block);
+            }
+
+            // Update the post content with the modified blocks
+            wp_update_post(array('ID' => $post_id, 'post_content' => $new_post_content));
         }
     }
 }
 
 // removeBlocks();
+
+
+// TODO: this was producing warnings on the backend of wp
+// add_action(
+// 	'rest_api_init',
+// 	function() {
+// 		header( 'Access-Control-Allow-Origin: *' );
+// 		header( 'Access-Control-Allow-Methods: GET' );
+// 	}
+// );
+
