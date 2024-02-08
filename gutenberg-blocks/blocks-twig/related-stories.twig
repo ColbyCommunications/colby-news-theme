@@ -1,7 +1,7 @@
 {% set outerHTag = 'h' ~ hLevel|default(2) %}
 {% set innerHTag = 'h' ~ (hLevel|default(2) + 1) %}
 
-<section class="space-y-2 {{ float ? 'md:max-w-sm' : 'max-w-4xl'}}">
+<section id="relatedBlock" class="space-y-2 {{ float ? 'md:max-w-sm' : 'max-w-4xl'}}">
     <{{ outerHTag }} class="uppercase text-xs-plus-1 {{ not float ? 'sm:text-xl' }}">{{ headline|default('Related') }}</{{ outerHTag }}>
     <ul>
         {% for item in items %}
