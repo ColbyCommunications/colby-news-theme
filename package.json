@@ -70,7 +70,7 @@
     "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@babel/preset-env": "^7.18.2",
     "@babel/preset-react": "^7.13.13",
-    "@percy/cli": "^1.27.7",
+    "@percy/cli": "^1.28.0",
     "@percy/puppeteer": "^2.0.2",
     "@storybook/eslint-config-storybook": "^3.0.0",
     "@tailwindcss/forms": "^0.3.2",
