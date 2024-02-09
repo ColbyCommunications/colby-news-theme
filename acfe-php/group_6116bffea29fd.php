@@ -83,7 +83,7 @@ acf_add_local_field_group(array(
 			'key' => 'field_6116c03a128ec',
 			'label' => 'Link',
 			'name' => 'link',
-			'type' => 'acfe_advanced_link',
+			'type' => 'link',
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
