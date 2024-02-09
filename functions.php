@@ -1,5 +1,9 @@
 <?php
 
+ini_set('max_execution_time', 600);
+
+require_once __DIR__ . '/wp-cli.php';
+
 /**
  * Functions and definitions for newcity/timber-starter theme
  *
@@ -886,7 +890,7 @@ function newcity_colby_news_enqueue_resource_hints( $urls, $relation_type ) {
 add_filter( 'wp_resource_hints', 'newcity_colby_news_enqueue_resource_hints', 10, 2 );
 
 add_theme_support( 'responsive-embeds' );
-add_theme_support( 'editor-styles' );
+// add_theme_support( 'editor-styles' );
 
 function newcity_colby_news_add_editor_style() {
 	add_editor_style(
@@ -898,8 +902,8 @@ function newcity_colby_news_add_editor_style() {
 	);
 }
 
-add_action( 'after_setup_theme', 'newcity_colby_news_add_editor_style' );
-add_action( 'pre_get_posts', 'newcity_colby_news_add_editor_style' );
+// add_action( 'after_setup_theme', 'newcity_colby_news_add_editor_style' );
+// add_action( 'pre_get_posts', 'newcity_colby_news_add_editor_style' );
 
 function newcity_colby_news_add_editor_scripts() {
 	wp_enqueue_script(
@@ -1337,3 +1341,4 @@ add_action('rest_api_init', 'register_custom_api_routes');
 // 		header( 'Access-Control-Allow-Methods: GET' );
 // 	}
 // );
+
