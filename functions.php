@@ -1245,21 +1245,6 @@ function post_shared_attributes( array $shared_attributes, WP_Post $post ) {
 	return $shared_attributes;
 }
 
-function get_reusable_block_content($block_id) {
-    // Use the block ID to retrieve the content
-    $block = get_post($block_id);
-
-    if ($block) {
-        return apply_filters('the_content', $block->post_content);
-    }
-
-    return '';
-}
-
-function get_block_content($block_name) {
-    return render_block(['blockName' => $block_name]);
-}
-
 add_filter( 'algolia_searchable_post_shared_attributes', 'post_shared_attributes', 10, 2 );
 
 add_filter( 'timber/twig', 'add_to_twig' );
@@ -1268,8 +1253,6 @@ function add_to_twig( $twig ) {
 	// Adding a function.
 	$twig->addFunction( new Timber\Twig_Function( 'get_total_pubs', 'get_total_pubs' ) );
 	$twig->addFunction( new Timber\Twig_Function( 'get_all_categories', 'get_all_categories' ) );
-	$twig->addFunction( new Timber\Twig_Function( 'get_reusable_block_content', 'get_reusable_block_content' ) );
-	$twig->addFunction( new Timber\Twig_Function( 'get_block_content', 'get_block_content' ) );
 	return $twig;
 }
 
