@@ -1,6 +1,6 @@
 <?php
 
-ini_set('max_execution_time', 600);
+ini_set( 'max_execution_time', 600 );
 
 require_once __DIR__ . '/wp-cli.php';
 
@@ -889,7 +889,7 @@ function newcity_colby_news_enqueue_resource_hints( $urls, $relation_type ) {
 add_filter( 'wp_resource_hints', 'newcity_colby_news_enqueue_resource_hints', 10, 2 );
 
 add_theme_support( 'responsive-embeds' );
-// add_theme_support( 'editor-styles' );
+add_theme_support( 'editor-styles' );
 
 function newcity_colby_news_add_editor_style() {
 	add_editor_style(
@@ -901,8 +901,8 @@ function newcity_colby_news_add_editor_style() {
 	);
 }
 
-// add_action( 'after_setup_theme', 'newcity_colby_news_add_editor_style' );
-// add_action( 'pre_get_posts', 'newcity_colby_news_add_editor_style' );
+add_action( 'after_setup_theme', 'newcity_colby_news_add_editor_style' );
+add_action( 'pre_get_posts', 'newcity_colby_news_add_editor_style' );
 
 function newcity_colby_news_add_editor_scripts() {
 	wp_enqueue_script(
@@ -1257,62 +1257,69 @@ function add_to_twig( $twig ) {
 }
 
 function custom_api_get_external_posts_with_media_source() {
-    $args = array(
-        'post_type' => 'external_post',
-        'posts_per_page' => -1,
-        'status' => 'publish',
-    );
+	$args = array(
+		'post_type'      => 'external_post',
+		'posts_per_page' => -1,
+		'status'         => 'publish',
+	);
 
-    $query = new WP_Query($args);
-    $posts = $query->get_posts();
+	$query = new WP_Query( $args );
+	$posts = $query->get_posts();
 
-    $formatted_posts = array_map(function ($post) {
-        $image = '';
-        $tags = array();
+	$formatted_posts = array_map(
+		function ( $post ) {
+			$image = '';
+			$tags  = array();
 
-        $post_tags = get_the_tags($post);
-        if ($post_tags) {
-            foreach ($post_tags as $tag) {
-                $tags[] = array('name' => $tag->slug);
-            }
-        }
+			$post_tags = get_the_tags( $post );
+			if ( $post_tags ) {
+				foreach ( $post_tags as $tag ) {
+					$tags[] = array( 'name' => $tag->slug );
+				}
+			}
 
-        if (isset(get_the_terms($post->ID, 'media_source')[0]->term_id)) {
-            $media_source_term_id = get_the_terms($post->ID, 'media_source')[0]->term_id;
-            $media_source_logo = get_field('logo', 'media_source_' . $media_source_term_id);
-            
-            if ($media_source_logo && wp_get_attachment_image_src($media_source_logo, 'logo')) {
-                $image = wp_get_attachment_image_src($media_source_logo, 'logo')[0];
-            }
-        }
+			if ( isset( get_the_terms( $post->ID, 'media_source' )[0]->term_id ) ) {
+				$media_source_term_id = get_the_terms( $post->ID, 'media_source' )[0]->term_id;
+				$media_source_logo    = get_field( 'logo', 'media_source_' . $media_source_term_id );
 
-        return array(
-            'id' => $post->ID,
-            'post_status' => $post->post_status,
-            'post_author' => $post->post_author,
-            'post_date' => $post->post_date,
-            'post_type' => $post->post_type,
-            'title' => array('rendered' => $post->post_title),
-            'story_type' => get_the_terms($post, 'story_type'),
-            'content' => array('rendered' => $post->post_content),
-            'external_url' => $post->external_url,
-            'taxonomy' => get_the_terms($post, 'media_source'),
-            'image' => $image,
-            'tags' => $tags
-        );
-    }, $posts);
+				if ( $media_source_logo && wp_get_attachment_image_src( $media_source_logo, 'logo' ) ) {
+					$image = wp_get_attachment_image_src( $media_source_logo, 'logo' )[0];
+				}
+			}
 
-    return rest_ensure_response($formatted_posts);
+			return array(
+				'id'           => $post->ID,
+				'post_status'  => $post->post_status,
+				'post_author'  => $post->post_author,
+				'post_date'    => $post->post_date,
+				'post_type'    => $post->post_type,
+				'title'        => array( 'rendered' => $post->post_title ),
+				'story_type'   => get_the_terms( $post, 'story_type' ),
+				'content'      => array( 'rendered' => $post->post_content ),
+				'external_url' => $post->external_url,
+				'taxonomy'     => get_the_terms( $post, 'media_source' ),
+				'image'        => $image,
+				'tags'         => $tags,
+			);
+		},
+		$posts
+	);
+
+	return rest_ensure_response( $formatted_posts );
 }
 
 function register_custom_api_routes() {
-    register_rest_route('custom/v1', '/external-posts', array(
-        'methods' => 'GET',
-        'callback' => 'custom_api_get_external_posts_with_media_source',
-    ));
+	register_rest_route(
+		'custom/v1',
+		'/external-posts',
+		array(
+			'methods'  => 'GET',
+			'callback' => 'custom_api_get_external_posts_with_media_source',
+		)
+	);
 }
 
-add_action('rest_api_init', 'register_custom_api_routes');
+add_action( 'rest_api_init', 'register_custom_api_routes' );
 
 
 // TODO: this was producing warnings on the backend of wp
