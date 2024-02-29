@@ -309,103 +309,122 @@ class TemplatePart
         ]);
     }
 
-    protected function storyHeader($args = [])
-    {
-        $post = get_key($args, 'post');
-        $post = $post ? $post : $this->context['post'];
+    protected function storyHeader( $args = array() ) {
+		$post = get_key( $args, 'post' );
+		$post = $post ? $post : $this->context['post'];
 
-        $defaultArgs = [
-            'orientation' => 'landscape',
-            'shareButtonsLast' => false,
-            'author' => $post->author,
-            'postedDate' => $post->date,
-        ];
+		$defaultArgs = array(
+			'orientation'      => 'landscape',
+			'shareButtonsLast' => false,
+			'author'           => $post->author,
+			'postedDate'       => $post->date,
+		);
 
-        $imageSize = 'landscape_full_lg';
+		$imageSize = 'landscape_full_lg';
 
-        $defaultArgs['updatedDate'] = false;
-        if (get_the_modified_date($post->ID) > get_the_date($post->ID)) {
-            $defaultArgs['updatedDate']  = get_the_modified_date($post->ID);
-        }
+		$defaultArgs['updatedDate'] = false;
+		if ( get_the_modified_date( $post->ID ) > get_the_date( $post->ID ) ) {
+			$defaultArgs['updatedDate'] = get_the_modified_date( $post->ID );
+		}
 
-        if (function_exists('yoast_get_primary_term')) {
-            $primaryCategoryID = yoast_get_primary_term_id('category', $post->ID);
-            if ($primaryCategoryID && ! is_wp_error($primaryCategoryID)) {
-                $primaryCategory = get_term($primaryCategoryID);
-                $defaultArgs['primaryCategory'] = [
-                    'title' => $primaryCategory->name,
-                    'url' => get_term_link($primaryCategoryID, 'category'),
-                ];
-            }
-        }
+		if ( function_exists( 'yoast_get_primary_term' ) ) {
+			$primaryCategoryID = yoast_get_primary_term_id( 'category', $post->ID );
+			if ( $primaryCategoryID && ! is_wp_error( $primaryCategoryID ) ) {
+				$primaryCategory                = get_term( $primaryCategoryID );
+				$defaultArgs['primaryCategory'] = array(
+					'title' => $primaryCategory->name,
+					'url'   => get_term_link( $primaryCategoryID, 'category' ),
+				);
+			}
+		}
 
-        $all_fields = get_fields($post->ID);
-        $is_revision = wp_is_post_revision($post);
+		$all_fields  = get_fields( $post->ID );
+		$is_revision = wp_is_post_revision( $post );
 
-        if (function_exists('get_field')) {
-            $defaultArgs['lengthOfRead'] = get_post_meta($post->ID, '_yoast_wpseo_estimated-reading-time-minutes')[0] . strtoupper(' min read');
-            $defaultArgs['summary'] = get_post_field('summary', $post->ID);
-            $defaultArgs['author'] = get_post_field('author', $post->ID);
-            $defaultArgs['photoCredit'] = get_post_field('photoCredit', $post->ID);
-            $defaultArgs['contact'] = [
-                'name' => get_post_field('contact_name', $post->ID),
-                'email' => get_post_field('contact_email', $post->ID),
-                'phone' => get_post_field('contact_phone', $post->ID),
-            ];
-        }
+		if ( function_exists( 'get_field' ) ) {
+			$defaultArgs['lengthOfRead'] = get_post_meta( $post->ID, '_yoast_wpseo_estimated-reading-time-minutes' )[0] . strtoupper( ' min read' );
+			$defaultArgs['summary']      = get_post_field( 'summary', $post->ID );
+			$defaultArgs['author']       = get_post_field( 'author', $post->ID );
+			$defaultArgs['photoCredit']  = get_post_field( 'photoCredit', $post->ID );
+			$defaultArgs['contact']      = array(
+				'name'  => get_post_field( 'contact_name', $post->ID ),
+				'email' => get_post_field( 'contact_email', $post->ID ),
+				'phone' => get_post_field( 'contact_phone', $post->ID ),
+			);
+		}
 
-        $defaultArgs['title'] = get_the_title($post->ID);
+		$defaultArgs['title'] = get_the_title( $post->ID );
 
-        $video = false;
-        if (get_post_format($post->ID) === 'video') {
-            $video = get_field('featured_video');
-        }
+		$video = false;
+		if ( get_post_format( $post->ID ) === 'video' ) {
+			$video = get_field( 'featured_video' );
+		}
 
-        $figure_responsive = false;
+		$figure_responsive = false;
 
-        if ($video) {
-            $orientation = 'landscape';
-            $featuredImage = $video;
-            $featuredImageCaption = '';
-            $figure_responsive = true;
-        } else {
-            $orientation = get_post_field('vertical_header', $post->ID) ? 'portrait' : 'landscape';
-            $verticalFeaturedImage = get_post_field('vertical_image', $post->ID);
-            if ($orientation === 'portrait' && $verticalFeaturedImage) {
-                $imageSize = 'header_vertical_lg';
-                $featuredImage = nc_blocks_image($verticalFeaturedImage, $imageSize);
-                $featuredImageCaption = wp_get_attachment_caption($verticalFeaturedImage);
-            } else {
-                $featuredImage = get_the_post_thumbnail($post->ID, $imageSize);
-                $featuredImageCaption = get_the_post_thumbnail_caption($post->ID);
-            }
-        }
+		if ( $video ) {
+			$orientation          = 'landscape';
+			$featuredImage        = $video;
+			$featuredImageCaption = '';
+			$figure_responsive    = true;
+		} else {
+			$orientation           = get_post_field( 'vertical_header', $post->ID ) ? 'portrait' : 'landscape';
+			$verticalFeaturedImage = get_post_field( 'vertical_image', $post->ID );
+			if ( $orientation === 'portrait' && $verticalFeaturedImage ) {
+				$imageSize            = 'header_vertical_lg';
+				$featuredImage        = nc_blocks_image( $verticalFeaturedImage, $imageSize );
+				$featuredImageCaption = wp_get_attachment_caption( $verticalFeaturedImage );
+			} else {
+				$featuredImage        = wp_parse_url( get_the_post_thumbnail_url( $post->ID ) );
+				$featuredImageCaption = get_the_post_thumbnail_caption( $post->ID );
+			}
+		}
 
-        if (is_front_page()) {
-            $featuredImageCaption = false;
-        }
+		if ( is_front_page() ) {
+			$featuredImageCaption = false;
+		}
 
+		$figure = '<figure>';
+		if ( $figure_responsive ) {
+			$figure .= '<div class="responsive-embed">';
+		}
+		$figure .= <<<EOD
+            <img
+                srcset="
+                    https://news.colby.edu/cdn-cgi/image/width=1090,quality=60/https://news.colby.edu{$featuredImage['path']} 1090w, 
+                    https://news.colby.edu/cdn-cgi/image/width=300,quality=60/https://news.colby.edu{$featuredImage['path']} 300w, 
+                    https://news.colby.edu/cdn-cgi/image/width=1024,quality=60/https://news.colby.edu{$featuredImage['path']} 1024w,
+                    https://news.colby.edu/cdn-cgi/image/width=600,quality=60/https://news.colby.edu{$featuredImage['path']} 600w,
+                    https://news.colby.edu/cdn-cgi/image/width=1536,quality=60/https://news.colby.edu{$featuredImage['path']} 1536w,
+                    https://news.colby.edu/cdn-cgi/image/width=100,quality=60/https://news.colby.edu{$featuredImage['path']} 100w,
+                    https://news.colby.edu/cdn-cgi/image/width=540,quality=60/https://news.colby.edu{$featuredImage['path']} 540w,
+                    https://news.colby.edu/cdn-cgi/image/width=1080,quality=60/https://news.colby.edu{$featuredImage['path']} 1080w,
+                    https://news.colby.edu/cdn-cgi/image/width=800,quality=60/https://news.colby.edu{$featuredImage['path']} 800w,
+                    https://news.colby.edu/cdn-cgi/image/width=640,quality=60/https://news.colby.edu{$featuredImage['path']} 640w,
+                    https://news.colby.edu/cdn-cgi/image/width=320,quality=60/https://news.colby.edu{$featuredImage['path']} 320w,
+                    https://news.colby.edu/cdn-cgi/image/width=400,quality=60/https://news.colby.edu{$featuredImage['path']} 400w,
+                    https://news.colby.edu/cdn-cgi/image/width=1600,quality=60/https://news.colby.edu{$featuredImage['path']} 1600w
+                "
+                src="https://news.colby.edu/cdn-cgi/image/width=1090,quality=60/https://news.colby.edu{$featuredImage['path']}"
+                sizes="(max-width: 1090px) 100vw, 1090px"
+                alt=""
+            />
+        EOD;
+		if ( $figure_responsive ) {
+			$figure .= '</div>';
+		}
+		if ( $featuredImageCaption ) {
+			$figure .= " < figcaption class = 'text-sm' > $featuredImageCaption < / figcaption > ";
+		}
 
-        $figure = '<figure>';
-        if ($figure_responsive) {
-            $figure .= '<div class="responsive-embed">';
-        }
-        $figure .= $featuredImage;
-        if ($figure_responsive) {
-            $figure .= '</div>';
-        }
-        if ($featuredImageCaption) {
-            $figure .= "<figcaption class='text-sm'>$featuredImageCaption</figcaption>";
-        }
+		$figure .= '</figure>';
 
-        $figure .= '</figure>';
+		$defaultArgs['figure']       = $figure;
+		$defaultArgs['orientation']  = $orientation;
+		$defaultArgs['shareButtons'] = Timber::compile( $this->twigPath . '/social-sharing.twig' );
 
-        $defaultArgs['figure'] = $figure;
-        $defaultArgs['orientation'] = $orientation;
-        $defaultArgs['shareButtons'] = Timber::compile($this->twigPath . '/social-sharing.twig');
+		$headerArgs = wp_parse_args( $args, $defaultArgs );
 
-        $headerArgs = wp_parse_args($args, $defaultArgs);
-
-        return Timber::compile($this->twigPath . '/story-header.twig', $headerArgs);
-    }
+		return Timber::compile( $this->twigPath . '/story-header.twig', $headerArgs );
+	}
 }
