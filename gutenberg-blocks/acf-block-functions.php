@@ -1200,9 +1200,31 @@ function breaker_feature( $block, $content = '', $is_preview = false, $post_id =
 	if ( function_exists( 'get_field' ) ) {
 		$image = get_field( 'image' );
 		if ( $image ) {
-			$image = nc_blocks_image( $image, 'landscape_full_xl' );
+			$image_path = wp_parse_url( wp_get_attachment_image_url( $image, 'original' ) )['path'];
+			$image      = <<<EOD
+            <img
+                srcset="
+                    https://news.colby.edu/cdn-cgi/image/width=1090,quality=40/https://news.colby.edu{$image_path} 2160w, 
+                    https://news.colby.edu/cdn-cgi/image/width=300,quality=40/https://news.colby.edu{$image_path} 300w, 
+                    https://news.colby.edu/cdn-cgi/image/width=1024,quality=40/https://news.colby.edu{$image_path} 1024w,
+                    https://news.colby.edu/cdn-cgi/image/width=150,quality=40/https://news.colby.edu{$image_path} 150w,
+                    https://news.colby.edu/cdn-cgi/image/width=600,quality=40/https://news.colby.edu{$image_path} 600w,
+                    https://news.colby.edu/cdn-cgi/image/width=1536,quality=40/https://news.colby.edu{$image_path} 1536w,
+                    https://news.colby.edu/cdn-cgi/image/width=2048,quality=40/https://news.colby.edu{$image_path} 2048w,
+                    https://news.colby.edu/cdn-cgi/image/width=80,quality=40/https://news.colby.edu{$image_path} 80w,
+                    https://news.colby.edu/cdn-cgi/image/width=100,quality=40/https://news.colby.edu{$image_path} 100w,
+                    https://news.colby.edu/cdn-cgi/image/width=800,quality=40/https://news.colby.edu{$image_path} 800w,
+                    https://news.colby.edu/cdn-cgi/image/width=640,quality=40/https://news.colby.edu{$image_path} 640w,
+                    https://news.colby.edu/cdn-cgi/image/width=320,quality=40/https://news.colby.edu{$image_path} 320w,
+                    https://news.colby.edu/cdn-cgi/image/width=1090,quality=40/https://news.colby.edu{$image_path} 1090w,
+                    https://news.colby.edu/cdn-cgi/image/width=400,quality=40/https://news.colby.edu{$image_path} 400w,
+                "
+                src="https://news.colby.edu/cdn-cgi/image/width=2160,quality=40/https://news.colby.edu{$image_path}"
+                sizes="(max-width: 2160px) 100vw, 2160px"
+                alt=""
+            />
+        EOD;
 		}
-
 		$args = array(
 			'image'       => $image,
 			'superhead'   => array(
@@ -1215,8 +1237,8 @@ function breaker_feature( $block, $content = '', $is_preview = false, $post_id =
 		);
 
 		echo "<div class='wp-block'><div class='relative full-width'>"
-			. Timber::compile( get_blocks_twig_directory( '/breaker-feature.twig' ), $args )
-			. '</div></div>';
+		. Timber::compile( get_blocks_twig_directory( '/breaker-feature.twig' ), $args )
+		. '</div></div>';
 	}
 }
 
