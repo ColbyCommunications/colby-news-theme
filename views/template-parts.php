@@ -2,314 +2,338 @@
 
 namespace NC_Blocks;
 
-require_once(get_template_directory() . '/gutenberg-blocks/blocks-utilities.php');
-require_once(get_template_directory() . '/gutenberg-blocks/components/block-components.php');
-require_once(get_template_directory() . '/gutenberg-blocks/acf-block-functions.php');
+require_once( get_template_directory() . '/gutenberg-blocks/blocks-utilities.php' );
+require_once( get_template_directory() . '/gutenberg-blocks/components/block-components.php' );
+require_once( get_template_directory() . '/gutenberg-blocks/acf-block-functions.php' );
 
 use Timber\Timber;
 use Timber\PostQuery as TimberPostQuery;
 use Timber\Image as TimberImage;
 
-class TemplatePart
-{
-    protected $components;
-    protected $context;
-    protected $twigPath;
-    protected $pagination;
-    protected $paginatedPostList;
-    protected $fallbackImage;
+class TemplatePart {
 
-    public function __construct($context = null)
-    {
-        $this->context = $context ?? Timber::get_context();
-        $this->twigPath = get_template_directory() . '/views/template-parts';
-        $this->fallbackImage = '';
-        if (function_exists('nc_fallback_image')) {
-            $this->fallbackImage = nc_fallback_image();
-        }
+	protected $components;
+	protected $context;
+	protected $twigPath;
+	protected $pagination;
+	protected $paginatedPostList;
+	protected $fallbackImage;
 
-        $this->components = array(
-            'siteHeader' => 'siteHeader',
-            'siteFooter' => 'siteFooter',
-            'storyHeader' => 'storyHeader',
-            'pagination' => 'pagination',
-            'defaultTeaserBuilder' => 'defaultTeaserBuilder',
-            'paginatedPostList' => 'paginatedPostList',
-        );
-    }
+	public function __construct( $context = null ) {
+		$this->context       = $context ?? Timber::get_context();
+		$this->twigPath      = get_template_directory() . '/views/template-parts';
+		$this->fallbackImage = '';
+		if ( function_exists( 'nc_fallback_image' ) ) {
+			$this->fallbackImage = nc_fallback_image();
+		}
 
-    public function getTwigPath()
-    {
-        return $this->twigPath;
-    }
+		$this->components = array(
+			'siteHeader'           => 'siteHeader',
+			'siteFooter'           => 'siteFooter',
+			'storyHeader'          => 'storyHeader',
+			'pagination'           => 'pagination',
+			'defaultTeaserBuilder' => 'defaultTeaserBuilder',
+			'paginatedPostList'    => 'paginatedPostList',
+		);
+	}
 
-    public function build($component_name, $args = [], $print = false)
-    {
-        if (!isset($this->components[$component_name])) {
-            do_action('qm/warn', "No definition for component '$component_name'");
-            return '';
-        }
+	public function getTwigPath() {
+		return $this->twigPath;
+	}
 
-        if (! is_callable([$this, $this->components[$component_name]])) {
-            do_action('qm/warn', "$component_name is not a callable method.");
-            return '';
-        }
+	public function build( $component_name, $args = array(), $print = false ) {
+		if ( ! isset( $this->components[ $component_name ] ) ) {
+			do_action( 'qm/warn', "No definition for component '$component_name'" );
+			return '';
+		}
 
-        $output = call_user_func([$this, $this->components[$component_name]], $args);
+		if ( ! is_callable( array( $this, $this->components[ $component_name ] ) ) ) {
+			do_action( 'qm/warn', "$component_name is not a callable method." );
+			return '';
+		}
 
-        if ($print) {
-            echo $output;
-        }
+		$output = call_user_func( array( $this, $this->components[ $component_name ] ), $args );
 
-        return $output;
-    }
+		if ( $print ) {
+			echo $output;
+		}
 
-    protected function pagination($postList)
-    {
-        if (isset($this->pagination)) {
-            return $this->pagination;
-        }
+		return $output;
+	}
 
-        return Timber::compile($this->twigPath . '/pagination.twig', [
-            'pagination' => $postList->pagination()
-        ]);
-    }
+	protected function pagination( $postList ) {
+		if ( isset( $this->pagination ) ) {
+			return $this->pagination;
+		}
 
-    protected function defaultTeaserBuilder($post_item)
-    {
-        if ($post_item->thumbnail) {
-            $thumbnail = nc_blocks_image($post_item->thumbnail->ID, 'teaser_new');
-        } else {
-            $thumbnail = new TimberImage($this->fallbackImage);
-            $thumbnail = "<img src='" . $thumbnail->src() . "' alt='' />";
-        }
+		return Timber::compile(
+			$this->twigPath . '/pagination.twig',
+			array(
+				'pagination' => $postList->pagination(),
+			)
+		);
+	}
 
-        $preview = '';
+	protected function defaultTeaserBuilder( $post_item ) {
+		if ( $post_item->thumbnail ) {
+			$thumbnail = nc_blocks_image( $post_item->thumbnail->ID, 'teaser_new' );
+		} else {
+			$thumbnail = new TimberImage( $this->fallbackImage );
+			$thumbnail = "<img src='" . $thumbnail->src() . "' alt='' />";
+		}
 
-        if (function_exists('get_field')) {
-            $preview = get_field('summary', $post_item->id());
-        }
+		$preview = '';
 
-        $preview = $preview ? $preview : $post_item->preview()->read_more(false);
+		if ( function_exists( 'get_field' ) ) {
+			$preview = get_field( 'summary', $post_item->id() );
+		}
 
-        $primaryCategory = false;
-        if (function_exists('yoast_get_primary_term')) {
-            $primaryCategoryID = yoast_get_primary_term_id('category', $post_item->ID);
-            if ($primaryCategoryID) {
-                $primaryCategory = get_term($primaryCategoryID);
-                $primaryCategory = [
-                    'title' => $primaryCategory->name,
-                    'url' => get_term_link($primaryCategoryID, 'category'),
-                ];
-            }
-        }
+		$preview = $preview ? $preview : $post_item->preview()->read_more( false );
 
-        $post_preview = [
-            'title' => $post_item->title(),
-            'id' => $post_item->id(),
-            'link' => $post_item->link(),
-            'post_type' => $post_item->post_type(),
-            'description' => $preview,
-            'primary_category' => $primaryCategory,
-            'thumbnail' => $thumbnail
-        ];
+		$primaryCategory = false;
+		if ( function_exists( 'yoast_get_primary_term' ) ) {
+			$primaryCategoryID = yoast_get_primary_term_id( 'category', $post_item->ID );
+			if ( $primaryCategoryID ) {
+				$primaryCategory = get_term( $primaryCategoryID );
+				$primaryCategory = array(
+					'title' => $primaryCategory->name,
+					'url'   => get_term_link( $primaryCategoryID, 'category' ),
+				);
+			}
+		}
 
-        return $post_preview;
-    }
+		$post_preview = array(
+			'title'            => $post_item->title(),
+			'id'               => $post_item->id(),
+			'link'             => $post_item->link(),
+			'post_type'        => $post_item->post_type(),
+			'description'      => $preview,
+			'primary_category' => $primaryCategory,
+			'thumbnail'        => $thumbnail,
+		);
 
-    protected function paginatedPostList($args = [])
-    {
-        if (!isset($this->paginatedPostList)) {
-            $args = wp_parse_args($args, ['query' => null, 'render' => true]);
+		return $post_preview;
+	}
 
-            // Build pagination if not using the default query
-            if ($args['query']) {
-                global $paged;
-                if (!isset($paged) || !$paged) {
-                    $paged = 1;
-                }
+	protected function paginatedPostList( $args = array() ) {
+		if ( ! isset( $this->paginatedPostList ) ) {
+			$args = wp_parse_args(
+				$args,
+				array(
+					'query'  => null,
+					'render' => true,
+				)
+			);
 
-                $args['query']['paged'] = $paged;
-                $timber_posts = new TimberPostQuery($args['query']);
-            } else {
-                $timber_posts = new TimberPostQuery();
-            }
+			// Build pagination if not using the default query
+			if ( $args['query'] ) {
+				global $paged;
+				if ( ! isset( $paged ) || ! $paged ) {
+					$paged = 1;
+				}
 
-            $post_previews = [];
+				$args['query']['paged'] = $paged;
+				$timber_posts           = new TimberPostQuery( $args['query'] );
+			} else {
+				$timber_posts = new TimberPostQuery();
+			}
 
-            foreach ($timber_posts->get_posts() as $post_item) {
-                if (!empty($args['transformer_function']) && function_exists($args['transformer_function'])) {
-                    $transformer_args = !empty($args['transformer_args']) ? $args['transformer_args'] : [];
-                    $post_previews[] = $args['transformer_function']($post_item, $transformer_args);
-                } else {
-                    $post_previews[] = $this->defaultTeaserBuilder($post_item);
-                }
-            }
+			$post_previews = array();
 
-            $pagination_args = [];
+			foreach ( $timber_posts->get_posts() as $post_item ) {
+				if ( ! empty( $args['transformer_function'] ) && function_exists( $args['transformer_function'] ) ) {
+					$transformer_args = ! empty( $args['transformer_args'] ) ? $args['transformer_args'] : array();
+					$post_previews[]  = $args['transformer_function']( $post_item, $transformer_args );
+				} else {
+					$post_previews[] = $this->defaultTeaserBuilder( $post_item );
+				}
+			}
 
-            if ($args['query'] && array_key_exists('raw_offset', $args['query'])) {
-                $pagination_args['total'] = ceil(($timber_posts->found_posts - $args['query']['raw_offset']) / $args['query']['posts_per_page']);
-            }
+			$pagination_args = array();
 
-            $pagination = $timber_posts->pagination($pagination_args);
+			if ( $args['query'] && array_key_exists( 'raw_offset', $args['query'] ) ) {
+				$pagination_args['total'] = ceil( ( $timber_posts->found_posts - $args['query']['raw_offset'] ) / $args['query']['posts_per_page'] );
+			}
 
-            $paginatedPostListArgs = [
-                'posts' => $post_previews,
-                'pagination' => $pagination,
-                'pagination_links' => $this->pagination($timber_posts),
-                'fallback_image' => $this->fallbackImage,
-                'first_page' => $pagination->current === 1,
-                'postListClasses' => !empty($args['postListClasses']) ? $args['postListClasses'] : '',
-                'itemClasses' => !empty($args['itemClasses']) ? $args['itemClasses'] : '',
-            ];
+			$pagination = $timber_posts->pagination( $pagination_args );
 
-            if (! $args['render']) {
-                return $paginatedPostListArgs;
-            }
+			$paginatedPostListArgs = array(
+				'posts'            => $post_previews,
+				'pagination'       => $pagination,
+				'pagination_links' => $this->pagination( $timber_posts ),
+				'fallback_image'   => $this->fallbackImage,
+				'first_page'       => $pagination->current === 1,
+				'postListClasses'  => ! empty( $args['postListClasses'] ) ? $args['postListClasses'] : '',
+				'itemClasses'      => ! empty( $args['itemClasses'] ) ? $args['itemClasses'] : '',
+			);
 
-            $this->paginatedPostList = Timber::compile($this->twigPath . '/post-list.twig', $paginatedPostListArgs);
-        }
+			if ( ! $args['render'] ) {
+				return $paginatedPostListArgs;
+			}
 
-        return $this->paginatedPostList;
-    }
+			$this->paginatedPostList = Timber::compile( $this->twigPath . '/post-list.twig', $paginatedPostListArgs );
+		}
 
-    protected function siteFooter($args)
-    {
-        $args = wp_parse_args($args, $this->context);
+		return $this->paginatedPostList;
+	}
 
-        if (is_active_sidebar('footer_widgets')) :
-            ob_start();
-            dynamic_sidebar('footer_widgets');
-            $socialLinks = ob_get_clean();
-        else :
-            $socialLinks = '';
-        endif;
+	protected function siteFooter( $args ) {
+		$args = wp_parse_args( $args, $this->context );
 
-        $args['socialLinks'] = $socialLinks;
+		if ( is_active_sidebar( 'footer_widgets' ) ) :
+			ob_start();
+			dynamic_sidebar( 'footer_widgets' );
+			$socialLinks = ob_get_clean();
+		else :
+			$socialLinks = '';
+		endif;
 
-        $args['footerLogo'] = get_key($args, 'footerLogo', $this->context['headerLogo']);
+		$args['socialLinks'] = $socialLinks;
 
-        return Timber::compile($this->twigPath . '/site-footer.twig', $args);
-    }
+		$args['footerLogo'] = get_key( $args, 'footerLogo', $this->context['headerLogo'] );
 
-    protected function siteSearch($args = array())
-    {
-        $searchTwig = $this->twigPath . '/site-search.twig';
+		return Timber::compile( $this->twigPath . '/site-footer.twig', $args );
+	}
 
-        return Timber::compile($searchTwig, $args);
-    }
+	protected function siteSearch( $args = array() ) {
+		$searchTwig = $this->twigPath . '/site-search.twig';
 
-    protected function siteHeader($args)
-    {
-        $component = new Component();
+		return Timber::compile( $searchTwig, $args );
+	}
 
-        $args = wp_parse_args($args, $this->context);
+	protected function siteHeader( $args ) {
+		$component = new Component();
 
-        $menuPrimary = new \Timber\Menu('menu-primary');
-        $additionalLinks = new \Timber\Menu('menu-secondary');
+		$args = wp_parse_args( $args, $this->context );
 
-        $realSiteHeader = Timber::compile($this->twigPath . '/site-header-markup.twig', [
-            'isRealHeader' => true,
-        ]);
-        $modalSiteHeader = Timber::compile($this->twigPath . '/site-header-markup.twig', [
-            'isRealHeader' => false,
-        ]);
+		$menuPrimary     = new \Timber\Menu( 'menu-primary' );
+		$additionalLinks = new \Timber\Menu( 'menu-secondary' );
 
-        if (is_active_sidebar('main_menu_widgets')) :
-            ob_start();
-            dynamic_sidebar('main_menu_widgets');
-            $emailSignupForm = ob_get_clean();
-        else :
-            $emailSignupForm = '';
-        endif;
+		$realSiteHeader  = Timber::compile(
+			$this->twigPath . '/site-header-markup.twig',
+			array(
+				'isRealHeader' => true,
+			)
+		);
+		$modalSiteHeader = Timber::compile(
+			$this->twigPath . '/site-header-markup.twig',
+			array(
+				'isRealHeader' => false,
+			)
+		);
 
-        $modalContent = Timber::compile($this->twigPath . '/main-menu-content.twig', [
-            'featuredTopicLinks' => $menuPrimary->items,
-            'additionalLinks' => $additionalLinks->items,
-            'emailSignupForm' => $emailSignupForm,
-        ]);
+		if ( is_active_sidebar( 'main_menu_widgets' ) ) :
+			ob_start();
+			dynamic_sidebar( 'main_menu_widgets' );
+			$emailSignupForm = ob_get_clean();
+		else :
+			$emailSignupForm = '';
+		endif;
 
-        $menuModal = Timber::compile($this->twigPath . '/modal.twig', [
-            'modalId' => 'main-menu',
-            'modalLabel' => 'Main Menu',
-            'closeButtonId' => 'close-menu',
-            'modalContent' => $modalContent,
-            'modalSiteHeader' => $modalSiteHeader,
-            'modalSiteFooter' => $this->build('siteFooter', []),
-        ]);
+		$modalContent = Timber::compile(
+			$this->twigPath . '/main-menu-content.twig',
+			array(
+				'featuredTopicLinks' => $menuPrimary->items,
+				'additionalLinks'    => $additionalLinks->items,
+				'emailSignupForm'    => $emailSignupForm,
+			)
+		);
 
-        $searchModalContent = $this->siteSearch();
+		$menuModal = Timber::compile(
+			$this->twigPath . '/modal.twig',
+			array(
+				'modalId'         => 'main-menu',
+				'modalLabel'      => 'Main Menu',
+				'closeButtonId'   => 'close-menu',
+				'modalContent'    => $modalContent,
+				'modalSiteHeader' => $modalSiteHeader,
+				'modalSiteFooter' => $this->build( 'siteFooter', array() ),
+			)
+		);
 
-        $searchModal = Timber::compile($this->twigPath . '/modal.twig', [
-            'modalId' => 'site-search',
-            'modalLabel' => 'Site Search',
-            'closeButtonId' => 'close-search',
-            'modalContent' => $searchModalContent,
-            'modalSiteHeader' => $modalSiteHeader,
-            'modalSiteFooter' => $this->build('siteFooter', []),
-        ]);
+		$searchModalContent = $this->siteSearch();
 
-        $headerLogoID = get_theme_mod('custom_logo');
-        if ($headerLogoID) {
-            $args['headerLogo'] = wp_get_attachment_image($headerLogoID, 'full');
-        } else {
-            $args['headerLogo'] = '<img src="' . get_stylesheet_directory_uri() . '/assets/images/logo_colby.svg' . '" alt="Colby College News" />';
-        }
+		$searchModal = Timber::compile(
+			$this->twigPath . '/modal.twig',
+			array(
+				'modalId'         => 'site-search',
+				'modalLabel'      => 'Site Search',
+				'closeButtonId'   => 'close-search',
+				'modalContent'    => $searchModalContent,
+				'modalSiteHeader' => $modalSiteHeader,
+				'modalSiteFooter' => $this->build( 'siteFooter', array() ),
+			)
+		);
 
-        $args['homeLink'] = [
-            'title' => 'Back to ' . get_bloginfo('name') . ' Home',
-            'url' => get_home_url(),
-        ];
+		$headerLogoID = get_theme_mod( 'custom_logo' );
+		if ( $headerLogoID ) {
+			$args['headerLogo'] = wp_get_attachment_image( $headerLogoID, 'full' );
+		} else {
+			$args['headerLogo'] = '<img src="' . get_stylesheet_directory_uri() . '/assets/images/logo_colby.svg' . '" alt="Colby College News" />';
+		}
 
-        $searchIcons = [
-            'off' => $component->build('icon', [
-                'icon' => 'interface-search',
-                'size' => 5,
-            ]),
-            'on' => $component->build('icon', [
-                'icon' => 'interface-times',
-                'size' => 5,
-            ]),
-        ];
+		$args['homeLink'] = array(
+			'title' => 'Back to ' . get_bloginfo( 'name' ) . ' Home',
+			'url'   => get_home_url(),
+		);
 
-        $args['searchField'] = [
-            'url' => '/',
-            'name' => 'q',
-        ];
+		$searchIcons = array(
+			'off' => $component->build(
+				'icon',
+				array(
+					'icon' => 'interface-search',
+					'size' => 5,
+				)
+			),
+			'on'  => $component->build(
+				'icon',
+				array(
+					'icon' => 'interface-times',
+					'size' => 5,
+				)
+			),
+		);
 
-        $globalAlert = false;
+		$args['searchField'] = array(
+			'url'  => '/',
+			'name' => 'q',
+		);
 
-        $show_global_alert = function_exists('get_field') ? get_field('show_global_alert', 'option') : '';
-        $show_icon = function_exists('get_field') ? get_field('show_icon', 'option') : '';
+		$globalAlert = false;
 
-        if ($show_global_alert) {
-            $globalAlert = [];
-            $globalalert['alert'] = function_exists('get_field') ? get_field('alert', 'option') : '';
+		$show_global_alert = function_exists( 'get_field' ) ? get_field( 'show_global_alert', 'option' ) : '';
+		$show_icon         = function_exists( 'get_field' ) ? get_field( 'show_icon', 'option' ) : '';
 
-            $iconLocation = get_template_directory_uri() . '/assets/icons/icon-sprites.svg#interface-exclamation-triangle';
-            $icon = false;
+		if ( $show_global_alert ) {
+			$globalAlert          = array();
+			$globalalert['alert'] = function_exists( 'get_field' ) ? get_field( 'alert', 'option' ) : '';
 
-            if ($show_icon) {
-                $icon = "<svg class='w-8 h-8 transition-transform transform fill-current group-hover:scale-110'>
+			$iconLocation = get_template_directory_uri() . '/assets/icons/icon-sprites.svg#interface-exclamation-triangle';
+			$icon         = false;
+
+			if ( $show_icon ) {
+				$icon = "<svg class='w-8 h-8 transition-transform transform fill-current group-hover:scale-110'>
                 <use xlink:href='$iconLocation'></use>
                 </svg>";
-            }
+			}
 
-            $globalalert['icon'] = $icon;
+			$globalalert['icon'] = $icon;
 
-            $globalAlert = Timber::compile($this->twigPath . '/global-alert.twig', $globalalert);
-        }
+			$globalAlert = Timber::compile( $this->twigPath . '/global-alert.twig', $globalalert );
+		}
 
-        return Timber::compile($this->twigPath . '/site-header.twig', [
-            'realSiteHeader' => $realSiteHeader,
-            'globalAlert' => $globalAlert,
-            'menuModal' => $menuModal,
-            'searchModal' => $searchModal,
-        ]);
-    }
+		return Timber::compile(
+			$this->twigPath . '/site-header.twig',
+			array(
+				'realSiteHeader' => $realSiteHeader,
+				'globalAlert'    => $globalAlert,
+				'menuModal'      => $menuModal,
+				'searchModal'    => $searchModal,
+			)
+		);
+	}
 
-    protected function storyHeader( $args = array() ) {
+	protected function storyHeader( $args = array() ) {
 		$post = get_key( $args, 'post' );
 		$post = $post ? $post : $this->context['post'];
 
@@ -390,6 +414,8 @@ class TemplatePart
 		}
 		$figure .= <<<EOD
             <img
+                loading="lazy"
+                decoding="async"
                 srcset="
                     https://news.colby.edu/cdn-cgi/image/width=1090,quality=60/https://news.colby.edu{$featuredImage['path']} 1090w, 
                     https://news.colby.edu/cdn-cgi/image/width=300,quality=60/https://news.colby.edu{$featuredImage['path']} 300w, 
