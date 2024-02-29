@@ -607,16 +607,22 @@ function get_youtube_rss_items($playlistID = null, $item_count = 10)
     $entries = $parser->channel->videos;
 
     $items = [];
-    foreach ($entries as $item) {
-        $item_id = $item->id;
-        $image_url = "https://i.ytimg.com/vi/$item_id/maxresdefault.jpg";
-        $image = "<img src='$image_url' width='1280' height='720' alt='' />";
-        $items[] = [
-            'title' => $item->title,
-            'image' => $image,
-            'url' => $item->url,
-        ];
-    }
+    foreach ( $entries as $key => $item ) {
+		if ( $key < 2 ) {
+			$image_url = "https://i.ytimg.com/vi/$item_id/maxresdefault.jpg";
+		} else {
+			$image_url = "https://i.ytimg.com/vi/$item_id/mqdefault.jpg";
+		}
+
+		$item_id = $item->id;
+		$image   = "<img src='$image_url' width='1280' height='720' alt='' />";
+
+		$items[] = array(
+			'title' => $item->title,
+			'image' => $image,
+			'url'   => $item->url,
+		);
+	}
 
     return $items;
 }
