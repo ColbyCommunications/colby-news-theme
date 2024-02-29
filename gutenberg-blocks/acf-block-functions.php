@@ -607,9 +607,11 @@ function get_youtube_rss_items( $playlistID = null, $item_count = 10 ) {
 	$parser->loadString( $feed_content );
 	$entries = $parser->channel->videos;
 
-	$items   = array();
-	$item_id = $item->id;
+	$items = array();
+
 	foreach ( $entries as $key => $item ) {
+		$item_id = $item->id;
+
 		if ( $key < 2 ) {
 			$image_url = "https://i.ytimg.com/vi/$item_id/maxresdefault.jpg";
 		} else {
