@@ -395,8 +395,9 @@ class TemplatePart {
 			$orientation           = get_post_field( 'vertical_header', $post->ID ) ? 'portrait' : 'landscape';
 			$verticalFeaturedImage = get_post_field( 'vertical_image', $post->ID );
 			if ( $orientation === 'portrait' && $verticalFeaturedImage ) {
-				$imageSize            = 'header_vertical_lg';
-				$featuredImage        = nc_blocks_image( $verticalFeaturedImage, $imageSize );
+				$imageSize = 'header_vertical_lg';
+				// $featuredImage        = nc_blocks_image( $verticalFeaturedImage, $imageSize );
+				$featuredImage        = wp_parse_url( wp_get_attachment_image_url( $verticalFeaturedImage, 'original' ) );
 				$featuredImageCaption = wp_get_attachment_caption( $verticalFeaturedImage );
 			} else {
 				$featuredImage        = wp_parse_url( get_the_post_thumbnail_url( $post->ID ) );
