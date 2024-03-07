@@ -400,7 +400,7 @@ class TemplatePart {
 				$featuredImage        = wp_parse_url( wp_get_attachment_image_url( $verticalFeaturedImage, 'original' ) );
 				$featuredImageCaption = wp_get_attachment_caption( $verticalFeaturedImage );
 			} else {
-				$featuredImage        = wp_parse_url( get_the_post_thumbnail_url( $post->ID ) );
+				$featuredImage        = wp_parse_url( get_the_post_thumbnail_url( $post->ID, 'original' ) );
 				$featuredImageCaption = get_the_post_thumbnail_caption( $post->ID );
 			}
 		}
