@@ -402,6 +402,7 @@ class TemplatePart {
 			} else {
 				$featuredImage        = wp_parse_url( get_the_post_thumbnail_url( $post->ID, 'original' ) );
 				$featuredImageCaption = get_the_post_thumbnail_caption( $post->ID );
+
 			}
 		}
 
@@ -413,7 +414,10 @@ class TemplatePart {
 		if ( $figure_responsive ) {
 			$figure .= '<div class="responsive-embed">';
 		}
-		$figure .= <<<EOD
+		if ( $video ) {
+			$figure .= $featuredImage;
+		} else {
+			$figure .= <<<EOD
             <img
                 loading="lazy"
                 decoding="async"
@@ -437,6 +441,7 @@ class TemplatePart {
                 alt=""
             />
         EOD;
+		}
 		if ( $figure_responsive ) {
 			$figure .= '</div>';
 		}
