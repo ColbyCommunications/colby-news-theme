@@ -446,7 +446,7 @@ class TemplatePart {
 			$figure .= '</div>';
 		}
 		if ( $featuredImageCaption ) {
-			$figure .= " < figcaption class = 'text-sm' > $featuredImageCaption < / figcaption > ";
+			$figure .= "<figcaption class='text-sm'>$featuredImageCaption</figcaption>";
 		}
 
 		$figure .= '</figure>';
