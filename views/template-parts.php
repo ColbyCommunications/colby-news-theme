@@ -419,7 +419,7 @@ class TemplatePart {
 		} else {
 			$figure .= <<<EOD
             <img
-                loading="lazy"
+                fetchpriority="high"
                 decoding="async"
                 srcset="
                     https://news.colby.edu/cdn-cgi/image/width=1090,quality=60/https://news.colby.edu{$featuredImage['path']} 1090w, 
