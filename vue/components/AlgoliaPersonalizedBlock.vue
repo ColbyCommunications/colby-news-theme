@@ -30,7 +30,7 @@
                             <div class="relative group">
                               <a :href="item.permalink">
                                 <img
-                                  :src="item.images.teaser_new.url"
+                                  :src="`https://news.colby.edu/cdn-cgi/image/width=663,quality=80/${item.images.teaser_new.url}`"
                                   class="hover:brightness-90 transition ease-in-out duration-300"
                                   :alt="`${item.post_title}: ${item.summary}`"
                                 />
@@ -79,11 +79,11 @@
                                 <div class="relative group">
                                   <a :href="item.permalink">
                                     <img
-                                      width="1080"
-                                      height="720"
-                                      :src="item.images.teaser_new.url"
+                                      width="256"
+                                      height="170"
+                                      :src="`https://news.colby.edu/cdn-cgi/image/width=256,quality=100/${item.images.teaser_new.url}`"
                                       class="attachment-teaser_new size-teaser_new hover:brightness-90 transition ease-in-out duration-300"
-                                      sizes="(max-width: 1080px) 100vw, 1080px"
+                                      sizes="(max-width: 256px) 100vw, 256px"
                                       :alt="`${item.post_title}: ${item.summary}`"
                                     />
                                   </a>
