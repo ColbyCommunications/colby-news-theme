@@ -1322,6 +1322,20 @@ function register_custom_api_routes() {
 add_action( 'rest_api_init', 'register_custom_api_routes' );
 
 
+/*
+	SEO performance: remove unused scripts
+*/
+function remove_jquery() {
+	if ( ! is_admin() ) {
+		wp_deregister_script( 'jquery' );
+		wp_deregister_script( 'jquery-migrate' );
+		wp_register_script( 'jquery', false );
+		wp_register_script( 'jquery-migrate', false );
+	}
+}
+add_action( 'init', 'remove_jquery' );
+
+
 // TODO: this was producing warnings on the backend of wp
 // add_action(
 // 	'rest_api_init',
