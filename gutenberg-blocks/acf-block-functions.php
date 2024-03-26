@@ -618,7 +618,7 @@ function get_youtube_rss_items( $playlistID = null, $item_count = 10 ) {
 			$image_url = "https://i.ytimg.com/vi/$item_id/mqdefault.jpg";
 		}
 
-		$image = "<img src='$image_url' width='1280' height='720' alt='' />";
+		$image = '<img loading="lazy" src="' . $image_url . '" width="1280" height="720" alt="" />';
 
 		$items[] = array(
 			'title' => $item->title,
