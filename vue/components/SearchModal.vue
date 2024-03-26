@@ -219,8 +219,8 @@
                           class="wp-social-link wp-social-link-twitter wp-block-social-link"
                         >
                           <a
-                            href="https://x.com/colbycollege"
-                            aria-label="X: https://x.com/colbycollege"
+                            href="https://twitter.com/colbycollege"
+                            aria-label="X: https://twitter.com/colbycollege"
                             class="wp-block-social-link-anchor"
                           >
                             <svg
