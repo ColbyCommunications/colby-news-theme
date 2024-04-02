@@ -1331,3 +1331,14 @@ add_action( 'rest_api_init', 'register_custom_api_routes' );
 // 	}
 // );
 
+function prefix_defer_css_rel_preload( $html, $handle, $href ) {
+	if ( ! is_admin() ) {
+		$scriptArr = array( 'gutenbergbase-style', 'colby-news-themeblocks-style', 'colby-news-theme-fonts', 'material-icons' );
+		if ( in_array( $handle, $scriptArr ) ) {
+			$html = '<link rel="preload" href="' . $href . '" as="style" id="' . $handle . '" onload="this.onload=null;this.rel=\'stylesheet\'">'
+			. '<noscript><link rel="preload" href="' . $href . '" as="style" id="' . $handle . '" onload="this.onload=null;this.rel=\'stylesheet\'"></noscript>';
+		}
+	}
+	return $html;
+}
+add_filter( 'style_loader_tag', 'prefix_defer_css_rel_preload', 10, 3 );
