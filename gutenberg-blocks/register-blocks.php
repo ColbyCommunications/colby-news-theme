@@ -50,7 +50,7 @@ function register_colby_block_patterns() {
 }
 add_action( 'init', 'NC_Blocks\register_colby_block_patterns' );
 
-// add_action('wp_enqueue_scripts', 'NC_Blocks\nc_replace_block_library', 100);
+add_action( 'wp_enqueue_scripts', 'NC_Blocks\nc_replace_block_library', 100 );
 add_action( 'admin_enqueue_scripts', 'NC_Blocks\nc_replace_block_library', 100 );
 
 function filter_acf_blocks( $attrs ) {
