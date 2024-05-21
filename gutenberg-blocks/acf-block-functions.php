@@ -700,7 +700,7 @@ function teaser_list( array $posts, bool $is_preview = false, array $show_fields
                 "
                 src="https://news.colby.edu/cdn-cgi/image/width=1080,quality=30/https://news.colby.edu{$image_path}"
                 sizes="(max-width: 1080px) 100vw, 1080px"
-                alt=""
+                format="auto" alt=""
             />
         EOD;
 				// $teaser['image'] = nc_blocks_image( get_post_thumbnail_id( $post->ID ), 'teaser_new' );
@@ -1246,7 +1246,7 @@ function breaker_feature( $block, $content = '', $is_preview = false, $post_id =
                 "
                 src="https://news.colby.edu/cdn-cgi/image/width=2160,quality=30/https://news.colby.edu{$image_path}"
                 sizes="(max-width: 2160px) 100vw, 2160px"
-                alt=""
+                format="auto" alt=""
             />
         EOD;
 		}

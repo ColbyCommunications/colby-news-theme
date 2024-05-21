@@ -70,7 +70,7 @@ foreach ( $relatedItems as $relatedItem ) {
             https://news.colby.edu/cdn-cgi/image/width=320,quality=60/https://news.colby.edu{$image_path} 320w, 
             https://news.colby.edu/cdn-cgi/image/width=1090quality=60/https://news.colby.edu{$image_path} 1090w, 
             https://news.colby.edu/cdn-cgi/image/width=400,quality=60/https://news.colby.edu{$image_path} 400w" 
-        sizes="(max-width: 1080px) 100vw, 1080px"
+        sizes="(max-width: 1080px) 100vw, 1080px" format="auto"
     />
     EOD;
 	$post_data      = array(
@@ -126,7 +126,7 @@ foreach ( $highlightsItems as $highlightsItem ) {
             https://news.colby.edu/cdn-cgi/image/width=320,quality=60/https://news.colby.edu{$image_path} 320w, 
             https://news.colby.edu/cdn-cgi/image/width=1090quality=60/https://news.colby.edu{$image_path} 1090w, 
             https://news.colby.edu/cdn-cgi/image/width=400,quality=60/https://news.colby.edu{$image_path} 400w" 
-        sizes="(max-width: 1600px) 100vw, 1600px"
+        sizes="(max-width: 1600px) 100vw, 1600px" format="auto"
     />
     EOD;
 	$is_video       = false;

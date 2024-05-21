@@ -437,8 +437,7 @@ class TemplatePart {
                     https://news.colby.edu/cdn-cgi/image/width=1600,quality=60/https://news.colby.edu{$featuredImage['path']} 1600w
                 "
                 src="https://news.colby.edu/cdn-cgi/image/width=1090,quality=60/https://news.colby.edu{$featuredImage['path']}"
-                sizes="(max-width: 1090px) 100vw, 1090px"
-                alt=""
+                sizes="(max-width: 1090px) 100vw, 1090px" format="auto" format="auto"
             />
         EOD;
 		}
