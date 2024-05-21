@@ -683,24 +683,24 @@ function teaser_list( array $posts, bool $is_preview = false, array $show_fields
 				$teaser['image'] = <<<EOD
             <img
                 srcset="
-                    https://news.colby.edu/cdn-cgi/image/width=1080,quality=30/https://news.colby.edu{$image_path} 1080w, 
-                    https://news.colby.edu/cdn-cgi/image/width=300,quality=30/https://news.colby.edu{$image_path} 300w, 
-                    https://news.colby.edu/cdn-cgi/image/width=1024,quality=30/https://news.colby.edu{$image_path} 1024w,
-                    https://news.colby.edu/cdn-cgi/image/width=600,quality=30/https://news.colby.edu{$image_path} 600w,
-                    https://news.colby.edu/cdn-cgi/image/width=1536,quality=30/https://news.colby.edu{$image_path} 1536w,
-                    https://news.colby.edu/cdn-cgi/image/width=100,quality=30/https://news.colby.edu{$image_path} 100w,
-                    https://news.colby.edu/cdn-cgi/image/width=540,quality=30/https://news.colby.edu{$image_path} 540w,
-                    https://news.colby.edu/cdn-cgi/image/width=100,quality=30/https://news.colby.edu{$image_path} 100w,
-                    https://news.colby.edu/cdn-cgi/image/width=800,quality=30/https://news.colby.edu{$image_path} 800w,
-                    https://news.colby.edu/cdn-cgi/image/width=640,quality=30/https://news.colby.edu{$image_path} 640w,
-                    https://news.colby.edu/cdn-cgi/image/width=320,quality=30/https://news.colby.edu{$image_path} 320w,
-                    https://news.colby.edu/cdn-cgi/image/width=1090,quality=30/https://news.colby.edu{$image_path} 1090w,
-                    https://news.colby.edu/cdn-cgi/image/width=400,quality=30/https://news.colby.edu{$image_path} 400w,
-                    https://news.colby.edu/cdn-cgi/image/width=1600,quality=30/https://news.colby.edu{$image_path} 1600w,
+                    https://news.colby.edu/cdn-cgi/image/width=1080,quality=30,format=auto/https://news.colby.edu{$image_path} 1080w, 
+                    https://news.colby.edu/cdn-cgi/image/width=300,quality=30,format=auto/https://news.colby.edu{$image_path} 300w, 
+                    https://news.colby.edu/cdn-cgi/image/width=1024,quality=30,format=auto/https://news.colby.edu{$image_path} 1024w,
+                    https://news.colby.edu/cdn-cgi/image/width=600,quality=30,format=auto/https://news.colby.edu{$image_path} 600w,
+                    https://news.colby.edu/cdn-cgi/image/width=1536,quality=30,format=auto/https://news.colby.edu{$image_path} 1536w,
+                    https://news.colby.edu/cdn-cgi/image/width=100,quality=30,format=auto/https://news.colby.edu{$image_path} 100w,
+                    https://news.colby.edu/cdn-cgi/image/width=540,quality=30,format=auto/https://news.colby.edu{$image_path} 540w,
+                    https://news.colby.edu/cdn-cgi/image/width=100,quality=30,format=auto/https://news.colby.edu{$image_path} 100w,
+                    https://news.colby.edu/cdn-cgi/image/width=800,quality=30,format=auto/https://news.colby.edu{$image_path} 800w,
+                    https://news.colby.edu/cdn-cgi/image/width=640,quality=30,format=auto/https://news.colby.edu{$image_path} 640w,
+                    https://news.colby.edu/cdn-cgi/image/width=320,quality=30,format=auto/https://news.colby.edu{$image_path} 320w,
+                    https://news.colby.edu/cdn-cgi/image/width=1090,quality=30,format=auto/https://news.colby.edu{$image_path} 1090w,
+                    https://news.colby.edu/cdn-cgi/image/width=400,quality=30,format=auto/https://news.colby.edu{$image_path} 400w,
+                    https://news.colby.edu/cdn-cgi/image/width=1600,quality=30,format=auto/https://news.colby.edu{$image_path} 1600w,
                 "
-                src="https://news.colby.edu/cdn-cgi/image/width=1080,quality=30/https://news.colby.edu{$image_path}"
+                src="https://news.colby.edu/cdn-cgi/image/width=1080,quality=30,format=auto/https://news.colby.edu{$image_path}"
                 sizes="(max-width: 1080px) 100vw, 1080px"
-                format="auto" alt=""
+                alt=""
             />
         EOD;
 				// $teaser['image'] = nc_blocks_image( get_post_thumbnail_id( $post->ID ), 'teaser_new' );
@@ -1229,24 +1229,24 @@ function breaker_feature( $block, $content = '', $is_preview = false, $post_id =
 			$image      = <<<EOD
             <img
                 srcset="
-                    https://news.colby.edu/cdn-cgi/image/width=1090,quality=30/https://news.colby.edu{$image_path} 2160w, 
-                    https://news.colby.edu/cdn-cgi/image/width=300,quality=30/https://news.colby.edu{$image_path} 300w, 
-                    https://news.colby.edu/cdn-cgi/image/width=1024,quality=30/https://news.colby.edu{$image_path} 1024w,
-                    https://news.colby.edu/cdn-cgi/image/width=150,quality=30/https://news.colby.edu{$image_path} 150w,
-                    https://news.colby.edu/cdn-cgi/image/width=600,quality=30/https://news.colby.edu{$image_path} 600w,
-                    https://news.colby.edu/cdn-cgi/image/width=1536,quality=30/https://news.colby.edu{$image_path} 1536w,
-                    https://news.colby.edu/cdn-cgi/image/width=2048,quality=30/https://news.colby.edu{$image_path} 2048w,
-                    https://news.colby.edu/cdn-cgi/image/width=80,quality=30/https://news.colby.edu{$image_path} 80w,
-                    https://news.colby.edu/cdn-cgi/image/width=100,quality=30/https://news.colby.edu{$image_path} 100w,
-                    https://news.colby.edu/cdn-cgi/image/width=800,quality=30/https://news.colby.edu{$image_path} 800w,
-                    https://news.colby.edu/cdn-cgi/image/width=640,quality=30/https://news.colby.edu{$image_path} 640w,
-                    https://news.colby.edu/cdn-cgi/image/width=320,quality=30/https://news.colby.edu{$image_path} 320w,
-                    https://news.colby.edu/cdn-cgi/image/width=1090,quality=30/https://news.colby.edu{$image_path} 1090w,
-                    https://news.colby.edu/cdn-cgi/image/width=400,quality=30/https://news.colby.edu{$image_path} 400w,
+                    https://news.colby.edu/cdn-cgi/image/width=1090,quality=30,format=auto/https://news.colby.edu{$image_path} 2160w, 
+                    https://news.colby.edu/cdn-cgi/image/width=300,quality=30,format=auto/https://news.colby.edu{$image_path} 300w, 
+                    https://news.colby.edu/cdn-cgi/image/width=1024,quality=30,format=auto/https://news.colby.edu{$image_path} 1024w,
+                    https://news.colby.edu/cdn-cgi/image/width=150,quality=30,format=auto/https://news.colby.edu{$image_path} 150w,
+                    https://news.colby.edu/cdn-cgi/image/width=600,quality=30,format=auto/https://news.colby.edu{$image_path} 600w,
+                    https://news.colby.edu/cdn-cgi/image/width=1536,quality=30,format=auto/https://news.colby.edu{$image_path} 1536w,
+                    https://news.colby.edu/cdn-cgi/image/width=2048,quality=30,format=auto/https://news.colby.edu{$image_path} 2048w,
+                    https://news.colby.edu/cdn-cgi/image/width=80,quality=30,format=auto/https://news.colby.edu{$image_path} 80w,
+                    https://news.colby.edu/cdn-cgi/image/width=100,quality=30,format=auto/https://news.colby.edu{$image_path} 100w,
+                    https://news.colby.edu/cdn-cgi/image/width=800,quality=30,format=auto/https://news.colby.edu{$image_path} 800w,
+                    https://news.colby.edu/cdn-cgi/image/width=640,quality=30,format=auto/https://news.colby.edu{$image_path} 640w,
+                    https://news.colby.edu/cdn-cgi/image/width=320,quality=30,format=auto/https://news.colby.edu{$image_path} 320w,
+                    https://news.colby.edu/cdn-cgi/image/width=1090,quality=30,format=auto/https://news.colby.edu{$image_path} 1090w,
+                    https://news.colby.edu/cdn-cgi/image/width=400,quality=30,format=auto/https://news.colby.edu{$image_path} 400w,
                 "
-                src="https://news.colby.edu/cdn-cgi/image/width=2160,quality=30/https://news.colby.edu{$image_path}"
+                src="https://news.colby.edu/cdn-cgi/image/width=2160,quality=30,format=auto/https://news.colby.edu{$image_path}"
                 sizes="(max-width: 2160px) 100vw, 2160px"
-                format="auto" alt=""
+                alt=""
             />
         EOD;
 		}
