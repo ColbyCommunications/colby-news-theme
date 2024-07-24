@@ -1,6 +1,15 @@
 :root {
 	--max-content-width: 75rem;
+	font-family: "Libre Franklin", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif,
+    "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial",
+    "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
 }
+
+h1 {
+	font-size: 2rem;
+	font-weight: bold;
+ }
 
 .post-type-post .block-editor-writing-flow {
 	max-width: 49rem;
@@ -14,15 +23,16 @@
 	display: flex;
 }
 
-.is-root-container {
+/* .is-root-container {
 	display: grid;
 	grid-template-columns: var(--container-grid-columns);
 
 	> *:not(.container-full) {
 		grid-area: content;
 	}
-}
+}  */
 
+ 
 .wp-block {
 	max-width: var(--max-content-width);
 }
@@ -62,136 +72,3 @@
 	height: auto;
 }
 
-/* .is-root-container > .block-editor-block-list__block.block-editor-block-list__block {
-	margin-bottom: 0;
-	margin-top: 0;
-} */
-
-/* .feature-row .block-editor-inner-blocks {
-	border: solid 2px rgba(0,0,0,0.5);
-	min-height: 1.5rem;
-} */
-
-/* .editor-styles-wrapper.editor-styles-wrapper {
-	font-size: 1.125rem;
-	line-height: 1.5;
-}
-
-.acf-block-preview .container,
-.acf-block-preview .container-narrow {
-	border: dotted rgb(255, 165, 0) 2px;
-	min-height: 3rem;
-}
-
-.editor-styles-wrapper.editor-styles-wrapper .text-white {
-	color: #fff;
-}
-
-.editor-styles-wrapper.editor-styles-wrapper .text-tertiary {
-	color: rgb(255, 242, 0);
-}
-
-.editor-styles-wrapper.editor-styles-wrapper .sm\:text-2xl,
-.editor-styles-wrapper.editor-styles-wrapper .md\:text-2xl,
-.editor-styles-wrapper.editor-styles-wrapper .lg\:text-2xl,
-.editor-styles-wrapper.editor-styles-wrapper .xl\:text-2xl,
-.editor-styles-wrapper.editor-styles-wrapper .text-2xl {
-	font-size: 1.5rem;
-}
-
-.editor-styles-wrapper.editor-styles-wrapper .sm\:text-3xl,
-.editor-styles-wrapper.editor-styles-wrapper .md\:text-3xl,
-.editor-styles-wrapper.editor-styles-wrapper .lg\:text-3xl,
-.editor-styles-wrapper.editor-styles-wrapper .xl\:text-3xl,
-.editor-styles-wrapper.editor-styles-wrapper .text-3xl {
-	font-size: 1.875rem;
-}
-
-.editor-styles-wrapper.editor-styles-wrapper .sm\:text-4xl,
-.editor-styles-wrapper.editor-styles-wrapper .md\:text-4xl,
-.editor-styles-wrapper.editor-styles-wrapper .lg\:text-4xl,
-.editor-styles-wrapper.editor-styles-wrapper .xl\:text-4xl,
-.editor-styles-wrapper.editor-styles-wrapper .text-4xl {
-	font-size: 2.125rem;
-	line-height: 1.25;
-}
-
-.editor-styles-wrapper.editor-styles-wrapper .sm\:text-5xl,
-.editor-styles-wrapper.editor-styles-wrapper .md\:text-5xl,
-.editor-styles-wrapper.editor-styles-wrapper .lg\:text-5xl,
-.editor-styles-wrapper.editor-styles-wrapper .xl\:text-5xl,
-.editor-styles-wrapper.editor-styles-wrapper .text-5xl {
-	font-size: 2.75rem;
-	line-height: 1.25;
-}
-
-.editor-styles-wrapper.editor-styles-wrapper .sm\:text-6xl,
-.editor-styles-wrapper.editor-styles-wrapper .md\:text-6xl,
-.editor-styles-wrapper.editor-styles-wrapper .lg\:text-6xl,
-.editor-styles-wrapper.editor-styles-wrapper .xl\:text-6xl,
-.editor-styles-wrapper.editor-styles-wrapper .text-6xl {
-	font-size: 3.75rem;
-	line-height: 1;
-}
-
-.editor-styles-wrapper.editor-styles-wrapper .sm\:text-8xl,
-.editor-styles-wrapper.editor-styles-wrapper .md\:text-8xl,
-.editor-styles-wrapper.editor-styles-wrapper .lg\:text-8xl,
-.editor-styles-wrapper.editor-styles-wrapper .xl\:text-8xl,
-.editor-styles-wrapper.editor-styles-wrapper .text-8xl {
-	font-size: 5rem;
-	line-height: 1;
-}
-
-.editor-styles-wrapper.editor-styles-wrapper .prose ul,
-.editor-styles-wrapper.editor-styles-wrapper .prose ol {
-	list-style-type: none;
-	margin-bottom: 1.55rem;
-}
-
-.editor-styles-wrapper.editor-styles-wrapper .prose p {
-	margin-top: 0;
-}
-
-.editor-styles-wrapper.editor-styles-wrapper .prose blockquote {
-	color: inherit;
-}
-
-.editor-styles-wrapper.editor-styles-wrapper .prose blockquote p::before,
-.editor-styles-wrapper.editor-styles-wrapper .prose blockquote p::after {
-	content: none;
-}
-
-.editor-styles-wrapper .slick-carousel .slick-dots {
-	list-style-type: none;
-}
-
-.block-editor-block-list__block.block-editor-block-list__block {
-	border: solid 1px transparent;
-}
-
-.block-editor-block-list__block:hover {
-	border: dotted #000 1px;
-}
-
-.nc-allowed-blocks {
-	min-height: 3rem;
-	border: dotted #999 2px;
-}
-
-.wp-block-image .components-resizable-box__container[style] {
-	max-width: 100% !important;
-}
-
-.editor-styles-wrapper .prose h2,
-.editor-styles-wrapper .prose h3,
-.editor-styles-wrapper .prose h4,
-.editor-styles-wrapper .prose h5,
-.editor-styles-wrapper .prose h6 {
-	color: var(--color-heading);
-}
-
-.editor-styles-wrapper .multi-feature__title h2,
-.editor-styles-wrapper .multi-feature__title h3 {
-	font-size: 1.5rem;
-} */
