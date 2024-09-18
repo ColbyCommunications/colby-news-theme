@@ -57,6 +57,7 @@ function nc_register_external_sources()
         'description'       => _x('Publication or site that hosts an external post', 'colby-news'),
         'hierarchical'      => false,
         'show_ui'           => true,
+        'show_in_rest'      => true,
         'show_admin_column' => true,
         'query_var'         => true,
         'rewrite'           => array( 'slug' => 'source' ),
