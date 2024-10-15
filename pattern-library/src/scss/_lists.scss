@@ -491,7 +491,8 @@ $social-sites: (
 	"instagram": "rgb(240, 0, 117)",
 	"youtube": "rgb(255, 0, 0)",
 	"facebook": "rgb(23, 120, 242)",
-	"linkedin": "rgb(13, 102, 194)"
+	"linkedin": "rgb(13, 102, 194)",
+	"tiktok": "rgba (89, 236, 230, 1)"
 );
 
 @each $site, $color in $social-sites {
