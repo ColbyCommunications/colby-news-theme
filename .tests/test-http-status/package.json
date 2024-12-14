@@ -7,7 +7,7 @@
   "dependencies": {
     "chromedriver": "^95.0.0",
     "fs": "^0.0.1-security",
-    "nightwatch": "^1.7.11"
+    "nightwatch": "^2.6.3"
   },
   "type": "commonjs"
 }
