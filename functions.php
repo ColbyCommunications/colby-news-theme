@@ -1342,3 +1342,17 @@ function prefix_defer_css_rel_preload( $html, $handle, $href ) {
 	return $html;
 }
 add_filter( 'style_loader_tag', 'prefix_defer_css_rel_preload', 10, 3 );
+
+function get_post_summary() {
+    global $post;
+    if($post && ($post->post_type == 'post')):
+        $summary = get_field('summary', $post->ID);
+        return $summary;
+    endif;
+}
+
+function register_custom_yoast_variables() {
+    wpseo_register_var_replacement( '%%Summary%%', 'get_post_summary', 'advanced', 'text from the summary field' );
+}
+
+add_action('wpseo_register_extra_replacements', 'register_custom_yoast_variables');
