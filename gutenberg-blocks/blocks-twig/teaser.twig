@@ -30,7 +30,7 @@
     {% endif %}
 
     {% set hTag = 'h' ~ hLevel|default(3) %}
-    <{{ hTag }} class="font-bold"><a href="{{ url }}">{{ title }}</a></{{ hTag }}>
+    <{{ hTag }} class="font-bold"><a href="{{ url }}">{{ function('htmlspecialchars_decode', title) }}</a></{{ hTag }}>
 
     {% if description %}
         <p>{{ description }}</p>

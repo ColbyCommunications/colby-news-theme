@@ -20,7 +20,7 @@
                         ">{{ item.featured_image }}</div>
                     </div>
                     <div class="contents sm:block sm:col-span-2 sm:space-y-2 lg:pt-6">
-                        <{{ innerHTag }} class="col-span-3 sm:col-span-2 text-sm-plus-1 font-bold sm:text-xl">{{ item.post_title }}</{{ innerHTag }}>
+                        <{{ innerHTag }} class="col-span-3 sm:col-span-2 text-sm-plus-1 font-bold sm:text-xl">{{ function('htmlspecialchars_decode', item.post_title) }}</{{ innerHTag }}>
                         <p class="col-span-2 text-xs-plus-1 sm:text-base">{{ item.summary }}</p>
                     </div>
                 </a>

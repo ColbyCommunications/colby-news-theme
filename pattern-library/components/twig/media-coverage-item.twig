@@ -16,7 +16,7 @@
 
             {% set hTag = 'h' ~ hLevel|default(3) %}
             <{{ hTag }} class="leading-tight">
-                <a href="{{ link.url }}" class="font-bold">{{ link.title }}</a>
+                <a href="{{ link.url }}" class="font-bold">{{ function('htmlspecialchars_decode', link.title) }}</a>
             </{{ hTag }}>
         </div>
 

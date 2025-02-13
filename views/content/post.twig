@@ -50,7 +50,7 @@
             {% if post.primary_category %}
             <div class="text-sm uppercase">{{ post.primary_category.title }}</div>
             {% endif %}
-            <h3 class="col-span-2 text-sm font-bold sm:text-xl">{{ post.title }}</h3>
+            <h3 class="col-span-2 text-sm font-bold sm:text-xl">{{ function('htmlspecialchars_decode', post.title) }}</h3>
             <p class="col-span-2 text-xs sm:text-base">{{ post.description }}</p>
         </div>
     </a>

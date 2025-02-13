@@ -33,7 +33,7 @@
 
             {% set hTag = 'h' ~ post.hLevel|default(3) %}
             <{{ hTag }} class="text-xl lg:text-3xl-minus-2">
-                <a href="{{ post.link.url }}" class="font-bold">{{ post.link.title }}</a>
+                <a href="{{ post.link.url }}" class="font-bold">{{ function('htmlspecialchars_decode', post.link.title) }}</a>
             </{{ hTag }}>
         </div>
 
@@ -63,7 +63,7 @@
 
                 {% set hTag = 'h' ~ post.hLevel|default(3) %}
                 <{{ hTag }} class="text-xl lg:text-3xl-minus-2">
-                    <a href="{{ post.link.url }}" class="font-bold">{{ post.link.title }}</a>
+                    <a href="{{ post.link.url }}" class="font-bold">{{ function('htmlspecialchars_decode', post.link.title) }}</a>
                 </{{ hTag }}>
             </div>
         </div>                
@@ -81,7 +81,7 @@
 
                     {% set hTag = 'h' ~ post.hLevel|default(3) %}
                     <{{ hTag }} class="leading-tight">
-                        <a href="{{ post.link.url }}" class="font-bold">{{ post.link.title }}</a>
+                        <a href="{{ post.link.url }}" class="font-bold">{{ function('htmlspecialchars_decode', post.link.title) }}</a>
                     </{{ hTag }}>
                 </div>
 
@@ -118,7 +118,7 @@
 
                     {% set hTag = 'h' ~ post.hLevel|default(3) %}
                     <{{ hTag }} class="leading-tight">
-                        <a href="{{ post.link.url }}" class="font-bold">{{ post.link.title }}</a>
+                        <a href="{{ post.link.url }}" class="font-bold">{{ function('htmlspecialchars_decode', post.link.title) }}</a>
                     </{{ hTag }}>
                 </div>
 

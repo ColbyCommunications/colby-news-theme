@@ -24,7 +24,7 @@
   
   {# story title is h2 if we're on the homepage, otherwise h1 #}
   {% set storyHTag = element == 'header' ? 'h1' : 'h2' %}
-  <{{ storyHTag }} class="text-4xl font-bold md:text-5xl">{{ title }}</{{ storyHTag }}>
+  <{{ storyHTag }} class="text-4xl font-bold md:text-5xl">{{ function('htmlspecialchars_decode', title) }}</{{ storyHTag }}>
 
   {% if (primaryCategory and element == 'header') or lengthOfRead %} {# non-homepage primaryCategory / lengthOfRead #}
     <div class="flex flex-col mt-4 uppercase sm:block">{% apply spaceless %}

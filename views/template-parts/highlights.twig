@@ -15,7 +15,7 @@
                     </a>
                 </div>
             {% set hTag = 'h' ~ hLevel|default(3) %}
-            <{{ hTag }} class="font-bold"><a href="/story/{{ highlight.slug }}/">{{ highlight.post_title }}</a></{{ hTag }}>
+            <{{ hTag }} class="font-bold"><a href="/story/{{ highlight.slug }}/">{{ function('htmlspecialchars_decode', highlight.post_title) }}</a></{{ hTag }}>
         </div>
       {% endfor %}
   </div>
