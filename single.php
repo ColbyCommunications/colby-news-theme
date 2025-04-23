@@ -47,6 +47,8 @@ foreach ( $relatedItems as $relatedItem ) {
 	$post_id = $relatedItem->ID;
 
 	// $featured_image = get_the_post_thumbnail( $post_id, 'teaser_new' );
+	$image_id = get_post_thumbnail_id($post_id);
+	$image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', TRUE);
 	$image_path     = wp_parse_url( wp_get_attachment_image_url( get_post_thumbnail_id( $post_id ), 'original' ) )['path'];
 	$summary        = get_post_meta( $post_id, 'summary', true );
 	$featured_image = <<<EOD
@@ -71,6 +73,7 @@ foreach ( $relatedItems as $relatedItem ) {
             https://news.colby.edu/cdn-cgi/image/width=1090quality=60,format=auto/https://news.colby.edu{$image_path} 1090w, 
             https://news.colby.edu/cdn-cgi/image/width=400,quality=60,format=auto/https://news.colby.edu{$image_path} 400w" 
         sizes="(max-width: 1080px) 100vw, 1080px"
+        alt="$image_alt"
     />
     EOD;
 	$post_data      = array(
@@ -104,6 +107,8 @@ foreach ( $highlightsItems as $highlightsItem ) {
 	$post_id = $highlightsItem->ID;
 
 	// $featured_image = get_the_post_thumbnail( $post_id );
+	$image_id = get_post_thumbnail_id($post_id);
+	$image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', TRUE);
 	$image_path     = wp_parse_url( wp_get_attachment_image_url( get_post_thumbnail_id( $post_id ), 'original' ) )['path'];
 	$featured_image = <<<EOD
     <img
@@ -127,6 +132,7 @@ foreach ( $highlightsItems as $highlightsItem ) {
             https://news.colby.edu/cdn-cgi/image/width=1090quality=60,format=auto/https://news.colby.edu{$image_path} 1090w, 
             https://news.colby.edu/cdn-cgi/image/width=400,quality=60,format=auto/https://news.colby.edu{$image_path} 400w" 
         sizes="(max-width: 1600px) 100vw, 1600px"
+        alt="$image_alt"
     />
     EOD;
 	$is_video       = false;

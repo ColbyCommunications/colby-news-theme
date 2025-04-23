@@ -680,6 +680,9 @@ function teaser_list( array $posts, bool $is_preview = false, array $show_fields
 			if ( in_array( 'image', $show_fields ) ) {
 
 				$image_path      = wp_parse_url( wp_get_attachment_image_url( get_post_thumbnail_id( $post->ID ), 'original' ) )['path'];
+				$image_id = get_post_thumbnail_id( $post->ID );
+				
+				$image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', TRUE);
 				$teaser['image'] = <<<EOD
             <img
                 srcset="
@@ -700,7 +703,7 @@ function teaser_list( array $posts, bool $is_preview = false, array $show_fields
                 "
                 src="https://news.colby.edu/cdn-cgi/image/width=1080,quality=30,format=auto/https://news.colby.edu{$image_path}"
                 sizes="(max-width: 1080px) 100vw, 1080px"
-                alt=""
+                alt="$image_alt"
             />
         EOD;
 				// $teaser['image'] = nc_blocks_image( get_post_thumbnail_id( $post->ID ), 'teaser_new' );
@@ -1224,7 +1227,9 @@ function featured_story_large( $block, $content = '', $is_preview = false, $post
 function breaker_feature( $block, $content = '', $is_preview = false, $post_id = 0 ) {
 	if ( function_exists( 'get_field' ) ) {
 		$image = get_field( 'image' );
+		$title = get_field( 'title' );
 		if ( $image ) {
+
 			$image_path = wp_parse_url( wp_get_attachment_image_url( $image, 'original' ) )['path'];
 			$image      = <<<EOD
             <img
@@ -1246,7 +1251,7 @@ function breaker_feature( $block, $content = '', $is_preview = false, $post_id =
                 "
                 src="https://news.colby.edu/cdn-cgi/image/width=2160,quality=30,format=auto/https://news.colby.edu{$image_path}"
                 sizes="(max-width: 2160px) 100vw, 2160px"
-                alt=""
+                alt="$title"
             />
         EOD;
 		}
