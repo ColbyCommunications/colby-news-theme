@@ -394,6 +394,8 @@ class TemplatePart {
 		} else {
 			$orientation           = get_post_field( 'vertical_header', $post->ID ) ? 'portrait' : 'landscape';
 			$verticalFeaturedImage = get_post_field( 'vertical_image', $post->ID );
+			$image_id = get_post_thumbnail_id($post->ID);
+			$image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', TRUE);
 			if ( $orientation === 'portrait' && $verticalFeaturedImage ) {
 				$imageSize = 'header_vertical_lg';
 				// $featuredImage        = nc_blocks_image( $verticalFeaturedImage, $imageSize );
@@ -404,6 +406,8 @@ class TemplatePart {
 				$featuredImageCaption = get_the_post_thumbnail_caption( $post->ID );
 
 			}
+			
+
 		}
 
 		if ( is_front_page() ) {
@@ -438,6 +442,7 @@ class TemplatePart {
                 "
                 src="https://news.colby.edu/cdn-cgi/image/width=1090,quality=60,format=auto/https://news.colby.edu{$featuredImage['path']}"
                 sizes="(max-width: 1090px) 100vw, 1090px"
+                alt="$image_alt"
             />
         EOD;
 		}

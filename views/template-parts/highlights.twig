@@ -5,7 +5,7 @@
       {% for highlight in highlights %}
         <div class="flex flex-col space-y-1 text-base-minus-2">
                 <div class="relative group">
-                    <a href="/story/{{highlight.slug}}/" class="after:content-empty after:absolute after:inset-0 after:bg-black after:bg-opacity-0 group-hover:after:bg-opacity-10 after:transition-colors">
+                    <a href="/story/{{highlight.slug}}/" class="after:content-empty after:absolute after:inset-0 after:bg-black after:bg-opacity-0 group-hover:after:bg-opacity-10 after:transition-colors" aria-label="{{function('htmlspecialchars_decode', highlight.post_title)}}">
                         {{ highlight.featured_image }}
                     {% if highlight.withVideoLogo %}
                         <div class="absolute transform -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-full left-1/2 top-1/2">
