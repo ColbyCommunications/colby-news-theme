@@ -401,90 +401,90 @@ article.post,
 }
 
 @include proseVariant((ol)) {
-  [type='A'] {
-    --list-counter-style: upper-alpha;
-  }
+  // [type='A'] {
+  //   --list-counter-style: upper-alpha;
+  // }
 
-  [type='a'] {
-    --list-counter-style: lower-alpha;
-  }
+  // [type='a'] {
+  //   --list-counter-style: lower-alpha;
+  // }
 
-  [type='A s'] {
-    --list-counter-style: upper-alpha;
-  }
+  // [type='A s'] {
+  //   --list-counter-style: upper-alpha;
+  // }
 
-  [type='a s'] {
-    --list-counter-style: lower-alpha;
-  }
+  // [type='a s'] {
+  //   --list-counter-style: lower-alpha;
+  // }
 
-  [type='I'] {
-    --list-counter-style: upper-roman;
-  }
+  // [type='I'] {
+  //   --list-counter-style: upper-roman;
+  // }
 
-  [type='i'] {
-    --list-counter-style: lower-roman;
-  }
+  // [type='i'] {
+  //   --list-counter-style: lower-roman;
+  // }
 
-  [type='I s'] {
-    --list-counter-style: upper-roman;
-  }
+  // [type='I s'] {
+  //   --list-counter-style: upper-roman;
+  // }
 
-  [type='i s'] {
-    --list-counter-style: lower-roman;
-  }
+  // [type='i s'] {
+  //   --list-counter-style: lower-roman;
+  // }
 
-  [type='1'] {
-    --list-counter-style: decimal;
-  }
+  // [type='1'] {
+  //   --list-counter-style: decimal;
+  // }
 
-  > li {
-    position: relative;
-    padding-left: 1.75em;
-  }
+  // > li {
+  //   position: relative;
+  //   padding-left: 1.75em;
+  // }
 
-  > li::before {
-    content: counter(list-item, decimal) '.';
-    content: counter(list-item, var(--list-counter-style, decimal)) '.';
-    position: absolute;
-    font-weight: 400;
-    color: currentColor;
-    left: 0;
-  }
+  // > li::before {
+  //   content: counter(list-item, decimal) '.';
+  //   content: counter(list-item, var(--list-counter-style, decimal)) '.';
+  //   position: absolute;
+  //   font-weight: 400;
+  //   color: currentColor;
+  //   left: 0;
+  // }
 
-  > li {
-    > ol {
-      > li::before {
-        content: counter(list-item, lower-alpha) '.';
-        padding-right: 0.5rem;
-      }
-    }
-  }
+  // > li {
+  //   > ol {
+  //     > li::before {
+  //       content: counter(list-item, lower-alpha) '.';
+  //       padding-right: 0.5rem;
+  //     }
+  //   }
+  // }
 }
 
-.prose ul,
-.prose-ul,
-[class*='prose-'] ul,
-article.page > ul:not([class]),
-article.post > ul:not([class]),
-.block-editor-block-list__layout > ul.wp-block-list,
-.rich-text-inner > ul.wp-block-list,
-.background-wrapper-inner > ul.wp-block-list {
-  > li {
-    position: relative;
-    padding-left: 1em;
-  }
+// .prose ul,
+// .prose-ul,
+// [class*='prose-'] ul,
+// article.page > ul:not([class]),
+// article.post > ul:not([class]),
+// .block-editor-block-list__layout > ul.wp-block-list,
+// .rich-text-inner > ul.wp-block-list,
+// .background-wrapper-inner > ul.wp-block-list {
+//   > li {
+//     position: relative;
+//     padding-left: 1em;
+//   }
 
-  > li::before {
-    content: '';
-    position: absolute;
-    background-color: currentColor;
-    border-radius: 50%;
-    width: 0.25em;
-    height: 0.25em;
-    top: calc(0.75em - 0.125em);
-    left: 0.25em;
-  }
-}
+//   > li::before {
+//     content: '';
+//     position: absolute;
+//     background-color: currentColor;
+//     border-radius: 50%;
+//     width: 0.25em;
+//     height: 0.25em;
+//     top: calc(0.75em - 0.125em);
+//     left: 0.25em;
+//   }
+// }
 
 ul {
   @at-root .prose &,
@@ -551,9 +551,9 @@ ol {
 }
 
 @include proseVariant((ul), '>') {
-  > li > ul {
-    list-style-type: circle;
-  }
+  // > li > ul {
+  //   list-style-type: circle;
+  // }
 
   // &:not(.list-none) {
   // 	list-style-type: disc;

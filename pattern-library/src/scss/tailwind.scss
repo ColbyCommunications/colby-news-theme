@@ -295,3 +295,10 @@ body {
     grid-template-columns: 1fr minmax(40%, max-content);
   }
 }
+
+ol.wp-block-list,
+ul.wp-block-list {
+  list-style: revert;
+  margin: revert;
+  padding: revert;
+}
