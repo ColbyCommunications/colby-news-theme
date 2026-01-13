@@ -140,6 +140,27 @@ acf_add_local_field_group(array(
 				),
 			),
 		),
+		array(
+			'key' => 'field_case_award_year',
+			'label' => 'CASE Award Year',
+			'name' => 'caseAwardYear',
+			'type' => 'text',
+			'instructions' => 'Enter a 4-digit year',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'maxlength' => 4,
+			'attributes' => array(
+				'pattern' => '[0-9]{4}',
+				'inputmode' => 'numeric',
+			),
+		),
 	),
 	'location' => array(
 		array(
