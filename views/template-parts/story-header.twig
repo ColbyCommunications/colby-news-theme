@@ -198,6 +198,17 @@
       {% if updatedDate %}<span><span class="mr-1 text-xs uppercase">Updated </span>{{ updatedDate }}</span>{% endif %}
     {% endapply %}
     </div>
+    {% if caseAwardYear %}
+      <div class="mt-2 text-sm flex items-center gap-2">
+        <img
+          class="w-[50px] h-[50px] sm:w-[80px] sm:h-[80px]"
+          src="{{ theme.link }}/assets/images/CASE_badge.png"
+          alt="CASE Award badge"
+        />
+        <span>CASE Award winner {{ caseAwardYear }}</span>
+      </div>
+
+    {% endif %}
   {% endif %}
   
   

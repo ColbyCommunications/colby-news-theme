@@ -370,6 +370,7 @@ class TemplatePart {
 			$defaultArgs['summary']      = get_post_field( 'summary', $post->ID );
 			$defaultArgs['author']       = get_post_field( 'author', $post->ID );
 			$defaultArgs['photoCredit']  = get_post_field( 'photoCredit', $post->ID );
+			$defaultArgs['caseAwardYear'] = get_field( 'caseAwardYear', $post->ID );
 			$defaultArgs['contact']      = array(
 				'name'  => get_post_field( 'contact_name', $post->ID ),
 				'email' => get_post_field( 'contact_email', $post->ID ),
@@ -461,6 +462,12 @@ class TemplatePart {
 
 		$headerArgs = wp_parse_args( $args, $defaultArgs );
 
-		return Timber::compile( $this->twigPath . '/story-header.twig', $headerArgs );
+		return Timber::compile(
+			$this->twigPath . '/story-header.twig',
+			array_merge(
+					$this->context,
+					$headerArgs
+			)
+		);
 	}
 }
