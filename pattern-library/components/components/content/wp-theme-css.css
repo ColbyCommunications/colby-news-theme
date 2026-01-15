@@ -25,7 +25,8 @@
 
 .blocks-gallery-caption,
 .wp-block-embed figcaption,
-.wp-block-image figcaption {
+.wp-block-image figcaption,
+.wp-block-video figcaption {
 	color: #555;
 	font-size: 13px;
 	text-align: center
