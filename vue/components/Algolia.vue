@@ -18,6 +18,7 @@
       >
         <ais-configure :hits-per-page.camel="1" />
         <!-- Widgets -->
+        <!-- test -->
         <!-- searchbox widget-->
         <searchbox ref="customSearchBox"></searchbox>
         <!-- query suggestions -->
