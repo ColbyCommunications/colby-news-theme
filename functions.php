@@ -847,6 +847,9 @@ function newcity_colby_news_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'newcity_colby_news_scripts' );
 
+remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
+remove_action( 'wp_footer', 'wp_enqueue_global_styles', 1 );
+
 add_action(
 	'enqueue_block_editor_assets',
 	function () {
