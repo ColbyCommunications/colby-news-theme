@@ -302,3 +302,7 @@ ul.wp-block-list {
   margin: revert;
   padding: revert;
 }
+
+a {
+  text-decoration: inherit !important;
+}
