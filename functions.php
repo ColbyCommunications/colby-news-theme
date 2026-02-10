@@ -1155,34 +1155,34 @@ function page_metrics_function() {
  * @return false if not successful. String if filtered successfully
  *
  */
-function filter_slug( $slug, $title ) {
-	$pattern = '^https://news.colby.edu/story/(.+)/$^';
-	$result  = preg_match( $pattern, $slug, $matches );
+// function filter_slug( $slug, $title ) {
+// 	$pattern = '^https://news.colby.edu/story/(.+)/$^';
+// 	$result  = preg_match( $pattern, $slug, $matches );
 
-	$final_slug = false;
+// 	$final_slug = false;
 
-	if ( false !== $result && $matches ) {
-		$char_blacklist = array( '/', '%', 'wp-content', 'elementor', 'preview=' );
+// 	if ( false !== $result && $matches ) {
+// 		$char_blacklist = array( '/', '%', 'wp-content', 'elementor', 'preview=' );
 
-		$bypass = false;
+// 		$bypass = false;
 
-		foreach ( $char_blacklist as $char ) {
-			if ( stripos( $matches[1], $char ) !== false ) {
-				$bypass = true;
-			}
-		}
+// 		foreach ( $char_blacklist as $char ) {
+// 			if ( stripos( $matches[1], $char ) !== false ) {
+// 				$bypass = true;
+// 			}
+// 		}
 
-		if ( $title === 'Page not found - Colby News' ) {
-			$bypass = true;
-		}
+// 		if ( $title === 'Page not found - Colby News' ) {
+// 			$bypass = true;
+// 		}
 
-		if ( ! $bypass ) {
-			$final_slug = $matches[1];
-		}
-	}
+// 		if ( ! $bypass ) {
+// 			$final_slug = $matches[1];
+// 		}
+// 	}
 
-	return $final_slug;
-}
+// 	return $final_slug;
+// }
 
 function get_total_pubs() {
 	 // get total of unique media publications (ie Boston Globe, WSJ, CNBC)
@@ -1356,3 +1356,138 @@ function register_custom_yoast_variables() {
 }
 
 add_action('wpseo_register_extra_replacements', 'register_custom_yoast_variables');
+
+/**
+ * COLBY CLUDO
+ * 
+ */
+
+// Colby Cludo Hook Test
+add_filter('colby_cludo_register_custom_field', function ($field_registry) {
+    $field_registry['yoast_primary_category'] = [
+        'label'      => 'Primary Category',
+        'post_types' => ['post'],
+        'callback'   => 'get_yoast_primary_category',
+    ];
+
+    $field_registry['siteimprove_page_views'] = [
+        'label'      => 'Siteimprove Page Views',
+        'post_types' => ['post'],
+        'callback'   => 'get_siteimprove_page_views',
+    ];
+
+		$field_registry['external_image'] = [
+        'label'      => 'External Image',
+        'post_types' => ['external_post'],
+        'callback'   => 'get_external_media_image',
+    ];
+
+		$field_registry['description'] = [
+        'label'      => 'Description',
+        'post_types' => [],
+        'callback'   => 'get_description',
+    ];
+
+    return $field_registry;
+});
+
+function get_description($post_id) {
+	return "This is a test description.";
+}
+
+
+function get_yoast_primary_category($post_id) {
+    if (!class_exists('WPSEO_Primary_Term')) {
+        return null;
+    }
+
+    $primary_term = new WPSEO_Primary_Term('category', $post_id);
+    $term_id = $primary_term->get_primary_term();
+
+    if (!$term_id) {
+        return null;
+    }
+
+    $term = get_term($term_id);
+    if (is_wp_error($term) || !$term) {
+        return null;
+    }
+
+    return $term->name ?? null;
+}
+
+function get_siteimprove_page_views($post_id) {
+    // Cache pageviews so we don't hit API multiple times
+    static $pageviews_cache = null;
+
+    if ($pageviews_cache === null) {
+        $pageviews_cache = [];
+
+        // Fetch Siteimprove metrics
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_URL => "https://api.siteimprove.com/v2/sites/28518335051/analytics/content/all_pages?page=1&page_size=1000&period=this_month&search_in=url",
+            CURLOPT_USERPWD => PLATFORM_VARIABLES["gaceto_siteimprove_api_creds"],
+        ]);
+
+        $response_json = curl_exec($ch);
+        curl_close($ch);
+
+        $response = json_decode($response_json, true);
+
+        if (!empty($response['items'])) {
+            foreach ($response['items'] as $item) {
+                // Extract slug
+                if (preg_match('#^https://news\.colby\.edu/story/(.+)/$#', $item['url'], $matches)) {
+                    $slug = $matches[1];
+
+                    $blacklist = ["/", "%", "wp-content", "elementor", "preview="];
+                    foreach ($blacklist as $char) {
+                        if (stripos($slug, $char) !== false) {
+                            continue 2; // skip this item
+                        }
+                    }
+
+                    if ($item['title'] === 'Page not found - Colby News') {
+                        continue;
+                    }
+
+                    $pageviews_cache[$slug] = (string)($item['page_views'] ?? "0");
+                }
+            }
+        }
+    }
+
+    // Get post slug
+    $post = get_post($post_id);
+    if (!$post) {
+        return null;
+    }
+
+    return $pageviews_cache[$post->post_name] ?? "0";
+}
+
+function get_external_media_image($post_id) {
+
+    $terms = get_the_terms($post_id, 'media_source');
+    if (empty($terms) || is_wp_error($terms)) {
+        return null;
+    }
+
+    $term = $terms[0];
+
+    // ACF term field
+    $logo_id = get_field('logo', 'media_source_' . $term->term_id);
+    if (!$logo_id) {
+        return null;
+    }
+
+    $image = wp_get_attachment_image_src($logo_id, 'logo');
+    return $image[0] ?? null;
+}
+
+
+
+
+
