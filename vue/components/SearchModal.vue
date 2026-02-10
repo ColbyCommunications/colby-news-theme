@@ -138,7 +138,7 @@
         >
           <div class="pt-2 md:pt-12">
             <div class="container">
-              <Algolia />
+              <Cludo />
             </div>
           </div>
           <div>
@@ -321,11 +321,11 @@
 </template>
 <script>
 import { useMainStore } from '../stores/main';
-import Algolia from './Algolia.vue';
+import Cludo from './Cludo.vue';
 
 export default {
   components: {
-    Algolia,
+    Cludo,
   },
   setup() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
