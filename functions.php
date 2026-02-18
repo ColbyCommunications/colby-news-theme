@@ -1382,6 +1382,12 @@ add_filter('colby_cludo_register_custom_field', function ($field_registry) {
         'callback'   => 'get_external_media_image',
     ];
 
+		$field_registry['story_image_data'] = [
+        'label'      => 'Story Image Data',
+        'post_types' => ['post'],
+        'callback'   => 'get_post_featured_image_data',
+    ];
+
 		$field_registry['description'] = [
         'label'      => 'Description',
         'post_types' => [],
@@ -1394,6 +1400,35 @@ add_filter('colby_cludo_register_custom_field', function ($field_registry) {
 function get_description($post_id) {
 	return "This is a test description.";
 }
+
+function get_post_featured_image_data( $post_id, $size = 'full' ) {
+    if ( ! $post_id ) {
+        return false;
+    }
+
+    // Get the attachment ID of the featured image
+    $thumbnail_id = get_post_thumbnail_id( $post_id );
+
+    if ( ! $thumbnail_id ) {
+        return false;
+    }
+
+    // Get the image URL
+    $image = wp_get_attachment_image_src( $thumbnail_id, $size );
+
+    if ( ! $image ) {
+        return false;
+    }
+
+    // Get alt text
+    $alt = get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true );
+
+    return [
+        'imageUrl' => $image[0],
+        'alt' => $alt ? $alt : '',
+    ];
+}
+
 
 
 function get_yoast_primary_category($post_id) {
