@@ -1,6 +1,10 @@
 <template>
   <div>
-    <CludoStoriesFilterSection :currentTab="currentTab" />
+    <CludoStoriesFilterSection
+      :currentTab="currentTab"
+      @update:selected-categories="$emit('update:selected-categories', $event)"
+    />
+
     <!-- Results list -->
     <ul v-if="searchResults.length > 0">
       <li v-for="(story, index) in stories" :key="story.id">
@@ -9,13 +13,12 @@
           role="region"
           aria-label="Search Result"
         >
-          <!-- IMAGE COLUMN (optional) -->
+          <!-- IMAGE COLUMN -->
           <div
             class="w-full md:w-1/4 !m-0 !p-0 transition ease-in-out duration-300"
             :class="{ 'brightness-90': hover === story.id }"
           >
             <a :href="story.url">
-              <!-- Replace with real image later if Cludo provides one -->
               <div
                 class="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500 text-sm"
                 @mouseover="hover = story.id"
@@ -23,17 +26,24 @@
                 @mouseleave="hover = null"
                 @blur="hover = null"
               >
-                No Image
+                <img
+                  v-if="story.image"
+                  :src="story.image"
+                  :alt="story.imageAlt || 'Story image'"
+                  class="w-full h-full object-cover"
+                />
+                <span v-else class="material-icons-sharp text-4xl">
+                  image
+                </span>
               </div>
             </a>
           </div>
 
           <!-- TEXT COLUMN -->
           <div class="w-full md:w-3/4 md:ml-4">
-            <!-- CATEGORY -->
             <a
               v-if="story.primaryCategory"
-              class="font-sans text-xs mb-1.5 uppercase hover:text-link-hover"
+              class="font-sans text-xs mb-1.5 uppercase hover:text-link-hover no-underline"
               :href="`/story/category/${story.primaryCategory.replace(
                 /\s+/g,
                 '-'
@@ -42,9 +52,9 @@
               {{ story.primaryCategory }}
             </a>
 
-            <!-- TITLE + DESCRIPTION -->
             <a
               :href="story.url"
+              class="no-underline"
               :class="{ 'text-link-hover': hover === story.id }"
               @mouseover="hover = story.id"
               @focus="hover = story.id"
@@ -54,7 +64,7 @@
               <h2 class="font-bold text-base mb-1.5">
                 {{ story.title }}
               </h2>
-              <p class="font-sans text-base text-gray-700">
+              <p class="font-sans text-base">
                 {{ story.summary }}
               </p>
             </a>
@@ -74,16 +84,13 @@
       class="mt-6"
     >
       <ul class="flex flex-row items-center justify-end">
-        <!-- Page Text -->
         <li class="w-32">
           <p :style="paginationText">
             Page {{ currentPage }} of {{ totalPages }}
           </p>
         </li>
 
-        <!-- Arrows -->
         <li class="flex justify-center items-center">
-          <!-- Previous -->
           <a
             href="#"
             :class="[currentPage === 1 ? 'pointer-events-none' : '', 'mr-2']"
@@ -102,13 +109,10 @@
             </span>
           </a>
 
-          <!-- Next -->
           <a
             href="#"
             :class="[currentPage === totalPages ? 'pointer-events-none' : '']"
-            :style="{
-              color: currentPage === totalPages ? '#8b8b8b' : 'black',
-            }"
+            :style="{ color: currentPage === totalPages ? '#8b8b8b' : 'black' }"
             @click.prevent="goToPage(currentPage + 1)"
           >
             <span
@@ -139,41 +143,33 @@ const props = defineProps({
   currentTab: { type: String, required: true },
 });
 
+// computed stories mapping
 const stories = computed(() =>
   props.searchResults.map((doc) => ({
     id: doc.Fields.Id?.Value,
     title: doc.Fields.Title?.Value,
     summary: doc.Fields['Summary']?.Value,
     url: doc.Fields.Url?.Value,
-    primaryCategory: doc.Fields['Primary Category']?.Value,
+    primaryCategory: doc.Fields['Category']?.Value,
+    image: doc.Fields['Image Data']?.Values[0],
+    imageAlt: doc.Fields['Image Data']?.Values[1],
   }))
 );
 
-const emit = defineEmits(['change-page']);
+// now include the emitted events
+const emit = defineEmits(['change-page', 'update:selected-categories']);
 
 const hover = ref(null);
+const paginationText = { fontSize: '0.9rem' };
 
-const paginationText = {
-  fontSize: '0.9rem',
-};
-
-// Scroll back to search box
 const scrollToTop = () => {
   const element = document.getElementById('site-search-searchbox');
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'end' });
-  }
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'end' });
 };
 
-// Handle page click
 const goToPage = (page) => {
   if (page < 1 || page > props.totalPages) return;
-
   emit('change-page', page);
-
-  // wait a tick so results update first
-  setTimeout(() => {
-    scrollToTop();
-  }, 50);
+  setTimeout(scrollToTop, 50);
 };
 </script>

@@ -4,7 +4,7 @@
     <ul v-if="searchResults.length > 0">
       <li v-for="(story, index) in stories" :key="story.id">
         <a
-          class="group block text-base-minus-2 space-y-1.5 hover:text-link-hover"
+          class="group block text-base-minus-2 space-y-1.5 hover:text-link-hover no-underline"
           :href="story.externalUrl"
         >
           <div

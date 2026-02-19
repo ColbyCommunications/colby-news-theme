@@ -31,6 +31,7 @@
         :totalPages="totalPages"
         :currentTab="currentTab"
         @change-page="handlePageChange"
+        @update:selected-categories="handleSelectedCategories"
       />
 
       <CludoMediaTab
@@ -62,10 +63,10 @@ import CludoFacultyAccomplishmentsTab from './tabs/CludoFacultyAccomplishmentsTa
 
 const searchResults = ref([]);
 const currentTab = ref('Stories');
-const isOpen = ref(false);
 const currentPage = ref(1);
 const totalPages = ref(1);
 const currentQuery = ref('*');
+const selectedCategories = ref([]);
 
 let controller = null;
 
@@ -102,17 +103,29 @@ const search = async (query = '*', page = 1) => {
   const encodedValue = base64EncodeUnicode(rawValue);
   const authHeader = `SiteKey ${encodedValue}`;
 
-  const url = `https://api-us1.cludo.com/api/v3/${customerId}/${engineId}/search`;
+  const url = `https://api-us1.cludo.com/api/v3/${customerId}/${engineId}/autocomplete`;
 
   const filter = tabFilters[currentTab.value] || {};
   const perPage = 5;
+
   const requestBody = {
+    ResponseType: 'JsonObject',
+    Template: 'SearchContent',
+    text: query,
     query,
     operator: 'and',
     page,
     perPage,
     filters: filter,
+    postFiltersOperator: 'or',
+    enableFacetFiltering: true,
+    postFilters: {}, // initialize
   };
+
+  // Apply category filters if any
+  if (selectedCategories.value.length > 0) {
+    requestBody.postFilters.Category = selectedCategories.value;
+  }
 
   try {
     const response = await fetch(url, {
@@ -129,14 +142,10 @@ const search = async (query = '*', page = 1) => {
 
     const data = await response.json();
 
-    console.log(data);
-
-    searchResults.value = data.TypedDocuments || [];
-
-    // Calculate total pages dynamically
+    searchResults.value = data.Results || [];
     totalPages.value = Math.max(
       1,
-      Math.ceil((data.TotalDocument || 0) / perPage)
+      Math.ceil((data.TotalResults || 0) / perPage)
     );
     currentPage.value = page;
 
@@ -146,12 +155,10 @@ const search = async (query = '*', page = 1) => {
       page,
       totalPages: totalPages.value,
       count: searchResults.value.length,
-      results: searchResults.value,
+      filtersApplied: selectedCategories.value,
     });
   } catch (err) {
-    if (err.name !== 'AbortError') {
-      console.error('Cludo search error:', err);
-    }
+    if (err.name !== 'AbortError') console.error('Cludo search error:', err);
   }
 };
 
@@ -183,6 +190,9 @@ const changeTab = (tabName) => {
   currentTab.value = tabName;
 };
 
-// ---------- FILTER TOGGLE ----------
-const toggleFilters = () => (isOpen.value = !isOpen.value);
+// ---------- FILTER HANDLER ----------
+const handleSelectedCategories = (categories) => {
+  selectedCategories.value = categories;
+  search(currentQuery.value, 1);
+};
 </script>

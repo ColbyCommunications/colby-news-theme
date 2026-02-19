@@ -4,7 +4,7 @@
     <ul v-if="searchResults.length > 0">
       <li v-for="(story, index) in stories" :key="story.id">
         <a
-          class="group block text-base-minus-2 space-y-1.5 hover:text-link-hover"
+          class="group block text-base-minus-2 space-y-1.5 hover:text-link-hover no-underline cursor-pointer"
           :href="story.externalUrl"
         >
           <div
@@ -37,9 +37,7 @@
                   </h3>
                 </div>
                 <div class="blurb-wrapper">
-                  <div class="text-base-minus-2 lg:text-base">
-                    {{ story.description }}
-                  </div>
+                  <div class="text-base-minus-2 lg:text-base"></div>
                 </div>
               </div>
             </div>
@@ -126,9 +124,10 @@ const stories = computed(() =>
   props.searchResults.map((doc) => ({
     id: doc.Fields.Id?.Value,
     title: doc.Fields.Title?.Value,
-    description: doc.Fields.Description?.Value,
-    externalUrl: doc.Fields['External URL']?.Value,
+    content: doc.Fields.Content?.Value,
+    externalUrl: doc.Fields['External Url']?.Value,
     primaryCategory: doc.Fields['Primary Category']?.Value,
+    mediaSource: doc.Fields['Media Source']?.Value,
     image: doc.Fields['External Image']?.Value,
   }))
 );
