@@ -37,7 +37,9 @@
                   </h3>
                 </div>
                 <div class="blurb-wrapper">
-                  <div class="text-base-minus-2 lg:text-base"></div>
+                  <div class="text-base-minus-2 lg:text-base">
+                    {{ story.excerpt }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -124,7 +126,7 @@ const stories = computed(() =>
   props.searchResults.map((doc) => ({
     id: doc.Fields.Id?.Value,
     title: doc.Fields.Title?.Value,
-    content: doc.Fields.Content?.Value,
+    excerpt: doc.Fields.Excerpt?.Value,
     externalUrl: doc.Fields['External Url']?.Value,
     primaryCategory: doc.Fields['Primary Category']?.Value,
     mediaSource: doc.Fields['Media Source']?.Value,
