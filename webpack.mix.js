@@ -31,7 +31,7 @@ mix
   .sass(`pattern-library/src/scss/tailwind.scss`, `assets/css/`)
   .options({
     processCssUrls: false,
-    postCss: [tailwindcss('./tailwind.config.js'), postcssPresetEnv()],
+    postCss: [tailwindcss('./tailwind.config.js')],
   });
 // .svgSprite(`pattern-library/src/icons/**/*.svg`, {
 //   output: {
@@ -45,11 +45,6 @@ mix
 //     },
 //   },
 // });
-
-mix.browserSync({
-  proxy: 'https://news.lndo.site',
-  files: [`./**/*.php`, `./**/*.js`, `./**/*.css`, `./**/*.vue`],
-});
 
 mix.options({
   terser: {

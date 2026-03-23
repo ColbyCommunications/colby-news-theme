@@ -2,7 +2,7 @@
   <div class="space-x-1 js-focus-visible">
     <div class="inline-block cursor-pointer open-menu-wrapper">
       <button
-        class="open-menu bg-white p-2 rounded-lg group transition-colors selected:bg-black selected:bg-opacity-[7%]"
+        class="open-menu min-h-[44px] min-w-[44px] bg-white p-2 rounded-lg group transition-colors selected:bg-black selected:bg-opacity-[7%]"
         aria-label="Open menu (modal)"
         @click="openMenu"
       >
@@ -20,7 +20,7 @@
     </div>
     <div class="inline-block cursor-pointer open-search-wrapper">
       <button
-        class="open-search bg-white p-2 rounded-lg group transition-colors selected:bg-black selected:bg-opacity-[7%]"
+        class="open-search min-h-[44px] min-w-[44px] bg-white p-2 rounded-lg group transition-colors selected:bg-black selected:bg-opacity-[7%]"
         aria-label="Open search (modal)"
         @click="openSearch"
       >

@@ -118,11 +118,13 @@
 {% set contentGroup1 %}
   {% if element != 'header' and primaryCategory %} {# homepage primaryCategory #}
     <div class="mb-3 text-sm uppercase">
-      {% if primaryCategory.url %}
-        <a href="{{ primaryCategory.url }}">{{ primaryCategory.title }}</a>
-      {% else %}
+    {% if primaryCategory.url %}
+      <a class="inline-flex items-center min-h-[44px] min-w-[44px]" href="{{ primaryCategory.url }}">
         {{ primaryCategory.title }}
-      {% endif %}
+      </a>
+{% else %}
+  {{ primaryCategory.title }}
+{% endif %}
     </div>
   {% endif %}
   
@@ -147,7 +149,7 @@
   {% endif %}
 
   {% if summary %}
-    <h2 class="text-xl lg:text-2xl xl:text-3xl mt-4 sm:mt-8 {{ (orientation == 'landscape' and element == 'header') ? 'max-w-2xl mx-auto' }}">{{ summary }}</h2>
+    <p class="text-xl lg:text-2xl xl:text-3xl mt-4 sm:mt-8 {{ (orientation == 'landscape' and element == 'header') ? 'max-w-2xl mx-auto' }}">{{ summary }}</p>
   {% endif %}
 
   {% if link and element != 'header' %} {# homepage link to featured-story #}

@@ -31,7 +31,7 @@
                 <div class="text-xs uppercase">{{ post.source }}</div>
             {% endif %}
 
-            {% set hTag = 'h' ~ post.hLevel|default(3) %}
+            {% set hTag = 'h' ~ post.hLevel|default(2) %}
             <{{ hTag }} class="text-xl lg:text-3xl-minus-2">
                 <a href="{{ post.link.url }}" class="font-bold">{{ function('htmlspecialchars_decode', post.link.title) }}</a>
             </{{ hTag }}>
@@ -61,7 +61,7 @@
                     <div class="text-xs uppercase">{{ post.source }}</div>
                 {% endif %}
 
-                {% set hTag = 'h' ~ post.hLevel|default(3) %}
+                {% set hTag = 'h' ~ post.hLevel|default(2) %}
                 <{{ hTag }} class="text-xl lg:text-3xl-minus-2">
                     <a href="{{ post.link.url }}" class="font-bold">{{ function('htmlspecialchars_decode', post.link.title) }}</a>
                 </{{ hTag }}>
@@ -79,7 +79,7 @@
         <div class="grid gap-x-4 gap-y-2">
                 <div class="space-y-1 title-wrapper lg:space-y-2">
 
-                    {% set hTag = 'h' ~ post.hLevel|default(3) %}
+                    {% set hTag = 'h' ~ post.hLevel|default(2) %}
                     <{{ hTag }} class="leading-tight">
                         <a href="{{ post.link.url }}" class="font-bold">{{ function('htmlspecialchars_decode', post.link.title) }}</a>
                     </{{ hTag }}>
@@ -116,7 +116,7 @@
                 
                 <div class="space-y-1 title-wrapper lg:space-y-2">
 
-                    {% set hTag = 'h' ~ post.hLevel|default(3) %}
+                    {% set hTag = 'h' ~ post.hLevel|default(2) %}
                     <{{ hTag }} class="leading-tight">
                         <a href="{{ post.link.url }}" class="font-bold">{{ function('htmlspecialchars_decode', post.link.title) }}</a>
                     </{{ hTag }}>
