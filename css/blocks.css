@@ -3075,6 +3075,11 @@ hr.wp-block-separator.is-style-wide {
 
 .wp-block-social-links .wp-social-link a {
   padding: 0.25em;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .wp-block-social-links .wp-social-link svg {
