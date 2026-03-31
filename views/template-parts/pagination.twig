@@ -1,50 +1,38 @@
 {% if pagination and pagination.pages is iterable %}
-<nav role="navigation" aria-label="pagination"
-     class="flex items-center justify-between gap-4 font-light uppercase">
-
-    {# Previous #}
-    {% if pagination.prev %}
-        <a href="{{ pagination.prev.link }}"
-           class="{{ pagination.prev.class }} flex items-center gap-2 text-primary-light hocus:underline min-w-[44px] min-h-[44px]">
-            <span role="presentation">&lt;&lt;</span>
-            <span class="hidden sm:inline">Previous</span>
-        </a>
-    {% else %}
-        <span class="min-w-[44px]"></span>
-    {% endif %}
-
-    {# Page numbers #}
-    <ul class="hidden md:flex items-center gap-2 pages">
-        {% for page in pagination.pages %}
-            <li>
-                {% if page.current %}
-                    <span class="font-bold flex items-center justify-center min-w-[44px] min-h-[44px]">
-                        {{ page.title }}
-                    </span>
-                {% else %}
-                    <a href="{{ page.link }}"
-                       class="flex items-center justify-center text-primary-light hocus:underline min-w-[44px] min-h-[44px]">
-                        {{ page.title }}
-                    </a>
+    <nav role="navigation" aria-label="pagination" class="flex justify-center space-x-4 font-light uppercase flex-nowrap items-center">
+        {% if pagination.prev %}
+            <a href="{{ pagination.prev.link }}" class="{{ pagination.prev.class }} flex flex-grow text-primary-light hocus:underline min-w-[44px] min-h-[44px]  items-center justify-start">
+                <span role="presentation">&lt;&lt;</span>
+                Previous
+            </a>
+        {% else %}
+            <div class="flex-grow"></div>
+        {% endif %}
+        <ul class="justify-center hidden space-x-4 pages lg:flex flex-nowrap min-w-[44px] min-h-[44px] ">
+            {% for page in pagination.pages %}
+                <li>
+                    {% if page.current %}
+                        <span class="font-bold min-w-[44px] min-h-[44px]  flex items-center justify-center">{{ page.title }}</span>
+                    {% else %}
+                        <a class=" text-primary-light hocus:underline min-w-[44px] min-h-[44px] flex items-center justify-center " href="{{ page.link }}">{{ page.title }}</a>
+                    {% endif %}
+                </li>
+                {% if page.beforeBreak %}
+                    <li role="presentation">
+                        <div>…</div>
+                    </li>
                 {% endif %}
-            </li>
-
-            {% if page.beforeBreak %}
-                <li role="presentation" class="px-1">…</li>
-            {% endif %}
-        {% endfor %}
-    </ul>
-
-    {# Next #}
-    {% if pagination.next %}
-        <a href="{{ pagination.next.link }}"
-           class="{{ pagination.next.class }} flex items-center gap-2 text-primary-light hocus:underline min-w-[44px] min-h-[44px]">
-            <span class="hidden sm:inline">Next</span>
-            <span role="presentation">&gt;&gt;</span>
-        </a>
-    {% else %}
-        <span class="min-w-[44px]"></span>
-    {% endif %}
-
-</nav>
+            {% endfor %}
+        </ul>
+        {% if pagination.next %}
+            <a href="{{ pagination.next.link }}" class="{{ pagination.next.class }} text-right flex-grow lock text-primary-light hocus:underline min-w-[44px] min-h-[44px] flex items-center justify-end ">
+                <div>
+                    Next
+                    <span role="presentation">&gt;&gt;</span>
+                </div>
+            </a>
+        {% else %}
+            <div class="flex-grow"></div>
+        {% endif %}
+    </nav>
 {% endif %}
