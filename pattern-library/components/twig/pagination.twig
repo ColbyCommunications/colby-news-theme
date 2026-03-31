@@ -1,7 +1,7 @@
 {% if pagination and pagination.pages is iterable %}
     <nav role="navigation" aria-label="pagination" class="flex justify-center space-x-4 font-bold flex-nowrap">
         {% if pagination.prev %}
-            <a href="{{ pages.prev.url }}" class="block text-primary-light hocus:underline">
+            <a href="{{ pages.prev.url }}" class="block text-primary-light hocus:underline min-w-[44px] min-h-[44px] flex items-center justify-center">
                 <span role="presentation">&lt;&lt;</span>
                 Previous
             </a>

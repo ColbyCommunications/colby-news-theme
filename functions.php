@@ -1356,3 +1356,14 @@ function register_custom_yoast_variables() {
 }
 
 add_action('wpseo_register_extra_replacements', 'register_custom_yoast_variables');
+
+function colby_enqueue_iframe_title_script() {
+    wp_enqueue_script(
+        'iframe-title',
+        get_stylesheet_directory_uri() . '/js/iframe-title.js',
+        array(),
+        '1.0',
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'colby_enqueue_iframe_title_script' );
