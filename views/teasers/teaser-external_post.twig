@@ -17,7 +17,7 @@
     <div class="grid gap-4 media-coverage-item-grid lg:gap-x-9">
         <div class="media-coverage-item__image">
             {% if post.image %}
-                <div class="lg:w-24">
+                <div class="w-24">
                     {% include './linkify.twig' with {
                         url: post.imageUrl ? post.imageUrl : post.link.url,
                         component: post.image
@@ -48,7 +48,7 @@
         <div class="contents">
             <div class="media-coverage-item__image">
                 {% if post.image %}
-                    <div class="lg:w-24">
+                    <div class="w-24">
                         {% include './linkify.twig' with {
                             url: post.imageUrl ? post.imageUrl : post.link.url,
                             component: post.image
@@ -81,7 +81,7 @@
 
                     {% set hTag = 'h' ~ post.hLevel|default(2) %}
                     <{{ hTag }} class="leading-tight">
-                        <a href="{{ post.link.url }}" class="font-bold">{{ function('htmlspecialchars_decode', post.link.title) }}</a>
+                        <a href="{{ post.link.url }}" class="font-bold min-h-[44px] min-w-[44px]">{{ function('htmlspecialchars_decode', post.link.title) }}</a>
                     </{{ hTag }}>
                 </div>
 
@@ -93,42 +93,58 @@
         </div>
     </div>
 {% else %}{# 'plain' #}
+<div class="space-y-2">
 
-    <div class="space-y-2">
-        <div class="grid gap-x-4 gap-y-2 media-coverage-item-grid--standard">
-            <div class="lg:self-center lg:mx-auto logo-wrapper">
-                {% if post.image %}
-                    <div class="lg:w-24">
-                        {% include './linkify.twig' with {
-                            url: post.imageUrl ? post.imageUrl : post.link.url,
-                            component: post.image
-                        } only %}
-                    </div>
+    {# Header row: image + superhead/title #}
+    <div class="flex gap-x-4 lg:gap-x-9 items-start">
+        {# Image column #}
+        <div class="flex-shrink-0">
+            {% if post.image %}
+                <div class="w-24">
+                    {% include './linkify.twig' with {
+                        url: post.imageUrl ? post.imageUrl : post.link.url,
+                        component: post.image
+                    } only %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# Right column: superhead + title #}
+        <div class="flex-1 flex flex-col space-y-1">
+            <div class="superhead-wrapper">
+                {% if post.source %}
+                    <div class="text-xs uppercase">{{ post.source }}</div>
                 {% endif %}
             </div>
 
-            {# <div class="contents lg:block lg:col-span-3 lg:space-y-1.5"> #}
-                <div class="superhead-wrapper">
-                    {% if post.source %}
-                        <div class="text-xs uppercase">{{ post.source }}</div>
-                    {% endif %}
-                </div>
-                
-                <div class="space-y-1 title-wrapper lg:space-y-2">
+            <div class="space-y-1 title-wrapper lg:space-y-2">
+                {% set hTag = 'h' ~ post.hLevel|default(2) %}
+                <{{ hTag }} class="leading-tight font-bold">
+                    <a href="{{ post.link.url }}">
+                        {{ function('htmlspecialchars_decode', post.link.title) }}
+                    </a>
+                </{{ hTag }}>
+            </div>
 
-                    {% set hTag = 'h' ~ post.hLevel|default(2) %}
-                    <{{ hTag }} class="leading-tight">
-                        <a href="{{ post.link.url }}" class="font-bold">{{ function('htmlspecialchars_decode', post.link.title) }}</a>
-                    </{{ hTag }}>
+            {# Content for medium+ screens stacked in right column #}
+            {% if post.blurb %}
+                <div class="blurb-wrapper mt-2 md:mt-4 hidden md:block">
+                    <div class="text-base-minus-2 lg:text-base">
+                        {{ post.blurb }}
+                    </div>
                 </div>
-
-                <div class="blurb-wrapper">
-                {% if post.blurb %}
-                        <div class=" text-base-minus-2 lg:text-base">{{ post.blurb }}</div>
-                {% endif %}
-                </div>
-            {# </div> #}
+            {% endif %}
         </div>
     </div>
 
+    {# Content for small screens: full width below header row #}
+    {% if post.blurb %}
+        <div class="blurb-wrapper mt-2 md:hidden w-full">
+            <div class="text-base-minus-2 lg:text-base">
+                {{ post.blurb }}
+            </div>
+        </div>
+    {% endif %}
+
+</div>
 {% endif %}

@@ -3916,6 +3916,12 @@ h2.is-style-large-heading {
   }
 }
 
+.post-list-item .title-wrapper h2 a {
+  display: inline-block;
+  min-height: 44px;
+  align-content: center;
+}
+
 /* div[class^='wp-container-'] {
   align-items: inherit;
 } */
