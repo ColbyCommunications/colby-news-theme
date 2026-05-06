@@ -1367,6 +1367,7 @@ function colby_enqueue_iframe_title_script() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'colby_enqueue_iframe_title_script' );
+
 function colby_customize_rss_feed() {
     global $post;
 
