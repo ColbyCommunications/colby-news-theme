@@ -1367,3 +1367,37 @@ function colby_enqueue_iframe_title_script() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'colby_enqueue_iframe_title_script' );
+function colby_customize_rss_feed() {
+    global $post;
+
+    // 1. Only target the 'story' post type (adjust 'story' to your actual slug)
+    if ( get_post_type( $post->ID ) === 'post' ) {
+        
+        // 2. Fetch and add your ACF field
+        // Replace 'your_acf_field_name' with your actual field slug
+        $custom_tag_value = get_field( 'summary', $post->ID );
+        
+        if ( $custom_tag_value ) {
+            echo '<summary>' . esc_html( $custom_tag_value ) . '</summary>';
+        }
+
+        // 3. Add the Featured Image
+        if ( has_post_thumbnail( $post->ID ) ) {
+            $thumbnail_id = get_post_thumbnail_id( $post->ID );
+            $image_info = wp_get_attachment_image_src( $thumbnail_id, 'large' ); // Use 'large' or 'full'
+            $image_url = $image_info[0];
+            $image_type = get_post_mime_type( $thumbnail_id );
+            
+            // Standard enclosure tag for images
+            echo '<enclosure url="' . esc_url( $image_url ) . '" type="' . esc_attr( $image_type ) . '" />';
+            
+            // Optional: Media RSS format (better for some readers like Mailchimp/Feedly)
+            echo '<media:content url="' . esc_url( $image_url ) . '" medium="image" />';
+        }
+    }
+}
+add_action( 'rss2_item', 'colby_customize_rss_feed' );
+
+add_filter( 'rss2_ns', function() {
+    echo 'xmlns:media="http://search.yahoo.com/mrss/"';
+});
