@@ -1374,9 +1374,11 @@ function colby_customize_rss_feed() {
     // 1. Only target the 'story' post type (adjust 'story' to your actual slug)
     if ( get_post_type( $post->ID ) === 'post' ) {
         
-        // 2. Fetch and add your ACF field
-        // Replace 'your_acf_field_name' with your actual field slug
         $custom_tag_value = get_field( 'summary', $post->ID );
+        if ( $custom_tag_value ) {
+            // Using printf to ensure the CDATA tags wrap the value correctly
+            printf( '<summary><![CDATA[%s]]></summary>', $custom_tag_value );
+        }
         
         if ( $custom_tag_value ) {
             echo '<summary>' . esc_html( $custom_tag_value ) . '</summary>';
